@@ -1,0 +1,39 @@
+{
+  "name": "doi_react_app",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "../www/",
+  "dependencies": {
+    "@material-ui/core": "^4.4.3",
+    "@material-ui/icons": "^4.4.3",
+    "bitcore-doichain": "^0.1.4",
+    "crypto-browserify": "^3.12.0",
+    "localstoragedb": "^2.3.2",
+    "qrcode-react": "^0.1.16",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.2",
+    "reactn": "^2.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && cp -a ./build/. ../www/",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
