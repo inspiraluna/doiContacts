@@ -30,7 +30,7 @@ const WalletItem = ({publicKey}) => {
                 DoiCoin-Address: {addr.toString()} Balance: {balance} DOI
                     { show
                         ? <div style={{"fontSize":"9px","border":'2px solid lightgrey'}}>
-                            <QRCode value={"doicoin:addr.toString()"} /><br/>
+                            <QRCode value={"doicoin:"+addr.toString()} /><br/>
 
                             <b>PublicKey:{publicKey}</b><br/>
 
