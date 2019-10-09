@@ -21,6 +21,9 @@ const ContactsPage = () => {
 
         if(!wallets || !wallets[0] || wallets[0].length==0){
             console.log('error no wallets defined')
+            const err = 'no wallets defined'
+            console.log(err)
+            setOpenError({open:true,msg:err,type:'info'})
             return
         }else{
             console.log("wallets of contactPage",wallets)
@@ -54,8 +57,9 @@ const ContactsPage = () => {
 
                 bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
                     if (utxo.utxos.length === 0){
-                        console.log("insufficient funds")
-                        setOpenError(true)
+                        const err = 'insufficiant funds'
+                        console.log(err)
+                        setOpenError({open:true,msg:err,type:'info'})
                     }
                     else {
                         console.log(`using utxos for ${amountComplete} DOI`, utxo)
@@ -99,17 +103,19 @@ const ContactsPage = () => {
                                 txSignedSerialized,
                                 encryptedTemplateData,
                                 validatorPublicKey.toString()).then(function (txId) {
-                                console.log("broadcasted doichain transaction to doichain node with txId", txId)
-                                setOpenError(true)
-                            })
+                                const msg = 'broadcasted doichain transaction to doichain node with txId '+txId
+                                console.log(msg)
+                                setOpenError({open:true,msg:msg,type:'success'})                            })
                         }).catch(function (ex) {
-                             console.log('error while encrypting message',ex)
-                            setOpenError(true)
+                            const err = 'error while encrypting message'
+                            console.log(err,ex)
+                            setOpenError({open:true,msg:err})
                         })
                     }
                 }).catch(function (ex) {
-                    console.log('error while getUTXOAndBalance',ex)
-                    setOpenError(true)
+                    const err = 'error while getUTXOAndBalance'
+                    console.log(err,ex)
+                    setOpenError({open:true,msg:err})
                 })
             }).catch(function (ex) {
                 const err = 'error while creating DoichainEntry'

@@ -108,13 +108,13 @@ export default function CustomizedSnackbars() {
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={open}
+                open={open?open:false}
                 autoHideDuration={6000}
                 onClose={handleClose}
             >
                 <MySnackbarContentWrapper
                     onClose={handleClose}
-                    variant="error"
+                    variant={open?open.type:'error'}
                     message={open?open.msg:''}
                 />
             </Snackbar>

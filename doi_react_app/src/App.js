@@ -17,7 +17,7 @@ import {register} from "./serviceWorker"
 const App = () => {
 
     register()
-  //  localStorage.removeItem("contacts")
+//    localStorage.removeItem("contacts")
 //    localStorage.removeItem("wallets")
     const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
     const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
