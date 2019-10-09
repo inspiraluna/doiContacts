@@ -91,5 +91,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="CordovaLib" />
     <orderEntry type="module" module-name="CordovaLib" />
+    <orderEntry type="module" module-name="CordovaLib" />
   </component>
 </module>

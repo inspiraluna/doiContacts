@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useGlobal,setGlobal } from 'reactn';
 import WalletItem from "./WalletItem";
-import localStorageDB from "localstoragedb";
 
 const WalletList = () => {
-    // TODO please update this list as soon as publicKey is created and update again as soon as publicKey got registered
-    const  db = new localStorageDB("doiworks", localStorage); //https://nadh.in/code/localstoragedb/
-    if(db.tableExists("wallets")) {
-        const wallets = db.queryAll("wallets", {})
-        const walletNode = wallets.map((item) => {
-            return (<WalletItem key={item.ID} publicKey={item.publicKey}/>)
-        });
-        return (<ul>{walletNode}</ul>);
-    } return null
-
+    const wallets = useGlobal('wallets')[0]
+    const walletNode = wallets.map((item,index) => {
+        return (<WalletItem key={index}
+                            walletName={item.walletName}
+                            senderEmail={item.senderEmail}
+                            subject={item.subject}
+                            content={item.content}
+                            publicKey={item.publicKey}
+                            contentType={item.contentType}
+                            redirectUrl={item.redirectUrl}
+                            returnPath={item.returnPath}/>)
+    });
+    return (<ul>{walletNode}</ul>);
 }
 
 export default WalletList

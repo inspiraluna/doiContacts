@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useGlobal,setGlobal,addCallback,useState, setState,useEffect } from 'reactn';
 import * as PropTypes from "prop-types";
 
 import './App.css';
@@ -12,9 +12,34 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from '@material-ui/core/Tab'
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-
+import {register} from "./serviceWorker"
 
 const App = () => {
+
+    register()
+  //  localStorage.removeItem("contacts")
+//    localStorage.removeItem("wallets")
+    const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
+    const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
+
+    setGlobal({contacts: initialContacts, wallets: initialWallets})
+
+    //const [oldContacts,setOldContacts] = useState(initialContacts)
+    /* useEffect(() => {
+        // This effect uses the `value` variable,
+        // so it "depends on" `value`.
+        console.log(oldContacts);
+
+    }, [oldContacts])*/
+
+    addCallback(global => {
+        console.log("new data - contacts:", global.contacts)
+        console.log("new data - wallets:", global.wallets)
+        //setOldContacts(global.contacts)
+        localStorage.setItem('contacts',JSON.stringify(global.contacts))
+        localStorage.setItem('wallets',JSON.stringify(global.wallets))
+        return null;
+    });
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -38,6 +63,7 @@ const App = () => {
         index: PropTypes.any.isRequired,
         value: PropTypes.any.isRequired,
     };
+
     function a11yProps(index) {
         return {
             id: `simple-tab-${index}`,
@@ -58,10 +84,7 @@ const App = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-  //const wallet = bitcore.createWallet("default")
-  //const url = bitcore.getUrl()+"/api/v1/importpubkey"
-  //bitcore.registerPublicKey(url, wallet.publicKey)
- // console.log(wallet.publicKey.toString())
+
     return (
         <div>
             <AppBar position="static">
@@ -78,7 +101,7 @@ const App = () => {
                 <Wallets/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+              Settings
             </TabPanel>
         </div>
     );

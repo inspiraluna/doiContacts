@@ -1,42 +1,42 @@
+import React, { useGlobal,setGlobal } from 'reactn';
+
 import ContactForm from "./ContactForm";
 import ContactList from "./ContactList";
-import React from "react";
-import localStorageDB from "localstoragedb";
+
 import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 
+
 const ContactsPage = () => {
 
-    const  db = new localStorageDB("doiworks", localStorage); //https://nadh.in/code/localstoragedb/
-    //db.drop("contacts")
-    if( db.isNew() || !db.tableExists('contacts')) {
-        db.createTable("contacts", ["email","confirmed"]);
-        db.insert("contacts", {email: "nico@le-space.de",confirmed:true})
-        db.commit();
-    }
-    const state = { data: db.queryAll("contacts", {})};
-    const addContact = (email) => {
-        console.log('adding contacgt')
-        const contact = {text: email, confirmed:false}
+    const contacts = useGlobal('contacts')[0]
+    const wallets = useGlobal("wallets")
+    const addContact = (email,walletIndex) => {
 
-        //this.state.data.push(contact);
-        //this.setState({data: this.state.data});
+        if(!walletIndex) walletIndex = 0;
 
-        const ourWallet =  db.queryAll("wallets")[0]
+        if(!wallets || !wallets[0] || wallets[0].length==0){
+            console.log('error no wallets defined')
+            return
+        }else{
+            console.log("wallets of contactPage",wallets)
+        }
+        const ourWallet = wallets[0][walletIndex]
+        console.log("ourWallet",ourWallet)
+
+        const contact = {email: email, confirmed:false}
+        contacts.push(contact)
+        setGlobal({contacts: contacts})
+
         const ourPrivateKey = ourWallet.privateKey
+        console.log('ourPrivateKey',ourPrivateKey)
 
-        //console.log('using privkey',ourPrivateKey)
         const amountComplete = Number(bitcore.constants.VALIDATOR_FEE.btc)+
             Number(bitcore.constants.NETWORK_FEE.btc)+
             Number(bitcore.constants.TRANSACTION_FEE.btc)
 
-        // const ourFrom = "nico@le-space.de"; //settings.from;
-        // const to = "irina@le-space.de"
-
-        //const ourFrom = "alice-montevideo-140920191531@ci-doichain.org"; //settings.from;
-        const ourFrom = "alice-montevideo-230920191250@le-space.de"; //settings.from; //coworking.yoga (delegated)
-        //const to = "bob-montevideo-260920191905@doi.works";
+        const ourFrom = ourWallet.senderEmail
         const to = email
 
         const parts = to.split("@"); //TODO check if this is an email
@@ -47,13 +47,13 @@ const ContactsPage = () => {
             const validatorPublicKey = bitcore.PublicKey(validatorPublicKeyData.key)
             const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKey).toString()
             bitcore.createDoichainEntry(ourPrivateKey, validatorPublicKey.toString(), ourFrom, to).then(function (entry) {
-                console.log("entry",entry)
                 const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
                 const changeAddrress = ourAddress //just send change back to us for now - could be its better to generate a new address here
 
                 bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
-
-                    if (utxo.utxos.length > 0) {
+                    if (utxo.utxos.length === 0)
+                        console.log("insufficient funds")
+                    else {
                         console.log(`using utxos for ${amountComplete} DOI`, utxo)
 
                         const txSignedSerialized = bitcore.createRawDoichainTX(
@@ -98,12 +98,10 @@ const ContactsPage = () => {
                                 console.log("broadcasted doichain transaction to doichain node with txId", txId)
                             })
                         })
-                    } else {
-                        console.log("insufficient funds ")
                     }
                 })
             })
-        }) //getPublicKey
+        }) //getPublicKey */
     }
 
     const handleRemove = (id) => {
@@ -122,7 +120,7 @@ const ContactsPage = () => {
 
         <ContactForm addContact={addContact}/>
         <ContactList
-            contacts={state.data}
+            contacts={contacts}
             remove={handleRemove}
         /></div>)
 }
