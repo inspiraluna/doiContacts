@@ -6,12 +6,15 @@ import ContactList from "./ContactList";
 import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
+import CustomizedSnackbars from "./MySnackbarContentWrapper";
 
 
 const ContactsPage = () => {
 
     const contacts = useGlobal('contacts')[0]
     const wallets = useGlobal("wallets")
+    const [ openError, setOpenError ] = useGlobal("errors")
+
     const addContact = (email,walletIndex) => {
 
         if(!walletIndex) walletIndex = 0;
@@ -30,7 +33,6 @@ const ContactsPage = () => {
         setGlobal({contacts: contacts})
 
         const ourPrivateKey = ourWallet.privateKey
-        console.log('ourPrivateKey',ourPrivateKey)
 
         const amountComplete = Number(bitcore.constants.VALIDATOR_FEE.btc)+
             Number(bitcore.constants.NETWORK_FEE.btc)+
@@ -51,8 +53,10 @@ const ContactsPage = () => {
                 const changeAddrress = ourAddress //just send change back to us for now - could be its better to generate a new address here
 
                 bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
-                    if (utxo.utxos.length === 0)
+                    if (utxo.utxos.length === 0){
                         console.log("insufficient funds")
+                        setOpenError(true)
+                    }
                     else {
                         console.log(`using utxos for ${amountComplete} DOI`, utxo)
 
@@ -96,12 +100,27 @@ const ContactsPage = () => {
                                 encryptedTemplateData,
                                 validatorPublicKey.toString()).then(function (txId) {
                                 console.log("broadcasted doichain transaction to doichain node with txId", txId)
+                                setOpenError(true)
                             })
+                        }).catch(function (ex) {
+                             console.log('error while encrypting message',ex)
+                            setOpenError(true)
                         })
                     }
+                }).catch(function (ex) {
+                    console.log('error while getUTXOAndBalance',ex)
+                    setOpenError(true)
                 })
+            }).catch(function (ex) {
+                const err = 'error while creating DoichainEntry'
+                console.log(err,ex)
+                setOpenError({open:true,msg:err})
             })
-        }) //getPublicKey */
+        }).catch(function (ex) {
+            const err = 'error while fetching public key from dns'
+            console.log(err,ex)
+            setOpenError({open:true,msg:err})
+        })
     }
 
     const handleRemove = (id) => {
@@ -122,6 +141,8 @@ const ContactsPage = () => {
         <ContactList
             contacts={contacts}
             remove={handleRemove}
-        /></div>)
+        />
+        <CustomizedSnackbars/>
+    </div>)
 }
 export default ContactsPage

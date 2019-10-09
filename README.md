@@ -6,7 +6,7 @@
 - www/ - cordova directory - do not edit anything here.
 - cordova build / cordova run ios/android from the directory of this file
 
-## Further informatino and sources
+## Further information and sources
 - Content Security
     - Fetch not working Api 28 - https://github.com/facebook/react-native/issues/24627
     - https://developers.google.com/web/fundamentals/security/csp
