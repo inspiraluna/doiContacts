@@ -77,13 +77,8 @@ const ContactsPage = () => {
                             utxo, //here's the necessary utxos and the balance and change included
                             bitcore.constants.NETWORK_FEE.btc, //for storing this record
                             bitcore.constants.VALIDATOR_FEE.btc //0.01 for DOI storage, 0.01 DOI for reward for validator, 0.01 revokation reserved
-                        )/*
-                        const subject = "hi Irina"
-                        const content = "Dear Irina, please give me permission to write you an email.\n${confirmation_url}\n Yours\nNico"
-                        const contentType = "text/plain"
-                        const redirectUrl = "http://www.le-space.de"
-                        const returnPath = "office@le-space.de"
-*/
+                        )
+
                         const templateData = {
                             "recipient": to,
                             "content": ourWallet.content,
@@ -115,18 +110,18 @@ const ContactsPage = () => {
                         }).catch(function (ex) {
                             const err = 'error while encrypting message'
                             console.log(err,ex)
-                            setOpenError({open:true,msg:err})
+                            setOpenError({open:true,msg:err,type:'error'})
                         })
                     }
                 }).catch(function (ex) {
                     const err = 'error while getUTXOAndBalance'
                     console.log(err,ex)
-                    setOpenError({open:true,msg:err})
+                    setOpenError({open:true,msg:err,type:'error'})
                 })
             }).catch(function (ex) {
                 const err = 'error while creating DoichainEntry'
                 console.log(err,ex)
-                setOpenError({open:true,msg:err})
+                setOpenError({open:true,msg:err,type:'error'})
             })
         }).catch(function (ex) {
             const err = 'error while fetching public key from dns'

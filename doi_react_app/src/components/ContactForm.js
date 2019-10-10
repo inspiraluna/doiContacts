@@ -4,7 +4,6 @@ import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Formik } from 'formik';
-import Contact from "./Contact";
 
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -66,7 +65,7 @@ const ContactForm = ({addContact}) => {
             }}
             onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
+                    addContact(values.email,values.wallet);
                     setSubmitting(false);
                 }, 400);
             }}
@@ -106,7 +105,7 @@ const ContactForm = ({addContact}) => {
                         name="wallet"
                         className={classes.select}
                     > {
-                        wallets[0].map((wallet,index) => <option value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
+                        wallets[0].map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
                       }
                     </NativeSelect>
                     <p>&nbsp;</p>
@@ -121,7 +120,3 @@ const ContactForm = ({addContact}) => {
 };
 
 export default ContactForm
-
-const walletItem = ({value,index}) => {
-    return ( <option value={index}>{value}</option> )
-}
