@@ -89,7 +89,6 @@ const useStyles2 = makeStyles(theme => ({
 export default function CustomizedSnackbars() {
     const classes = useStyles2();
     const [ open, setOpen ] = useGlobal("errors")
-    //setOpen(false)
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {

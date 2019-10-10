@@ -7,6 +7,7 @@ import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 import CustomizedSnackbars from "./MySnackbarContentWrapper";
+import {useEffect} from "react";
 
 
 const ContactsPage = () => {
@@ -15,7 +16,11 @@ const ContactsPage = () => {
     const wallets = useGlobal("wallets")
     const [ openError, setOpenError ] = useGlobal("errors")
 
-    const addContact = (email,walletIndex) => {
+    useEffect(() => {
+       console.log('rendering...')
+    },[contacts])
+
+    const addContact = (to,walletIndex) => {
 
         if(!walletIndex) walletIndex = 0;
 
@@ -31,7 +36,7 @@ const ContactsPage = () => {
         const ourWallet = wallets[0][walletIndex]
         console.log("ourWallet",ourWallet)
 
-        const contact = {email: email, confirmed:false}
+        const contact = {email: to, confirmed:false}
         contacts.push(contact)
         setGlobal({contacts: contacts})
 
@@ -42,7 +47,6 @@ const ContactsPage = () => {
             Number(bitcore.constants.TRANSACTION_FEE.btc)
 
         const ourFrom = ourWallet.senderEmail
-        const to = email
 
         const parts = to.split("@"); //TODO check if this is an email
         const domain = parts[parts.length-1];
@@ -73,21 +77,23 @@ const ContactsPage = () => {
                             utxo, //here's the necessary utxos and the balance and change included
                             bitcore.constants.NETWORK_FEE.btc, //for storing this record
                             bitcore.constants.VALIDATOR_FEE.btc //0.01 for DOI storage, 0.01 DOI for reward for validator, 0.01 revokation reserved
-                        )
+                        )/*
                         const subject = "hi Irina"
                         const content = "Dear Irina, please give me permission to write you an email.\n${confirmation_url}\n Yours\nNico"
                         const contentType = "text/plain"
                         const redirectUrl = "http://www.le-space.de"
                         const returnPath = "office@le-space.de"
-
+*/
                         const templateData = {
                             "recipient": to,
-                            "content": content,
-                            "redirect": redirectUrl,
-                            "subject": subject,
-                            "contentType": (contentType || 'html'),
-                            "returnPath": returnPath
+                            "content": ourWallet.content,
+                            "redirect": ourWallet.redirectUrl,
+                            "subject": ourWallet.subject,
+                            "contentType": (ourWallet.contentType || 'html'),
+                            "returnPath": ourWallet.returnPath
                         }
+
+                        console.log('templateData',templateData)
 
                         if (validatorPublicKeyData.type === 'default' || validatorPublicKeyData.type === 'delegated')  //we store a hash only(!) at the responsible validator - never on a fallback validator
                             templateData.verifyLocalHash = getDataHash({data: (ourFrom + to)}); //verifyLocalHash = verifyLocalHash

@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.4.3",
     "bitcore-doichain": "^0.1.5",
     "crypto-browserify": "^3.12.0",
+    "formik": "^1.5.8",
     "lodash": "^4.17.15",
     "qrcode-react": "^0.1.16",
     "react": "^16.9.0",
