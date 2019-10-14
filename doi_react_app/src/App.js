@@ -1,6 +1,6 @@
 import React, { useGlobal,setGlobal,addCallback,useState, setState,useEffect } from 'reactn';
 import * as PropTypes from "prop-types";
-
+//import QRScanner from 'QRScanner';
 import './App.css';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -13,6 +13,17 @@ import Tab from '@material-ui/core/Tab'
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {register} from "./serviceWorker"
+import MenuButton from "./components/MenuButton";
+import {
+    faAsterisk,
+    faBars,
+    faClipboard,
+    faClock, faEye,
+    faFighterJet,
+    faGlobe,
+    faHome, faIndustry,
+    faLock
+} from "@fortawesome/free-solid-svg-icons";
 
 const App = () => {
 
@@ -24,13 +35,52 @@ const App = () => {
 
     setGlobal({contacts: initialContacts, wallets: initialWallets})
 
-    //const [oldContacts,setOldContacts] = useState(initialContacts)
-    /* useEffect(() => {
-        // This effect uses the `value` variable,
-        // so it "depends on" `value`.
-        console.log(oldContacts);
+    const state = {
+        flyOutRadius: 120,
+        seperationAngle: 40,
+        mainButtonDiam: 60,
+        childButtonDiam: 50,
+        numElements: 4,
+        stiffness: 320,
+        damping: 17,
+        rotation: 0,
+        mainButtonIcon: faBars,
+        mainButtonIconSize: "2x",
+        childButtonIconSize: "lg"
+    }
 
-    }, [oldContacts])*/
+    const ELEMENTS = [
+        {
+            icon: faHome,
+            //onClick: () => alert("clicked home"),
+            onClick: () => setValue(0)
+        },{
+            icon: faClock,
+            onClick: () => setValue(1)
+        },{
+            icon: faLock,
+            onClick: () => setValue(2)
+        },{
+            icon: faGlobe,
+            onClick: () => alert("clicked globe")
+        },{
+            icon: faAsterisk,
+            onClick: () => alert("clicked asterisk")
+        },{
+            icon: faFighterJet,
+            onClick: () => alert("clicked fighter-jet")
+        },{
+            icon: faClipboard,
+            onClick: () => alert("clicked clipboard")
+        },{
+            icon: faIndustry,
+            onClick: () => alert("clicked industry")
+        },{
+            icon: faEye,
+            onClick: () => alert("clicked eye")
+        }
+
+    ];
 
     addCallback(global => {
         console.log("new data - contacts:", global.contacts)
@@ -63,32 +113,60 @@ const App = () => {
         index: PropTypes.any.isRequired,
         value: PropTypes.any.isRequired,
     };
-    function openQRCodeScanner(){
+
+    /**
+     * Check QR-Code scan details:
+     * https://www.npmjs.com/package/cordova-plugin-qrscanner-allanpoppe2
+     */
+    function prepareScan(){
+        window.QRScanner.prepare(onDone); // show the prompt
+    }
+
+    function onDone(err, status){
+        if (err) {
+            // here we can handle errors and clean up any loose ends.
+            console.error(err);
+        }
+        if (status.authorized) {
+            // W00t, you have camera access and the scanner is initialized.
+            // QRscanner.show() should feel very fast.
+            console.log('authorized')
+        } else if (status.denied) {
+            // The video preview will remain black, and scanning is disabled. We can
+            // try to ask the user to change their mind, but we'll have to send them
+            // to their device settings with `QRScanner.openSettings()`.
+            console.log('denied')
+        } else {
+            // we didn't get permission, but we didn't get permanently denied. (On
+            // Android, a denial isn't permanent unless the user checks the "Don't
+            // ask again" box.) We can ask again at the next relevant opportunity.
+            console.log('denied')
+        }
+    }
+
+    function showScanner(){
+        window.QRScanner.show();
+    }
+    function scan(){
         //if(cordova!==undefined)
-        window.cordova.plugins.barcodeScanner.scan(
-            function (result) {
-                alert("We got a barcode\n" +
-                    "Result: " + result.text + "\n" +
-                    "Format: " + result.format + "\n" +
-                    "Cancelled: " + result.cancelled);
-            },
-            function (error) {
-                alert("Scanning failed: " + error);
-            },
-            {
-                preferFrontCamera : true, // iOS and Android
-                showFlipCameraButton : true, // iOS and Android
-                showTorchButton : true, // iOS and Android
-                torchOn: true, // Android, launch with the torch switched on (if available)
-                saveHistory: true, // Android, save scan history (default false)
-                prompt : "Place a barcode inside the scan area", // Android
-                resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
-                formats : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
-                orientation : "landscape", // Android only (portrait|landscape), default unset so it rotates with the device
-                disableAnimations : true, // iOS
-                disableSuccessBeep: false // iOS and Android
+        console.log('hola',window.cordova === undefined)
+        // Start a scan. Scanning will continue until something is detected or
+// `QRScanner.cancelScan()` is called.
+        window.QRScanner.scan(displayContents);
+
+        function displayContents(err, text){
+            if(err){
+                // an error occurred, or the scan was canceled (error code `6`)
+            } else {
+                // The scan completed, display the contents of the QR code:
+                console.log(text);
             }
-        );
+        }
+
+// Make the webview transparent so the video preview is visible behind it.
+
+// Be sure to make any opaque HTML elements transparent here to avoid
+// covering the video.
     }
     function a11yProps(index) {
         return {
@@ -104,6 +182,7 @@ const App = () => {
         },
     }));
 
+    //https://www.npmjs.com/package/cordova-plugin-qrscanner-allanpoppe2
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
@@ -126,13 +205,21 @@ const App = () => {
             <TabPanel value={value} index={1}>
                 <Wallets/>
             </TabPanel>
-            <TabPanel value={value} index={2}>
+            <TabPanel value={value} index={2} style={{backgroundColor: 'transparent'}}>
               Settings
                 <button onClick={()=>{
-                    openQRCodeScanner()
+                    prepareScan()
+                }}>Prepare Scanner</button>
+                <button onClick={()=>{
+                    showScanner()
+                }}>Show Scanner</button>
+                <button onClick={()=>{
+                    scan()
                 }}>Scan QR Code</button>
             </TabPanel>
-
+            <div style={{float:'right'}}>
+                <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/>
+            </div>
         </div>
     );
 }

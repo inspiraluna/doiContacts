@@ -7,12 +7,20 @@
     "is_top_level": true,
     "variables": {}
   },
-  "phonegap-plugin-barcodescanner": {
+  "cordova-plugin-qrscanner": {
     "source": {
       "type": "registry",
-      "id": "phonegap-plugin-barcodescanner@8.1.0"
+      "id": "cordova-plugin-qrscanner"
     },
     "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-add-swift-support": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-add-swift-support"
+    },
+    "is_top_level": false,
     "variables": {}
   }
 }

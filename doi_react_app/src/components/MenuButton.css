@@ -1,0 +1,35 @@
+.button-container {
+    position: absolute;
+    display: flex;
+    right: 7em;
+    bottom: 7em;
+}
+
+.button-menu {
+    background: #72B0EC;
+    border-radius: 1000px;
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.button-child {
+    position: absolute;
+    background: white;
+    border-radius: 1000px;
+    box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.child-button-icon {
+    color: grey;
+}
+
+.main-button-icon {
+    color: white;
+}

@@ -19,12 +19,15 @@
         <param name="ios-package" value="CDVGestureHandler" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="QRScanner">
+        <param name="ios-package" value="QRScanner" />
+    </feature>
     <name>DoiContacts</name>
     <description>
        Request qualified email permissions via Doichain blockchain
     </description>
     <author email="nico@le-space.de" href="https://le-space.de">
-        Apache Cordova Team
+        Doichain Core Team
     </author>
     <content src="index.html" />
     <access origin="*" />
@@ -50,7 +53,4 @@
     <preference name="PageLength" value="0" />
     <preference name="PaginationBreakingMode" value="page" />
     <preference name="PaginationMode" value="unpaginated" />
-    <feature name="BarcodeScanner">
-        <param name="ios-package" value="CDVBarcodeScanner" />
-    </feature>
 </widget>

@@ -1,6 +1,18 @@
 import React, { useEffect,useState, useGlobal,setGlobal } from 'reactn';
 import bitcore from "bitcore-doichain";
 import WalletList from "./WalletList";
+import MenuButton from "./MenuButton";
+import {
+    faBars,
+    faAsterisk,
+    faClipboard,
+    faClock,
+    faEye,
+    faFighterJet,
+    faGlobe,
+    faHome, faIndustry,
+    faLock
+} from '@fortawesome/free-solid-svg-icons'
 
 const Wallets = () => {
 
@@ -53,6 +65,7 @@ const Wallets = () => {
             <h1>DoiCoin Wallets</h1>
             <WalletList/>
 
+            {/*
             <form onSubmit={(e) => {
                 e.preventDefault();
                 console.log(e.target.walletName.value)
@@ -72,8 +85,7 @@ const Wallets = () => {
                 <label htmlFor={"redirectUrl"}></label>Redirect-Url<input name={"redirectUrl"} /><br/>
                 <label htmlFor={"returnPath"}></label>Return-Path<input name={"returnPath"} /><br/>
                 <button>Add Wallet </button>
-            </form>
-
+            </form>*/}
         </div>
     );
 }

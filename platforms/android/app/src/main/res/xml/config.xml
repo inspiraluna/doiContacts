@@ -4,15 +4,15 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="BarcodeScanner">
-        <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
+    <feature name="QRScanner">
+        <param name="android-package" value="com.bitpay.cordova.qrscanner.QRScanner" />
     </feature>
     <name>DoiContacts</name>
     <description>
        Request qualified email permissions via Doichain blockchain
     </description>
     <author email="nico@le-space.de" href="https://le-space.de">
-        Apache Cordova Team
+        Doichain Core Team
     </author>
     <content src="index.html" />
     <access origin="*" />

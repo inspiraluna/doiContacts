@@ -14,7 +14,9 @@ const startApp = () => {
 serviceWorker.unregister();
 
 if(!window.cordova) {
+    console.log('didnt find cordova')
     startApp()
 } else {
+    console.log('found cordova')
     document.addEventListener('deviceready', startApp, false)
 }

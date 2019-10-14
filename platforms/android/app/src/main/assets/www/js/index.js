@@ -19,7 +19,9 @@
 var app = {
     // Application Constructor
     initialize: function() {
+        console.log('initializing cordova')
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+
     },
 
     // deviceready Event Handler
@@ -27,6 +29,7 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
+        console.log('deviceready')
         this.receivedEvent('deviceready');
     },
 

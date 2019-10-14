@@ -5,7 +5,7 @@
        Request qualified email permissions via Doichain blockchain
     </description>
     <author email="nico@le-space.de" href="https://le-space.de">
-        Apache Cordova Team
+        Doichain Core Team
     </author>
     <content src="index.html" />
     <access origin="*" />

@@ -1,14 +1,14 @@
-import React, { useGlobal,setGlobal } from 'reactn';
+import React, { useEffect,useGlobal,setGlobal } from 'reactn'
 
-import ContactForm from "./ContactForm";
-import ContactList from "./ContactList";
+import ContactForm from "./ContactForm"
+import ContactList from "./ContactList"
 
-import bitcore from "bitcore-doichain";
-import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
-import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
-import CustomizedSnackbars from "./MySnackbarContentWrapper";
-import {useEffect} from "react";
-
+import bitcore from "bitcore-doichain"
+import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey"
+import getDataHash from "bitcore-doichain/lib/doichain/getDataHash"
+import CustomizedSnackbars from "./MySnackbarContentWrapper"
+import List from "@material-ui/core/List";
+import ReactSwipe from 'react-swipe';
 
 const ContactsPage = () => {
 
@@ -134,22 +134,68 @@ const ContactsPage = () => {
         console.log('not removing',id)
         return;
 
-        const remainder = this.state.data.filter((contact) => {
-            if(contact.ID !== id) return contact;
-            else return null
-        });
-
-        this.setState({data: remainder});
     }
 
-    return(<div> <h1>Doi Contacts</h1>
+    let reactSwipeEl;
 
-        <ContactForm addContact={addContact}/>
-        <ContactList
-            contacts={contacts}
-            remove={handleRemove}
-        />
-        <CustomizedSnackbars/>
-    </div>)
+    return (
+        <div>
+            <ReactSwipe
+                className="carousel"
+                swipeOptions={{ continuous: false }}
+                ref={el => (reactSwipeEl = el)}
+                styles={{
+                    container: {
+                    overflow: 'hidden',
+                    visibility: 'hidden',
+                    position: 'relative'
+                },
+                    wrapper: {
+                    overflow: 'hidden',
+                    position: 'relative'
+                },
+                child: {
+                    float: 'left',
+                    width: '100%',
+                    position: 'relative',
+                    transitionProperty: 'transform'
+                }}
+                }
+            >
+                <div>
+                    <h1>Doi Contacts</h1>
+                    <ContactForm addContact={addContact}/>
+                </div>
+                <div style={{height: 350, overflowY: 'scroll'}}>
+                    <List dense={true}>
+                        <ContactList
+                            contacts={contacts}
+                            remove={handleRemove}
+                        />
+                    </List>
+                </div>
+            </ReactSwipe>
+
+            {/*<button onClick={() => reactSwipeEl.next()}>Next</button>
+            <button onClick={() => reactSwipeEl.prev()}>Previous</button> */}
+            <CustomizedSnackbars/>
+        </div>
+    );
+
+   /* return(
+        <div>
+            <h1>Doi Contacts</h1>
+            <SwipeableViews>
+                <ContactForm addContact={addContact}/>
+                <List dense={true}>
+                    <ContactList
+                        contacts={contacts}
+                        remove={handleRemove}
+                    />
+                </List>
+            </SwipeableViews>
+
+        </div>
+    ) */
 }
 export default ContactsPage
