@@ -1,8 +1,5 @@
 import React, {useEffect,useState,setState } from 'react';
 import bitcore from "bitcore-doichain";
-//import QRCode from 'qrcode'
-import {CropFree} from '@material-ui/icons'
-import TypoGraphy from "@material-ui/core/Typography/Typography";
 import QRCode from 'qrcode-react'
 
 
@@ -15,7 +12,7 @@ const WalletItem = ({walletName,senderEmail,subject,content, publicKey,contentTy
          async function fetchData(){
              bitcore.Networks.defaultNetwork =  bitcore.Networks.get('doichain-testnet')
              const address = bitcore.getAddressOfPublicKey(publicKey).toString()
-             console.log("address",address)
+             
              try{
                  if(address){
                      console.log('fetching data for address',address)

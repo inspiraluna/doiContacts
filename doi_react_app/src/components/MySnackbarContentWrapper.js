@@ -99,15 +99,12 @@ export default function CustomizedSnackbars() {
 
     return (
         <div>
-            { /*<Button variant="outlined" className={classes.margin} onClick={handleClick}>
-                Open success snackbar
-            </Button> */}
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'left',
                 }}
-                open={open?open:false}
+                open={open?true:false}
                 autoHideDuration={6000}
                 onClose={handleClose}
             >
@@ -117,26 +114,6 @@ export default function CustomizedSnackbars() {
                     message={open?open.msg:''}
                 />
             </Snackbar>
-            { /*<MySnackbarContentWrapper
-                variant="error"
-                className={classes.margin}
-                message="This is an error message!"
-            />
-            <MySnackbarContentWrapper
-                variant="warning"
-                className={classes.margin}
-                message="This is a warning message!"
-            />
-            <MySnackbarContentWrapper
-                variant="info"
-                className={classes.margin}
-                message="This is an information message!"
-            />
-            <MySnackbarContentWrapper
-                variant="success"
-                className={classes.margin}
-                message="This is a success message!"
-            /> */}
         </div>
     );
 }
