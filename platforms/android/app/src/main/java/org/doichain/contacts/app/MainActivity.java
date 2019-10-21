@@ -17,7 +17,7 @@
        under the License.
  */
 
-package io.cordova.hellocordova;
+package org.doichain.contacts.app;
 
 import android.os.Bundle;
 import org.apache.cordova.*;

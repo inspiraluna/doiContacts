@@ -25,26 +25,57 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 
+const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
+const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
+const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):0
+
+setGlobal({contacts: initialContacts,
+    wallets: initialWallets,
+    errors: false,
+    currentTab:initialCurrentTab,modus: 'list'})  //currentTab:initialCurrentTab*/
+
 const App = () => {
 
     register()
+
+    //localStorage.removeItem("contacts")
+
+    const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
+    const [ contacts, setContacts ] = useGlobal("contacts")
+    const [ wallets, setWallets ] = useGlobal("wallets")
+
+    addCallback(global => {
+        localStorage.setItem('contacts',JSON.stringify(contacts))
+        localStorage.setItem('wallets',JSON.stringify(wallets))
+        localStorage.setItem('currentTab',currentTab)
+
+        console.log('updating local contacts storage', contacts)
+        console.log('updating local wallets storage', wallets)
+        console.log('updating local storage currentTab', currentTab)
+        return null;
+    });
+
 //    localStorage.removeItem("contacts")
 //    localStorage.removeItem("wallets")
-    const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
-    const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
+   // localStorage.removeItem("currentTab")
 
-    setGlobal({contacts: initialContacts, wallets: initialWallets,errors:false})
-    const [value, setValue] = React.useState(0);
-    const global = useGlobal()
+   // const global = useGlobal()
 
-    const controlScanSwip = (index) => {
+
+   /* const [ contacts, setContacts ] = useGlobal("wallets")
+    const [ wallets, setWallets ] = useGlobal("wallets")
+    const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
+    const [ errors, setErrors ] = useGlobal("currentTab")
+*/
+
+   /* const controlScanSwip = (index) => {
         setValue(index)
         global.scanSwipe = !global.scanSwipe
         setGlobal(global) //just switch back and forth for now
         console.log(global.scanSwipe,index)
-    }
+    } */
 
-    const state = {
+  /*  const state = {
         flyOutRadius: 120,
         seperationAngle: 40,
         mainButtonDiam: 60,
@@ -83,13 +114,7 @@ const App = () => {
             onClick: () => controlScanSwip(2)
         }
 
-    ];
-
-    addCallback(global => {
-        localStorage.setItem('contacts',JSON.stringify(global.contacts))
-        localStorage.setItem('wallets',JSON.stringify(global.wallets))
-        return null;
-    });
+    ];*/
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -130,32 +155,28 @@ const App = () => {
 
     //https://www.npmjs.com/package/cordova-plugin-qrscanner-allanpoppe2
     const classes = useStyles();
-
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
     return (
         <div>
             <AppBar position="static">
-                <Tabs value={value} onChange={handleChange} aria-label="Doichain Contacts">
+                <Tabs value={Number(currentTab)} onChange={(event, newValue) => {
+                    setCurrentTab(newValue)
+                }} aria-label="Doichain Contacts">
                     <Tab label="Contacts" {...a11yProps(0)} />
                     <Tab label="Wallets" {...a11yProps(1)} />
                     <Tab label="Settings" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
-            <TabPanel value={value} index={0}>
+            <TabPanel value={Number(currentTab)} index={0}>
                 <ContactsPage/>
             </TabPanel>
-            <TabPanel value={value} index={1}>
+            <TabPanel value={Number(currentTab)} index={1}>
                 <WalletsPage/>
             </TabPanel>
-            <TabPanel value={value} index={2} style={{backgroundColor: 'transparent'}}>
+            <TabPanel value={Number(currentTab)} index={2} style={{backgroundColor: 'transparent'}}>
               Settings
             </TabPanel>
             <div style={{float:'right'}}>
-                <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/>
+                {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}
             </div>
             <CustomizedSnackbars />
         </div>

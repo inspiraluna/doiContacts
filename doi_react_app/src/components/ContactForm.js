@@ -39,7 +39,7 @@ const ContactForm = () => {
 
     const classes = useStyles();
     const wallets = useGlobal("wallets")
-    const [buttonState,setButtonState] = useState("''")
+    const [buttonState,setButtonState] = useState()
     const [ contacts, setContacts ] = useGlobal('contacts');
     const [ openError, setOpenError ] = useGlobal("errors")
 
@@ -257,9 +257,7 @@ const ContactForm = () => {
                       }
                     </NativeSelect>
                     <p>&nbsp;</p>
-                    <ProgressButton type="submit" state={buttonState} disabled={isSubmitting}>
-                        Go!
-                    </ProgressButton>
+                    <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={isSubmitting}> Request Email Permission</ProgressButton>
                     {/* <button type="submit"  className={classes.button} disabled={isSubmitting}>
                         Add contact
                     </button > */}

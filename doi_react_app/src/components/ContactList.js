@@ -25,7 +25,7 @@ const ContactList = ({contacts, remove}) => {
                     secondary={'Montevideo'}
                 />
                 <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton edge="end" aria-label="edit">
                         <ImportExportIcon />
                     </IconButton>
                     <IconButton edge="end" aria-label="delete">

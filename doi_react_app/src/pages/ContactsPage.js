@@ -7,15 +7,19 @@ import bitcore from "bitcore-doichain"
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey"
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash"
 import List from "@material-ui/core/List";
-import ReactSwipe from 'react-swipe';
+
+import Slide from "@material-ui/core/Slide";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from '@material-ui/icons/Add';
+import {useState} from "react";
 
 const ContactsPage = () => {
 
    // const contacts = useGlobal('contacts')[0]
+    const [add, setAdd] = useState(false);
     const wallets = useGlobal("wallets")
-    const [ contacts, setContacts ] = useGlobal('contacts');
+    const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
-    const [ scanSwipe, setScanSwipe ] = useGlobal('scanSwipe');
 
     useEffect(() => {
     },[contacts])
@@ -23,43 +27,15 @@ const ContactsPage = () => {
     const handleRemove = (id) => {
         console.log('not removing',id)
         return;
-
     }
-    let reactSwipeEl;
-
-    addCallback(global => {
-        if(reactSwipeEl && global.scanSwipe !== undefined){
-            if(global.scanSwipe) reactSwipeEl.next()
-            else reactSwipeEl.prev()
-        }
-        return null;
-    });
 
     return (
         <div>
-            <ReactSwipe
-                className="carousel"
-                swipeOptions={{ continuous: false }}
-                ref={el => (reactSwipeEl = el)}
-                styles={
-                    {
-                    container: {
-                    overflow: 'hidden',
-                    visibility: 'hidden',
-                    position: 'relative'
-                    },
-                    wrapper: {
-                        overflow: 'hidden',
-                        position: 'relative'
-                    },
-                    child: {
-                        float: 'left',
-                        width: '100%',
-                        position: 'relative',
-                        transitionProperty: 'transform'
-                    }}
-                }
-            >
+            <Slide aria-label="wallet-detail"
+                   direction={"up"}
+                   in={!add}
+                   mountOnEnter unmountOnExit>
+
                 <div>
                     <h1>Doi Contacts</h1>
                     <List dense={true}>
@@ -68,13 +44,28 @@ const ContactsPage = () => {
                             remove={handleRemove}
                         />
                     </List>
+                    <div style={{float:'right'}}>
+                        <Fab aria-label={"new contact"}
+                             color={"primary"}
+                             style={{position: 'absolute',
+                                 right: "7em",
+                                bottom: "3em"}}
+                             onClick={() =>  setAdd(true)}>
+                            <AddIcon />
+                        </Fab>
+                    </div>
                 </div>
 
+            </Slide>
+
+            <Slide aria-label="wallet-detail"
+                   direction={"up"}
+                   in={add}
+                   mountOnEnter unmountOnExit>
                 <div style={{height: 350, overflowY: 'scroll'}}>
                     <ContactForm />
                 </div>
-
-            </ReactSwipe>
+            </Slide>
         </div>
     );
 }

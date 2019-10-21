@@ -3,7 +3,9 @@ import {Motion,spring} from 'react-motion';
 import './MenuButton.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
+/*
+ + Find info here: https://github.com/mathieudutour/react-progress-button
+ */
 // CONSTANTS
 // Value of 1 degree in radians
 const DEG_TO_RAD = 0.0174533;
@@ -22,7 +24,7 @@ class MenuButton extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            isOpen: true
+            isOpen: false
         };
 
         this.toggleMenu = this.toggleMenu.bind(this);
