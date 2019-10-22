@@ -8,10 +8,9 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete'
 import FolderIcon from '@material-ui/icons/Folder'
 import ImportExportIcon from '@material-ui/icons/ImportExport';
-import CheckIcon from '@material-ui/icons/Check'; //if its confirmed
-import ErrorIcon from '@material-ui/icons/Error'; //if its an error
 
 const ContactList = ({contacts, remove}) => {
+    console.log(contacts)
     const contactNode = contacts.map((contact, index) => {
         return (
             <ListItem key={index}>
@@ -28,7 +27,7 @@ const ContactList = ({contacts, remove}) => {
                     <IconButton edge="end" aria-label="edit">
                         <ImportExportIcon />
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton edge="end" aria-label="delete" onClick={() => remove(index)}>
                         <DeleteIcon />
                     </IconButton>
                 </ListItemSecondaryAction>

@@ -6,13 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import WalletItem from "../components/WalletItem";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
+import Button from '@material-ui/core/Button';
 
 const WalletsPage = () => {
 
     const [walletItemsChanged, setWalletItemsChanged] = useState(false);
-    const [ wallets, setWallets ] = useGlobal("wallets")
-    const [ activeWallet, setActiveWallet ] = useGlobal("activeWallet")
-    const [ modus, setModus] = useGlobal("modus")
+    const [wallets, setWallets] = useGlobal("wallets")
+    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+    const [modus, setModus] = useGlobal("modus")
     const [global] = useGlobal()
 
     useEffect(() => {
@@ -78,7 +79,7 @@ const WalletsPage = () => {
         setWalletItemsChanged(false)
     },[walletItemsChanged])
 
-    const handleCancel = () => {
+    const handleCancel = (e) => {
         setModus('list')
         setActiveWallet(undefined)
     };
@@ -88,7 +89,6 @@ const WalletsPage = () => {
     }
 
     if(global.modus === 'list'){
-       // console.log("global",(global.modus === 'edit' || global.modus === 'add')+" activeWallet:")
         return (
             <div>
             <ComponentHead/>
@@ -127,7 +127,11 @@ const WalletsPage = () => {
                                     contentType={global.wallets[global.activeWallet].contentType}
                                     redirectUrl={global.wallets[global.activeWallet].redirectUrl}
                                     returnPath={global.wallets[global.activeWallet].returnPath}/>
-                                 <button onClick={() => handleCancel()}>Cancel</button>
+
+                                <Button color={'primary'}
+                                        variant="contained"  onClick={() => handleCancel()}>
+                                    Cancel
+                                </Button>
                             </div>
                         </Slide>
                     </div>
@@ -219,9 +223,12 @@ const WalletsPage = () => {
 
                                         margin="normal"
                                     />     <br/>
-                                    <button>{(activeWallet!==undefined)?'Update Wallet':'Add Wallet'} </button>
+
+                                    <Button color={'primary'} variant="contained">
+                                        {(activeWallet!==undefined)?'Update Wallet':'Add Wallet'}
+                                    </Button>
                                 </form>
-                                <button onClick={() => handleCancel()}>Cancel</button>
+                                <Button color={'primary'} variant="contained"  onClick={() => handleCancel()}>Cancel</Button>
                             </div>
                         </Slide>
                     </div>

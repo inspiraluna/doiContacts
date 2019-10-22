@@ -1,5 +1,4 @@
 import React, { useGlobal,setGlobal } from 'reactn';
-import WalletItem from "./WalletItem";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -62,21 +61,9 @@ const WalletList = ({checked}) => {
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>)
-
-       /* return (<WalletItem key={index}
-                            walletName={item.walletName}
-                            senderEmail={item.senderEmail}
-                            subject={item.subject}
-                            content={item.content}
-                            publicKey={item.publicKey}
-                            contentType={item.contentType}
-                            redirectUrl={item.redirectUrl}
-                            returnPath={item.returnPath}/>) */
     });
-    //return (<ul  style={{listStyleType: 'none'}}>{walletNode}</ul>);
+
     return (<List dense={true} hidden={checked}>{walletNode}</List>)
-
-
 }
 
 export default WalletList

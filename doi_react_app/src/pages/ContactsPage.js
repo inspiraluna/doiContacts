@@ -3,9 +3,6 @@ import React, {useEffect, useGlobal, setGlobal, addCallback} from 'reactn'
 import ContactForm from "../components/ContactForm"
 import ContactList from "../components/ContactList"
 
-import bitcore from "bitcore-doichain"
-import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey"
-import getDataHash from "bitcore-doichain/lib/doichain/getDataHash"
 import List from "@material-ui/core/List";
 
 import Slide from "@material-ui/core/Slide";
@@ -15,20 +12,17 @@ import {useState} from "react";
 
 const ContactsPage = () => {
 
-   // const contacts = useGlobal('contacts')[0]
     const [add, setAdd] = useState(false);
-    const wallets = useGlobal("wallets")
     const [ contacts, setContacts ] = useGlobal('contacts')
-    const [ openError, setOpenError ] = useGlobal("errors")
 
     useEffect(() => {
     },[contacts])
 
-    const handleRemove = (id) => {
-        console.log('not removing',id)
-        return;
+    const handleRemove = (index) => {
+        const currentContacts = contacts
+        currentContacts.splice(index, 1);
+        setContacts(currentContacts)
     }
-
     return (
         <div>
             <Slide aria-label="wallet-detail"

@@ -37,13 +37,15 @@ const WalletItem = ({   walletName,
          }
          if(publicKey) fetchData(); //generates a Doichain address
      },[fetched])
-    console.log("address of item:",address+' '+(address===undefined))
+
     if(!publicKey) return null
     else
     return (
         <div>
             <li style={{"fontSize":"9px"}}>
-                <b>{walletName}</b> DoiCoin-Address: <b>{(address)?address.toString():''}</b> Balance: {balance} DOI
+                <b>{walletName}</b> <br/>
+                DoiCoin-Address:<b>{(address)?address.toString():''}</b><br/>
+                Balance: {balance} DOI
             </li>
             <div style={{"fontSize":"9px","border":'2px solid lightgrey'}}>
                     <table>
@@ -62,7 +64,7 @@ const WalletItem = ({   walletName,
                             </tr>
                         </tbody>
                     </table>
-                   <b>PubKey:{publicKey}</b><br/>
+                   <b>PubKey:<input type={"text"} readOnly={true} defaultValue={publicKey} size={40}/></b><br/>
             </div>
         </div>
         )

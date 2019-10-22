@@ -11,6 +11,11 @@ import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 
+const DOI_STATE_WAITING_FOR_CONFIRMATION = 0
+const DOI_STATE_SENT_TO_VALIDATOR = 1
+const DOI_STATE_VALIDATOR_SENT_DOI_REQUEST_EMAIL = 2
+const DOI_STATE_VALIDATOR_RECEIVED_CONFIRMATION = 3
+
 const useStyles = makeStyles(theme => ({
     textField: {
         marginLeft: theme.spacing(1),
@@ -38,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 const ContactForm = () => {
 
     const classes = useStyles();
-    const wallets = useGlobal("wallets")
+    const [wallets] = useGlobal("wallets")
     const [buttonState,setButtonState] = useState()
     const [ contacts, setContacts ] = useGlobal('contacts');
     const [ openError, setOpenError ] = useGlobal("errors")
@@ -46,28 +51,16 @@ const ContactForm = () => {
     const addContact = async (to,walletIndex) => {
 
         const runAddContact =  (to,walletIndex) => new Promise(resolve => {
-       // })
-        //const runAddContact = async (to,walletIndex) => {
             if(!walletIndex) walletIndex = 0;
 
-            if(!wallets || !wallets[0] || wallets[0].length==0){
-                console.log('error no wallets defined')
+            if(!wallets || wallets.length==0){
                 const err = 'no wallets defined'
-                console.log(err)
                 setOpenError({open:true,msg:err,type:'info'})
                 return
             }else{
                 console.log("wallets of contactPage",wallets)
             }
-            const ourWallet = wallets[0][walletIndex]
-            console.log("ourWallet",ourWallet)
-
-            const contact = {email: to, confirmed:false}
-            contacts.push(contact)
-            setContacts(contacts)
-
-            // setGlobal({contacts: contacts})
-
+            const ourWallet = wallets[walletIndex]
             const ourPrivateKey = ourWallet.privateKey
 
             const amountComplete = Number(bitcore.constants.VALIDATOR_FEE.btc)+
@@ -132,8 +125,21 @@ const ContactForm = () => {
                                     txSignedSerialized,
                                     encryptedTemplateData,
                                     validatorPublicKey.toString()).then((response) => {
-                                        const msg = 'broadcasted doichain transaction to doichain node with  <br/> txId: '+response.data
-                                        console.log(msg)
+                                        const txId = response.data
+                                        const msg = 'broadcasted doichain transaction to doichain node with  <br/> txId: '+txId
+
+                                        const contact = {
+                                            email: to,
+                                            confirmed:false,
+                                            txId:txId,
+                                            nameId:entry.nameId,
+                                            validatorAddress:validatorAddress,
+                                            status: DOI_STATE_WAITING_FOR_CONFIRMATION
+                                        }
+
+                                        contacts.push(contact)
+                                        setContacts(contacts)
+
                                         setOpenError({open:true,msg:msg,type:'success'})
                                         return "ok"
                                     }).catch((ex)=>{
@@ -194,19 +200,6 @@ const ContactForm = () => {
             onSubmit={async (values, { setSubmitting }) => {
                     setButtonState('loading')
                     setSubmitting(true);
-
-                /*   const response = await addContact(values.email,values.wallet)
-                   if(response==='ok'){
-                        console.log('response was ok ',response)
-                        setButtonState('success')
-                        setSubmitting(false);
-                    }else{
-                        console.log('response was error',response)
-                        setButtonState('error')
-                        setSubmitting(false);
-                    } */
-
-
                                 addContact(values.email,values.wallet).then((response)=>{
                                         console.log('response was ok ',response)
                                         setButtonState({buttonState: 'success'})
@@ -253,14 +246,11 @@ const ContactForm = () => {
                         name="wallet"
                         className={classes.select}
                     > {
-                        wallets[0].map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
+                        wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
                       }
                     </NativeSelect>
                     <p>&nbsp;</p>
                     <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={isSubmitting}> Request Email Permission</ProgressButton>
-                    {/* <button type="submit"  className={classes.button} disabled={isSubmitting}>
-                        Add contact
-                    </button > */}
                 </form>
             )}
         </Formik>
