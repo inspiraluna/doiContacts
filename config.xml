@@ -25,6 +25,9 @@
         <allow-intent href="itms-apps:*" />
         <allow-intent href="doichain:*" />
         <preference name="UseSwiftLanguageVersion" value="5" />
+        <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+            <string>need location access to find things nearby</string>
+        </edit-config>
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>
