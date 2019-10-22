@@ -21,7 +21,8 @@
     "react-scripts": "3.1.2",
     "react-swipe": "^6.0.4",
     "reactn": "^2.2.4",
-    "swipe-js-iso": "^2.1.5"
+    "swipe-js-iso": "^2.1.5",
+    "use-position": "^0.0.6"
   },
   "scripts": {
     "start": "react-scripts start",

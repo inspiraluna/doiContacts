@@ -1,6 +1,29 @@
-# Doi.Work Cordova App with React.JS
+# Doi Contacts Cordova App with React.JS
+## Description
+This app is a study around the concept of Doichain.org a blockchain based on Namecoin (and Bitcoin) which focuses
+on email permissions stored on a blockchain on the one side and on the other hand it is able to create an atomic proof for 
+an so called Double-Opt-In (DOI) email permission. This means the email permission was acquired from the right person and was not just invented by some email marketing company.
+Doichain will allow white listing of of email recipients and will reduce spam.
 
+Remark: Double-Opt-In permissions are legally necessary in the EU by law. This means as a business needs the permission from a customer to send an email.
+For more information about DOI's and Doichain, please visit Doichain.org
 
+This app doesn't use any cloud storage. All data are only stored on your mobile phone! 
+
+## Features
+- Contacts
+    - Add an email and request a email permission from that email address through a Doichain transaction
+    - store current geo position where when entering the email, so you can later automatically see which people you meet on which place
+    - (under development) show contacts status of a requested email permission (confirmed - yes/no)
+    - (under development) scan QR-Code (scan email address or an already signed SOI-Transaction of a second Doi Contacts App)
+    - (under development) create a QR-Code with containing an address / containing an signed SOI transaction ready to be scanned (and signed) by a second party
+- Wallets
+    - Create multiple Doichain Wallets (so far one wallet per email address (or project e.g. private, project a, project b))
+    - Edit subject and email template to be sent to the entered recipient email address
+    - (under development) show status of all request email permissions from a wallet
+    - (under development) send/receive DOI-coins to another wallet (scan / create QR-code) 
+    - (under development) list all transactions of a wallet 
+    
 ## How to start developing òn the react port
 - checkout this repository and ```cd doi_react_app``
 - run ```yarn install```
@@ -22,8 +45,10 @@
 - cordova geo-coder plugin - https://github.com/sebastianbaar/cordova-plugin-nativegeocoder
 - cordova geo-location plugin - https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/
 ### directly via react
-- 
-
+- ReactJS component for current position - https://www.npmjs.com/package/use-position 
+    - https://itnext.io/creating-react-useposition-hook-for-getting-browsers-geolocation-2f27fc1d96de
+- Nominatim Geo-REST-API https://nominatim.org/release-docs/develop/api/Overview/
+- Terrestris Components https://terrestris.github.io/react-geo-ws/map-integration/index.html
 
 - Content Security
     - Fetch not working Api 28 - https://github.com/facebook/react-native/issues/24627

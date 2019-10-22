@@ -10,6 +10,8 @@ import {useState} from "react";
 import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
+import { usePosition } from 'use-position';
+//import Geolookup from 'react-geolookup';
 
 const DOI_STATE_WAITING_FOR_CONFIRMATION = 0
 const DOI_STATE_SENT_TO_VALIDATOR = 1
@@ -47,6 +49,7 @@ const ContactForm = () => {
     const [buttonState,setButtonState] = useState()
     const [ contacts, setContacts ] = useGlobal('contacts');
     const [ openError, setOpenError ] = useGlobal("errors")
+    const { latitude, longitude, timestamp, accuracy, geoerror } = usePosition();
 
     const addContact = async (to,walletIndex) => {
 
@@ -249,6 +252,18 @@ const ContactForm = () => {
                         wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
                       }
                     </NativeSelect>
+                    <Demo/>
+                    <TextField
+                        type="text"
+                        name="position"
+                        id="position"
+                        defaultValue={(latitude&&longitude)?(latitude+"/"+longitude):'error'+geoerror}
+                        label="Current Position (lat/long)"
+                        className={classes.textField}
+                        margin="normal"
+                        value={values.position}
+                    />
+                    {errors.position && touched.position && errors.position}
                     <p>&nbsp;</p>
                     <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={isSubmitting}> Request Email Permission</ProgressButton>
                 </form>
@@ -256,6 +271,50 @@ const ContactForm = () => {
         </Formik>
     </div>
   );
+}
+
+const RequestAddress =  (props) => {
+    console.log('RequestAddress lat'+props.lat,'long'+JSON.stringify(props.lng))
+
+    const queryGeoEncode = async (lat,lng) => {
+        const response = await geoencode(lat,lng)
+        console.log(response)
+        return response
+    }
+    //const = queryGeoEncode()
+
+    return (<div>some address</div>)
+}
+/*
+const RequestAddress = async ({lat,lng}) => {
+//    const response = await geoencode({lat,lng})
+    console.log(response)
+    return (<div>some address</div>)
+}*/
+
+const geoencode = async (lat,lng) => {
+    console.log('lat'+lat,'long'+lng)
+    const url = "https://nominatim.openstreetmap.org/reverse?format=geojson&lat=-34.9125563&lon=-56.178610899999995&zoom=18&addressdetails=1";
+    const response = await fetch(url, {method: 'GET'})
+    const json = await response.json();
+    return json
+}
+
+
+
+export const Demo = () => {
+    const { latitude, longitude, timestamp, accuracy, error } = usePosition(false,{enableHighAccuracy: true});
+
+    return ( // lat={latitude} long={longitude}
+        <code>
+            <RequestAddress lat={latitude} lng={longitude}/>
+            latitude: {latitude}<br/>
+            longitude: {longitude}<br/>
+            timestamp: {timestamp}<br/>
+            accuracy: {accuracy && `${accuracy}m`}<br/>
+            error: {error}
+        </code>
+    );
 };
 
 export default ContactForm

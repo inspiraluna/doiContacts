@@ -10,6 +10,8 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import {useState} from "react";
 
+
+
 const ContactsPage = () => {
 
     const [add, setAdd] = useState(false);
@@ -23,6 +25,7 @@ const ContactsPage = () => {
         currentContacts.splice(index, 1);
         setContacts(currentContacts)
     }
+
     return (
         <div>
             <Slide aria-label="wallet-detail"
@@ -49,7 +52,6 @@ const ContactsPage = () => {
                         </Fab>
                     </div>
                 </div>
-
             </Slide>
 
             <Slide aria-label="wallet-detail"
@@ -57,6 +59,7 @@ const ContactsPage = () => {
                    in={add}
                    mountOnEnter unmountOnExit>
                 <div style={{height: 350, overflowY: 'scroll'}}>
+
                     <ContactForm />
                 </div>
             </Slide>
