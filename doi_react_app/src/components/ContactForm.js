@@ -11,7 +11,6 @@ import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 import { usePosition } from 'use-position';
-//import Geolookup from 'react-geolookup';
 
 const DOI_STATE_WAITING_FOR_CONFIRMATION = 0
 const DOI_STATE_SENT_TO_VALIDATOR = 1
@@ -45,16 +44,19 @@ const useStyles = makeStyles(theme => ({
 const ContactForm = () => {
 
     const classes = useStyles();
+    const [global] = useGlobal()
     const [wallets] = useGlobal("wallets")
     const [buttonState,setButtonState] = useState()
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
-    const [ position, setPosition ] = useGlobal("position")
+    const [ test, setTest ] = useGlobal("test")
+    const { latitude, longitude, timestamp, accuracy, error } = usePosition(); //false,{enableHighAccuracy: true}
 
     const addContact = async (to,walletIndex) => {
-
         const runAddContact =  (to,walletIndex) => new Promise(resolve => {
+
             if(!walletIndex) walletIndex = 0;
+
 
             if(!wallets || wallets.length==0){
                 const err = 'no wallets defined'
@@ -72,7 +74,7 @@ const ContactForm = () => {
 
             const ourFrom = ourWallet.senderEmail
 
-            const parts = to.split("@"); //TODO check if this is an email
+            const parts = to.split("@");
             const domain = parts[parts.length-1];
 
             getPublicKey(domain).then((validatorPublicKeyData) => {
@@ -135,6 +137,7 @@ const ContactForm = () => {
                                     validatorPublicKey.toString()).then((response) => {
 
                                         console.log("response from broadcast",response)
+                                        console.log("storing position",global.position)
                                         const txId = response.data
                                         const msg = 'broadcasted doichain transaction to doichain node with  <br/> txId: '+txId
 
@@ -149,11 +152,7 @@ const ContactForm = () => {
                                             confirmed:false,
                                             status: DOI_STATE_WAITING_FOR_CONFIRMATION,
                                             tx: txSignedSerialized,
-                                            position: {
-                                                latitude: position.latitude,
-                                                longitude: position.longitude,
-                                                address: position.address
-                                            }
+                                            position: global.test
                                         }
 
                                         contacts.push(contact)
@@ -219,10 +218,17 @@ const ContactForm = () => {
             onSubmit={async (values, { setSubmitting }) => {
                     setButtonState('loading')
                     setSubmitting(true);
-                                addContact(values.email,values.wallet,values.position).then((response)=>{
+                    console.log('submitting values',values)
+                                addContact(
+                                    values.email,
+                                    values.wallet,
+                                    values.address,
+                                    values.position).then((response)=>{
+
                                         console.log('response was ok ',response)
                                         setButtonState({buttonState: 'success'})
                                         setSubmitting(false);
+
                                 }).then((response)=>{
                                         console.log('response was error',response)
                                         setButtonState({buttonState: 'error'})
@@ -246,28 +252,29 @@ const ContactForm = () => {
                         type="email"
                         name="email"
                         id="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
                         label="Request Email Permission"
                         className={classes.textField}
                         margin="normal"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
                         value={values.email}
                     />
                     {errors.email && touched.email && errors.email}
-
                     <br/>
-
                     <InputLabel htmlFor="age-customized-native-simple" className={classes.label}>Wallet / Email</InputLabel>
                     <NativeSelect
+                        name="wallet"
                         onChange={handleChange}
                         onBlur={handleBlur}
-                        name="wallet"
                         className={classes.select}
                     > {
                         wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
                       }
                     </NativeSelect><br/>
-                    <RequestAddress className={classes.textField}/>
+                    <RequestAddress
+                        latitude={latitude}
+                        longitude={longitude}
+                        className={classes.textField}/>
                     {errors.position && touched.position && errors.position}
                     <p>&nbsp;</p>
                     <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={isSubmitting}> Request Email Permission</ProgressButton>
@@ -278,15 +285,16 @@ const ContactForm = () => {
   );
 }
 
-const RequestAddress = ({className}) => {
+const RequestAddress = ({latitude,longitude,className}) => {
 
-    const { latitude, longitude, timestamp, accuracy, error } = usePosition(); //false,{enableHighAccuracy: true}
+    const [ test, setTest ] = useGlobal("test")
+    const [position,setPosition ] = useState('')
+    const [address,setAddress] = useState('')
+    console.log('rerender latitude/longitude',latitude+"/"+longitude+" address"+position)
 
-    const [address, setAddress] = useState('loading')
-    const [ position, setPosition ] = useGlobal("position")
 
     const queryGeoEncode = async () => {
-        if(!latitude || !longitude) return 'loading address...'
+        if(!latitude || !longitude) return null
 
         const response = await geoencode(latitude,longitude)
         const currentPosition = {
@@ -297,20 +305,27 @@ const RequestAddress = ({className}) => {
        return currentPosition
     }
 
-    queryGeoEncode().then((currentPosition)=>{
-        const our_address = currentPosition.address.road+" "+currentPosition.address.suburb+" "+currentPosition.address.city+" "+currentPosition.address.country
-        setAddress(our_address)
-        console.log(currentPosition)
-    }).catch(()=>{
-        setAddress('no address')
-    })
+    if(!position)
+        queryGeoEncode().then((currentPosition)=>{
+            if(currentPosition && currentPosition.address){
+                const our_address = currentPosition.address.road+" "+currentPosition.address.suburb+" "+currentPosition.address.city+" "+currentPosition.address.country
+                setAddress(our_address)
+                console.log('address',address)
+                setTest(currentPosition)
+            }
+            setPosition(currentPosition)
+            console.log(currentPosition)
+        }).catch((e)=>{
+            console.log('error during geocoding',e)
+        })
 
     return (
         <div>
+            <input type={"hidden"} name={'position'} value={JSON.stringify(position)}/>
             <TextField
                 type="text"
-                name="position"
-                id="position"
+                name="address"
+                id="address"
                 value={address}
                 label="Current Address"
                 margin="normal"

@@ -21,7 +21,7 @@ const ContactList = ({contacts, remove}) => {
                 </ListItemAvatar>
                 <ListItemText
                     primary={contact.email}
-                    secondary={'Montevideo'}
+                    secondary={(contact && contact.position && contact.position.address)?contact.position.address.city+" "+contact.position.address.country:''}
                 />
                 <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="edit">

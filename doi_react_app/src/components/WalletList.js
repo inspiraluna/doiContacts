@@ -33,7 +33,6 @@ const WalletList = ({checked}) => {
     }
 
     const handleRemove = (index) => {
-        console.log('handel on click with index',index)
         const currentWallets = wallets
         currentWallets.splice(index, 1);
         setWallets(currentWallets)
