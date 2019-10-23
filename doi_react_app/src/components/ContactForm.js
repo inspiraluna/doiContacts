@@ -6,7 +6,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import { Formik } from 'formik';
 import ProgressButton from "react-progress-button";
 import './ProgressButton.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
@@ -47,9 +47,9 @@ const ContactForm = () => {
     const classes = useStyles();
     const [wallets] = useGlobal("wallets")
     const [buttonState,setButtonState] = useState()
-    const [ contacts, setContacts ] = useGlobal('contacts');
+    const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
-    const { latitude, longitude, timestamp, accuracy, geoerror } = usePosition();
+    const [ position, setPosition ] = useGlobal("position")
 
     const addContact = async (to,walletIndex) => {
 
@@ -60,9 +60,9 @@ const ContactForm = () => {
                 const err = 'no wallets defined'
                 setOpenError({open:true,msg:err,type:'info'})
                 return
-            }else{
+            }else
                 console.log("wallets of contactPage",wallets)
-            }
+
             const ourWallet = wallets[walletIndex]
             const ourPrivateKey = ourWallet.privateKey
 
@@ -85,6 +85,11 @@ const ContactForm = () => {
 
                     bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
                         if (utxo.utxos.length === 0){
+
+                            //check in contacts the latest wallet with our publicKey
+                            //subscract from output with change address amountComplete
+
+
                             const err = 'insufficiant funds'
                             console.log(err)
                             setOpenError({open:true,msg:err,type:'info'})
@@ -123,21 +128,32 @@ const ContactForm = () => {
                                 JSON.stringify(templateData)).then(async function (encryptedTemplateData) {
                                 console.log("encryptedTemplateData", encryptedTemplateData)
 
-                                const response = await bitcore.broadcastTransaction(
+                                await bitcore.broadcastTransaction(
                                     entry.nameId,
                                     txSignedSerialized,
                                     encryptedTemplateData,
                                     validatorPublicKey.toString()).then((response) => {
+
+                                        console.log("response from broadcast",response)
                                         const txId = response.data
                                         const msg = 'broadcasted doichain transaction to doichain node with  <br/> txId: '+txId
 
+                                        //TODO check if global state position gets updated here correctly other wise use global.position
                                         const contact = {
+                                            requestedAt: new Date(),
                                             email: to,
-                                            confirmed:false,
+                                            wallet: ourWallet.publicKey,
                                             txId:txId,
                                             nameId:entry.nameId,
                                             validatorAddress:validatorAddress,
-                                            status: DOI_STATE_WAITING_FOR_CONFIRMATION
+                                            confirmed:false,
+                                            status: DOI_STATE_WAITING_FOR_CONFIRMATION,
+                                            tx: txSignedSerialized,
+                                            position: {
+                                                latitude: position.latitude,
+                                                longitude: position.longitude,
+                                                address: position.address
+                                            }
                                         }
 
                                         contacts.push(contact)
@@ -203,7 +219,7 @@ const ContactForm = () => {
             onSubmit={async (values, { setSubmitting }) => {
                     setButtonState('loading')
                     setSubmitting(true);
-                                addContact(values.email,values.wallet).then((response)=>{
+                                addContact(values.email,values.wallet,values.position).then((response)=>{
                                         console.log('response was ok ',response)
                                         setButtonState({buttonState: 'success'})
                                         setSubmitting(false);
@@ -230,7 +246,6 @@ const ContactForm = () => {
                         type="email"
                         name="email"
                         id="email"
-
                         label="Request Email Permission"
                         className={classes.textField}
                         margin="normal"
@@ -240,7 +255,7 @@ const ContactForm = () => {
                     />
                     {errors.email && touched.email && errors.email}
 
-                    <p>&nbsp;</p>
+                    <br/>
 
                     <InputLabel htmlFor="age-customized-native-simple" className={classes.label}>Wallet / Email</InputLabel>
                     <NativeSelect
@@ -251,18 +266,8 @@ const ContactForm = () => {
                     > {
                         wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
                       }
-                    </NativeSelect>
-                    <Demo/>
-                    <TextField
-                        type="text"
-                        name="position"
-                        id="position"
-                        defaultValue={(latitude&&longitude)?(latitude+"/"+longitude):'error'+geoerror}
-                        label="Current Position (lat/long)"
-                        className={classes.textField}
-                        margin="normal"
-                        value={values.position}
-                    />
+                    </NativeSelect><br/>
+                    <RequestAddress className={classes.textField}/>
                     {errors.position && touched.position && errors.position}
                     <p>&nbsp;</p>
                     <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={isSubmitting}> Request Email Permission</ProgressButton>
@@ -273,48 +278,54 @@ const ContactForm = () => {
   );
 }
 
-const RequestAddress =  (props) => {
-    console.log('RequestAddress lat'+props.lat,'long'+JSON.stringify(props.lng))
+const RequestAddress = ({className}) => {
 
-    const queryGeoEncode = async (lat,lng) => {
-        const response = await geoencode(lat,lng)
-        console.log(response)
-        return response
+    const { latitude, longitude, timestamp, accuracy, error } = usePosition(); //false,{enableHighAccuracy: true}
+
+    const [address, setAddress] = useState('loading')
+    const [ position, setPosition ] = useGlobal("position")
+
+    const queryGeoEncode = async () => {
+        if(!latitude || !longitude) return 'loading address...'
+
+        const response = await geoencode(latitude,longitude)
+        const currentPosition = {
+            latitude: latitude,
+            longitude: longitude,
+            address:response.features[0].properties.address
+        }
+       return currentPosition
     }
-    //const = queryGeoEncode()
 
-    return (<div>some address</div>)
+    queryGeoEncode().then((currentPosition)=>{
+        const our_address = currentPosition.address.road+" "+currentPosition.address.suburb+" "+currentPosition.address.city+" "+currentPosition.address.country
+        setAddress(our_address)
+        console.log(currentPosition)
+    }).catch(()=>{
+        setAddress('no address')
+    })
+
+    return (
+        <div>
+            <TextField
+                type="text"
+                name="position"
+                id="position"
+                value={address}
+                label="Current Address"
+                margin="normal"
+                className={className}
+            />
+        </div>
+       )
 }
-/*
-const RequestAddress = async ({lat,lng}) => {
-//    const response = await geoencode({lat,lng})
-    console.log(response)
-    return (<div>some address</div>)
-}*/
 
 const geoencode = async (lat,lng) => {
     console.log('lat'+lat,'long'+lng)
-    const url = "https://nominatim.openstreetmap.org/reverse?format=geojson&lat=-34.9125563&lon=-56.178610899999995&zoom=18&addressdetails=1";
+    const url = "https://nominatim.openstreetmap.org/reverse?format=geojson&lat="+lat+"&lon="+lng+"&zoom=18&addressdetails=2    ";
     const response = await fetch(url, {method: 'GET'})
     const json = await response.json();
     return json
 }
-
-
-
-export const Demo = () => {
-    const { latitude, longitude, timestamp, accuracy, error } = usePosition(false,{enableHighAccuracy: true});
-
-    return ( // lat={latitude} long={longitude}
-        <code>
-            <RequestAddress lat={latitude} lng={longitude}/>
-            latitude: {latitude}<br/>
-            longitude: {longitude}<br/>
-            timestamp: {timestamp}<br/>
-            accuracy: {accuracy && `${accuracy}m`}<br/>
-            error: {error}
-        </code>
-    );
-};
 
 export default ContactForm

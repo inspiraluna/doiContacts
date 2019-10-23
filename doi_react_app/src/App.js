@@ -49,9 +49,9 @@ const App = () => {
         localStorage.setItem('wallets',JSON.stringify(wallets))
         localStorage.setItem('currentTab',currentTab)
 
-        console.log('updating local contacts storage', contacts)
+        /*console.log('updating local contacts storage', contacts)
         console.log('updating local wallets storage', wallets)
-        console.log('updating local storage currentTab', currentTab)
+        console.log('updating local storage currentTab', currentTab)*/
         return null;
     });
 

@@ -44,7 +44,7 @@ const WalletItem = ({   walletName,
         <div>
             <li style={{"fontSize":"9px"}}>
                 <b>{walletName}</b> <br/>
-                DoiCoin-Address:<b>{(address)?address.toString():''}</b><br/>
+                DoiCoin-Address: <b>{(address)?address.toString():''}</b><br/>
                 Balance: {balance} DOI
             </li>
             <div style={{"fontSize":"9px","border":'2px solid lightgrey'}}>
