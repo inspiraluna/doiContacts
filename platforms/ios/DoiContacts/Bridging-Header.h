@@ -26,4 +26,3 @@
 //
 
 #import <Cordova/CDV.h>
-#import "NativeGeocoder-Bridging-Header.h"

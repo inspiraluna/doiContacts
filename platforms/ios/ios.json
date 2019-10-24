@@ -5,30 +5,30 @@
   },
   "config_munge": {
     "files": {
-      "config.xml": {
-        "parents": {
-          "/*": [
-            {
-              "xml": "<feature name=\"QRScanner\"><param name=\"ios-package\" value=\"QRScanner\" /></feature>",
-              "count": 1
-            }
-          ]
-        }
-      },
       "*-Info.plist": {
         "parents": {
-          "NSCameraUsageDescription": [
-            {
-              "xml": "<string>The camera is used to scan QR codes.</string>",
-              "count": 1
-            }
-          ],
           "NSLocationWhenInUseUsageDescription": [
             {
               "xml": "<string>need location access to find things nearby</string>",
               "count": 1,
               "mode": "merge",
               "id": "config.xml"
+            }
+          ],
+          "NSCameraUsageDescription": [
+            {
+              "xml": "<string>The camera is used to scan QR codes.</string>",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"QRScanner\"><param name=\"ios-package\" value=\"QRScanner\" /></feature>",
+              "count": 1
             }
           ]
         }

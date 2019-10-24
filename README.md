@@ -1,6 +1,6 @@
 # Doi Contacts Cordova App with React.JS
 ## Description
-This app is a study around the concept of Doichain.org a blockchain based on Namecoin (and Bitcoin) which focuses
+This app is a study around the concept of Doichain. A blockchain based on Namecoin (and Bitcoin) which focuses
 on email permissions stored on a blockchain on the one side and on the other hand it is able to create an atomic proof for 
 an so called Double-Opt-In (DOI) email permission. This means the email permission was acquired from the right person and was not just invented by some email marketing company.
 Doichain will allow white listing of of email recipients and will reduce spam.
@@ -24,7 +24,7 @@ This app doesn't use any cloud storage. All data are only stored on your mobile 
     - (under development) send/receive DOI-coins to another wallet (scan / create QR-code) 
     - (under development) list all transactions of a wallet 
     
-## How to start developing òn the react port
+## How to start developing òn the reactJS part
 - checkout this repository and ```cd doi_react_app``
 - run ```yarn install```
 - run ```yarn start```
@@ -39,6 +39,20 @@ This app doesn't use any cloud storage. All data are only stored on your mobile 
 - doi_react_app/ - contains the react app (edit, **yarn start**, **yarn build** from here)
 - www/ - cordova directory - do not edit anything here.
 - cordova build / cordova run ios/android from the directory of this file
+
+## Logic
+## QR-Code creation / scan
+- Modell a) 
+    - create a QR-Code with doichain transaction containing a SOI
+        - signed by the creator of the QR-Code (alice) (Alice requests permission from Bob) 
+        - URL form: doichain:signeddoichaintx?from=alice@email.com&to=bobs@email.com
+        - listens on mempool transaction (needs live websocket to validator)
+        - displays confirmed DOI 
+    - bob scans a QR-Code (a DOI-permission request) from Alice
+        - decodes and shows from and to from after scan provides confirm button
+        - broadcasts transaction to validator
+        - stores given DOI under contacts with flag permission granted  
+        
 
 ## Further information and sources (as option - yet untested)
 ### via Cordova
