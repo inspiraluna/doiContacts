@@ -10,7 +10,8 @@ import FolderIcon from '@material-ui/icons/Folder'
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 
 const ContactList = ({contacts, remove}) => {
-    console.log(contacts)
+
+    console.log('rerender ContactList', contacts)
     const contactNode = contacts.map((contact, index) => {
         return (
             <ListItem key={index}>

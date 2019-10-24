@@ -39,82 +39,17 @@ const App = () => {
     register()
 
     //localStorage.removeItem("contacts")
-
     const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
-    const [ contacts, setContacts ] = useGlobal("contacts")
-    const [ wallets, setWallets ] = useGlobal("wallets")
+/*    const [ contacts, setContacts ] = useGlobal("contacts")
+    const [ wallets, setWallets ] = useGlobal("wallets") */
 
     addCallback(global => {
-        localStorage.setItem('contacts',JSON.stringify(contacts))
-        localStorage.setItem('wallets',JSON.stringify(wallets))
-        localStorage.setItem('currentTab',currentTab)
-
-        /*console.log('updating local contacts storage', contacts)
-        console.log('updating local wallets storage', wallets)
-        console.log('updating local storage currentTab', currentTab)*/
+        localStorage.setItem('contacts',JSON.stringify(global.contacts))
+        localStorage.setItem('wallets',JSON.stringify(global.wallets))
+        localStorage.setItem('currentTab',global.currentTab)
+        console.log('currentTab was '+currentTab, global.currentTab)
         return null;
     });
-
-//    localStorage.removeItem("contacts")
-//    localStorage.removeItem("wallets")
-   // localStorage.removeItem("currentTab")
-
-   // const global = useGlobal()
-
-
-   /* const [ contacts, setContacts ] = useGlobal("wallets")
-    const [ wallets, setWallets ] = useGlobal("wallets")
-    const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
-    const [ errors, setErrors ] = useGlobal("currentTab")
-*/
-
-   /* const controlScanSwip = (index) => {
-        setValue(index)
-        global.scanSwipe = !global.scanSwipe
-        setGlobal(global) //just switch back and forth for now
-        console.log(global.scanSwipe,index)
-    } */
-
-  /*  const state = {
-        flyOutRadius: 120,
-        seperationAngle: 40,
-        mainButtonDiam: 60,
-        childButtonDiam: 50,
-        numElements: 7,
-        stiffness: 320,
-        damping: 17,
-        rotation: 0,
-        mainButtonIcon: faBars,
-        mainButtonIconSize: "2x",
-        childButtonIconSize: "lg"
-    }
-
-    const ELEMENTS = [
-        {
-            icon: faAddressBook,
-            //onClick: () => alert("clicked home"),
-            onClick: () => controlScanSwip(0)
-        },{
-            icon: faIdCard,
-            onClick: () => controlScanSwip(0)
-        },{
-            icon: faFileSignature,
-            onClick: () => controlScanSwip(1)
-        },{
-            icon: faCoins,
-            onClick: () =>  controlScanSwip(1)
-        },{
-            icon: faQrcode,
-            onClick: () =>  controlScanSwip(2)
-        },{
-            icon: faAt,
-            onClick: () =>  controlScanSwip(2)
-        },{
-            icon: faIdBadge,
-            onClick: () => controlScanSwip(2)
-        }
-
-    ];*/
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -167,10 +102,11 @@ const App = () => {
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(currentTab)} index={0}>
-                <ContactsPage/>
+                {currentTab==0 && <ContactsPage/>}
+
             </TabPanel>
             <TabPanel value={Number(currentTab)} index={1}>
-                <WalletsPage/>
+                {currentTab==1 && <WalletsPage/>}
             </TabPanel>
             <TabPanel value={Number(currentTab)} index={2} style={{backgroundColor: 'transparent'}}>
               Settings

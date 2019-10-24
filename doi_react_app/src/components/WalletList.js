@@ -40,6 +40,11 @@ const WalletList = ({checked}) => {
 
 
     const walletNode = wallets.map((item,index) => {
+
+       // console.log("Balance:",wallets[index].balance)
+
+        console.log('rerender WalletList')
+
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>
@@ -49,7 +54,7 @@ const WalletList = ({checked}) => {
                 </ListItemAvatar>
                 <ListItemText
                     primary={item.walletName+' / '+item.senderEmail}
-                    secondary={item.subject}
+                    secondary={"Balance: "+wallets[index].balance}
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">

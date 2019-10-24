@@ -1,6 +1,7 @@
 import React, {useEffect,useState,setState } from 'react';
 import bitcore from "bitcore-doichain";
 import QRCode from 'qrcode-react'
+import {useGlobal} from "reactn";
 
 const WalletItem = ({   walletName,
                         senderEmail,
@@ -11,36 +12,72 @@ const WalletItem = ({   walletName,
                         redirectUrl,
                         returnPath}) => {
 
-    const [balance, setBalance] = useState(0)
     const [address, setAddress] = useState()
+    const [balance, setBalance] = useState()
 
-    let fetched = false
+    const [wallets, setWallets] = useGlobal("wallets")
+    const [global] = useGlobal()
 
     useEffect( () => {
-         async function fetchData(){
-             bitcore.Networks.defaultNetwork =  bitcore.Networks.get('doichain-testnet')
-             const address = bitcore.getAddressOfPublicKey(publicKey).toString()
+        console.log('render!',balance);
+        console.log('wallets[global.activeWallet',wallets[global.activeWallet])
 
+        async function fetchData(){
+             bitcore.Networks.defaultNetwork =  bitcore.Networks.get('doichain-testnet')
              try{
-                 if(address){
-                     console.log('fetching data for address',address)
+                 const address = bitcore.getAddressOfPublicKey(publicKey).toString()
+                 if(address && !balance){
+                     console.log('fetching...')
                      const response = await bitcore.getUTXOAndBalance(address.toString())
-                     console.log("response",response)
                      const balanceAllUTXOs = response.balanceAllUTXOs
+                     const currentWallet = wallets[global.activeWallet]
+
+                     let currentWalletBalance = 0
+                     //currentWallet.balance=balanceAllUTXOs
+                     let currentAddresses = currentWallet.addresses
+                     let somethingWasUpdated = false
+                     if(currentAddresses === undefined) currentAddresses = []
+                     else{
+                         let found = false;
+                         for(let x=0;x<currentAddresses.length;x++){
+                             if(currentAddresses[x].address = address){
+                                 found=true
+                                 if(currentAddresses[x].balance!==balanceAllUTXOs){
+                                     currentAddresses[x].balance=balanceAllUTXOs
+                                     somethingWasUpdated=true //so re-render otherwise no!
+                                 }
+                                 currentWalletBalance+=currentAddresses[x].balance
+                                 //break;
+                             }
+                         }
+                         if(!found){
+                             console.log('couldnt find address pushing it with new balance',address)
+                             currentAddresses.push({address:address, balance:balanceAllUTXOs})
+                             somethingWasUpdated=true
+                         }
+                     }
+                     wallets[global.activeWallet].addresses = currentAddresses
+                     wallets[global.activeWallet].balance = currentWalletBalance
                      setBalance(balanceAllUTXOs)
-                     fetched=true
+
+                     if(somethingWasUpdated) setWallets(wallets) //so re-render
+                     setAddress(address)
+                     //console.log(wallets)
                  }
-             }catch(Exception){
-                 console.log("error while fetching utxos from server",publicKey)
+             }catch(ex){
+                 console.log("error while fetching utxos from server",ex)
              }
-             setAddress(address)
          }
-         if(publicKey) fetchData(); //generates a Doichain address
-     },[fetched])
+        if(publicKey && !balance) fetchData(); //generates a Doichain address */
+
+     },[balance])
+
+    console.log('rerender WalletItem')
 
     if(!publicKey) return null
     else
     return (
+
         <div>
             <li style={{"fontSize":"9px"}}>
                 <b>{walletName}</b> <br/>

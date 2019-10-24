@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 
 const WalletsPage = () => {
 
-    const [walletItemsChanged, setWalletItemsChanged] = useState(false);
+    const [walletItemsChanged, setWalletItemsChanged] = useState(false)
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
@@ -87,7 +87,7 @@ const WalletsPage = () => {
     const ComponentHead = () => {
         return (<h1>DoiCoin Wallets</h1>)
     }
-
+    console.log('rerender WalletsPage')
     if(global.modus === 'list'){
         return (
             <div>
@@ -128,10 +128,7 @@ const WalletsPage = () => {
                                     redirectUrl={global.wallets[global.activeWallet].redirectUrl}
                                     returnPath={global.wallets[global.activeWallet].returnPath}/>
 
-                                <Button color={'primary'}
-                                        variant="contained"  onClick={() => handleCancel()}>
-                                    Cancel
-                                </Button>
+                                <Button color={'primary'} variant="contained"  onClick={() => handleCancel()}>Cancel</Button>
                             </div>
                         </Slide>
                     </div>
