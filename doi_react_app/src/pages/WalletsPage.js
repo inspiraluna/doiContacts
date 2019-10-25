@@ -15,7 +15,7 @@ const WalletsPage = () => {
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
     const [global] = useGlobal()
-
+    console.log(wallets)
     useEffect(() => {
     },[modus])
 
@@ -87,7 +87,7 @@ const WalletsPage = () => {
     const ComponentHead = () => {
         return (<h1>DoiCoin Wallets</h1>)
     }
-    console.log('rerender WalletsPage')
+
     if(global.modus === 'list'){
         return (
             <div>

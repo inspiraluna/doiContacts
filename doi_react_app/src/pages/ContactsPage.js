@@ -36,9 +36,7 @@ const ContactsPage = () => {
                 <div>
                     <h1>Doi Contacts</h1>
                     <List dense={true}>
-                        <ContactList
-                            contacts={contacts}
-                            remove={handleRemove}
+                        <ContactList remove={handleRemove}
                         />
                     </List>
                     <div style={{float:'right'}}>
@@ -59,7 +57,6 @@ const ContactsPage = () => {
                    in={add}
                    mountOnEnter unmountOnExit>
                 <div style={{height: 350, overflowY: 'scroll'}}>
-
                     <ContactForm />
                 </div>
             </Slide>

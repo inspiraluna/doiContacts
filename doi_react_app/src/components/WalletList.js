@@ -14,7 +14,6 @@ const WalletList = ({checked}) => {
 
     const global = useGlobal()
     const [ wallets, setWallets ] = useGlobal('wallets')
-    const [ modus, setModule] = useGlobal("modus")
 
     const handleDetail = (index) => {
         const  currentGlobal = global;
@@ -40,9 +39,6 @@ const WalletList = ({checked}) => {
 
 
     const walletNode = wallets.map((item,index) => {
-
-       // console.log("Balance:",wallets[index].balance)
-
         console.log('rerender WalletList')
 
         return (

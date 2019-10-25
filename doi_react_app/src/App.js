@@ -40,9 +40,6 @@ const App = () => {
 
     //localStorage.removeItem("contacts")
     const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
-/*    const [ contacts, setContacts ] = useGlobal("contacts")
-    const [ wallets, setWallets ] = useGlobal("wallets") */
-
     addCallback(global => {
         localStorage.setItem('contacts',JSON.stringify(global.contacts))
         localStorage.setItem('wallets',JSON.stringify(global.wallets))

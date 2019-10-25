@@ -1,6 +1,6 @@
 {
   "name": "doi_react_app",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "private": true,
   "homepage": "../www/",
   "dependencies": {
@@ -9,7 +9,7 @@
     "@fortawesome/react-fontawesome": "^0.1.6",
     "@material-ui/core": "^4.4.3",
     "@material-ui/icons": "^4.4.3",
-    "bitcore-doichain": "^0.1.7",
+    "bitcore-doichain": "^0.1.8",
     "crypto-browserify": "^3.12.0",
     "formik": "^1.5.8",
     "lodash": "^4.17.15",
