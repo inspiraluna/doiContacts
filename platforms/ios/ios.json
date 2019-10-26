@@ -9,7 +9,7 @@
         "parents": {
           "NSLocationWhenInUseUsageDescription": [
             {
-              "xml": "<string>need location access to find things nearby</string>",
+              "xml": "<string>need location access to store it locally only with new contacts</string>",
               "count": 1,
               "mode": "merge",
               "id": "config.xml"
