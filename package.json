@@ -1,7 +1,7 @@
 {
   "name": "doicontacts",
   "displayName": "Doi Contacts",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "blockchain based contact management via Doichain",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.0.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-qrscanner": "^3.0.1"
   },
   "devDependencies": {
@@ -25,7 +26,8 @@
   "cordova": {
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "cordova-plugin-qrscanner": {}
+      "cordova-plugin-qrscanner": {},
+      "cordova-plugin-geolocation": {}
     },
     "platforms": [
       "android",

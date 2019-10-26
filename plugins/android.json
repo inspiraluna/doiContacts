@@ -12,6 +12,9 @@
     },
     "cordova-plugin-qrscanner": {
       "PACKAGE_NAME": "io.cordova.hellocordova"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
     }
   },
   "dependent_plugins": {}

@@ -20,7 +20,8 @@ module.exports.metadata =
 {
     "cordova-plugin-add-swift-support": "2.0.2",
     "cordova-plugin-qrscanner": "3.0.1",
-    "cordova-plugin-whitelist": "1.3.4"
+    "cordova-plugin-whitelist": "1.3.4",
+    "cordova-plugin-geolocation": "4.0.2"
 }
 // BOTTOM OF METADATA
 });

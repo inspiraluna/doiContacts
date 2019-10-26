@@ -15,7 +15,7 @@ const WalletsPage = () => {
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
     const [global] = useGlobal()
-    console.log(wallets)
+
     useEffect(() => {
     },[modus])
 
@@ -144,6 +144,7 @@ const WalletsPage = () => {
                             <div>
 
                                 <form onSubmit={(e) => {
+                                    console.log('submitting....')
                                     e.preventDefault();
 
                                     const walletName = e.target.walletName.value
@@ -221,7 +222,7 @@ const WalletsPage = () => {
                                         margin="normal"
                                     />     <br/>
 
-                                    <Button color={'primary'} variant="contained">
+                                    <Button type="submit" color={'primary'} variant="contained">
                                         {(activeWallet!==undefined)?'Update Wallet':'Add Wallet'}
                                     </Button>
                                 </form>

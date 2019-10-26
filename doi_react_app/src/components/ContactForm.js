@@ -290,8 +290,6 @@ const RequestAddress = ({latitude,longitude,className}) => {
     const [ test, setTest ] = useGlobal("test")
     const [position,setPosition ] = useState('')
     const [address,setAddress] = useState('')
-    console.log('rerender latitude/longitude',latitude+"/"+longitude+" address"+position)
-
 
     const queryGeoEncode = async () => {
         if(!latitude || !longitude) return null
@@ -304,20 +302,46 @@ const RequestAddress = ({latitude,longitude,className}) => {
         }
        return currentPosition
     }
+    const query  = () => {
+        if (!position)
+            queryGeoEncode().then((currentPosition) => {
+                if (currentPosition && currentPosition.address) {
+                    const our_address = currentPosition.address.road + " " + currentPosition.address.suburb + " " + currentPosition.address.city + " " + currentPosition.address.country
+                    setAddress(our_address)
+                    console.log('address', address)
+                    setTest(currentPosition)
+                }
+                setPosition(currentPosition)
+                console.log(currentPosition)
+            }).catch((e) => {
+                console.log('error during geocoding', e)
+            })
+    }
+    query()
 
-    if(!position)
-        queryGeoEncode().then((currentPosition)=>{
-            if(currentPosition && currentPosition.address){
-                const our_address = currentPosition.address.road+" "+currentPosition.address.suburb+" "+currentPosition.address.city+" "+currentPosition.address.country
-                setAddress(our_address)
-                console.log('address',address)
-                setTest(currentPosition)
-            }
-            setPosition(currentPosition)
-            console.log(currentPosition)
-        }).catch((e)=>{
-            console.log('error during geocoding',e)
-        })
+    if(latitude===undefined || longitude===undefined){
+        var onSuccess = function(position) {
+            latitude=position.coords.latitude
+            longitude=position.coords.longitude
+            console.log('got coordinates from system',latitude+"/"+longitude)
+            query()
+            /*   alert('Latitude: '          + position.coords.latitude          + '\n' +
+                   'Longitude: '         + position.coords.longitude         + '\n' +
+                   'Altitude: '          + position.coords.altitude          + '\n' +
+                   'Accuracy: '          + position.coords.accuracy          + '\n' +
+                   'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                   'Heading: '           + position.coords.heading           + '\n' +
+                   'Speed: '             + position.coords.speed             + '\n' +
+                   'Timestamp: '         + position.timestamp                + '\n');*/
+        };
+
+        function onError(error) {
+            console.log('code: '    + error.code    + '\n' +
+                'message: ' + error.message + '\n');
+        }
+        navigator.geolocation.getCurrentPosition(onSuccess, onError,{enableHighAccuracy: true });
+    }
+    console.log('rerender latitude/longitude',latitude+"/"+longitude+" address"+position)
 
     return (
         <div>

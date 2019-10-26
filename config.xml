@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.doichain.contacts.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.doichain.contacts.app" version="1.0.11" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DoiContacts</name>
     <description>
        Request qualified email permissions via Doichain blockchain
@@ -25,8 +25,10 @@
         <allow-intent href="itms-apps:*" />
         <allow-intent href="doichain:*" />
         <preference name="UseSwiftLanguageVersion" value="5" />
+        <preference name="DisallowOverscroll" value="true"/>
+        <preference name="BackupWebStorage" value="none"/>
         <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
-            <string>need location access to find things nearby</string>
+            <string>need location access to store it locally only with new contacts</string>
         </edit-config>
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
