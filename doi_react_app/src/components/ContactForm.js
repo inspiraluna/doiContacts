@@ -46,7 +46,7 @@ const ContactForm = () => {
     const classes = useStyles();
     const [global] = useGlobal()
     const [wallets] = useGlobal("wallets")
-    const [buttonState,setButtonState] = useState()
+    const [buttonState,setButtonState] = useGlobal("buttonState")
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
     const [ test, setTest ] = useGlobal("test")
@@ -55,12 +55,18 @@ const ContactForm = () => {
     const addContact = async (to,walletIndex) => {
         const runAddContact =  (to,walletIndex) => new Promise(resolve => {
 
+            if(!to || to.length==0){
+                const err = 'no email defined'
+                setOpenError({open:true,msg:err,type:'error'})
+                setButtonState('error') //Progress Button should be red
+                return
+            }
+
             if(!walletIndex) walletIndex = 0;
-
-
             if(!wallets || wallets.length==0){
                 const err = 'no wallets defined'
                 setOpenError({open:true,msg:err,type:'info'})
+                setButtonState('error') //Progress Button should be red
                 return
             }else
                 console.log("wallets of contactPage",wallets)
@@ -87,14 +93,10 @@ const ContactForm = () => {
 
                     bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
                         if (utxo.utxos.length === 0){
-
-                            //check in contacts the latest wallet with our publicKey
-                            //subscract from output with change address amountComplete
-
-
                             const err = 'insufficiant funds'
                             console.log(err)
                             setOpenError({open:true,msg:err,type:'info'})
+                            setButtonState('error')
                             throw err
                         }
                         else {
@@ -165,12 +167,14 @@ const ContactForm = () => {
                                     const err = 'error while broadcasting transaction '
                                     console.log(err,ex)
                                     setOpenError({open:true,msg:err,type:'error'})
+                                    setButtonState('error')
                                     throw err
                                 });
                             }).catch(function (ex) {
                                 const err = 'error while encrypting message'
                                 console.log(err,ex)
                                 setOpenError({open:true,msg:err,type:'error'})
+                                setButtonState('error')
                                 throw err
                             })
                         }
@@ -178,18 +182,21 @@ const ContactForm = () => {
                         const err = 'error while getUTXOAndBalance'
                         console.log(err,ex)
                         setOpenError({open:true,msg:err,type:'error'})
+                        setButtonState('error')
                         throw err
                     })
                 }).catch(function (ex) {
                     const err = 'error while creating DoichainEntry'
                     console.log(err,ex)
                     setOpenError({open:true,msg:err,type:'error'})
+                    setButtonState('error')
                     throw err
                 })
             }).catch(function (ex) {
                 const err = 'error while fetching public key from dns'
                 console.log(err,ex)
                 setOpenError({open:true,msg:err})
+                setButtonState('error')
                 throw err
             })
 
@@ -325,14 +332,6 @@ const RequestAddress = ({latitude,longitude,className}) => {
             longitude=position.coords.longitude
             console.log('got coordinates from system',latitude+"/"+longitude)
             query()
-            /*   alert('Latitude: '          + position.coords.latitude          + '\n' +
-                   'Longitude: '         + position.coords.longitude         + '\n' +
-                   'Altitude: '          + position.coords.altitude          + '\n' +
-                   'Accuracy: '          + position.coords.accuracy          + '\n' +
-                   'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-                   'Heading: '           + position.coords.heading           + '\n' +
-                   'Speed: '             + position.coords.speed             + '\n' +
-                   'Timestamp: '         + position.timestamp                + '\n');*/
         };
 
         function onError(error) {

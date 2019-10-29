@@ -4,11 +4,11 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="QRScanner">
-        <param name="android-package" value="com.bitpay.cordova.qrscanner.QRScanner" />
-    </feature>
     <feature name="Geolocation">
         <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
+    </feature>
+    <feature name="QRScanner">
+        <param name="android-package" value="com.bitpay.cordova.qrscanner.QRScanner" />
     </feature>
     <name>DoiContacts</name>
     <description>

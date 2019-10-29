@@ -13,9 +13,9 @@
 		302D95F114D2391D003F00A1 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 302D95EF14D2391D003F00A1 /* MainViewController.m */; };
 		302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302D95F014D2391D003F00A1 /* MainViewController.xib */; };
 		6AFF5BF91D6E424B00AB3073 /* CDVLaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */; };
-		78E4B26780E04ED791AD66FC /* QRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9C96877DB947B586E1FEC3 /* QRScanner.swift */; };
 		AD7F68F80806406EBB10E9F2 /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA09C637614E10997AD04E /* CDVLocation.m */; };
 		B5464E082E9E44F2B743C791 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722CB118E8FC43139BCF174B /* CoreLocation.framework */; };
+		FEA8B9B0EC084DB9A48902EC /* QRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA93F56DCB04DAEA0F89F22 /* QRScanner.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,7 +58,6 @@
 		3047A5111AB8059700498E2A /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = build.xcconfig; path = cordova/build.xcconfig; sourceTree = SOURCE_ROOT; };
 		32CA4F630368D1EE00C91783 /* DoiContacts-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DoiContacts-Prefix.pch"; sourceTree = "<group>"; };
 		6AFF5BF81D6E424B00AB3073 /* CDVLaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = CDVLaunchScreen.storyboard; path = DoiContacts/CDVLaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
-		7E9C96877DB947B586E1FEC3 /* QRScanner.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = QRScanner.swift; path = "cordova-plugin-qrscanner/QRScanner.swift"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* DoiContacts-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "DoiContacts-Info.plist"; path = "DoiContacts/DoiContacts-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = SOURCE_ROOT; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
@@ -67,6 +66,7 @@
 		49BA09C637614E10997AD04E /* CDVLocation.m */ = {isa = PBXFileReference; name = "CDVLocation.m"; path = "cordova-plugin-geolocation/CDVLocation.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		B8D9D78C9930493CB992145B /* CDVLocation.h */ = {isa = PBXFileReference; name = "CDVLocation.h"; path = "cordova-plugin-geolocation/CDVLocation.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 		722CB118E8FC43139BCF174B /* CoreLocation.framework */ = {isa = PBXFileReference; name = "CoreLocation.framework"; path = "System/Library/Frameworks/CoreLocation.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		1DA93F56DCB04DAEA0F89F22 /* QRScanner.swift */ = {isa = PBXFileReference; name = "QRScanner.swift"; path = "cordova-plugin-qrscanner/QRScanner.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,9 +173,9 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				7E9C96877DB947B586E1FEC3 /* QRScanner.swift */,
 				49BA09C637614E10997AD04E /* CDVLocation.m */,
 				B8D9D78C9930493CB992145B /* CDVLocation.h */,
+				1DA93F56DCB04DAEA0F89F22 /* QRScanner.swift */,
 			);
 			name = Plugins;
 			path = DoiContacts/Plugins;
@@ -306,8 +306,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
-				78E4B26780E04ED791AD66FC /* QRScanner.swift in Sources */,
 				AD7F68F80806406EBB10E9F2 /* CDVLocation.m in Sources */,
+				FEA8B9B0EC084DB9A48902EC /* QRScanner.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

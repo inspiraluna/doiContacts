@@ -10,8 +10,6 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import {useState} from "react";
 
-
-
 const ContactsPage = () => {
 
     const [add, setAdd] = useState(false);

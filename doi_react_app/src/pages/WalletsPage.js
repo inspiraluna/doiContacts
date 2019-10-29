@@ -7,9 +7,12 @@ import WalletItem from "../components/WalletItem";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
+import QRCode from "qrcode-react";
+import SendAmount from "../components/SendAmount";
 
 const WalletsPage = () => {
 
+    const [amount, setAmount] = useState(0) //receive amount
     const [walletItemsChanged, setWalletItemsChanged] = useState(false)
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
@@ -75,18 +78,24 @@ const WalletsPage = () => {
         setModus('detail')
     }
 
-    useEffect(() => {
-        setWalletItemsChanged(false)
-    },[walletItemsChanged])
-
     const handleCancel = (e) => {
         setModus('list')
         setActiveWallet(undefined)
     };
 
-    const ComponentHead = () => {
-        return (<h1>DoiCoin Wallets</h1>)
-    }
+    useEffect(() => {
+        setWalletItemsChanged(false)
+    },[walletItemsChanged])
+
+    const handleReceive = (e) => {
+        setModus('receive')
+        console.log('now activating receive')
+    };
+
+    const handleSend = (e) => {
+        setModus('send')
+        console.log('now activating send')
+    };
 
     if(global.modus === 'list'){
         return (
@@ -128,12 +137,59 @@ const WalletsPage = () => {
                                     redirectUrl={global.wallets[global.activeWallet].redirectUrl}
                                     returnPath={global.wallets[global.activeWallet].returnPath}/>
 
+                                <Button color={'primary'} variant="contained"  onClick={() => handleReceive()}>Receive </Button>
+                                <Button color={'primary'} variant="contained"  onClick={() => handleSend()}>Send </Button>
                                 <Button color={'primary'} variant="contained"  onClick={() => handleCancel()}>Cancel</Button>
                             </div>
                         </Slide>
                     </div>
                 )
-            } else if(global.modus==='edit' || global.modus === 'add') {
+
+            } else if(global.modus==='receive') {
+
+                const handleAmount = (e) => {
+                    console.log(e.target.value)
+                    const ourAmount = e.target.value;
+                    if(isNaN(ourAmount)) return
+                    setAmount(ourAmount)
+                }
+
+                const address = global.wallets[global.activeWallet].addresses[0].address;
+                const walletName = global.wallets[global.activeWallet].walletName
+                let url = "doicoin:"+address
+                if(amount) url+="?amount"+amount
+
+                return (
+                    <div>
+                        <ComponentHead/>
+                        <Slide aria-label="wallet-receive"
+                               direction={"up"}
+                               in={activeWallet !== undefined && global.modus === 'receive'}
+                               mountOnEnter unmountOnExit>
+                            <div>
+                                    {walletName} <br/>
+                                Receive DOI for address:  <br/> {address} <br/>
+                                Amount: <br/>
+                                <TextField
+                                    id="amount"
+                                    name="amount"
+                                    label="Amount (DOI)"
+                                    type={'Number'}
+                                    margin="normal"
+                                    onChange={(e) => handleAmount(e)}
+                                    onBlur={(e) => handleAmount(e)}
+                                /> <br/>
+                                <QRCode value={url} /><br/>
+                                {url}<br/>
+                                <Button color={'primary'} variant="contained"  onClick={() => handleCancel()}>Cancel</Button>
+                            </div>
+                        </Slide>
+                    </div>
+                )
+            } else if(global.modus==='send') {
+                return (<SendAmount />)
+            }
+            else if(global.modus==='edit' || global.modus === 'add') {
                 return (
                         <div>
                         <ComponentHead/>
@@ -144,7 +200,6 @@ const WalletsPage = () => {
                             <div>
 
                                 <form onSubmit={(e) => {
-                                    console.log('submitting....')
                                     e.preventDefault();
 
                                     const walletName = e.target.walletName.value
@@ -236,3 +291,8 @@ const WalletsPage = () => {
 }
 
 export default WalletsPage
+
+export const ComponentHead = () => {
+    return (<h1>DoiCoin Wallets</h1>)
+}
+

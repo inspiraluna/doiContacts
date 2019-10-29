@@ -12,17 +12,6 @@ import Tab from '@material-ui/core/Tab'
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {register} from "./serviceWorker"
-import MenuButton from "./components/MenuButton";
-import {
-    faAddressBook,
-    faFileSignature,
-    faIdCard,
-    faIdBadge,
-    faCoins,
-    faQrcode,
-    faAt,
-    faBars,
-} from "@fortawesome/free-solid-svg-icons";
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 
 const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
@@ -32,7 +21,9 @@ const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getIt
 setGlobal({contacts: initialContacts,
     wallets: initialWallets,
     errors: false,
-    currentTab:initialCurrentTab,modus: 'list'})  //currentTab:initialCurrentTab*/
+    currentTab:initialCurrentTab,
+    buttonState: '',
+    modus: 'list'})  //currentTab:initialCurrentTab*/
 
 const App = () => {
 
@@ -40,6 +31,8 @@ const App = () => {
 
     //localStorage.removeItem("contacts")
     const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
+    const [modus, setModus] = useGlobal("modus")
+
     addCallback(global => {
         localStorage.setItem('contacts',JSON.stringify(global.contacts))
         localStorage.setItem('wallets',JSON.stringify(global.wallets))
@@ -105,7 +98,7 @@ const App = () => {
             <TabPanel value={Number(currentTab)} index={1}>
                 {currentTab==1 && <WalletsPage/>}
             </TabPanel>
-            <TabPanel value={Number(currentTab)} index={2} style={{backgroundColor: 'transparent'}}>
+            <TabPanel value={Number(currentTab)} index={2}>
               Settings
             </TabPanel>
             <div style={{float:'right'}}>

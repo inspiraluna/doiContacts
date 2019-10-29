@@ -1,6 +1,5 @@
 import React, {useEffect,useState,setState } from 'react';
 import bitcore from "bitcore-doichain";
-import QRCode from 'qrcode-react'
 import {useGlobal} from "reactn";
 
 const WalletItem = ({   walletName,
@@ -19,9 +18,6 @@ const WalletItem = ({   walletName,
     const [global] = useGlobal()
 
     useEffect( () => {
-        console.log('render!',balance);
-        console.log('wallets[global.activeWallet',wallets[global.activeWallet])
-
         async function fetchData(){
              bitcore.Networks.defaultNetwork =  bitcore.Networks.get('doichain-testnet')
              try{
@@ -85,11 +81,7 @@ const WalletItem = ({   walletName,
                 Balance: {balance} DOI
             </li>
             <div style={{"fontSize":"9px","border":'2px solid lightgrey'}}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td><QRCode value={"doicoin:"+((address)?address.toString():'')} /><br/></td>
-                                <td>
+
                                     <label htmlFor={"walletName"}>Wallet: </label>{walletName}<br/>
                                     <label htmlFor={"senderEmail"}>Email: </label>{senderEmail}<br/>
                                     <label htmlFor={"subject"}></label>Subject: {subject}<br/>
@@ -97,10 +89,7 @@ const WalletItem = ({   walletName,
                                     <label htmlFor={"contentType"}></label>Content-Type: {contentType}<br/>
                                     <label htmlFor={"redirectUrl"}></label>Redirect-Url: {redirectUrl}><br/>
                                     <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+
                    <b>PubKey:<input type={"text"} readOnly={true} defaultValue={publicKey} size={40}/></b><br/>
             </div>
         </div>

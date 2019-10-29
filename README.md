@@ -14,7 +14,7 @@ This app doesn't use any cloud storage. All data are only stored on your mobile 
 - Contacts
     - Add an email and request a email permission from that email address through a Doichain transaction
     - store current geo position where when entering the email, so you can later automatically see which people you meet on which place
-    - (under development) show contacts status of a requested email permission (confirmed - yes/no)
+    - show contacts status of a requested email permission (confirmed - yes/no)
     - (under development) scan QR-Code (scan email address or an already signed SOI-Transaction of a second Doi Contacts App)
     - (under development) create a QR-Code with containing an address / containing an signed SOI transaction ready to be scanned (and signed) by a second party
 - Wallets
@@ -55,12 +55,15 @@ This app doesn't use any cloud storage. All data are only stored on your mobile 
         
 
 ## Further information and sources (as option - yet untested)
-### via Cordova
-- cordova geo-coder plugin - https://github.com/sebastianbaar/cordova-plugin-nativegeocoder
-- cordova geo-location plugin - https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/
-### directly via react
-- ReactJS component for current position - https://www.npmjs.com/package/use-position 
-    - https://itnext.io/creating-react-useposition-hook-for-getting-browsers-geolocation-2f27fc1d96de
+- Intents in Cordova 
+    - https://ourcodeworld.com/articles/read/101/how-to-list-your-cordova-app-in-open-with-menu-in-android-and-handle-the-intent-event
+- Geo Coding 
+- via Cordova
+    - cordova geo-coder plugin - https://github.com/sebastianbaar/cordova-plugin-nativegeocoder
+    - cordova geo-location plugin - https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/
+- directly via react
+    - ReactJS component for current position - https://www.npmjs.com/package/use-position 
+        - https://itnext.io/creating-react-useposition-hook-for-getting-browsers-geolocation-2f27fc1d96de
 - Nominatim Geo-REST-API https://nominatim.org/release-docs/develop/api/Overview/
 - Terrestris Components https://terrestris.github.io/react-geo-ws/map-integration/index.html
 

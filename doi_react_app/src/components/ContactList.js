@@ -24,21 +24,21 @@ const ContactList = ({remove}) => {
         _.find(wallets, function(wallet) {
             let changed = false
             if(wallet.publicKey === contact.wallet){
-                console.log("checking "+contact.email,contact.confirmed)
+              //  console.log("checking "+contact.email,contact.confirmed)
                 verify(contact.email,wallet.senderEmail,contact.nameId,wallet.publicKey).then((status)=>{
                     if(status && status.val===true && !contact.confirmed){
 
                         changed=true
                         contact.confirmed=true
-                        console.log('changed contact to be confirmed '+changed,contact.email)
+                      //  console.log('changed contact to be confirmed '+changed,contact.email)
                     }
                     if(status && status.val!==true && contact.confirmed){
                         changed=true
                         contact.confirmed=false
                     }
-                    console.log("checking "+contact.email,contact.confirmed)
+                 //   console.log("checking "+contact.email,contact.confirmed)
                     if(changed) {
-                        console.log('changed global contacts')
+                      //  console.log('changed global contacts')
                         setContacts(contacts)
                     }
                 })
@@ -70,7 +70,6 @@ const ContactList = ({remove}) => {
 
 const StatusIcon = ({contact}) => {
     const [global] = useGlobal()
-    console.log('rerender StatusIcon')
     return (
         <IconButton edge="end" aria-label="edit">
         { contact.confirmed && <CheckIcon/>}
