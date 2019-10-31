@@ -310,10 +310,16 @@ const RequestAddress = ({latitude,longitude,className}) => {
        return currentPosition
     }
     const query  = () => {
+
         if (!position)
             queryGeoEncode().then((currentPosition) => {
+                debugger;
                 if (currentPosition && currentPosition.address) {
-                    const our_address = currentPosition.address.road + " " + currentPosition.address.suburb + " " + currentPosition.address.city + " " + currentPosition.address.country
+                    const our_road = currentPosition.address.road?currentPosition.address.road+" " :""
+                    const our_house_number = currentPosition.address.house_number?currentPosition.address.house_number +" ":""
+                    const our_city = currentPosition.address.city?currentPosition.address.city + " ":""
+                    const our_country =  currentPosition.address.country?currentPosition.address.country+" ":""
+                    const our_address = our_road + our_house_number + our_city + our_country
                     setAddress(our_address)
                     console.log('address', address)
                     setTest(currentPosition)
@@ -327,14 +333,14 @@ const RequestAddress = ({latitude,longitude,className}) => {
     query()
 
     if(latitude===undefined || longitude===undefined){
-        var onSuccess = function(position) {
+        const onSuccess = (position) => {
             latitude=position.coords.latitude
             longitude=position.coords.longitude
             console.log('got coordinates from system',latitude+"/"+longitude)
             query()
         };
 
-        function onError(error) {
+        const onError = (error) => {
             console.log('code: '    + error.code    + '\n' +
                 'message: ' + error.message + '\n');
         }
