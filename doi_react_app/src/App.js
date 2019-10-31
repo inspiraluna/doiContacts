@@ -27,15 +27,23 @@ setGlobal({contacts: initialContacts,
     modus: 'list'})  //currentTab:initialCurrentTab*/
 
 const App = () => {
-
+/*
    const settings = {  //RegTest
         testnet:true,
         from: 'newsletter@doichain.org',
         port:4000,
         host:"localhost"
+    } */
+
+    const settings = {  //testnet 2
+        testnet:true,
+        from: 'newsletter@doichain.org',
+        port:4010,
+        host:"5.9.154.231"
     }
 
-   // bitcore.settings.setSettings(settings)
+
+    bitcore.settings.setSettings(settings)
 
     console.log(bitcore.settings.getSettings(),bitcore.getUrl())
     register()
