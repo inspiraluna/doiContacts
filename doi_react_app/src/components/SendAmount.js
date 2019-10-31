@@ -12,10 +12,10 @@ import bitcore from "bitcore-doichain";
 const SendAmount = () => {
 
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+    const [utxos, setUTXOs ] = useGlobal("utxos")
     const [scanning, setScanning] = useState(false) //send amount
     const [amount2Send, setAmount2Send] = useState(0) //send amount
     const [toAddress, setToAddress] = useState('') //send amount
-    const [modus, setModus] = useGlobal("modus")
     const [ openError, setOpenError ] = useGlobal("errors")
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
@@ -39,46 +39,61 @@ const SendAmount = () => {
         try {
             const ourAddress = global.wallets[global.activeWallet].addresses[0].address
             const changeAddress = ourAddress
-            const fee = 1000 //TODO please calculate correct fee for transaction
+            const fee = 100000 //TODO please calculate correct fee for transaction
             const privateKey = global.wallets[global.activeWallet].privateKey
 
             let tx = bitcore.Transaction();
-            tx.to(toAddress, amount);
+            tx.to(toAddress, Number(amount*100000000));
             tx.change(changeAddress);
             tx.fee(fee);
-            tx.sign(privateKey);
 
             bitcore.getUTXOAndBalance(ourAddress, amount).then(function (utxo) {
                 console.log("utxo",utxo)
-                if (utxo.utxos.length === 0){
+                console.log("global.utxo",global.utxos)
+                if (utxo.utxos.length === 0 && (!global.utxos || global.utxos.length===0)){
                     const err = 'insufficiant funds'
-                    console.log(err)
                     setOpenError({open:true,msg:err,type:'info'})
                     setButtonState('error')
                     throw err
                 }
+                else if(utxo.utxos.length === 0 && global.utxos){
+                    console.log('pushing utxo',global.utxos)
+                    utxo.utxos = global.utxos
+                }
 
                 tx.from(utxo.utxos);
-                tx.serialize(true)
+                tx.sign(privateKey);
+                const txSerialized = tx.serialize(true)
 
-                bitcore.broadcastTransaction(null,tx,null,null).then((response) => {
+                bitcore.broadcastTransaction(null,txSerialized,null,null).then((response) => {
                         console.log("response from broadcast",response)
-                        const txId = response.data
-                        const msg = 'broadcasted doichain transaction to doichain node with  <br/> txId: '+txId
+                        const txRaw = response.txRaw
+                        const txid = txRaw.txid
+                        const vout = txRaw.vout
+                        const ourUTXOs = []
+                        vout.forEach((out)=>{
+                            const n = out.n
+                            const value = out.value
+                            const scriptPubKey = out.scriptPubKey
+                            const address = scriptPubKey.addresses[0]
+                            const hex = scriptPubKey.hex
 
-                        //TODO gather utox of unconfirmend transaction to spend change
-                        /*
-                        utxos: {
-                            "address": "Bitcoin Address",
-                            "amount": "Bitcoin Balance",
-                            "scriptPubKey": "Hash",
-                            "txid": "Hash",
-                            "vout": "Number" // Int
-                        }
-                        */
-
+                            if(address===changeAddress){
+                                const new_utxo = {
+                                    "address": address,
+                                    "amount": value,
+                                    "scriptPubKey": hex,
+                                    "txid": txid,
+                                    "vout": n
+                                }
+                                ourUTXOs.push(new_utxo)
+                            }
+                        })
+                        console.log('setting global.utxo',ourUTXOs)
+                        setUTXOs(ourUTXOs)
+                        const msg = 'broadcasted doichain transaction to Doichain node'
                         setOpenError({open:true,msg:msg,type:'success'})
-                        setButtonState('error')
+                        setButtonState('success')
                         return "ok"
                     }).catch((ex)=>{
                         const err = 'error while broadcasting transaction '
@@ -190,6 +205,8 @@ const Contents = ({scanning,walletName,address,toAddress,handleAmount2Send, prep
 
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
+    const [modus, setModus] = useGlobal("modus")
+    //setButtonState('')
 
     if(scanning){
         return(<div style={{backgroundColor: 'transparent'}}></div>)
@@ -248,7 +265,7 @@ return (
                         id="amount"
                         name="amount"
                         label="Amount (DOI)"
-                        type={'Number'}
+                        type={'text'}
                         margin="normal"
                         fullWidth={true}
                         onChange={handleChange}
@@ -257,7 +274,7 @@ return (
                     {errors.position && touched.position && errors.position}
                     <p>&nbsp;</p>
                     <Button color={'primary'} variant="contained" onClick={() => prepareScan()}>Scan</Button>
-
+                    <Button color={'primary'} variant="contained"  onClick={() => setModus('detail')}>Back</Button>
                     <ProgressButton type="submit" color={"primary"}
                                     state={global.buttonState}
                                     disabled={isSubmitting}>Send Doichain Transaction</ProgressButton>

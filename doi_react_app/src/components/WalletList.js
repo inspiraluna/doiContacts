@@ -38,9 +38,7 @@ const WalletList = ({checked}) => {
     }
 
 
-    const walletNode = wallets.map((item,index) => {
-        console.log('rerender WalletList')
-
+    const walletNode = global[0].wallets.map((item,index) => {
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>

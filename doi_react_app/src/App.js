@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import {register} from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
+import bitcore from "bitcore-doichain";
 
 const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
 const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
@@ -27,11 +28,21 @@ setGlobal({contacts: initialContacts,
 
 const App = () => {
 
+   const settings = {  //RegTest
+        testnet:true,
+        from: 'newsletter@doichain.org',
+        port:4000,
+        host:"localhost"
+    }
+
+   // bitcore.settings.setSettings(settings)
+
+    console.log(bitcore.settings.getSettings(),bitcore.getUrl())
     register()
 
-    //localStorage.removeItem("contacts")
     const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
     const [modus, setModus] = useGlobal("modus")
+    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
 
     addCallback(global => {
         localStorage.setItem('contacts',JSON.stringify(global.contacts))
@@ -85,6 +96,8 @@ const App = () => {
             <AppBar position="static">
                 <Tabs value={Number(currentTab)} onChange={(event, newValue) => {
                     setCurrentTab(newValue)
+                    setActiveWallet(undefined)
+                    setModus('list')
                 }} aria-label="Doichain Contacts">
                     <Tab label="Contacts" {...a11yProps(0)} />
                     <Tab label="Wallets" {...a11yProps(1)} />

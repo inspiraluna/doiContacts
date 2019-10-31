@@ -313,7 +313,6 @@ const RequestAddress = ({latitude,longitude,className}) => {
 
         if (!position)
             queryGeoEncode().then((currentPosition) => {
-                debugger;
                 if (currentPosition && currentPosition.address) {
                     const our_road = currentPosition.address.road?currentPosition.address.road+" " :""
                     const our_house_number = currentPosition.address.house_number?currentPosition.address.house_number +" ":""
