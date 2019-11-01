@@ -56,8 +56,7 @@ const SendAmount = () => {
             tx.fee(fee);
 
             bitcore.getUTXOAndBalance(ourAddress, amount).then(function (utxo) {
-                console.log("utxo",utxo)
-                console.log("global.utxo",global.utxos)
+
                 if (utxo.utxos.length === 0 && (!global.utxos || global.utxos.length===0)){
                     const err = 'insufficiant funds'
                     setOpenError({open:true,msg:err,type:'info'})
@@ -77,36 +76,11 @@ const SendAmount = () => {
                 bitcore.broadcastTransaction(null,
                     txSerialized,null,null).then((response) => {
 
-                    getUTXOs(changeAddress,response,setUTXOs)
-                    /*
-                        console.log("response from broadcast",response)
-                        const txRaw = response.txRaw
-                        const txid = txRaw.txid
-                        const vout = txRaw.vout
-                        const ourUTXOs = []
-                        vout.forEach((out)=>{
-                            const n = out.n
-                            const value = out.value
-                            const scriptPubKey = out.scriptPubKey
-                            const address = scriptPubKey.addresses[0]
-                            const hex = scriptPubKey.hex
-
-                            if(address===changeAddress){
-                                const new_utxo = {
-                                    "address": address,
-                                    "amount": value,
-                                    "scriptPubKey": hex,
-                                    "txid": txid,
-                                    "vout": n
-                                }
-                                ourUTXOs.push(new_utxo)
-                            }
-                        })
-                        console.log('setting global.utxo',ourUTXOs)
-                        setUTXOs(ourUTXOs)*/
+                        getUTXOs(changeAddress,response,setUTXOs)
                         const msg = 'broadcasted doichain transaction to Doichain node'
                         setOpenError({open:true,msg:msg,type:'success'})
                         setButtonState('success')
+
                         return "ok"
                     }).catch((ex)=>{
                         const err = 'error while broadcasting transaction '
@@ -164,15 +138,9 @@ const SendAmount = () => {
                 window.QRScanner.getStatus(function(status){
                     console.log("QRScanner success status: text"+text,JSON.stringify(status));
 
-
                     const result = (text.result===undefined)?text:text.result
-                    if (result.startsWith("doicoin:")){
+                    if (result.startsWith("doicoin:"))
                         setToAddress(result.substring(8))
-                        console.log("setting address to:",result.substring(8))
-                        console.log('address now:',toAddress)
-                        console.log('address global now:',global.toAddress)
-                    }
-
                     else
                         console.log('different qr code stopping scan')
                 });
