@@ -136,10 +136,11 @@ const SendAmount = () => {
                 console.log("error during scanning...", err)
             } else {
                 // The scan completed, display the contents of the QR code:
-                console.log(text.result);
-                const result = text.result
+                console.log("text",text)
+                console.log("text.result",text.result);
+                const result = (text.result===undefined)?text:text.result
                 if (result.startsWith("doicoin:"))
-                    setToAddress(text.result.substring(8))
+                    setToAddress(result.substring(8))
                 else
                     console.log('different qr code stopping scan')
             }
@@ -255,7 +256,7 @@ return (
                         type={'text'}
                         margin="normal"
                         fullWidth={true}
-                        defaultValue={toAddress}
+                        defaultValue={global.toAddress}
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
