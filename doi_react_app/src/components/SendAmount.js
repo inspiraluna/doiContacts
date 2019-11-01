@@ -8,6 +8,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import ProgressButton from "react-progress-button";
 import bitcore from "bitcore-doichain";
+import {getUTXOs} from "../utils/doichain-transaction-utils";
 
 const SendAmount = () => {
 
@@ -15,22 +16,29 @@ const SendAmount = () => {
     const [utxos, setUTXOs ] = useGlobal("utxos")
     const [scanning, setScanning] = useState(false) //send amount
     const [amount2Send, setAmount2Send] = useState(0) //send amount
-    const [toAddress, setToAddress] = useState('') //send amount
+    const [toAddress, setToAddress] =  useGlobal("toAddress")  //useState('') //send amount
     const [ openError, setOpenError ] = useGlobal("errors")
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
 
     const handleCancel = (e) => {
-        window.QRScanner.destroy(function(destroyStatus){
+
+       // document.getElementsByTagName("HTML")[0].setAttribute('style','opacity: 1');
+       // document.getElementsByTagName("BODY")[0].setAttribute('style','background-color: transparent');
+
+        window.QRScanner.hide((status) => {
+            console.log("QRScanner.hide",status);
+        });
+
+        window.QRScanner.destroy((destroyStatus) =>{
             console.log("destroyStatus",destroyStatus);
             setScanning(false)
+
             if(destroyStatus.scanning || destroyStatus.previewing)window.QRScanner.cancelScan(function(cancelStatus){
                 console.log("cancelStatus",cancelStatus);
                 setScanning(false)
             });
         });
-      //  setModus('list')
-      //  setActiveWallet(undefined)
     };
 
     const handleSendTransaction = (toAddress,amount) => {
@@ -65,7 +73,12 @@ const SendAmount = () => {
                 tx.sign(privateKey);
                 const txSerialized = tx.serialize(true)
 
-                bitcore.broadcastTransaction(null,txSerialized,null,null).then((response) => {
+                //TODO please create to different methodes broadcastRawDOITransaction broadcastRawTransaction
+                bitcore.broadcastTransaction(null,
+                    txSerialized,null,null).then((response) => {
+
+                    getUTXOs(changeAddress,response,setUTXOs)
+                    /*
                         console.log("response from broadcast",response)
                         const txRaw = response.txRaw
                         const txid = txRaw.txid
@@ -90,7 +103,7 @@ const SendAmount = () => {
                             }
                         })
                         console.log('setting global.utxo',ourUTXOs)
-                        setUTXOs(ourUTXOs)
+                        setUTXOs(ourUTXOs)*/
                         const msg = 'broadcasted doichain transaction to Doichain node'
                         setOpenError({open:true,msg:msg,type:'success'})
                         setButtonState('success')
@@ -115,6 +128,12 @@ const SendAmount = () => {
     function showScanner() {
         console.log('showing scanner - cordova available', window.cordova !== undefined)
         window.QRScanner.show();
+
+        //TODO fix this better
+        //iOS transparency issue: https://github.com/bitpay/cordova-plugin-qrscanner/issues/253
+       // document.body.style.visibility = 'hidden'
+       // setTimeout(() => { document.body.style.visibility = 'visible' }, 1)
+
         scan()
     }
 
@@ -125,6 +144,9 @@ const SendAmount = () => {
     }
 
     function scan() {
+        window.QRScanner.getStatus(function(status){
+            console.log("QRScanner status:",JSON.stringify(status));
+        });
         console.log('scanning')
         // Start a scan. Scanning will continue until something is detected or
 // `QRScanner.cancelScan()` is called.
@@ -134,15 +156,26 @@ const SendAmount = () => {
             if (err) {
                 // an error occurred, or the scan was canceled (error code `6`)
                 console.log("error during scanning...", err)
+                window.QRScanner.getStatus(function(status){
+                    console.log("error QRScanner status: err"+err,JSON.stringify(status));
+                });
             } else {
                 // The scan completed, display the contents of the QR code:
-                console.log("text",text)
-                console.log("text.result",text.result);
-                const result = (text.result===undefined)?text:text.result
-                if (result.startsWith("doicoin:"))
-                    setToAddress(result.substring(8))
-                else
-                    console.log('different qr code stopping scan')
+                window.QRScanner.getStatus(function(status){
+                    console.log("QRScanner success status: text"+text,JSON.stringify(status));
+
+
+                    const result = (text.result===undefined)?text:text.result
+                    if (result.startsWith("doicoin:")){
+                        setToAddress(result.substring(8))
+                        console.log("setting address to:",result.substring(8))
+                        console.log('address now:',toAddress)
+                        console.log('address global now:',global.toAddress)
+                    }
+
+                    else
+                        console.log('different qr code stopping scan')
+                });
             }
             handleCancel()
         }
@@ -157,6 +190,7 @@ const SendAmount = () => {
             // W00t, you have camera access and the scanner is initialized.
             // QRscanner.show() should feel very fast.
             console.log('authorized')
+         //   document.getElementsByTagName("HTML")[0].setAttribute('style','opacity: 0');
             showScanner()
         } else if (status.denied) {
             // The video preview will remain black, and scanning is disabled. We can
@@ -190,7 +224,7 @@ const SendAmount = () => {
                     <Contents scanning={scanning}
                               walletName={walletName}
                               address={address}
-                              toAddress={toAddress}
+                              toAddress={global.toAddress}
                               handleAmount2Send={handleAmount2Send}
                               handle2Address={(e) => {setToAddress(e.target.value)}}
                               prepareScan={prepareScan} handleCancel={handleCancel}
@@ -208,13 +242,14 @@ const Contents = ({scanning,walletName,address,toAddress,handleAmount2Send, prep
     const [buttonState,setButtonState] = useGlobal("buttonState")
     const [modus, setModus] = useGlobal("modus")
     //setButtonState('')
-
+    console.log("rerendering contents",scanning)
     if(scanning){
         return(<div style={{backgroundColor: 'transparent'}}></div>)
     }
-    else
+    else{
+
 return (
-    <div>
+    <div style={{backgroundColor: 'white'}}>
         <h1>{walletName} </h1>
         Send DOI from address: {address} <br/>
         <Formik
@@ -233,8 +268,8 @@ return (
             onSubmit={async (values, { setSubmitting }) => {
                 setButtonState('loading')
                 setSubmitting(true);
-                console.log('submitting values',values)
-                handleSendTransaction(values.toAddress,values.amount)
+                console.log('submitting values',values) //here we are just using the global (since the changeHandle do not fire
+                handleSendTransaction(global.toAddress,values.amount)
             }}
         >
             {({
@@ -256,7 +291,7 @@ return (
                         type={'text'}
                         margin="normal"
                         fullWidth={true}
-                        defaultValue={global.toAddress}
+                        defaultValue={toAddress}
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
@@ -284,6 +319,7 @@ return (
         </Formik>
     </div>
     )
+    }
 }
 
 export default SendAmount

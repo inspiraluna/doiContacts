@@ -33,7 +33,7 @@ const App = () => {
         from: 'newsletter@doichain.org',
         port:4000,
         host:"localhost"
-    } */
+    }
 
     const settings = {  //testnet 2
         testnet:true,
@@ -41,9 +41,9 @@ const App = () => {
         port:4010,
         host:"5.9.154.231"
     }
+*/
 
-
-    bitcore.settings.setSettings(settings)
+    //bitcore.settings.setSettings(settings)
 
     console.log(bitcore.settings.getSettings(),bitcore.getUrl())
     register()
@@ -56,7 +56,6 @@ const App = () => {
         localStorage.setItem('contacts',JSON.stringify(global.contacts))
         localStorage.setItem('wallets',JSON.stringify(global.wallets))
         localStorage.setItem('currentTab',global.currentTab)
-        console.log('currentTab was '+currentTab, global.currentTab)
         return null;
     });
 

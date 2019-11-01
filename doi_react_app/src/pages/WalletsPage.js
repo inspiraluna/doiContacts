@@ -180,7 +180,7 @@ const WalletsPage = () => {
                                     onBlur={(e) => handleAmount(e)}
                                 /> <br/>
                                 <QRCode value={url} /><br/>
-                                {url}<br/>
+                                <br/>
                                 <Button color={'primary'} variant="contained"  onClick={() => handleCancel()}>Cancel</Button>
                             </div>
                         </Slide>

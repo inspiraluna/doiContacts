@@ -11,6 +11,7 @@ import bitcore from "bitcore-doichain";
 import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 import { usePosition } from 'use-position';
+import {getUTXOs} from "../utils/doichain-transaction-utils";
 
 const DOI_STATE_WAITING_FOR_CONFIRMATION = 0
 const DOI_STATE_SENT_TO_VALIDATOR = 1
@@ -46,10 +47,12 @@ const ContactForm = () => {
     const classes = useStyles();
     const [global] = useGlobal()
     const [wallets] = useGlobal("wallets")
-    const [buttonState,setButtonState] = useGlobal("buttonState")
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
+    const [buttonState,setButtonState] = useGlobal("buttonState")
     const [ test, setTest ] = useGlobal("test")
+    const [utxos, setUTXOs ] = useGlobal("utxos")
+
     const { latitude, longitude, timestamp, accuracy, error } = usePosition(); //false,{enableHighAccuracy: true}
 
     const addContact = async (to,walletIndex) => {
@@ -89,95 +92,98 @@ const ContactForm = () => {
                 const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKey).toString()
                 bitcore.createDoichainEntry(ourPrivateKey, validatorPublicKey.toString(), ourFrom, to).then(function (entry) {
                     const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
-                    const changeAddrress = ourAddress //just send change back to us for now - could be its better to generate a new address here
+                    const changeAddress = ourAddress //just send change back to us for now - could be its better to generate a new address here
 
                     bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
-                        if (utxo.utxos.length === 0){
+
+                        console.log("utxo",utxo)
+                        console.log("global.utxo",global.utxos)
+                        if (utxo.utxos.length === 0 && (!global.utxos || global.utxos.length===0)){
                             const err = 'insufficiant funds'
-                            console.log(err)
                             setOpenError({open:true,msg:err,type:'info'})
                             setButtonState('error')
                             throw err
                         }
-                        else {
-                            console.log(`using utxos for ${amountComplete} DOI`, utxo)
-                            const txSignedSerialized = bitcore.createRawDoichainTX(
+                        else if(utxo.utxos.length === 0 && global.utxos){
+                            console.log('pushing utxo',global.utxos)
+                            utxo.utxos = global.utxos
+                        }
+
+                        const txSignedSerialized = bitcore.createRawDoichainTX(
+                            entry.nameId,
+                            entry.nameValue,
+                            validatorAddress,
+                            changeAddress,
+                            ourPrivateKey,
+                            utxo, //here's the necessary utxos and the balance and change included
+                            bitcore.constants.NETWORK_FEE.btc, //for storing this record
+                            bitcore.constants.VALIDATOR_FEE.btc //0.01 for DOI storage, 0.01 DOI for reward for validator, 0.01 revokation reserved
+                        )
+
+                        const templateData = {
+                            "recipient": to,
+                            "content": ourWallet.content,
+                            "redirect": ourWallet.redirectUrl,
+                            "subject": ourWallet.subject,
+                            "contentType": (ourWallet.contentType || 'html'),
+                            "returnPath": ourWallet.returnPath
+                        }
+
+                        console.log('templateData',templateData)
+
+                        if (validatorPublicKeyData.type === 'default' || validatorPublicKeyData.type === 'delegated')  //we store a hash only(!) at the responsible validator - never on a fallback validator
+                            templateData.verifyLocalHash = getDataHash({data: (ourFrom + to)}); //verifyLocalHash = verifyLocalHash
+
+                        bitcore.encryptMessage(
+                            ourWallet.privateKey,
+                            validatorPublicKey.toString(),
+                            JSON.stringify(templateData)).then(async function (encryptedTemplateData) {
+                            console.log("encryptedTemplateData", encryptedTemplateData)
+
+                            await bitcore.broadcastTransaction(
                                 entry.nameId,
-                                entry.nameValue,
-                                validatorAddress,
-                                changeAddrress,
-                                ourPrivateKey,
-                                utxo, //here's the necessary utxos and the balance and change included
-                                bitcore.constants.NETWORK_FEE.btc, //for storing this record
-                                bitcore.constants.VALIDATOR_FEE.btc //0.01 for DOI storage, 0.01 DOI for reward for validator, 0.01 revokation reserved
-                            )
+                                txSignedSerialized,
+                                encryptedTemplateData,
+                                validatorPublicKey.toString()).then((response) => {
 
-                            const templateData = {
-                                "recipient": to,
-                                "content": ourWallet.content,
-                                "redirect": ourWallet.redirectUrl,
-                                "subject": ourWallet.subject,
-                                "contentType": (ourWallet.contentType || 'html'),
-                                "returnPath": ourWallet.returnPath
-                            }
+                                    const txid = getUTXOs(changeAddress,response,setUTXOs)
 
-                            console.log('templateData',templateData)
+                                    const msg = 'broadcasted doichain transaction to doichain node '
 
-                            if (validatorPublicKeyData.type === 'default' || validatorPublicKeyData.type === 'delegated')  //we store a hash only(!) at the responsible validator - never on a fallback validator
-                                templateData.verifyLocalHash = getDataHash({data: (ourFrom + to)}); //verifyLocalHash = verifyLocalHash
+                                    //TODO check if global state position gets updated here correctly other wise use global.position
+                                    const contact = {
+                                        requestedAt: new Date(),
+                                        email: to,
+                                        wallet: ourWallet.publicKey,
+                                        txId:txid,
+                                        nameId:entry.nameId,
+                                        validatorAddress:validatorAddress,
+                                        confirmed:false,
+                                        status: DOI_STATE_WAITING_FOR_CONFIRMATION,
+                                        tx: txSignedSerialized,
+                                        position: global.test
+                                    }
 
-                            bitcore.encryptMessage(
-                                ourWallet.privateKey,
-                                validatorPublicKey.toString(),
-                                JSON.stringify(templateData)).then(async function (encryptedTemplateData) {
-                                console.log("encryptedTemplateData", encryptedTemplateData)
+                                    contacts.push(contact)
+                                    setContacts(contacts)
 
-                                await bitcore.broadcastTransaction(
-                                    entry.nameId,
-                                    txSignedSerialized,
-                                    encryptedTemplateData,
-                                    validatorPublicKey.toString()).then((response) => {
+                                    setOpenError({open:true,msg:msg,type:'success'})
+                                    return "ok"
+                                }).catch((ex)=>{
 
-                                        console.log("response from broadcast",response)
-                                        console.log("storing position",global.position)
-                                        const txId = response.data
-                                        const msg = 'broadcasted doichain transaction to doichain node with  <br/> txId: '+txId
-
-                                        //TODO check if global state position gets updated here correctly other wise use global.position
-                                        const contact = {
-                                            requestedAt: new Date(),
-                                            email: to,
-                                            wallet: ourWallet.publicKey,
-                                            txId:txId,
-                                            nameId:entry.nameId,
-                                            validatorAddress:validatorAddress,
-                                            confirmed:false,
-                                            status: DOI_STATE_WAITING_FOR_CONFIRMATION,
-                                            tx: txSignedSerialized,
-                                            position: global.test
-                                        }
-
-                                        contacts.push(contact)
-                                        setContacts(contacts)
-
-                                        setOpenError({open:true,msg:msg,type:'success'})
-                                        return "ok"
-                                    }).catch((ex)=>{
-
-                                    const err = 'error while broadcasting transaction '
-                                    console.log(err,ex)
-                                    setOpenError({open:true,msg:err,type:'error'})
-                                    setButtonState('error')
-                                    throw err
-                                });
-                            }).catch(function (ex) {
-                                const err = 'error while encrypting message'
+                                const err = 'error while broadcasting transaction '
                                 console.log(err,ex)
                                 setOpenError({open:true,msg:err,type:'error'})
                                 setButtonState('error')
                                 throw err
-                            })
-                        }
+                            });
+                        }).catch(function (ex) {
+                            const err = 'error while encrypting message'
+                            console.log(err,ex)
+                            setOpenError({open:true,msg:err,type:'error'})
+                            setButtonState('error')
+                            throw err
+                        })
                     }).catch(function (ex) {
                         const err = 'error while getUTXOAndBalance'
                         console.log(err,ex)
@@ -233,12 +239,12 @@ const ContactForm = () => {
                                     values.position).then((response)=>{
 
                                         console.log('response was ok ',response)
-                                        setButtonState({buttonState: 'success'})
+                                        setButtonState('success')
                                         setSubmitting(false);
 
                                 }).then((response)=>{
                                         console.log('response was error',response)
-                                        setButtonState({buttonState: 'error'})
+                                        setButtonState('error')
                                         setSubmitting(false);
                                 })
             }}
