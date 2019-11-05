@@ -15,15 +15,17 @@ const WalletList = ({checked}) => {
     const global = useGlobal()
     const [ wallets, setWallets ] = useGlobal('wallets')
 
-    const handleDetail = (index) => {
-        const  currentGlobal = global;
-        currentGlobal.activeWallet = index
-        currentGlobal.modus = 'detail'
-        setGlobal(currentGlobal)
-        console.log('activeWallet now in global',global.activeWallet+"/"+global.modus)
-    }
 
-    const handleEdit = (index) => {
+   const handleDetail = (index) => {
+       const currentGlobal = global;
+       currentGlobal.activeWallet = index
+       currentGlobal.modus = 'detail'
+       setGlobal(currentGlobal)
+       console.log('activeWallet now in global', global.activeWallet + "/" + global.modus)
+   }
+
+
+        const handleEdit = (index) => {
        const  currentGlobal = global;
         currentGlobal.activeWallet = index
         currentGlobal.modus = 'edit'
@@ -39,6 +41,7 @@ const WalletList = ({checked}) => {
 
 
     const walletNode = global[0].wallets.map((item,index) => {
+
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>

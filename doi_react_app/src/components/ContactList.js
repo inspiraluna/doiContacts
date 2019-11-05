@@ -11,13 +11,22 @@ import FolderIcon from '@material-ui/icons/Folder'
 import CheckIcon from '@material-ui/icons/Check';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import verify from "bitcore-doichain/lib/doichain/verify";
-import {useGlobal} from "reactn";
+import {setGlobal, useGlobal} from "reactn";
 
 const ContactList = ({remove}) => {
 
 
-    const [wallets] = useGlobal("wallets")
+    const wallets = useGlobal('wallets')
     const [ contacts, setContacts ] = useGlobal('contacts')
+
+    const handleDetail = (index) => {
+        const currentGlobal = global;
+        currentGlobal.activeContact = index
+        currentGlobal.modus = 'detail'
+        setGlobal(currentGlobal)
+        console.log('activeContact now in global', global.activeContact + "/" + global.modus)
+    }
+
 
     const contactNode = contacts.map((contact, index) => {
 
@@ -46,7 +55,7 @@ const ContactList = ({remove}) => {
         })
 
         return (
-            <ListItem key={index}>
+            <ListItem key={index}  onClick={() => handleDetail(index)}>
                 <ListItemAvatar>
                     <Avatar>
                         <FolderIcon />

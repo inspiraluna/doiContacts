@@ -45,7 +45,7 @@ const App = () => {
 
     //bitcore.settings.setSettings(settings)
 
-    console.log(bitcore.settings.getSettings(),bitcore.getUrl())
+    console.log(bitcore.settings.getSettings(), bitcore.getUrl())
     register()
 
     const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
