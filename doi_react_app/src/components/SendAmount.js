@@ -242,7 +242,7 @@ return (
                 setButtonState('loading')
                 setSubmitting(true);
                 console.log('submitting values',values) //here we are just using the global (since the changeHandle do not fire
-                handleSendTransaction(global.toAddress,values.amount)
+                handleSendTransaction(values.toAddress,values.amount)
             }}
         >
             {({
