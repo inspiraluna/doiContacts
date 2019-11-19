@@ -18,8 +18,15 @@ const SendAmount = () => {
     const [amount2Send, setAmount2Send] = useState(0) //send amount
     const [toAddress, setToAddress] =  useGlobal("toAddress")  //useState('') //send amount
     const [ openError, setOpenError ] = useGlobal("errors")
+    const [ qrCode, setQrCode ] = useGlobal("qrCode")
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
+
+    if(global.qrCode){
+        console.log('we re having qr code inside ...',global.qrCode)
+        setToAddress(global.qrCode.substring(8))
+        setQrCode(undefined)
+    }
 
     const handleCancel = (e) => {
 
@@ -209,8 +216,6 @@ const Contents = ({scanning,walletName,address,toAddress,handleAmount2Send, prep
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
     const [modus, setModus] = useGlobal("modus")
-    //setButtonState('')
-    console.log("rerendering contents",scanning)
     if(scanning){
         return(<div style={{backgroundColor: 'transparent'}}></div>)
     }
@@ -277,11 +282,12 @@ return (
                     />
                     {errors.position && touched.position && errors.position}
                     <p>&nbsp;</p>
+                    <Button color={'primary'} variant="contained" onClick={() => document.location.href='scan.html'}>Scanner Page</Button>
                     <Button color={'primary'} variant="contained" onClick={() => prepareScan()}>Scan</Button>
                     <Button color={'primary'} variant="contained"  onClick={() => setModus('detail')}>Back</Button>
                     <ProgressButton type="submit" color={"primary"}
                                     state={global.buttonState}
-                                    disabled={isSubmitting}>Send Doichain Transaction</ProgressButton>
+                                    disabled={isSubmitting}>Send DOI</ProgressButton>
                 </form>
             )}
         </Formik>

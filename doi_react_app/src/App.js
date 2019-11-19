@@ -15,18 +15,25 @@ import {register} from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 import bitcore from "bitcore-doichain";
 
+const qrCode =  localStorage.getItem('qrCode')?localStorage.getItem('qrCode'):undefined
 const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
 const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
 const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):0
+const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):'list'
+const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
 
 setGlobal({contacts: initialContacts,
     wallets: initialWallets,
     errors: false,
     currentTab:initialCurrentTab,
     buttonState: '',
-    modus: 'list'})  //currentTab:initialCurrentTab*/
+    modus: initialModus,
+    activeWallet: initialActiveWallet,
+    qrCode: qrCode
+})
 
 const App = () => {
+
 /*
    const settings = {  //RegTest
         testnet:true,
@@ -48,7 +55,8 @@ const App = () => {
     console.log(bitcore.settings.getSettings(), bitcore.getUrl())
     register()
 
-    const [ currentTab, setCurrentTab ] = useGlobal("currentTab")
+
+    const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const [modus, setModus] = useGlobal("modus")
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
 
@@ -56,6 +64,8 @@ const App = () => {
         localStorage.setItem('contacts',JSON.stringify(global.contacts))
         localStorage.setItem('wallets',JSON.stringify(global.wallets))
         localStorage.setItem('currentTab',global.currentTab)
+        localStorage.setItem('modus',global.modus)
+        localStorage.setItem('activeWallet',global.activeWallet)
         return null;
     });
 

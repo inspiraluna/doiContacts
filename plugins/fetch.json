@@ -25,8 +25,8 @@
   },
   "cordova-plugin-qrscanner": {
     "source": {
-      "type": "registry",
-      "id": "cordova-plugin-qrscanner"
+      "type": "local",
+      "path": "/Users/nico/Documents/doi2cordova/node_modules/cordova-plugin-qrscanner"
     },
     "is_top_level": true,
     "variables": {}

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; connect-src *; child-src * 'self' blob: http: https: gap:;" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+    <link rel="stylesheet" type="text/css" href="scan.css">
+    <title>doiContacts Scan</title>
+</head>
+<body>
+<div class="app">
+    <div id="deviceready" class="blink">
+        <p class="event listening">Connecting to Device</p>
+        <p class="event received">Device is Ready</p>
+        <p><a id="prepare">QR prepare</a></p>
+        <p><a id="show">QR Show</a></p>
+        <p> <a id="scan">QR Scan</a></p>
+        <p> <a id="hide"><b>Hide</b></a></p>
+    </div>
+</div>
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="scan.js"></script>
+</body>
+</html>
