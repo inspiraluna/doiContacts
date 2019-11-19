@@ -282,7 +282,7 @@ return (
                     />
                     {errors.position && touched.position && errors.position}
                     <p>&nbsp;</p>
-                    <Button color={'primary'} variant="contained" onClick={() => document.location.href='scan.html'}>Scanner Page</Button>
+                    {/* <Button color={'primary'} variant="contained" onClick={() => document.location.href='scan.html'}>Scanner Page</Button> */}
                     <Button color={'primary'} variant="contained" onClick={() => prepareScan()}>Scan</Button>
                     <Button color={'primary'} variant="contained"  onClick={() => setModus('detail')}>Back</Button>
                     <ProgressButton type="submit" color={"primary"}
