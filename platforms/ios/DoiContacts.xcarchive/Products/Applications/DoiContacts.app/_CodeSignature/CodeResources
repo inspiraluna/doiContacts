@@ -102,15 +102,15 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		scebxF3HosNYExQWe9MxudJCX6A=
+		Gp8onm8Ifxk66ZcKawEVF2dckkA=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib/objects-13.0+.nib</key>
 		<data>
-		ddvhjz1vxCsmZc1iPAVurM0Ra5E=
+		YwGBpW7ESm9peyTY/5Skfes72U8=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib/runtime.nib</key>
 		<data>
-		Z6I2PINAdv2bVnz3Flz84vlauXs=
+		rnPVLR0aRCvTzJZWCwxYG8/mJQA=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
 		<data>
@@ -118,43 +118,43 @@
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib/objects-13.0+.nib</key>
 		<data>
-		o5TodTBhMfCrtPNHo3y+i2hMn68=
+		9MhJxoqEO0eVhcoH3GYx6m1p3ic=
 		</data>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib/runtime.nib</key>
 		<data>
-		oB+iMhXdoZ134eQm6iB7FsJ0bh8=
+		04g/2jZd9kH6MxBvsDEayXoWN7s=
 		</data>
 		<key>Frameworks/libswiftCore.dylib</key>
 		<data>
-		Inro8Q96nw4XJZ89PFstSRI6WIU=
+		o/ePScjxE2W2qoV2dq9eKZ26dGo=
 		</data>
 		<key>Frameworks/libswiftCoreFoundation.dylib</key>
 		<data>
-		dRmhR5V8RNu1Z/02ufhk5ui2QCM=
+		u3M4vX48y45VCfvSbAYQZ/+Wpx4=
 		</data>
 		<key>Frameworks/libswiftCoreGraphics.dylib</key>
 		<data>
-		zhS/Ur88rOr5rVWcxuBCaw49LyQ=
+		sOFR/cm2R8eZArhZHSKU/BZxVag=
 		</data>
 		<key>Frameworks/libswiftDarwin.dylib</key>
 		<data>
-		Dohkf/5n8a44A/F5pB1Nypk/1JE=
+		c9nFyNaEz/mtx/Rvga9Ru9z3qUM=
 		</data>
 		<key>Frameworks/libswiftDispatch.dylib</key>
 		<data>
-		P4i2JKXdgWuc2SEu3eMwYXFqWN4=
+		qTquIq51D+500U5msPLf0BQJnqc=
 		</data>
 		<key>Frameworks/libswiftFoundation.dylib</key>
 		<data>
-		4F5XewDE1wyXxUGfCI3CjEfFjck=
+		dJpIzqN9DDduR3oyhKNvEDwUi5Y=
 		</data>
 		<key>Frameworks/libswiftObjectiveC.dylib</key>
 		<data>
-		B+tIZ0m1exX820jQ1ffpTcAQZc8=
+		Ocqmm0xOsCdIck0hnjUQZIT4Jsk=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		oGuGMlzUzxg+jUiMjqYcJcTHwKA=
+		eu3D6HKusDfPSgFOyjkqlenpmxc=
 		</data>
 		<key>LaunchImage-1100-Landscape-2436h@3x.png</key>
 		<data>
@@ -230,11 +230,11 @@
 		</data>
 		<key>MainViewController.nib/objects-13.0+.nib</key>
 		<data>
-		SI89h5wZ5nmDUlUyHGM9flA6hNE=
+		I8gWavUPxlMHef/8oBZSXJHVoiI=
 		</data>
 		<key>MainViewController.nib/runtime.nib</key>
 		<data>
-		ZeRO9AC+toP0nmoWpD/FFQkq0Wk=
+		Sna4TDW2sKeplNYnwnqlAMeHJJk=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -242,7 +242,7 @@
 		</data>
 		<key>config.xml</key>
 		<data>
-		3MdP8j5hFFIoGrr+WM05rxmG7QA=
+		q5K48C9ig6COvdD7uSlgGydfVHg=
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
@@ -250,7 +250,7 @@
 		</data>
 		<key>www/asset-manifest.json</key>
 		<data>
-		Htxi5FW8yB0VYt/5vrE52ceLqSo=
+		WSxUv3FODpFRbRx3m2YeDjYIeZI=
 		</data>
 		<key>www/cordova-js-src/exec.js</key>
 		<data>
@@ -274,7 +274,7 @@
 		</data>
 		<key>www/cordova_plugins.js</key>
 		<data>
-		v31yB4mtKp/GL+++KkIazZG28mo=
+		T+5ZXHRb27u4LiYpYLZXyq3enIg=
 		</data>
 		<key>www/css/index.css</key>
 		<data>
@@ -290,7 +290,7 @@
 		</data>
 		<key>www/index.html</key>
 		<data>
-		5+QGV1G2GQhuHVkzfyKnwov0AyI=
+		YeBFR6tq0azmS4ok2WMUdNMyi5g=
 		</data>
 		<key>www/index_orig.html</key>
 		<data>
@@ -328,6 +328,18 @@
 		<data>
 		xd1PUlgwzLl4gphru/VGluqXqvg=
 		</data>
+		<key>www/plugins/cordova-plugin-nativestorage/www/LocalStorageHandle.js</key>
+		<data>
+		PZZqiz3Ikzq/qfHENPGoWnv6uUM=
+		</data>
+		<key>www/plugins/cordova-plugin-nativestorage/www/NativeStorageError.js</key>
+		<data>
+		BiXbCvbDnbSjrkuZOYvlENlmGEY=
+		</data>
+		<key>www/plugins/cordova-plugin-nativestorage/www/mainHandle.js</key>
+		<data>
+		wv0rjLtFyULO9p51ucsj36rgeWU=
+		</data>
 		<key>www/plugins/cordova-plugin-qrscanner/www/www.min.js</key>
 		<data>
 		ufmAW+h1oKmygvcqG3eipjK7YXo=
@@ -339,6 +351,10 @@
 		<key>www/precache-manifest.11e8ee6a689c286efa30551bf8a0702d.js</key>
 		<data>
 		AZtGpjBK03SgXF+InBPEXuRTgdA=
+		</data>
+		<key>www/precache-manifest.259ad8ab5d42ccbd83d5597ce6deb036.js</key>
+		<data>
+		kJMDntQNXObTAVMTRBwcbNQL4CA=
 		</data>
 		<key>www/precache-manifest.282e5fffb7064786562ec4c7d0ae8d05.js</key>
 		<data>
@@ -376,6 +392,10 @@
 		<data>
 		hOPYKwuEAtiDlj2A760wlkPNNOQ=
 		</data>
+		<key>www/precache-manifest.58e15e27796ca6f9f2320b1b964eb481.js</key>
+		<data>
+		35LPYEb4+s5ii23vMbNnkybHc6g=
+		</data>
 		<key>www/precache-manifest.5eae05555ba809a7261d414223c2ebd5.js</key>
 		<data>
 		u1LRnv4Spt2EbRauhQ8uPRguBy8=
@@ -384,6 +404,10 @@
 		<data>
 		cifIBr++xrf6yjBgfbD2cVl8a0Y=
 		</data>
+		<key>www/precache-manifest.689b0be0a18c77205e7fd3857cd75916.js</key>
+		<data>
+		PdKsh+8pOUt5letfU2p0XWQykzA=
+		</data>
 		<key>www/precache-manifest.718f8756b13c6e53f26a25b6484031b7.js</key>
 		<data>
 		JSZ/jLZyTdcnBE+b+kT0wVmEjWc=
@@ -391,6 +415,10 @@
 		<key>www/precache-manifest.7828d34f7a85614a8683a2a09f541f6a.js</key>
 		<data>
 		GICDoYr6go9zcm1OGWkSt4AzLgA=
+		</data>
+		<key>www/precache-manifest.7c95c161eba3f17f4da8c4fec6aca7de.js</key>
+		<data>
+		EUKffDu+LKEHQK/caEKyhcW6qk4=
 		</data>
 		<key>www/precache-manifest.8395a87c0a12ee1eca04387a78573352.js</key>
 		<data>
@@ -424,6 +452,10 @@
 		<data>
 		gt8htktGJ9jKznlihqm7TsB6xyA=
 		</data>
+		<key>www/precache-manifest.b1876b3bc857d647a6a4014fff1d5dec.js</key>
+		<data>
+		EQJoatmk+tJ7rjDGcUOvHTGMATg=
+		</data>
 		<key>www/precache-manifest.b827c5040ec6a6a3085317e6506fced0.js</key>
 		<data>
 		9y3jc4ivEWKR2hVC9A1P8a8zKio=
@@ -444,9 +476,17 @@
 		<data>
 		hwWIlgDnaNooKO5hdQLI8p6iWIk=
 		</data>
+		<key>www/precache-manifest.c6e9c3cc4206d6c6fa7aec365d16e068.js</key>
+		<data>
+		ZoheGqJsDLOklAr5ztI4gyFePQc=
+		</data>
 		<key>www/precache-manifest.c7a9206bf3f19d93d1a690e5364898c8.js</key>
 		<data>
 		gStpMayuflmGPB+1MmS423PqMDI=
+		</data>
+		<key>www/precache-manifest.d001db5bda95089e81c61bfeb7d056d3.js</key>
+		<data>
+		1CAII6dZWV3OfeY3+Iupp2D76fA=
 		</data>
 		<key>www/precache-manifest.d1f310593af3994ecf1058c30952b633.js</key>
 		<data>
@@ -476,6 +516,10 @@
 		<data>
 		8IQs8iHfIqNCsjVGvxyr14hLgBI=
 		</data>
+		<key>www/precache-manifest.f13429733ac6dae44b92d7d4f06e58b1.js</key>
+		<data>
+		6A/6dQRR9mopZ2/VEAPIhSrxbgY=
+		</data>
 		<key>www/precache-manifest.f5f8426e0e00cb0859740ee21b7edb14.js</key>
 		<data>
 		9OSFPdjXdvTq3ppwWsoWkOmyrm4=
@@ -483,6 +527,10 @@
 		<key>www/precache-manifest.f98e540339e42ba296a87d52b17d28aa.js</key>
 		<data>
 		1qNqUe8o7+wkqL+Bg+mvHaZ+UnY=
+		</data>
+		<key>www/precache-manifest.fa68591971cdd0b639ed3013ec81594e.js</key>
+		<data>
+		cLjfujNlk1spmvYqjxUrMVQEk3k=
 		</data>
 		<key>www/precache-manifest.fb3e52aa6ab538e231a14540a717f1ca.js</key>
 		<data>
@@ -510,7 +558,7 @@
 		</data>
 		<key>www/service-worker.js</key>
 		<data>
-		WhateVrHltwaPmTzXsYgruA9VTg=
+		PwGcPgsa5jpH5iM8o62wv5vBHuM=
 		</data>
 		<key>www/static/css/main.036ba63b.chunk.css</key>
 		<data>
@@ -536,6 +584,14 @@
 		<data>
 		vrhmCQgMRAGNBQsTLaiH37+Ktco=
 		</data>
+		<key>www/static/js/2.0e6d2ae9.chunk.js</key>
+		<data>
+		I8gdzcAtEXBqw5uGbffSznCireI=
+		</data>
+		<key>www/static/js/2.0e6d2ae9.chunk.js.map</key>
+		<data>
+		sF0yTzv6PqZC93fVFntuGzFER6Q=
+		</data>
 		<key>www/static/js/2.75375bb6.chunk.js</key>
 		<data>
 		ZaV4KRbNTl9bPwMNBFlJQXiNaR0=
@@ -551,6 +607,22 @@
 		<key>www/static/js/2.81d9fc45.chunk.js.map</key>
 		<data>
 		Coa2cI2jB+HRvrplEmgDnayOhKk=
+		</data>
+		<key>www/static/js/2.ac5d6639.chunk.js</key>
+		<data>
+		wDD4E2+mr3Y6lANZ/0G82p46vo8=
+		</data>
+		<key>www/static/js/2.ac5d6639.chunk.js.map</key>
+		<data>
+		FS/8KJBp7lovvzj/8WzYQaiTXcQ=
+		</data>
+		<key>www/static/js/2.b2c5b7a1.chunk.js</key>
+		<data>
+		a4oGxWz2pALBV0tAvj5QMeeHsuQ=
+		</data>
+		<key>www/static/js/2.b2c5b7a1.chunk.js.map</key>
+		<data>
+		EvrUm2nGbdr9Pxi17tjZ7UBEOl4=
 		</data>
 		<key>www/static/js/2.d9c3109f.chunk.js</key>
 		<data>
@@ -648,6 +720,14 @@
 		<data>
 		mx4RQb0nncG+hIrEKf+DRZ8SSOs=
 		</data>
+		<key>www/static/js/main.3652c445.chunk.js</key>
+		<data>
+		E1QzVRPJvJvZnE7jC/55Vydyhec=
+		</data>
+		<key>www/static/js/main.3652c445.chunk.js.map</key>
+		<data>
+		rBF0Nfq+HZK2if2oWj60R75/bdk=
+		</data>
 		<key>www/static/js/main.3a74bf7e.chunk.js</key>
 		<data>
 		zXwFIAbAxk1qhmVgSbIoOVkEH6Q=
@@ -688,6 +768,14 @@
 		<data>
 		RBj5vKQjkHPIqZnsLer/uhNYiFs=
 		</data>
+		<key>www/static/js/main.4cc12ade.chunk.js</key>
+		<data>
+		5LBL2/xzqSPSeZYesFbgDIoD7kg=
+		</data>
+		<key>www/static/js/main.4cc12ade.chunk.js.map</key>
+		<data>
+		Egjr06n2moyqrTr8HmYkdfYMYaE=
+		</data>
 		<key>www/static/js/main.54afb318.chunk.js</key>
 		<data>
 		Jgds2Phw6StXumzSUDoJmmDlu9g=
@@ -695,6 +783,14 @@
 		<key>www/static/js/main.54afb318.chunk.js.map</key>
 		<data>
 		c6DAE4xHD/UfdZlxHUaunAcYqfg=
+		</data>
+		<key>www/static/js/main.577d20e8.chunk.js</key>
+		<data>
+		orkbYZFh8XOZatxBJaXLXZepU8I=
+		</data>
+		<key>www/static/js/main.577d20e8.chunk.js.map</key>
+		<data>
+		MNgZMalaI21KD6Q9A0uLn3JfS+k=
 		</data>
 		<key>www/static/js/main.5fe2ca62.chunk.js</key>
 		<data>
@@ -711,6 +807,14 @@
 		<key>www/static/js/main.63f73dbe.chunk.js.map</key>
 		<data>
 		8epYyOeQ4FIP2Ko/n+7qA2hUEnM=
+		</data>
+		<key>www/static/js/main.65efa71b.chunk.js</key>
+		<data>
+		xg4LziYP+oEbWhR+qjzrekgMsLI=
+		</data>
+		<key>www/static/js/main.65efa71b.chunk.js.map</key>
+		<data>
+		PXqHIXdArO5n1k/I7ItvH1w/Vy4=
 		</data>
 		<key>www/static/js/main.67395781.chunk.js</key>
 		<data>
@@ -736,6 +840,22 @@
 		<data>
 		ZU3LjtsvASWUeueahm0KGdxmzgM=
 		</data>
+		<key>www/static/js/main.97ee0826.chunk.js</key>
+		<data>
+		bCULLf27eAx5yb9+9J9cQriiQwE=
+		</data>
+		<key>www/static/js/main.97ee0826.chunk.js.map</key>
+		<data>
+		BSetcUL+ZHfBDOraOWdNosRytGs=
+		</data>
+		<key>www/static/js/main.a2b719c9.chunk.js</key>
+		<data>
+		cJMbHIoK4SjY0+s1PliCe4Z5ruA=
+		</data>
+		<key>www/static/js/main.a2b719c9.chunk.js.map</key>
+		<data>
+		ynD4JB7y0Y4SCn9m5oPuWC7MC0Q=
+		</data>
 		<key>www/static/js/main.ae5cb40c.chunk.js</key>
 		<data>
 		r0z5klErA4WxTj+2xiAEeWanZH8=
@@ -743,6 +863,14 @@
 		<key>www/static/js/main.ae5cb40c.chunk.js.map</key>
 		<data>
 		F6s0MRDrnvecDSRqlKDks2Qe3lE=
+		</data>
+		<key>www/static/js/main.c01490b9.chunk.js</key>
+		<data>
+		+BQKIl/Giu+j6G2bm0iyONYxnes=
+		</data>
+		<key>www/static/js/main.c01490b9.chunk.js.map</key>
+		<data>
+		ryDOx1FkuzGgAO5Frys1+wUgu74=
 		</data>
 		<key>www/static/js/main.c3e07807.chunk.js</key>
 		<data>
@@ -791,6 +919,22 @@
 		<key>www/static/js/main.e1a0990f.chunk.js.map</key>
 		<data>
 		kG8lBhw5x0VaJIYzndvx7VZe5mo=
+		</data>
+		<key>www/static/js/main.e35978a6.chunk.js</key>
+		<data>
+		zpiwuXxCgdkkKG9XgjmTGqOTTj8=
+		</data>
+		<key>www/static/js/main.e35978a6.chunk.js.map</key>
+		<data>
+		PIX73oqyzpXV/C809/RKFiZ2miM=
+		</data>
+		<key>www/static/js/main.e3c09d6e.chunk.js</key>
+		<data>
+		DGSO9IuSmjqT0guNPQ6177dJP2s=
+		</data>
+		<key>www/static/js/main.e3c09d6e.chunk.js.map</key>
+		<data>
+		VobddtMeT/GN1I9RivK2Y3AQofU=
 		</data>
 		<key>www/static/js/main.e4e3dce9.chunk.js</key>
 		<data>
@@ -1103,33 +1247,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			scebxF3HosNYExQWe9MxudJCX6A=
+			Gp8onm8Ifxk66ZcKawEVF2dckkA=
 			</data>
 			<key>hash2</key>
 			<data>
-			7x8/vwQ7HUALbhEYpTJsDjgUFrJMGXYgVQ5Ff5xMbBk=
+			sfSq7NR0vLy/i8EezMxtwT0ikWuTqqtymFAXmN9GEAM=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib/objects-13.0+.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ddvhjz1vxCsmZc1iPAVurM0Ra5E=
+			YwGBpW7ESm9peyTY/5Skfes72U8=
 			</data>
 			<key>hash2</key>
 			<data>
-			jiKrFX7Lhyzkt2lQMSl001Wz1pspx1ATolyw0531XOg=
+			bkdWPftXxoeg5n/DI40rKhhhh7CI8pqYp0D4+uXT4g4=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Z6I2PINAdv2bVnz3Flz84vlauXs=
+			rnPVLR0aRCvTzJZWCwxYG8/mJQA=
 			</data>
 			<key>hash2</key>
 			<data>
-			+Q2retLjDHnf2aFhoWYZs9k4I40SvoJ2/z5ONRXVa20=
+			J5uZIvivy6phySxvAjrRr6ZnyDeC4ISe2g2PoSLi4rM=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/Info.plist</key>
@@ -1147,99 +1291,99 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			o5TodTBhMfCrtPNHo3y+i2hMn68=
+			9MhJxoqEO0eVhcoH3GYx6m1p3ic=
 			</data>
 			<key>hash2</key>
 			<data>
-			W6taFH2rbpxmMM7krARvqJFoyCQ5IFUNmy4EEivIJU0=
+			NxWm5s0MfVVCq6hhilvsEbK+f4nyripuR1YzIynQTHI=
 			</data>
 		</dict>
 		<key>CDVLaunchScreen.storyboardc/UIViewController-01J-lp-oVM.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oB+iMhXdoZ134eQm6iB7FsJ0bh8=
+			04g/2jZd9kH6MxBvsDEayXoWN7s=
 			</data>
 			<key>hash2</key>
 			<data>
-			KO1MNVkbiYJiMbG16pWoy2eLu0vlHQnUfRxcGAXtjpI=
+			1C91S1V0de7tQzMYugmNtPSdpywMZn2b/FQnDKVli+8=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftCore.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Inro8Q96nw4XJZ89PFstSRI6WIU=
+			o/ePScjxE2W2qoV2dq9eKZ26dGo=
 			</data>
 			<key>hash2</key>
 			<data>
-			Hql2qDN4LbmbhEHgsM8/X3M7Du+tcNF3gVzSzGe85cE=
+			Azhu8Wqvs/QBqi4j9eVDjrvfw5ZmF7QWsdO8lNg5FXc=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftCoreFoundation.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			dRmhR5V8RNu1Z/02ufhk5ui2QCM=
+			u3M4vX48y45VCfvSbAYQZ/+Wpx4=
 			</data>
 			<key>hash2</key>
 			<data>
-			N9PFDRkQOTCiSNe92pHuwIhz6tk5rRvxFHMIpV8nJxk=
+			TtY32uAL0fyuI5lwynotHLC1DR8WPkwOXSvmouVgIys=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftCoreGraphics.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			zhS/Ur88rOr5rVWcxuBCaw49LyQ=
+			sOFR/cm2R8eZArhZHSKU/BZxVag=
 			</data>
 			<key>hash2</key>
 			<data>
-			3H2uuFyr/bE57szN7aiqHlnljwK72OlSD5kN9y7UrPk=
+			5ksnlMJGxbFPnNusJUPG27nSsfdk/ocwDH4c0h54EEQ=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftDarwin.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			Dohkf/5n8a44A/F5pB1Nypk/1JE=
+			c9nFyNaEz/mtx/Rvga9Ru9z3qUM=
 			</data>
 			<key>hash2</key>
 			<data>
-			IEuSEzZjhy+hbpTbXyXB5KlYGvMmLI26vn/O3Ttu5r4=
+			aTz4rHqZONHC4oxVGR/w3SlldBL+srDaiiBHE/Ha0pE=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftDispatch.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			P4i2JKXdgWuc2SEu3eMwYXFqWN4=
+			qTquIq51D+500U5msPLf0BQJnqc=
 			</data>
 			<key>hash2</key>
 			<data>
-			3AVljqvEKIGHxMk6pXbWkijOoeJ4Swih9+3sfimlS4I=
+			1snvtQ2lqARqUM5GY8yV+GRsMZL0kMI8xBoOHvgLoQ8=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftFoundation.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			4F5XewDE1wyXxUGfCI3CjEfFjck=
+			dJpIzqN9DDduR3oyhKNvEDwUi5Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			xMjcRyyT6BaqBwu7gUad22HdBhYQwpi+mm3vHWsA5PY=
+			C1BmaJNa8VK/IaNYogPUReEF33RK6NucNiUPQL0j4kg=
 			</data>
 		</dict>
 		<key>Frameworks/libswiftObjectiveC.dylib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			B+tIZ0m1exX820jQ1ffpTcAQZc8=
+			Ocqmm0xOsCdIck0hnjUQZIT4Jsk=
 			</data>
 			<key>hash2</key>
 			<data>
-			+ztUabNLwt5yvSgNP1nrU5rjsXFmWETbsVD2npICkFo=
+			aoEwybkshzr2gloBTmUUgHkYBxeNnGOnIRSf/BZbH/Y=
 			</data>
 		</dict>
 		<key>LaunchImage-1100-Landscape-2436h@3x.png</key>
@@ -1444,33 +1588,33 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			SI89h5wZ5nmDUlUyHGM9flA6hNE=
+			I8gWavUPxlMHef/8oBZSXJHVoiI=
 			</data>
 			<key>hash2</key>
 			<data>
-			m8+kslIhlINOSRhAN4474Pe0inCl4SyP0b08x04Ogck=
+			TrtbHe0dHGV5FTKs+gABnjMZXfG32oDRByQ9jea6wDo=
 			</data>
 		</dict>
 		<key>MainViewController.nib/runtime.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ZeRO9AC+toP0nmoWpD/FFQkq0Wk=
+			Sna4TDW2sKeplNYnwnqlAMeHJJk=
 			</data>
 			<key>hash2</key>
 			<data>
-			rYB6jfq38a654AQqifTRZIZ4crIob5TmzbufRpEnpgU=
+			u7Y+u0y7ywMEHPmtiKtUwkAH7/9AAVbtDHI2FANeJgo=
 			</data>
 		</dict>
 		<key>config.xml</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			3MdP8j5hFFIoGrr+WM05rxmG7QA=
+			q5K48C9ig6COvdD7uSlgGydfVHg=
 			</data>
 			<key>hash2</key>
 			<data>
-			tpX9pc2DhFhUjoCEZY5jBMEOqTVW/3yapnAknEn0Cbs=
+			ELO1b8gmi0r2pFF99nK0VIKeBW/iBBEXdzfW0/sbazE=
 			</data>
 		</dict>
 		<key>embedded.mobileprovision</key>
@@ -1488,11 +1632,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Htxi5FW8yB0VYt/5vrE52ceLqSo=
+			WSxUv3FODpFRbRx3m2YeDjYIeZI=
 			</data>
 			<key>hash2</key>
 			<data>
-			PaRJMbc3s4gFG7OU27OTKbouShv3QQDDFlitIffRlSg=
+			91UE8LFnKVb2jNy6FYhOYG5iCkv28HrVXbbl8RVZnoA=
 			</data>
 		</dict>
 		<key>www/cordova-js-src/exec.js</key>
@@ -1554,11 +1698,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			v31yB4mtKp/GL+++KkIazZG28mo=
+			T+5ZXHRb27u4LiYpYLZXyq3enIg=
 			</data>
 			<key>hash2</key>
 			<data>
-			nyT9jLG/NTKz2MEH8vtNjm4coV8C3asMoswCT97YA7A=
+			WeI+MYrw+r6xhTimsNwzWdcD6bfqCMNIDkKI8FSO1ls=
 			</data>
 		</dict>
 		<key>www/css/index.css</key>
@@ -1598,11 +1742,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			5+QGV1G2GQhuHVkzfyKnwov0AyI=
+			YeBFR6tq0azmS4ok2WMUdNMyi5g=
 			</data>
 			<key>hash2</key>
 			<data>
-			RJMwMWvClCD48EG+cTaZZK2njatJtNLWKBepgKqHPvM=
+			BOsJjYTTzCzMJG9oIg6PBGkp9ClfwBFkEFgSq5MRXbc=
 			</data>
 		</dict>
 		<key>www/index_orig.html</key>
@@ -1704,6 +1848,39 @@
 			v22skvbiN2CQ1u+mi67mwi3DaHJqHEjkWxMTw7y6L64=
 			</data>
 		</dict>
+		<key>www/plugins/cordova-plugin-nativestorage/www/LocalStorageHandle.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PZZqiz3Ikzq/qfHENPGoWnv6uUM=
+			</data>
+			<key>hash2</key>
+			<data>
+			s4MrOvDgh6lkdZkIEwOvVeA5SYvfPnpMnTOsTO5Mo2M=
+			</data>
+		</dict>
+		<key>www/plugins/cordova-plugin-nativestorage/www/NativeStorageError.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			BiXbCvbDnbSjrkuZOYvlENlmGEY=
+			</data>
+			<key>hash2</key>
+			<data>
+			6FqtlZJjmja522AePg3/fzqppp36JACg7HCPoRF0//A=
+			</data>
+		</dict>
+		<key>www/plugins/cordova-plugin-nativestorage/www/mainHandle.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			wv0rjLtFyULO9p51ucsj36rgeWU=
+			</data>
+			<key>hash2</key>
+			<data>
+			iQIB1PjCikXDbasXkThsdfjNPdTcDDDQMdpyGHe3bU8=
+			</data>
+		</dict>
 		<key>www/plugins/cordova-plugin-qrscanner/www/www.min.js</key>
 		<dict>
 			<key>hash</key>
@@ -1735,6 +1912,17 @@
 			<key>hash2</key>
 			<data>
 			aebId8OysY1F8F0EMx6BDu0yNTG1PmJJP3EDKq9kv0c=
+			</data>
+		</dict>
+		<key>www/precache-manifest.259ad8ab5d42ccbd83d5597ce6deb036.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			kJMDntQNXObTAVMTRBwcbNQL4CA=
+			</data>
+			<key>hash2</key>
+			<data>
+			mbwaJR9rKp59rfBZfAevuT+WIRpEOIvtQyJCYArGuYk=
 			</data>
 		</dict>
 		<key>www/precache-manifest.282e5fffb7064786562ec4c7d0ae8d05.js</key>
@@ -1836,6 +2024,17 @@
 			TGOFMrblu04PmG+z/iNaCRW3vOT9Wrvdirw1cgAIvjs=
 			</data>
 		</dict>
+		<key>www/precache-manifest.58e15e27796ca6f9f2320b1b964eb481.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			35LPYEb4+s5ii23vMbNnkybHc6g=
+			</data>
+			<key>hash2</key>
+			<data>
+			At93LQq+q6ClIlflPaSdvSXPR7CaVj6XvVTYxGk0eCU=
+			</data>
+		</dict>
 		<key>www/precache-manifest.5eae05555ba809a7261d414223c2ebd5.js</key>
 		<dict>
 			<key>hash</key>
@@ -1858,6 +2057,17 @@
 			17oza1PwgewW1kziw3Ft/ZxKPcAJhz3uGn/drW9I2KE=
 			</data>
 		</dict>
+		<key>www/precache-manifest.689b0be0a18c77205e7fd3857cd75916.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PdKsh+8pOUt5letfU2p0XWQykzA=
+			</data>
+			<key>hash2</key>
+			<data>
+			gA+1HmaKDbJSpugQse6WuQfbsvrv5Ccwn+S+5OVBPHI=
+			</data>
+		</dict>
 		<key>www/precache-manifest.718f8756b13c6e53f26a25b6484031b7.js</key>
 		<dict>
 			<key>hash</key>
@@ -1878,6 +2088,17 @@
 			<key>hash2</key>
 			<data>
 			+BuURnMQZ02Q9GizJWs0ZCHU8d6OU7qTPzfqxkycW6c=
+			</data>
+		</dict>
+		<key>www/precache-manifest.7c95c161eba3f17f4da8c4fec6aca7de.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			EUKffDu+LKEHQK/caEKyhcW6qk4=
+			</data>
+			<key>hash2</key>
+			<data>
+			QvENWkdnpTtvqN2lAGP7GbQQCi3EzoCgagerj7bDl4E=
 			</data>
 		</dict>
 		<key>www/precache-manifest.8395a87c0a12ee1eca04387a78573352.js</key>
@@ -1968,6 +2189,17 @@
 			8SIy/cONarE7+kaGgMnKnTm7Z89Ou7xYGQE/bm/DK/M=
 			</data>
 		</dict>
+		<key>www/precache-manifest.b1876b3bc857d647a6a4014fff1d5dec.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			EQJoatmk+tJ7rjDGcUOvHTGMATg=
+			</data>
+			<key>hash2</key>
+			<data>
+			CmWvkcnLdgLruM9c/V2GMqnFCVDZ/n1DJ6l10HZwPJQ=
+			</data>
+		</dict>
 		<key>www/precache-manifest.b827c5040ec6a6a3085317e6506fced0.js</key>
 		<dict>
 			<key>hash</key>
@@ -2023,6 +2255,17 @@
 			puS7ilgp8IX7/l3TBsD0Bp/icvW8GbRBKzuqkTWgSG8=
 			</data>
 		</dict>
+		<key>www/precache-manifest.c6e9c3cc4206d6c6fa7aec365d16e068.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ZoheGqJsDLOklAr5ztI4gyFePQc=
+			</data>
+			<key>hash2</key>
+			<data>
+			oD6KRJCJLvYLw8nDsdn9e7X7FNPhLwcqR++dVwMgQB0=
+			</data>
+		</dict>
 		<key>www/precache-manifest.c7a9206bf3f19d93d1a690e5364898c8.js</key>
 		<dict>
 			<key>hash</key>
@@ -2032,6 +2275,17 @@
 			<key>hash2</key>
 			<data>
 			dE2xz29y8XLhYFEDlEI36M+R6uQlFIUbWdHZ3k+LtPk=
+			</data>
+		</dict>
+		<key>www/precache-manifest.d001db5bda95089e81c61bfeb7d056d3.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			1CAII6dZWV3OfeY3+Iupp2D76fA=
+			</data>
+			<key>hash2</key>
+			<data>
+			Q1TEAoz93sITAe7reyEyxBJvaWvdEsXzN/AE2o0fdZo=
 			</data>
 		</dict>
 		<key>www/precache-manifest.d1f310593af3994ecf1058c30952b633.js</key>
@@ -2111,6 +2365,17 @@
 			511KlIBRQC24Kx3/l7+yfP3Q28s+HP/L+NpSmi+EJUo=
 			</data>
 		</dict>
+		<key>www/precache-manifest.f13429733ac6dae44b92d7d4f06e58b1.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			6A/6dQRR9mopZ2/VEAPIhSrxbgY=
+			</data>
+			<key>hash2</key>
+			<data>
+			xtOhLNXCCA4kuWb5K8jMZ6WjR7UOc6p64+vpKac0jiE=
+			</data>
+		</dict>
 		<key>www/precache-manifest.f5f8426e0e00cb0859740ee21b7edb14.js</key>
 		<dict>
 			<key>hash</key>
@@ -2131,6 +2396,17 @@
 			<key>hash2</key>
 			<data>
 			DVfDEdRJPQpcvYMnBzAFYcPjlFQWh3i8ikr4dgoTmXo=
+			</data>
+		</dict>
+		<key>www/precache-manifest.fa68591971cdd0b639ed3013ec81594e.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			cLjfujNlk1spmvYqjxUrMVQEk3k=
+			</data>
+			<key>hash2</key>
+			<data>
+			Y70FFckxsoCeBHM6HDZ2Pg6gYdXwY51jd2abVN+P77s=
 			</data>
 		</dict>
 		<key>www/precache-manifest.fb3e52aa6ab538e231a14540a717f1ca.js</key>
@@ -2203,11 +2479,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			WhateVrHltwaPmTzXsYgruA9VTg=
+			PwGcPgsa5jpH5iM8o62wv5vBHuM=
 			</data>
 			<key>hash2</key>
 			<data>
-			T0e+/Z+N/h2uF6zFBiSo+mUaKvvSGB2oDvJxeIlhwJQ=
+			KOnshF8wIslb+22dzxjIqdZ5N1LyOG6617hSzdXgSm8=
 			</data>
 		</dict>
 		<key>www/static/css/main.036ba63b.chunk.css</key>
@@ -2276,6 +2552,28 @@
 			KgcVeDpPmkHcY5Rh8MdLeXjBDwVfkuw0olIcErXgD0k=
 			</data>
 		</dict>
+		<key>www/static/js/2.0e6d2ae9.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			I8gdzcAtEXBqw5uGbffSznCireI=
+			</data>
+			<key>hash2</key>
+			<data>
+			Y4MmLteq00j6ImRJ7cQni5P3Ftzqto+NDTbBcBT1ImE=
+			</data>
+		</dict>
+		<key>www/static/js/2.0e6d2ae9.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sF0yTzv6PqZC93fVFntuGzFER6Q=
+			</data>
+			<key>hash2</key>
+			<data>
+			br6XOKhcOFP6rZdgyB41hLmqnu8MISCYAsqZU3l3vp8=
+			</data>
+		</dict>
 		<key>www/static/js/2.75375bb6.chunk.js</key>
 		<dict>
 			<key>hash</key>
@@ -2318,6 +2616,50 @@
 			<key>hash2</key>
 			<data>
 			7dKtbljCQiYjzqkkiRdofcwBWGbPqnJ6M2VzxLOhq84=
+			</data>
+		</dict>
+		<key>www/static/js/2.ac5d6639.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			wDD4E2+mr3Y6lANZ/0G82p46vo8=
+			</data>
+			<key>hash2</key>
+			<data>
+			FULoTTk2FsTeAmWEUlxwzNww7IV3Io0yRkHCU5r6P8Q=
+			</data>
+		</dict>
+		<key>www/static/js/2.ac5d6639.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			FS/8KJBp7lovvzj/8WzYQaiTXcQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			6vU+IFHmZRNgtAjzGbx4XSPWy4WkI2VuFxU0nNlqpek=
+			</data>
+		</dict>
+		<key>www/static/js/2.b2c5b7a1.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			a4oGxWz2pALBV0tAvj5QMeeHsuQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			kC9HGjAtIyfHPRimzuntnqkJ0tr3pU53ZyE8P9nDHQ4=
+			</data>
+		</dict>
+		<key>www/static/js/2.b2c5b7a1.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			EvrUm2nGbdr9Pxi17tjZ7UBEOl4=
+			</data>
+			<key>hash2</key>
+			<data>
+			TwDLaIG2/0176cAhhzcYHwLofptzH25gG375GUD4pxU=
 			</data>
 		</dict>
 		<key>www/static/js/2.d9c3109f.chunk.js</key>
@@ -2584,6 +2926,28 @@
 			m6SNW5FFjetIoyLGuiKfXtCCj5fPWCA/hLznp4MdoFc=
 			</data>
 		</dict>
+		<key>www/static/js/main.3652c445.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			E1QzVRPJvJvZnE7jC/55Vydyhec=
+			</data>
+			<key>hash2</key>
+			<data>
+			f3nv9++49Aj6ejsUtCKChLEolZ3NM5AcqzQRq5PKD8E=
+			</data>
+		</dict>
+		<key>www/static/js/main.3652c445.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			rBF0Nfq+HZK2if2oWj60R75/bdk=
+			</data>
+			<key>hash2</key>
+			<data>
+			SMlf4qrwp9/mM5DU92UVt7iOXgX+O0xG6mosJTlcH8A=
+			</data>
+		</dict>
 		<key>www/static/js/main.3a74bf7e.chunk.js</key>
 		<dict>
 			<key>hash</key>
@@ -2694,6 +3058,28 @@
 			iJtueYaCU+fJJot67uVLBClyeL0xRpUioAarcYzcHIk=
 			</data>
 		</dict>
+		<key>www/static/js/main.4cc12ade.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			5LBL2/xzqSPSeZYesFbgDIoD7kg=
+			</data>
+			<key>hash2</key>
+			<data>
+			NLzUJWn2hsnq+Np8EWIBVEiFSX7VedH6mZi3weA6jYg=
+			</data>
+		</dict>
+		<key>www/static/js/main.4cc12ade.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			Egjr06n2moyqrTr8HmYkdfYMYaE=
+			</data>
+			<key>hash2</key>
+			<data>
+			V1zAXXxXNPqmTrQmZDAQH8x46Bapo8ltgRY0FLPChg8=
+			</data>
+		</dict>
 		<key>www/static/js/main.54afb318.chunk.js</key>
 		<dict>
 			<key>hash</key>
@@ -2714,6 +3100,28 @@
 			<key>hash2</key>
 			<data>
 			bNW1iBV1lCeiiMJlfOrhWbqBktbr+3Wl8y+8cKLPlE0=
+			</data>
+		</dict>
+		<key>www/static/js/main.577d20e8.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			orkbYZFh8XOZatxBJaXLXZepU8I=
+			</data>
+			<key>hash2</key>
+			<data>
+			o5WafBhwNZTKu7zVw1GgKbzq3YwaYYZNHiC/LZALWn8=
+			</data>
+		</dict>
+		<key>www/static/js/main.577d20e8.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			MNgZMalaI21KD6Q9A0uLn3JfS+k=
+			</data>
+			<key>hash2</key>
+			<data>
+			ZsAL8A/SIhf7vH5pUk/GnnSLPHAPcdoOuSB4LXIifyQ=
 			</data>
 		</dict>
 		<key>www/static/js/main.5fe2ca62.chunk.js</key>
@@ -2758,6 +3166,28 @@
 			<key>hash2</key>
 			<data>
 			0lhPsTnImwMOv5L3rjdW9aochobHwkL6TNQqzUWZNZo=
+			</data>
+		</dict>
+		<key>www/static/js/main.65efa71b.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			xg4LziYP+oEbWhR+qjzrekgMsLI=
+			</data>
+			<key>hash2</key>
+			<data>
+			Rr7RQklqabI5I8i32GS+81F4qk17DQ09a8+N7bcPaig=
+			</data>
+		</dict>
+		<key>www/static/js/main.65efa71b.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PXqHIXdArO5n1k/I7ItvH1w/Vy4=
+			</data>
+			<key>hash2</key>
+			<data>
+			EEX1jYAlKRV+pofVljA107t38wc2iq8/YmmhJ1Oedoo=
 			</data>
 		</dict>
 		<key>www/static/js/main.67395781.chunk.js</key>
@@ -2826,6 +3256,50 @@
 			9kfCcnxZI2QrpjaFdxwU4clQvD7iPLv+3xMGjVCzy/Y=
 			</data>
 		</dict>
+		<key>www/static/js/main.97ee0826.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			bCULLf27eAx5yb9+9J9cQriiQwE=
+			</data>
+			<key>hash2</key>
+			<data>
+			ClSUmto9M+dtmleyPSyjQ7AxJxVg4grj/RUc6VUMcIo=
+			</data>
+		</dict>
+		<key>www/static/js/main.97ee0826.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			BSetcUL+ZHfBDOraOWdNosRytGs=
+			</data>
+			<key>hash2</key>
+			<data>
+			nqtR8CUd4w33DMkgBvCYYieWbwOrC+U6aa/Z6A6QjJI=
+			</data>
+		</dict>
+		<key>www/static/js/main.a2b719c9.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			cJMbHIoK4SjY0+s1PliCe4Z5ruA=
+			</data>
+			<key>hash2</key>
+			<data>
+			yMAzkLKpH1T0n0bAVhZSlDGKve1W4tThxbJxHSR6B0g=
+			</data>
+		</dict>
+		<key>www/static/js/main.a2b719c9.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ynD4JB7y0Y4SCn9m5oPuWC7MC0Q=
+			</data>
+			<key>hash2</key>
+			<data>
+			Xj6YaVSZeHQqXeWBZr/7PqZjMCJNje5nW2WSNDe6fSI=
+			</data>
+		</dict>
 		<key>www/static/js/main.ae5cb40c.chunk.js</key>
 		<dict>
 			<key>hash</key>
@@ -2846,6 +3320,28 @@
 			<key>hash2</key>
 			<data>
 			Df/OOANOXYia3LaG1ubwHfliQGuCchcKG3DiRLp83k8=
+			</data>
+		</dict>
+		<key>www/static/js/main.c01490b9.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			+BQKIl/Giu+j6G2bm0iyONYxnes=
+			</data>
+			<key>hash2</key>
+			<data>
+			qWNWV17gerBKnbI/yGYW5A2SlHQjsBnuJcfbAAf8Di0=
+			</data>
+		</dict>
+		<key>www/static/js/main.c01490b9.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ryDOx1FkuzGgAO5Frys1+wUgu74=
+			</data>
+			<key>hash2</key>
+			<data>
+			ppRJqYhgorWvAlXxCrcIbv0hiOekrQqpgY5grSNO34E=
 			</data>
 		</dict>
 		<key>www/static/js/main.c3e07807.chunk.js</key>
@@ -2978,6 +3474,50 @@
 			<key>hash2</key>
 			<data>
 			nxR5xW1nr4RsVw7Hp1ay9bPBo7du2UlpoNdbpv6slTs=
+			</data>
+		</dict>
+		<key>www/static/js/main.e35978a6.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			zpiwuXxCgdkkKG9XgjmTGqOTTj8=
+			</data>
+			<key>hash2</key>
+			<data>
+			z7PX5RpcJam3lMCYzJbMa4zzg5OjBKq5xC7Nebzig6Y=
+			</data>
+		</dict>
+		<key>www/static/js/main.e35978a6.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PIX73oqyzpXV/C809/RKFiZ2miM=
+			</data>
+			<key>hash2</key>
+			<data>
+			DhD9SxPArJDq7bT2oIYsdVo//oxYj5QFo6OWLGXL514=
+			</data>
+		</dict>
+		<key>www/static/js/main.e3c09d6e.chunk.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			DGSO9IuSmjqT0guNPQ6177dJP2s=
+			</data>
+			<key>hash2</key>
+			<data>
+			Iuq/NsM9Ui5NS47uEvtr+aTNIfbP/nfiI+m7sTPGi28=
+			</data>
+		</dict>
+		<key>www/static/js/main.e3c09d6e.chunk.js.map</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			VobddtMeT/GN1I9RivK2Y3AQofU=
+			</data>
+			<key>hash2</key>
+			<data>
+			odpn61eX4soKrS8hKuaaUcI/HU61eZ4ISnnndWP+FLo=
 			</data>
 		</dict>
 		<key>www/static/js/main.e4e3dce9.chunk.js</key>

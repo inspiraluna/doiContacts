@@ -17,7 +17,9 @@
     "cordova-browser": "^6.0.0",
     "cordova-ios": "^5.0.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-qrscanner": "file:../cordova-plugin-qrscanner"
   },
   "devDependencies": {
@@ -28,12 +30,14 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-qrscanner": {}
+      "cordova-plugin-qrscanner": {},
+      "cordova-plugin-nativestorage": {},
+      "cordova-plugin-device": {}
     },
     "platforms": [
-      "android",
       "browser",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }

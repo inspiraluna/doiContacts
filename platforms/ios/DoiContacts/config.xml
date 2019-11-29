@@ -25,6 +25,12 @@
     <feature name="QRScanner">
         <param name="ios-package" value="QRScanner" />
     </feature>
+    <feature name="NativeStorage">
+        <param name="ios-package" value="NativeStorage" />
+    </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
     <name>DoiContacts</name>
     <description>
        Request qualified email permissions via Doichain blockchain

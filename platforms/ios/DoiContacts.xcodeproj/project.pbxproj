@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0207DA571B56EA530066E2B4 /* Images.xcassets */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
@@ -17,6 +16,8 @@
 		827CD84443E848C5A9E662B1 /* QRScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8CC5858102482ABB93F766 /* QRScanner.swift */; };
 		AD7F68F80806406EBB10E9F2 /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 49BA09C637614E10997AD04E /* CDVLocation.m */; };
 		B5464E082E9E44F2B743C791 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722CB118E8FC43139BCF174B /* CoreLocation.framework */; };
+		B6EF109403D34459B3265D73 /* NativeStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 033BDD6FA03744CBB71C6BB0 /* NativeStorage.m */; };
+		DBF94CBB6C5D4462B191CDAF /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D84E8144FBE428EAEEAA00C /* CDVDevice.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,10 @@
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = DoiContacts/config.xml; sourceTree = "<group>"; };
+		033BDD6FA03744CBB71C6BB0 /* NativeStorage.m */ = {isa = PBXFileReference; name = "NativeStorage.m"; path = "cordova-plugin-nativestorage/NativeStorage.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		354FA4312BA44A608299CC66 /* NativeStorage.h */ = {isa = PBXFileReference; name = "NativeStorage.h"; path = "cordova-plugin-nativestorage/NativeStorage.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		8D84E8144FBE428EAEEAA00C /* CDVDevice.m */ = {isa = PBXFileReference; name = "CDVDevice.m"; path = "cordova-plugin-device/CDVDevice.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		0DA2ECCCDF2842FAB40C8D3C /* CDVDevice.h */ = {isa = PBXFileReference; name = "CDVDevice.h"; path = "cordova-plugin-device/CDVDevice.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +182,10 @@
 				49BA09C637614E10997AD04E /* CDVLocation.m */,
 				B8D9D78C9930493CB992145B /* CDVLocation.h */,
 				5D8CC5858102482ABB93F766 /* QRScanner.swift */,
+				033BDD6FA03744CBB71C6BB0 /* NativeStorage.m */,
+				354FA4312BA44A608299CC66 /* NativeStorage.h */,
+				8D84E8144FBE428EAEEAA00C /* CDVDevice.m */,
+				0DA2ECCCDF2842FAB40C8D3C /* CDVDevice.h */,
 			);
 			name = Plugins;
 			path = DoiContacts/Plugins;
@@ -308,6 +317,8 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				AD7F68F80806406EBB10E9F2 /* CDVLocation.m in Sources */,
 				827CD84443E848C5A9E662B1 /* QRScanner.swift in Sources */,
+				B6EF109403D34459B3265D73 /* NativeStorage.m in Sources */,
+				DBF94CBB6C5D4462B191CDAF /* CDVDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -27,7 +27,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.android.tools.build:gradle:3.3.0'
     }
 }
 
@@ -40,7 +40,7 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '5.6.2'
+    gradleVersion = '4.10.3'
 }
 
 // Configuration properties. Set these via environment variables, build-extras.gradle, or gradle.properties.
@@ -98,7 +98,6 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
-apply from: "../cordova-plugin-qrscanner/hellocordova-qrscanner.gradle"
 apply from: "../cordova-plugin-qrscanner/app-qrscanner.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
@@ -114,9 +113,9 @@ if (hasBuildExtras2) {
 
 // Set property defaults after extension .gradle files.
 ext.cdvCompileSdkVersion = cdvCompileSdkVersion == null ? (
-    defaultCompileSdkVersion == null
+    defaultCompileSdkVersion == null 
         ? privateHelpers.getProjectTarget()
-        : defaultCompileSdkVersion
+        : defaultCompileSdkVersion 
 ) : Integer.parseInt('' + cdvCompileSdkVersion);
 
 if (ext.cdvBuildToolsVersion == null) {
