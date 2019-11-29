@@ -25,7 +25,7 @@ const WalletList = ({checked}) => {
    }
 
 
-        const handleEdit = (index) => {
+   const handleEdit = (index) => {
        const  currentGlobal = global;
         currentGlobal.activeWallet = index
         currentGlobal.modus = 'edit'
@@ -39,9 +39,9 @@ const WalletList = ({checked}) => {
         setWallets(currentWallets)
     }
 
-
-    const walletNode = global[0].wallets.map((item,index) => {
-
+    console.log('wallets',wallets)
+    const walletNode = wallets.map((item,index) => {
+    console.log('item',item)
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>

@@ -1,4 +1,4 @@
-import React, { useGlobal,setGlobal,addCallback,useState, setState,useEffect } from 'reactn';
+import React, { useGlobal,useEffect,useRef } from 'reactn';
 import * as PropTypes from "prop-types";
 import './App.css';
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,26 +14,21 @@ import Box from "@material-ui/core/Box";
 import {register} from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 import bitcore from "bitcore-doichain";
+import initStorage from "./utils/storage"
 
-const qrCode =  localStorage.getItem('qrCode')?localStorage.getItem('qrCode'):undefined
-const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
-const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
-const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):0
-const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):'list'
-const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
 
-setGlobal({contacts: initialContacts,
-    wallets: initialWallets,
-    errors: false,
-    currentTab:initialCurrentTab,
-    buttonState: '',
-    modus: initialModus,
-    activeWallet: initialActiveWallet,
-    qrCode: qrCode
-})
+const App = (props) => {
 
-const App = () => {
-
+    console.log('cordova is:',props.cordova)
+    //const inputRef = useRef();
+    const changed = false;
+    useEffect(
+        () => {
+            console.log("render App just one time!");
+            initStorage(props.cordova)
+        },
+        [changed]
+    );
 /*
    const settings = {  //RegTest
         testnet:true,
@@ -49,25 +44,21 @@ const App = () => {
         host:"5.9.154.231"
     }
 */
-
-    //bitcore.settings.setSettings(settings)
+    const settings = {  //testnet 2
+        testnet:true,
+        from: 'newsletter@doichain.org',
+        port:443,
+        ssl:true,
+        host:"doichain-testnet.le-space.de"
+    }
+    bitcore.settings.setSettings(settings)
 
     console.log(bitcore.settings.getSettings(), bitcore.getUrl())
     register()
 
-
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const [modus, setModus] = useGlobal("modus")
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
-
-    addCallback(global => {
-        localStorage.setItem('contacts',JSON.stringify(global.contacts))
-        localStorage.setItem('wallets',JSON.stringify(global.wallets))
-        localStorage.setItem('currentTab',global.currentTab)
-        localStorage.setItem('modus',global.modus)
-        localStorage.setItem('activeWallet',global.activeWallet)
-        return null;
-    });
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -99,15 +90,6 @@ const App = () => {
         };
     }
 
-    const useStyles = makeStyles(theme => ({
-        root: {
-            flexGrow: 1,
-            backgroundColor: theme.palette.background.paper,
-        },
-    }));
-
-    //https://www.npmjs.com/package/cordova-plugin-qrscanner-allanpoppe2
-    const classes = useStyles();
     return (
         <div>
             <AppBar position="static">

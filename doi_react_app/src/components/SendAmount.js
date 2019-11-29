@@ -9,6 +9,19 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import ProgressButton from "react-progress-button";
 import bitcore from "bitcore-doichain";
 import {getUTXOs} from "../utils/doichain-transaction-utils";
+import IconButton from "@material-ui/core/IconButton";
+import Input from "@material-ui/core/Input";
+import FilledInput from "@material-ui/core/FilledInput";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import CropFreeIcon from '@material-ui/icons/CropFree';
+import Box from '@material-ui/core/Box';
+
+
 
 const SendAmount = () => {
 
@@ -213,7 +226,7 @@ const SendAmount = () => {
 
 const Contents = ({scanning,walletName,address,toAddress,handleAmount2Send, prepareScan, handleSendTransaction}) => {
 
-    const [global] = useGlobal()
+    const global = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
     const [modus, setModus] = useGlobal("modus")
     if(scanning){
@@ -224,7 +237,8 @@ const Contents = ({scanning,walletName,address,toAddress,handleAmount2Send, prep
 return (
     <div style={{backgroundColor: 'white'}}>
         <h1>{walletName} </h1>
-        Send DOI from address: {address} <br/>
+        Send DOI from address: {address} <br></br>
+
         <Formik
             initialValues={{ toAddress: '', amount: 0 }}
             validate={values => {
@@ -245,6 +259,7 @@ return (
                 handleSendTransaction(values.toAddress,values.amount)
             }}
         >
+
             {({
                   values,
                   errors,
@@ -256,31 +271,46 @@ return (
                   /* and other goodies */
               }) => (
                 <form onSubmit={handleSubmit}>
+                  <div >
+                        <FormControl fullWidth   variant="outlined" >
+                        <InputLabel htmlFor="outlined-adornment">to Doichain Address</InputLabel>
+          <OutlinedInput
+           id="toAddress"
+           name="toAddress"
+           type={'text'}
+           margin={'none'}
+           fullWidth={true}
+           defaultValue={toAddress}
+           onChange={handleChange}
+           onBlur={handleBlur}
+            endAdornment={
+              <InputAdornment position="end" margin={'none'}>
+                <IconButton onClick={() => prepareScan()}>
+                  <CropFreeIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+            labelWidth={70}
 
-                    <TextField
-                        id="toAddress"
-                        name="toAddress"
-                        label="to Doichain Address"
-                        type={'text'}
-                        margin="normal"
-                        fullWidth={true}
-                        defaultValue={toAddress}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    {errors.toAddress && touched.toAddress && errors.toAddress}
+          />
+        </FormControl>{errors.toAddress && touched.toAddress && errors.toAddress}
+             </div>
+                    <br></br> <div>  <FormControl fullWidth  variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-passworoutlined-adornment-amount">Amount (DOI)</InputLabel>
+          <OutlinedInput
+           id="amount"
+           name="amount"
+           type={'text'}
+           margin="normal"
+           fullWidth={true}
+           onChange={handleChange}
+           onBlur={handleBlur}
+           />
+                    </FormControl>
 
-                    <TextField
-                        id="amount"
-                        name="amount"
-                        label="Amount (DOI)"
-                        type={'text'}
-                        margin="normal"
-                        fullWidth={true}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
+
                     {errors.position && touched.position && errors.position}
+                    </div>
                     <p>&nbsp;</p>
                     {/* <Button color={'primary'} variant="contained" onClick={() => document.location.href='scan.html'}>Scanner Page</Button> */}
                     <Button color={'primary'} variant="contained" onClick={() => prepareScan()}>Scan</Button>
