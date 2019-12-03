@@ -1,7 +1,6 @@
 import React, { useGlobal,useEffect,useRef } from 'reactn';
 import * as PropTypes from "prop-types";
 import './App.css';
-import { makeStyles } from '@material-ui/core/styles';
 
 import AppBar from '@material-ui/core/AppBar';
 import ContactsPage from "./pages/ContactsPage";
@@ -20,12 +19,12 @@ import initStorage from "./utils/storage"
 const App = (props) => {
 
     console.log('cordova is:',props.cordova)
-    //const inputRef = useRef();
+    const global = useGlobal()
     const changed = false;
     useEffect(
         () => {
             console.log("render App just one time!");
-            initStorage(props.cordova)
+            initStorage(props.cordova,global)
         },
         [changed]
     );

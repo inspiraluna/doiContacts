@@ -15,7 +15,7 @@ import {setGlobal, useGlobal} from "reactn";
 
 const ContactList = ({remove}) => {
 
-
+    const global = useGlobal()
     const wallets = useGlobal('wallets')
     const [ contacts, setContacts ] = useGlobal('contacts')
 
@@ -27,8 +27,8 @@ const ContactList = ({remove}) => {
         console.log('activeContact now in global', global.activeContact + "/" + global.modus)
     }
 
-
-    const contactNode = contacts.map((contact, index) => {
+    const ourContacts = contacts?contacts:[]
+    const contactNode = ourContacts.map((contact, index) => {
 
         _.find(wallets, function(wallet) {
             let changed = false

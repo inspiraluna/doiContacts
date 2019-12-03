@@ -13,13 +13,13 @@
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
-    "cordova-plugin-qrscanner": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
     "cordova-plugin-nativestorage": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
     "cordova-plugin-device": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-qrscanner": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     }
   },

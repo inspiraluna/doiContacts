@@ -23,14 +23,6 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-qrscanner": {
-    "source": {
-      "type": "local",
-      "path": "/Users/nico/Documents/doi2cordova/node_modules/cordova-plugin-qrscanner"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-nativestorage": {
     "source": {
       "type": "registry",
@@ -43,6 +35,22 @@
     "source": {
       "type": "registry",
       "id": "cordova-plugin-device"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-qrscanner": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-qrscanner"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-qrscanner-inspiraluna": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-qrscanner-inspiraluna@3.0.4"
     },
     "is_top_level": true,
     "variables": {}

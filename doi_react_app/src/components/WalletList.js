@@ -40,7 +40,8 @@ const WalletList = ({checked}) => {
     }
 
     console.log('wallets',wallets)
-    const walletNode = wallets.map((item,index) => {
+    const ourWallets = wallets?wallets:[]//global.wallets?global.wallets:[]
+    const walletNode = ourWallets.map((item,index) => {
     console.log('item',item)
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>

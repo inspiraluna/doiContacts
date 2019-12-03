@@ -240,7 +240,7 @@ return (
         Send DOI from address: {address} <br></br>
 
         <Formik
-            initialValues={{ toAddress: '', amount: 0 }}
+            initialValues={{ toAddress: toAddress, amount: 0 }}
             validate={values => {
                 let errors = {};
            /*     if (!values.email) {
