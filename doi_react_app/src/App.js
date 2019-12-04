@@ -1,4 +1,4 @@
-import React, { useGlobal,useEffect,useRef } from 'reactn';
+import React, { useGlobal,useEffect,setGlobal } from 'reactn';
 import * as PropTypes from "prop-types";
 import './App.css';
 
@@ -24,7 +24,7 @@ const App = (props) => {
     useEffect(
         () => {
             console.log("render App just one time!");
-            initStorage(props.cordova,global)
+            initStorage(props.cordova,global,setGlobal)
         },
         [changed]
     );

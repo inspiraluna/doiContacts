@@ -1,6 +1,6 @@
-import {addCallback, setGlobal} from "reactn";
+import {addCallback} from "reactn";
 
-const initStorage = (cordovaEnabled,global) => {
+const initStorage = (cordovaEnabled,global,setGlobal) => {
 
     if(!cordovaEnabled || (window.device && window.device.platform==='browser')) {
         const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
@@ -43,17 +43,26 @@ const initStorage = (cordovaEnabled,global) => {
             newGlobal.wallets = []
             setGlobal(newGlobal)
         });
-        window.NativeStorage.getItem("currentTab",(obj) => {
-            console.log("got currentTab from native storage",obj);
-            let newGlobal = global
-            newGlobal.currentTab = obj
-            setGlobal(newGlobal)
-        },(obj) => {
-            console.log("couldn't get currentTab from native storage",obj);
-            let newGlobal = global
-            newGlobal.currentTab = 0
-            setGlobal(newGlobal)
-        });
+
+       try{
+           window.NativeStorage.getItem("currentTab",(obj) => {
+               console.log("got currentTab from native storage",obj);
+               let newGlobal = global
+               newGlobal.currentTab = obj
+               setGlobal(newGlobal)
+           },(obj) => {
+               console.log("couldn't get currentTab from native storage",obj);
+               let newGlobal = global
+               newGlobal.currentTab = 0
+               setGlobal(newGlobal)
+           });
+       } catch(ex){
+           console.log("caught exception currentTab from native storage",ex);
+           let newGlobal = global
+           newGlobal.currentTab = 0
+           setGlobal(newGlobal)
+       }
+
         window.NativeStorage.getItem("modus",(obj) => {
             console.log("got modus from native storage",obj);
             let newGlobal = global
@@ -65,17 +74,20 @@ const initStorage = (cordovaEnabled,global) => {
             newGlobal.modus = 'list'
             setGlobal(newGlobal)
         });
-        window.NativeStorage.getItem("activeWallet",(obj) => {
-            console.log("got activeWallet from native storage",obj);
-            let newGlobal = global
-            newGlobal.activeWallet = obj
-            setGlobal(newGlobal)
-        },(obj) => {
-            console.log("couldn't get activeWallet from native storage",obj);
-            let newGlobal = global
-            newGlobal.activeWallet = 0
-            setGlobal(newGlobal)
-        });
+
+        try{
+            window.NativeStorage.getItem("activeWallet",(obj) => {
+                console.log("got activeWallet from native storage",obj);
+                let newGlobal = global
+                newGlobal.activeWallet = obj
+                setGlobal(newGlobal)
+            },(obj) => {
+                console.log("couldn't get activeWallet from native storage",obj);
+                let newGlobal = global
+                newGlobal.activeWallet = 0
+                setGlobal(newGlobal)
+            });
+        } catch(ex){}
     }
 
     addCallback(global => {

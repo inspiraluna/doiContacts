@@ -15,6 +15,12 @@
     },
     "cordova-plugin-nativestorage": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-qrscanner": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
     }
   },
   "dependent_plugins": {

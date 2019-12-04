@@ -96,6 +96,7 @@ const WalletsPage = () => {
         setModus('send')
         console.log('now activating send')
     };
+    console.log('modus',modus)
     console.log('global modus',global.modus)
     if(global.modus === 'list'){
         return (
