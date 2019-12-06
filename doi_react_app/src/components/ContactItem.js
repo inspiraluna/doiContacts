@@ -1,6 +1,4 @@
-import React, {useEffect, useState, setState} from 'react';
-import bitcore from "bitcore-doichain";
-import {useGlobal} from "reactn";
+import React from 'react';
 
 const ContactItem = ({
                          wallet,
@@ -11,10 +9,6 @@ const ContactItem = ({
                          txId,
                          validatorAddress
                      }) => {
-
-
-    const [wallets, setWallets] = useGlobal("wallets")
-    const [global] = useGlobal()
 
     return (
         <div>

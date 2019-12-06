@@ -3,7 +3,6 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import { Formik } from 'formik';
 import ProgressButton from "react-progress-button";
 import './ProgressButton.css'
 import {useEffect, useState} from "react";
@@ -12,6 +11,7 @@ import getPublicKey from "bitcore-doichain/lib/doichain/getPublicKey";
 import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 import { usePosition } from 'use-position';
 import {getUTXOs} from "../utils/doichain-transaction-utils";
+import QRCode from "qrcode-react";
 
 const DOI_STATE_WAITING_FOR_CONFIRMATION = 0
 const DOI_STATE_SENT_TO_VALIDATOR = 1
@@ -45,18 +45,23 @@ const useStyles = makeStyles(theme => ({
 const ContactForm = () => {
 
     const classes = useStyles();
+    const [buttonState, setButtonState] = useState()
+    const [email, setEmail] = useState('')
+    const [wallet, setWallet] = useState(0)
+    const [tx, setTx] = useState()
+    const [address, setAddress] = useState('')
+    const [position, setPosition] = useState('')
+    const [submitting, setSubmitting] = useState()
+
     const [global] = useGlobal()
     const [wallets] = useGlobal("wallets")
+    const [qrCode, setQrCode] = useState(wallets[wallet].senderEmail)
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
-    const [buttonState,setButtonState] = useGlobal("buttonState")
-    const [ test, setTest ] = useGlobal("test")
     const [utxos, setUTXOs ] = useGlobal("utxos")
 
-    const { latitude, longitude, timestamp, accuracy, error } = usePosition(); //false,{enableHighAccuracy: true}
-
     const addContact = async (to,walletIndex) => {
-        const runAddContact =  (to,walletIndex) => new Promise(resolve => {
+        const runAddContact =  async (to,walletIndex) => new Promise(resolve => {
 
             if(!to || to.length==0){
                 const err = 'no email defined'
@@ -73,138 +78,9 @@ const ContactForm = () => {
                 return
             }else
                 console.log("wallets of contactPage",wallets)
-
-            const ourWallet = wallets[walletIndex]
-            const ourPrivateKey = ourWallet.privateKey
-
-            const amountComplete = Number(bitcore.constants.VALIDATOR_FEE.btc)+
-                Number(bitcore.constants.NETWORK_FEE.btc)+
-                Number(bitcore.constants.TRANSACTION_FEE.btc)
-
-            const ourFrom = ourWallet.senderEmail
-
-            const parts = to.split("@");
-            const domain = parts[parts.length-1];
-
-            getPublicKey(domain).then((validatorPublicKeyData) => {
-                console.log('validatorPublicKeyData',validatorPublicKeyData.key)
-                const validatorPublicKey = bitcore.PublicKey(validatorPublicKeyData.key)
-                const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKey).toString()
-                bitcore.createDoichainEntry(ourPrivateKey, validatorPublicKey.toString(), ourFrom, to).then(function (entry) {
-                    const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
-                    const changeAddress = ourAddress //just send change back to us for now - could be its better to generate a new address here
-
-                    bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
-
-                        console.log("utxo",utxo)
-                        console.log("global.utxo",global.utxos)
-                        if (utxo.utxos.length === 0 && (!global.utxos || global.utxos.length===0)){
-                            const err = 'insufficiant funds'
-                            setOpenError({open:true,msg:err,type:'info'})
-                            setButtonState('error')
-                            throw err
-                        }
-                        else if(utxo.utxos.length === 0 && global.utxos){
-                            console.log('pushing utxo',global.utxos)
-                            utxo.utxos = global.utxos
-                        }
-
-                        const txSignedSerialized = bitcore.createRawDoichainTX(
-                            entry.nameId,
-                            entry.nameValue,
-                            validatorAddress,
-                            changeAddress,
-                            ourPrivateKey,
-                            utxo, //here's the necessary utxos and the balance and change included
-                            bitcore.constants.NETWORK_FEE.btc, //for storing this record
-                            bitcore.constants.VALIDATOR_FEE.btc //0.01 for DOI storage, 0.01 DOI for reward for validator, 0.01 revokation reserved
-                        )
-
-                        const templateData = {
-                            "recipient": to,
-                            "content": ourWallet.content,
-                            "redirect": ourWallet.redirectUrl,
-                            "subject": ourWallet.subject,
-                            "contentType": (ourWallet.contentType || 'html'),
-                            "returnPath": ourWallet.returnPath
-                        }
-
-                        console.log('templateData',templateData)
-
-                        if (validatorPublicKeyData.type === 'default' || validatorPublicKeyData.type === 'delegated')  //we store a hash only(!) at the responsible validator - never on a fallback validator
-                            templateData.verifyLocalHash = getDataHash({data: (ourFrom + to)}); //verifyLocalHash = verifyLocalHash
-
-                        bitcore.encryptMessage(
-                            ourWallet.privateKey,
-                            validatorPublicKey.toString(),
-                            JSON.stringify(templateData)).then(async function (encryptedTemplateData) {
-                            console.log("encryptedTemplateData", encryptedTemplateData)
-
-                            await bitcore.broadcastTransaction(
-                                entry.nameId,
-                                txSignedSerialized,
-                                encryptedTemplateData,
-                                validatorPublicKey.toString()).then((response) => {
-
-                                    const txid = getUTXOs(changeAddress,response,setUTXOs)
-
-                                    const msg = 'broadcasted doichain transaction to doichain node '
-
-                                    //TODO check if global state position gets updated here correctly other wise use global.position
-                                    const contact = {
-                                        requestedAt: new Date(),
-                                        email: to,
-                                        wallet: ourWallet.publicKey,
-                                        txId:txid,
-                                        nameId:entry.nameId,
-                                        validatorAddress:validatorAddress,
-                                        confirmed:false,
-                                        status: DOI_STATE_WAITING_FOR_CONFIRMATION,
-                                        tx: txSignedSerialized,
-                                        position: global.test
-                                    }
-
-                                    contacts.push(contact)
-                                    setContacts(contacts)
-
-                                    setOpenError({open:true,msg:msg,type:'success'})
-                                    return "ok"
-                                }).catch((ex)=>{
-
-                                const err = 'error while broadcasting transaction '
-                                console.log(err,ex)
-                                setOpenError({open:true,msg:err,type:'error'})
-                                setButtonState('error')
-                                throw err
-                            });
-                        }).catch(function (ex) {
-                            const err = 'error while encrypting message'
-                            console.log(err,ex)
-                            setOpenError({open:true,msg:err,type:'error'})
-                            setButtonState('error')
-                            throw err
-                        })
-                    }).catch(function (ex) {
-                        const err = 'error while getUTXOAndBalance'
-                        console.log(err,ex)
-                        setOpenError({open:true,msg:err,type:'error'})
-                        setButtonState('error')
-                        throw err
-                    })
-                }).catch(function (ex) {
-                    const err = 'error while creating DoichainEntry'
-                    console.log(err,ex)
-                    setOpenError({open:true,msg:err,type:'error'})
-                    setButtonState('error')
-                    throw err
-                })
-            }).catch(function (ex) {
-                const err = 'error while fetching public key from dns'
-                console.log(err,ex)
-                setOpenError({open:true,msg:err})
-                setButtonState('error')
-                throw err
-            })
+                const txData = createTransaction()
+                const encryptedTemplateData = encryptMessage(txData.validatorPublicKeyData)
+                broadcastTransaction(txData.doichainEntry,txData.tx,encryptedTemplateData,txData.validatorPublicKeyData.key)
 
             return "ok"
         })
@@ -213,96 +89,259 @@ const ContactForm = () => {
         return response
     }
 
+    const broadcastTransaction = async (doichainEntry,tx,encryptedTemplateData,validatorPublicKey,changeAddress) => {
+
+        bitcore.broadcastTransaction(
+            doichainEntry.nameId,
+            tx,
+            encryptedTemplateData,
+            validatorPublicKey.toString()).then((response) => {
+
+            const txid = getUTXOs(changeAddress,response,setUTXOs)
+            const ourWallet = wallets[wallet]
+            const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKey).toString()
+            const msg = 'broadcasted doichain transaction to doichain node '
+
+            const contact = {
+                requestedAt: new Date(),
+                email: email,
+                wallet: ourWallet.publicKey,
+                txId:txid,
+                nameId:doichainEntry.nameId,
+                validatorAddress:validatorAddress,
+                confirmed:false,
+                status: DOI_STATE_WAITING_FOR_CONFIRMATION,
+                tx: tx,
+                position: global.test
+            }
+
+            contacts.push(contact)
+            setContacts(contacts)
+
+            setOpenError({open:true,msg:msg,type:'success'})
+            return "ok"
+        }).catch((ex)=>{
+
+            const err = 'error while broadcasting transaction '
+            console.log(err,ex)
+            setOpenError({open:true,msg:err,type:'error'})
+            setButtonState('error')
+            throw err
+        });
+
+    }
+
+    const encryptMessage = async (validatorPublicKeyData) => {
+
+        const ourWallet = wallets[wallet]
+        const ourFrom = wallets[wallet].senderEmail
+
+        const templateData = {
+            "recipient": email,
+            "content": ourWallet.content,
+            "redirect": ourWallet.redirectUrl,
+            "subject": ourWallet.subject,
+            "contentType": (ourWallet.contentType || 'html'),
+            "returnPath": ourWallet.returnPath
+        }
+
+        console.log('templateData',templateData)
+
+        if (validatorPublicKeyData.type === 'default' || validatorPublicKeyData.type === 'delegated')  //we store a hash only(!) at the responsible validator - never on a fallback validator
+            templateData.verifyLocalHash = getDataHash({data: (ourFrom + email)}); //verifyLocalHash = verifyLocalHash
+
+        let our_encryptedTemplateData = undefined
+
+        await bitcore.encryptMessage(
+            ourWallet.privateKey,
+            validatorPublicKeyData.key.toString(),
+            JSON.stringify(templateData))
+            .then(async function (encryptedTemplateData) {
+                console.log("encryptedTemplateData", encryptedTemplateData)
+                our_encryptedTemplateData = encryptedTemplateData
+            })
+        return our_encryptedTemplateData
+
+    }
+
+    const createTransaction = async () => {
+        console.log('creating transaction')
+        const validatorPublicKeyData = await getValidatorPublicKey()
+        console.log('got '+validatorPublicKeyData.type+' validatorPubliyKey',validatorPublicKeyData.key)
+
+        const doichainEntry = await createDoichainEntry(validatorPublicKeyData.key)
+        console.log('got doichainEntry',doichainEntry)
+
+        const utxos = await getUTXOs()
+        console.log('got utxos',utxos)
+
+        const ourWallet = wallets[wallet]
+        const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
+        const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKeyData.key).toString()
+        const changeAddress = ourAddress //just send change back to us for now - could be its better to generate a new address here
+        const ourPrivateKey = ourWallet.privateKey
+
+        const txSignedSerialized = bitcore.createRawDoichainTX(
+            doichainEntry.nameId,
+            doichainEntry.nameValue,
+            validatorAddress,
+            changeAddress,
+            ourPrivateKey,
+            utxos, //here's the necessary utxos and the balance and change included
+            bitcore.constants.NETWORK_FEE.btc, //for storing this record
+            bitcore.constants.VALIDATOR_FEE.btc //0.01 for DOI storage, 0.01 DOI for reward for validator, 0.01 revokation reserved
+        )
+        setTx(txSignedSerialized)
+        console.log('finished creating transaction',txSignedSerialized)
+        return {
+            tx:txSignedSerialized,
+            doichainEntry:doichainEntry,
+            utxos: utxos,
+            validatorPublicKeyData:validatorPublicKeyData,
+            changeAddress:changeAddress
+        }
+    }
+
+    const getValidatorPublicKey = async () => {
+        console.log('getValidatorPublicKey of email',email)
+        const parts = email.split("@");
+        const domain = parts[parts.length-1];
+        let our_validatorPublicKeyData = undefined
+        await getPublicKey(domain).then((validatorPublicKeyData) => {
+            our_validatorPublicKeyData = validatorPublicKeyData
+        })
+        return our_validatorPublicKeyData
+    }
+
+    const createDoichainEntry = async (validatorPublicKey) => {
+
+        const ourWallet = wallets[wallet]
+        const ourPrivateKey = ourWallet.privateKey
+        const ourFrom = wallets[wallet].senderEmail
+        const to = email
+        let our_doichainEntry = undefined
+
+        await bitcore.createDoichainEntry(ourPrivateKey, validatorPublicKey.toString(), ourFrom, to).then(function (entry) {
+            our_doichainEntry = entry
+        })
+
+        return our_doichainEntry
+    }
+
+    const getUTXOs = async () => {
+        const ourWallet = wallets[wallet]
+        const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
+        const changeAddress = ourAddress //just send change back to us for now - could be its better to generate a new address here
+
+        const amountComplete = Number(bitcore.constants.VALIDATOR_FEE.btc)+
+            Number(bitcore.constants.NETWORK_FEE.btc)+
+            Number(bitcore.constants.TRANSACTION_FEE.btc)
+
+        let our_utxos = undefined
+
+        await bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxo) {
+
+            console.log("querried utxo",utxo)
+            console.log("global utxo",global.utxos)
+            if (utxo.utxos.length === 0 && (!global.utxos || global.utxos.length===0)){
+                const err = 'insufficiant funds'
+                setOpenError({open:true,msg:err,type:'info'})
+                setButtonState('error')
+                throw err
+            }
+            else if(utxo.utxos.length === 0 && global.utxos){
+                console.log('pushing utxo',global.utxos)
+                utxo.utxos = global.utxos
+            }
+            our_utxos = utxo
+        })
+        console.log('got utxos',our_utxos)
+        return our_utxos
+    }
+
+    const calculateQRCode = () => {
+        //const senderEmail = wallets[wallet].senderEmail
+       // let url = "doiContact:00710000016f674a22f021434dfb276ba2db2addb4e9f95b16e10dcca5725bdd2c5a460406010000006a473044022065f2e76ff15eb384d2d3e122fc27fd3ec461b51e621ae4b94661aac858540f1e022034f38e606ee084786389921b767ec236916dd5a080ce4a16af873578c559c3f5012102e7f6565fd619cd097bfa78e82c06a5bf544da2560e93c6caf7b7f3c97ec3e816ffffffff0340420f0000000000fd39015a42652f353042344244364442303331414437364545443030393035454646323231414630363138354335333338374139384235303742353845333131463136323346324cd87b227369676e6174757265223a224877395051534f3149366c4664556577597552614356672b584a464f34682f77455431324a556b474f644f656649494a415255324c6259565243462b6c3232454957397864305732355534683156687775796e737154453d222c226461746148617368223a22222c2266726f6d223a22553246736447566b5831396871342b574c474272754843504d4256536565527756356d70416b4d3976355668792b4d4f596b57684a3979796e374753412b3449636b6439734d7a65554c2f63712f306f556772366a673d3d227d6d7576a91494e8dc927a7c2e2799cb11a5df57d0651167f13f88acc0c62d00000000001976a91494e8dc927a7c2e2799cb11a5df57d0651167f13f88ac7d1a0600000000001976a914a6a795d59ad7de3234a99410e2fa19cbaed1189d88ac00000000"
+       // if(tx) url+=tx
+      /*  let url  =  "doiContact:"+senderEmail
+        if(email) url+="?recipient="+email
+        console.log('qr Code url,',url)
+
+        if(tx){
+          url+="&tx="+tx
+        } */
+        const url="mailto:"+wallets[wallet].senderEmail
+        console.log('setting qr code',url)
+        setQrCode(url)
+    }
+
+    useEffect( () => {
+        const senderEmail = wallets[wallet].senderEmail
+       // if(senderEmail && email) createTransaction()
+        if(senderEmail && email) calculateQRCode()
+
+    },[wallets[wallet].senderEmail,email])
+
+     //always try to create tbe doichain tx, if data are not ready yet, it will not produce the tx
   return (
     <div>
-        <Formik
-            initialValues={{ email: '', wallet: 0 }}
-            validate={values => {
-                let errors = {};
-                if (!values.email) {
-                    errors.email = 'Required';
-                } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                    errors.email = 'Invalid email address';
-                }
-                return errors;
-            }}
-            onSubmit={async (values, { setSubmitting }) => {
-                    setButtonState('loading')
-                    setSubmitting(true);
-                    console.log('submitting values',values)
-                                addContact(
-                                    values.email,
-                                    values.wallet,
-                                    values.address,
-                                    values.position).then((response)=>{
+        <form onSubmit={async (e) => {
+            e.preventDefault()
+            setButtonState('loading')
+            addContact(
+                email,
+                wallet,
+                address,
+                position).then((response)=>{
+                console.log('response was ok ',response)
+                setButtonState('success')
+                setSubmitting(false);
 
-                                        console.log('response was ok ',response)
-                                        setButtonState('success')
-                                        setSubmitting(false);
+            }).catch((response)=>{
+                console.log('response was error',response)
+                setButtonState('error')
+                setSubmitting(false);
+            })
+        }}>
 
-                                }).then((response)=>{
-                                        console.log('response was error',response)
-                                        setButtonState('error')
-                                        setSubmitting(false);
-                                })
-            }}
-        >
-            {({
-                  values,
-                  errors,
-                  touched,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                  isSubmitting,
-                  /* and other goodies */
-              }) => (
-                <form onSubmit={handleSubmit}>
-
-                    <TextField
-                        type="email"
-                        name="email"
-                        id="email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        label="Request Email Permission"
-                        className={classes.textField}
-                        margin="normal"
-                        value={values.email}
-                    />
-                    {errors.email && touched.email && errors.email}
-                    <br/>
-                    <InputLabel htmlFor="age-customized-native-simple" className={classes.label}>Wallet / Email</InputLabel>
-                    <NativeSelect
-                        name="wallet"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className={classes.select}
-                    > {
-                        wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
-                      }
-                    </NativeSelect><br/>
-                    <RequestAddress
-                        latitude={latitude}
-                        longitude={longitude}
-                        className={classes.textField}/>
-                    {errors.position && touched.position && errors.position}
-                    <p>&nbsp;</p>
-                    <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={isSubmitting}> Request Email Permission</ProgressButton>
-                </form>
-            )}
-        </Formik>
+            <TextField
+                type="email"
+                name="email"
+                id="email"
+                label="Request Email Permission"
+                className={classes.textField}
+                margin="normal"
+                defaultValue={email}
+                onBlur={(e) => {
+                    console.log('setting email',e.target.value)
+                    setEmail(e.target.value);
+                   calculateQRCode();
+                }}
+            />
+            <br/>
+            <InputLabel htmlFor="age-customized-native-simple" className={classes.label}>Wallet / Email</InputLabel>
+            <NativeSelect
+                name="wallet"
+                onChange={(e) => {setWallet(e.target.value); calculateQRCode();}}
+                className={classes.select}
+            > {
+                wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
+            }
+            </NativeSelect><br/>
+            <RequestAddress className={classes.textField}/>
+            <QRCode value={qrCode} /><br/>
+            <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={submitting}>Request Permission</ProgressButton>
+        </form>
     </div>
   );
 }
 
-const RequestAddress = ({latitude,longitude,className}) => {
+const RequestAddress = ({className}) => {
 
     const [ test, setTest ] = useGlobal("test")
     const [position,setPosition ] = useState('')
     const [address,setAddress] = useState('')
+    const { latitude, longitude, timestamp, accuracy, error } = usePosition(); //false,{enableHighAccuracy: true}
 
     const queryGeoEncode = async () => {
         if(!latitude || !longitude) return null
@@ -339,9 +378,7 @@ const RequestAddress = ({latitude,longitude,className}) => {
 
     if(latitude===undefined || longitude===undefined){
         const onSuccess = (position) => {
-            latitude=position.coords.latitude
-            longitude=position.coords.longitude
-            console.log('got coordinates from system',latitude+"/"+longitude)
+            console.log('sucesss: got position',position)
             query()
         };
 
