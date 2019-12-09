@@ -3,7 +3,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
-import CropFreeIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
 
 /*
