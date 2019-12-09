@@ -139,6 +139,7 @@ const SendAmount = () => {
                                     <form onSubmit={handleSubmit}>
 
                                         <QRCodeScannerTextField label={"to Doichain Address"}
+                                                                urlPrefix={"doicoin:"}
                                                                 handleChange={handleChange}
                                                                 handleBlur={handleBlur}
                                                                 errors={errors}

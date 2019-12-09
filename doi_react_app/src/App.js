@@ -19,7 +19,7 @@ import initStorage from "./utils/storage"
 const App = (props) => {
 
     console.log('cordova is:',props.cordova)
-    const global = useGlobal()
+    const [global,setGlobal] = useGlobal()
     const changed = false;
     useEffect(
         () => {
@@ -88,7 +88,7 @@ const App = (props) => {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-
+    console.log('currentTAb:',currentTab)
     return (
         <div>
             <AppBar position="static">

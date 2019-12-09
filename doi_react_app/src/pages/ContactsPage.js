@@ -53,6 +53,7 @@ const ContactsPage = () => {
     },[contactItemsChanged])
 
     if(global.modus==='detail') {
+        console.log('showing list')
         return (
             <div>
                 <h1>Doi Contacts</h1>
@@ -74,42 +75,44 @@ const ContactsPage = () => {
                 </Slide>
             </div>)
     }
+    else{
+        console.log('showing list')
+        return (
+            <div>
+                <Slide aria-label="contact-detail"
+                       direction={"up"}
+                       in={!add}
+                       mountOnEnter unmountOnExit>
 
-    return (
-        <div>
-            <Slide aria-label="wallet-detail"
-                   direction={"up"}
-                   in={!add}
-                   mountOnEnter unmountOnExit>
-
-                <div>
-                    <h1>Doi Contacts</h1>
-                    <List dense={true}>
-                        <ContactList remove={handleRemove}
-                        />
-                    </List>
-                    <div style={{float:'right'}}>
-                        <Fab aria-label={"new contact"}
-                             color={"primary"}
-                             style={{position: 'absolute',
-                                 right: "7em",
-                                bottom: "3em"}}
-                             onClick={() =>  setAdd(true)}>
-                            <AddIcon />
-                        </Fab>
+                    <div>
+                        <h1>Doi Contacts</h1>
+                        <List dense={true}>
+                            <ContactList remove={handleRemove}
+                            />
+                        </List>
+                        <div style={{float:'right'}}>
+                            <Fab aria-label={"new contact"}
+                                 color={"primary"}
+                                 style={{position: 'absolute',
+                                     right: "7em",
+                                    bottom: "3em"}}
+                                 onClick={() =>  setAdd(true)}>
+                                <AddIcon />
+                            </Fab>
+                        </div>
                     </div>
-                </div>
-            </Slide>
+                </Slide>
 
-            <Slide aria-label="wallet-detail"
-                   direction={"up"}
-                   in={add}
-                   mountOnEnter unmountOnExit>
-                <div style={{height: 350, overflowY: 'scroll'}}>
-                    <ContactForm />
-                </div>
-            </Slide>
-        </div>
-    );
+                <Slide aria-label="wallet-detail"
+                       direction={"up"}
+                       in={add}
+                       mountOnEnter unmountOnExit>
+                    <div style={{height: 400, overflowY: 'scroll'}}>
+                        <ContactForm />
+                    </div>
+                </Slide>
+            </div>
+        );
+    }
 }
 export default ContactsPage

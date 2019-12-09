@@ -23,10 +23,12 @@ class QRCodeScannerContents extends React.Component {
 export default QRCodeScannerContents
 
 
-export const QRCodeScannerTextField = ({label, labelWidth, defaultValue, handleChange, handleBlur, errors, touched}) => {
+export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onChange, handleChange, handleBlur, errors, touched}) => {
 
-    const [toAddress, setToAddress] =  useGlobal("toAddress")
+    if(!handleChange) handleChange = onChange; //if this is not a formik form
+
     const [scanning, setScanning] =  useGlobal("scanning")
+    const [qrCode, setQRCode] =  useGlobal("qrCode")
     function prepareScan() {
         setScanning(true)
         if (window.QRScanner)
@@ -81,30 +83,29 @@ export const QRCodeScannerTextField = ({label, labelWidth, defaultValue, handleC
             } else {
                 // The scan completed, display the contents of the QR code:
                 window.QRScanner.getStatus(function(status){
-                    console.log("QRScanner success status: text"+text,JSON.stringify(status));
+                    console.log("QRScanner success status: text:\n"+JSON.stringify(status),text);
 
                     const result = (text.result===undefined)?text:text.result
-                    if (result.startsWith("doicoin:"))
-                        setToAddress(result.substring(8))
+                    if (urlPrefix.length==0 || urlPrefix==undefined || result.startsWith(urlPrefix))
+                        setQRCode(result.substring(urlPrefix.length))
                     else
-                        console.log('different qr code stopping scan')
+                        console.log('stopping scan because qr code incompatible with form, url should start with ',urlPrefix)
                 });
             }
             handleCancel(setScanning)
         }
     }
-
+    console.log('re-rendering QR-Code component with qr-code',qrCode)
     return (
         <div>
             <FormControl fullWidth variant="outlined" >
                 <InputLabel htmlFor="outlined-adornment">{label}</InputLabel>
                 <OutlinedInput
-                    id="toAddress"
-                    name="toAddress"
+                    name={name}
                     type={'text'}
-                    margin={'dense'}
+                    margin={'none'}
                     fullWidth={true}
-                    defaultValue={toAddress}
+                    defaultValue={qrCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     labelWidth={labelWidth}

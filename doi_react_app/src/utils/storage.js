@@ -5,9 +5,10 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
     if(!cordovaEnabled || (window.device && window.device.platform==='browser')) {
         const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
         const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
-        const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):0
+        const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):"0"
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):'list'
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
+        console.log('setting globa values')
         setGlobal({contacts: initialContacts,
             wallets: initialWallets,
             errors: false,
@@ -53,13 +54,13 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
            },(obj) => {
                console.log("couldn't get currentTab from native storage",obj);
                let newGlobal = global
-               newGlobal.currentTab = 0
+               newGlobal.currentTab = "0"
                setGlobal(newGlobal)
            });
        } catch(ex){
            console.log("caught exception currentTab from native storage",ex);
            let newGlobal = global
-           newGlobal.currentTab = 0
+           newGlobal.currentTab = "0"
            setGlobal(newGlobal)
        }
 
