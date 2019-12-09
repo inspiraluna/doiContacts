@@ -16,12 +16,12 @@ const SendAmount = () => {
 
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
     const [utxos, setUTXOs ] = useGlobal("utxos")
-    const [amount2Send, setAmount2Send] = useState(0) //send amount
     const [ openError, setOpenError ] = useGlobal("errors")
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
     const [modus, setModus] = useGlobal("modus")
     const [scanning, setScanning] =  useGlobal("scanning")
+    const [qrCode, setQRCode] =  useGlobal("qrCode")
 
     const handleSendTransaction = (toAddress,amount) => {
 
@@ -80,12 +80,6 @@ const SendAmount = () => {
         }
     }
 
-    const handleAmount2Send = (e) => {
-        const ourAmount = e.target.value;
-        if (isNaN(ourAmount)) return
-        setAmount2Send(ourAmount)
-    }
-
     const address = global.wallets[global.activeWallet].addresses[0].address;
     const walletName = global.wallets[global.activeWallet].walletName
 
@@ -99,7 +93,6 @@ const SendAmount = () => {
                     <QRCodeScannerContents
                         scanning={scanning}
                         walletName={walletName}
-                        address={address}
                         toAddress={global.toAddress}
                         render={(<div style={{backgroundColor: 'white'}}>
                             <h1>{walletName} </h1>
@@ -122,7 +115,8 @@ const SendAmount = () => {
                                     setButtonState('loading')
                                     setSubmitting(true);
                                     console.log('submitting values', values) //here we are just using the global (since the changeHandle do not fire
-                                    handleSendTransaction(values.toAddress, values.amount)
+                                    //TODO toAddress is for some reason never transmitted we are using qrCode here as a fallback
+                                    handleSendTransaction(values.toAddress?values.toAddress:qrCode, values.amount)
                                 }}
                             >
 
@@ -134,12 +128,12 @@ const SendAmount = () => {
                                       handleBlur,
                                       handleSubmit,
                                       isSubmitting,
-                                      /* and other goodies */
                                   }) => (
                                     <form onSubmit={handleSubmit}>
 
                                         <QRCodeScannerTextField label={"to Doichain Address"}
                                                                 urlPrefix={"doicoin:"}
+                                                                name={"toAddress"}
                                                                 handleChange={handleChange}
                                                                 handleBlur={handleBlur}
                                                                 errors={errors}
