@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
 
-/*
+
 class QRCodeScannerContents extends React.Component {
     constructor(props) {
         super(props);
@@ -15,28 +15,33 @@ class QRCodeScannerContents extends React.Component {
         if(this.props.scanning)
             return(<QRCodeScannerStopButton/>)
         else{
-            return ( this.props.render )
+             return this.props.render
         }
     }
 }
-export default QRCodeScannerContents */
+export default QRCodeScannerContents
 
-export const QRCodeScannerContents = ({render, scanning, walletName, address, toAddress, handleSendTransaction}) => {
-
-    if(scanning)
+/*
+export const QRCodeScannerContents = ({render, walletName, address, toAddress, handleSendTransaction}) => {
+    const [global] = useGlobal()
+    console.log('scanning----------------->global',global)
+    if(false)
         return(<QRCodeScannerStopButton/>)
     else{
         return ( { render } )
     }
 }
+*/
 
-
-export const QRCodeScannerTextField = ({label, setScanning, defaultValue, handleChange, handleBlur, errors, touched}) => {
+export const QRCodeScannerTextField = ({label, labelWidth, defaultValue, handleChange, handleBlur, errors, touched}) => {
 
     const [toAddress, setToAddress] =  useGlobal("toAddress")
-
+    const [scanning, setScanning] =  useGlobal("scanning")
+    console.log('rerender global.scanning',scanning)
     function prepareScan() {
+        console.log('prepareScan')
         setScanning(true)
+        console.log('prepareScan scanning',scanning)
         if (window.QRScanner)
             window.QRScanner.prepare(onDone); // show the prompt
     }
@@ -126,21 +131,19 @@ export const QRCodeScannerTextField = ({label, setScanning, defaultValue, handle
                     id="toAddress"
                     name="toAddress"
                     type={'text'}
-                    margin={'none'}
+                    margin={'dense'}
                     fullWidth={true}
                     defaultValue={toAddress}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    labelWidth={140}
+                    labelWidth={labelWidth}
                     endAdornment={
                         <InputAdornment position="end" margin={'none'}>
-
                             <IconButton onClick={() => prepareScan()}>
                                 <CropFreeIcon />
                             </IconButton>
                         </InputAdornment>
                     }
-
                 />
             </FormControl>
 
@@ -150,6 +153,6 @@ export const QRCodeScannerTextField = ({label, setScanning, defaultValue, handle
 
 
 export const QRCodeScannerStopButton = () => {
-    return (<div style={{backgroundColor: 'transparent'}}></div>)
+    return (<div style={{backgroundColor: 'transparent'}}><h1>scanning</h1></div>)
 }
 

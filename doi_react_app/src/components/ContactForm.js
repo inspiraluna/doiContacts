@@ -12,6 +12,7 @@ import getDataHash from "bitcore-doichain/lib/doichain/getDataHash";
 import { usePosition } from 'use-position';
 import {getUTXOs} from "../utils/doichain-transaction-utils";
 import QRCode from "qrcode-react";
+import QRCodeScannerContents, {QRCodeScannerTextField} from "./QRCodeScanner";
 
 const DOI_STATE_WAITING_FOR_CONFIRMATION = 0
 const DOI_STATE_SENT_TO_VALIDATOR = 1
@@ -59,6 +60,7 @@ const ContactForm = () => {
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
     const [utxos, setUTXOs ] = useGlobal("utxos")
+    const [scanning, setScanning] =  useGlobal("scanning")
 
     const addContact = async (to,walletIndex) => {
         const runAddContact =  async (to,walletIndex) => new Promise(resolve => {
@@ -283,56 +285,52 @@ const ContactForm = () => {
     },[wallets[wallet].senderEmail,email])
 
      //always try to create tbe doichain tx, if data are not ready yet, it will not produce the tx
+    console.log('re-render contactform')
   return (
-    <div>
-        <form onSubmit={async (e) => {
-            e.preventDefault()
-            setButtonState('loading')
-            addContact(
-                email,
-                wallet,
-                address,
-                position).then((response)=>{
-                console.log('response was ok ',response)
-                setButtonState('success')
-                setSubmitting(false);
+      <QRCodeScannerContents
+          scanning={scanning}
+          render={(
+              <div>
+                  <form onSubmit={async (e) => {
+                      e.preventDefault()
+                      setButtonState('loading')
+                      addContact(
+                          email,
+                          wallet,
+                          address,
+                          position).then((response)=>{
+                          console.log('response was ok ',response)
+                          setButtonState('success')
+                          setSubmitting(false);
 
-            }).catch((response)=>{
-                console.log('response was error',response)
-                setButtonState('error')
-                setSubmitting(false);
-            })
-        }}>
+                      }).catch((response)=>{
+                          console.log('response was error',response)
+                          setButtonState('error')
+                          setSubmitting(false);
+                      })
+                  }}>
 
-            <TextField
-                type="email"
-                name="email"
-                id="email"
-                label="Request Email Permission"
-                className={classes.textField}
-                margin="normal"
-                defaultValue={email}
-                onBlur={(e) => {
-                    console.log('setting email',e.target.value)
-                    setEmail(e.target.value);
-                   calculateQRCode();
-                }}
-            />
-            <br/>
-            <InputLabel htmlFor="age-customized-native-simple" className={classes.label}>Wallet / Email</InputLabel>
-            <NativeSelect
-                name="wallet"
-                onChange={(e) => {setWallet(e.target.value); calculateQRCode();}}
-                className={classes.select}
-            > {
-                wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
-            }
-            </NativeSelect><br/>
-            <RequestAddress className={classes.textField}/>
-            <QRCode value={qrCode} /><br/>
-            <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={submitting}>Request Permission</ProgressButton>
-        </form>
-    </div>
+                      <QRCodeScannerTextField label={"Email permssion to request"} labelWidth={200} />
+
+                      <br/>
+                      <InputLabel htmlFor="age-customized-native-simple" className={classes.label}>Wallet / Email</InputLabel>
+                      <NativeSelect
+                          name="wallet"
+                          onChange={(e) => {setWallet(e.target.value); calculateQRCode();}}
+                          className={classes.select}
+                      > {
+                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
+                      }
+                      </NativeSelect><br/>
+                      <RequestAddress className={classes.textField}/>
+                      <QRCode value={qrCode} /><br/>
+                      <ProgressButton type="submit" color={"primary"} state={buttonState} disabled={submitting}>Request Permission</ProgressButton>
+                  </form>
+              </div>
+
+          )} />
+
+
   );
 }
 

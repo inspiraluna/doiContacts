@@ -10,18 +10,18 @@ import {getUTXOs} from "../utils/doichain-transaction-utils";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
 
-import  {QRCodeScannerContents, QRCodeScannerTextField } from "./QRCodeScanner";
+import  QRCodeScannerContents,{QRCodeScannerTextField } from "./QRCodeScanner";
 
 const SendAmount = () => {
 
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
     const [utxos, setUTXOs ] = useGlobal("utxos")
-    const [scanning, setScanning] = useState(false)
     const [amount2Send, setAmount2Send] = useState(0) //send amount
     const [ openError, setOpenError ] = useGlobal("errors")
     const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
     const [modus, setModus] = useGlobal("modus")
+    const [scanning, setScanning] =  useGlobal("scanning")
 
     const handleSendTransaction = (toAddress,amount) => {
 
@@ -96,92 +96,88 @@ const SendAmount = () => {
                    in={activeWallet !== undefined && global.modus === 'send'}
                    mountOnEnter unmountOnExit>
                 <div>
-
                     <QRCodeScannerContents
-                        render={() => {
-                            return (<div style={{backgroundColor: 'white'}}>
-                                <h1>{walletName} </h1>
-                                Send DOI from address: {address} <br></br>
+                        scanning={scanning}
+                        walletName={walletName}
+                        address={address}
+                        toAddress={global.toAddress}
+                        render={(<div style={{backgroundColor: 'white'}}>
+                            <h1>{walletName} </h1>
+                            Send DOI from address: {address} <br></br>
 
-                                <Formik
-                                    initialValues={{ toAddress: '', amount: 0 }}
-                                    validate={values => {
-                                        let errors = {};
-                                        /*     if (!values.email) {
-                                            errors.email = 'Required';
-                                        } else if (
-                                            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                        ) {
-                                            errors.email = 'Invalid email address';
-                                        } */
-                                        return errors;
-                                    }}
-                                    onSubmit={async (values, { setSubmitting }) => {
-                                        setButtonState('loading')
-                                        setSubmitting(true);
-                                        console.log('submitting values',values) //here we are just using the global (since the changeHandle do not fire
-                                        handleSendTransaction(values.toAddress,values.amount)
-                                    }}
-                                >
+                            <Formik
+                                initialValues={{toAddress: '', amount: 0}}
+                                validate={values => {
+                                    let errors = {};
+                                    /*     if (!values.email) {
+                                        errors.email = 'Required';
+                                    } else if (
+                                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                                    ) {
+                                        errors.email = 'Invalid email address';
+                                    } */
+                                    return errors;
+                                }}
+                                onSubmit={async (values, {setSubmitting}) => {
+                                    setButtonState('loading')
+                                    setSubmitting(true);
+                                    console.log('submitting values', values) //here we are just using the global (since the changeHandle do not fire
+                                    handleSendTransaction(values.toAddress, values.amount)
+                                }}
+                            >
 
-                                    {({
-                                          values,
-                                          errors,
-                                          touched,
-                                          handleChange,
-                                          handleBlur,
-                                          handleSubmit,
-                                          isSubmitting,
-                                          /* and other goodies */
-                                      }) => (
-                                        <form onSubmit={handleSubmit}>
+                                {({
+                                      values,
+                                      errors,
+                                      touched,
+                                      handleChange,
+                                      handleBlur,
+                                      handleSubmit,
+                                      isSubmitting,
+                                      /* and other goodies */
+                                  }) => (
+                                    <form onSubmit={handleSubmit}>
 
-                                            <QRCodeScannerTextField label={"to Doichain Address"}
-                                                                    setScanning={setScanning}
-                                                                    handleChange={handleChange}
-                                                                    handleBlur={handleBlur}
-                                                                    errors={errors}
-                                                                    touched={touched}
-                                            />
+                                        <QRCodeScannerTextField label={"to Doichain Address"}
+                                                                handleChange={handleChange}
+                                                                handleBlur={handleBlur}
+                                                                errors={errors}
+                                                                touched={touched}
+                                        />
 
-                                            <br></br>
+                                        <br></br>
 
-                                            <div>
-                                                <FormControl fullWidth  variant="outlined">
-                                                    <InputLabel htmlFor="outlined-adornment">Amount (DOI)</InputLabel>
-                                                    <OutlinedInput
-                                                        id="amount"
-                                                        name="amount"
-                                                        type={'text'}
-                                                        margin={'none'}
-                                                        fullWidth={true}
-                                                        labelWidth={110}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                    />
-                                                </FormControl>
-                                                {errors.position && touched.position && errors.position}
-                                            </div>
+                                        <div>
+                                            <FormControl fullWidth variant="outlined">
+                                                <InputLabel htmlFor="outlined-adornment">Amount (DOI)</InputLabel>
+                                                <OutlinedInput
+                                                    id="amount"
+                                                    name="amount"
+                                                    type={'text'}
+                                                    margin={'none'}
+                                                    fullWidth={true}
+                                                    labelWidth={110}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                />
+                                            </FormControl>
+                                            {errors.position && touched.position && errors.position}
+                                        </div>
 
-                                            <p>&nbsp;</p>
+                                        <p>&nbsp;</p>
 
-                                            <Button color={'primary'} variant="contained"  onClick={() => setModus('detail')}>Back</Button>
-                                            <ProgressButton type="submit" color={"primary"}
-                                                            state={global.buttonState}
-                                                            disabled={isSubmitting}>Send DOI</ProgressButton>
-                                        </form>
-                                    )}
-                                </Formik>
-                            </div>)
-                        }}
-                         scanning={scanning}
-                         walletName={walletName}
-                         address={address}
-                         toAddress={global.toAddress}
-                         handleSendTransaction={handleSendTransaction}
+                                        <Button color={'primary'} variant="contained"
+                                                onClick={() => setModus('detail')}>Back</Button>
+                                        <ProgressButton type="submit" color={"primary"}
+                                                        state={global.buttonState}
+                                                        disabled={isSubmitting}>Send DOI</ProgressButton>
+                                    </form>
+                                )}
+                            </Formik>
+                        </div>)
+                        }
                     />
                 </div>
-
             </Slide>
         </div>
     )

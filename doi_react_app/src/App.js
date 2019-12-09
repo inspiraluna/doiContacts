@@ -92,7 +92,7 @@ const App = (props) => {
     return (
         <div>
             <AppBar position="static">
-                <Tabs value={Number(currentTab)} onChange={(event, newValue) => {
+                <Tabs value={Number(currentTab?currentTab:0)} onChange={(event, newValue) => {
                     setCurrentTab(newValue)
                     setActiveWallet(undefined)
                     setModus('list')
