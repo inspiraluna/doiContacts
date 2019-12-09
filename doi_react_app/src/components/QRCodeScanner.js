@@ -5,6 +5,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
+import Button from "@material-ui/core/Button";
 
 
 class QRCodeScannerContents extends React.Component {
@@ -21,27 +22,13 @@ class QRCodeScannerContents extends React.Component {
 }
 export default QRCodeScannerContents
 
-/*
-export const QRCodeScannerContents = ({render, walletName, address, toAddress, handleSendTransaction}) => {
-    const [global] = useGlobal()
-    console.log('scanning----------------->global',global)
-    if(false)
-        return(<QRCodeScannerStopButton/>)
-    else{
-        return ( { render } )
-    }
-}
-*/
 
 export const QRCodeScannerTextField = ({label, labelWidth, defaultValue, handleChange, handleBlur, errors, touched}) => {
 
     const [toAddress, setToAddress] =  useGlobal("toAddress")
     const [scanning, setScanning] =  useGlobal("scanning")
-    console.log('rerender global.scanning',scanning)
     function prepareScan() {
-        console.log('prepareScan')
         setScanning(true)
-        console.log('prepareScan scanning',scanning)
         if (window.QRScanner)
             window.QRScanner.prepare(onDone); // show the prompt
     }
@@ -103,23 +90,7 @@ export const QRCodeScannerTextField = ({label, labelWidth, defaultValue, handleC
                         console.log('different qr code stopping scan')
                 });
             }
-            handleCancel()
-        }
-
-        const handleCancel = (e) => {
-            window.QRScanner.hide((status) => {
-                console.log("QRScanner.hide",status);
-            });
-
-            window.QRScanner.destroy((destroyStatus) =>{
-                console.log("destroyStatus",destroyStatus);
-                setScanning(false)
-
-                if(destroyStatus.scanning || destroyStatus.previewing) window.QRScanner.cancelScan(function(cancelStatus){
-                    console.log("cancelStatus",cancelStatus);
-                    setScanning(false)
-                });
-            });
+            handleCancel(setScanning)
         }
     }
 
@@ -150,9 +121,31 @@ export const QRCodeScannerTextField = ({label, labelWidth, defaultValue, handleC
     </div>)
 }
 
+const handleCancel = (setScanning) => {
+    console.log('cancel scan ',window.QRScanner)
+    if(window.QRScanner){
+        window.QRScanner.hide((status) => {
+            console.log("QRScanner.hide",status);
+        });
 
+        window.QRScanner.destroy((destroyStatus) =>{
+            console.log("destroyStatus",destroyStatus);
+            setScanning(false)
+
+            if(destroyStatus.scanning || destroyStatus.previewing) window.QRScanner.cancelScan(function(cancelStatus){
+                console.log("cancelStatus",cancelStatus);
+                setScanning(false)
+            });
+        });
+    }
+}
 
 export const QRCodeScannerStopButton = () => {
-    return (<div style={{backgroundColor: 'transparent'}}><h1>scanning</h1></div>)
+    const [scanning, setScanning] =  useGlobal("scanning")
+    return (<div style={{backgroundColor: 'transparent'}}><Button color={'primary'}
+                                                                  variant="contained"
+                                                                  onClick={() => {
+                                                                      handleCancel(setScanning)}
+                                                                  }>Stop Scan</Button></div>)
 }
 
