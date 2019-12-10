@@ -9,9 +9,6 @@ import Slide from "@material-ui/core/Slide";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import {useState} from "react";
-import WalletItem from "../components/WalletItem";
-import Button from "@material-ui/core/Button";
-import {ComponentHead} from "./WalletsPage";
 import ContactItem from "../components/ContactItem";
 
 const ContactsPage = () => {
@@ -21,7 +18,7 @@ const ContactsPage = () => {
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [modus, setModus] = useGlobal("modus")
     const [activeContact, setActiveContact ] = useGlobal("activeContact")
-    const [global] = useGlobal()
+    //const [global] = useGlobal()
 
     useEffect(() => {
     },[contacts])
@@ -59,17 +56,17 @@ const ContactsPage = () => {
                 <h1>Doi Contacts</h1>
                 <Slide aria-label="contact-detail"
                                direction={"up"}
-                               in={activeContact !== undefined && global.modus === 'detail'}
+                               in={activeContact !== undefined && modus === 'detail'}
                                mountOnEnter unmountOnExit>
                             <div>
                                 <ContactItem
-                                    wallet={global.contacts[global.activeContact].wallet}
-                                    email={global.contacts[global.activeContact].email}
-                                    nameId={global.contacts[global.activeContact].nameId}
-                                    requestedAt={global.contacts[global.activeContact].requestedAt}
-                                    status={global.contacts[global.activeContact].status}
-                                    txId={global.contacts[global.activeContact].txId}
-                            validatorAddress={global.contacts[global.activeContact].validatorAddress}
+                                    wallet={contacts[activeContact].wallet}
+                                    email={contacts[activeContact].email}
+                                    nameId={contacts[activeContact].nameId}
+                                    requestedAt={contacts[activeContact].requestedAt}
+                                    status={contacts[activeContact].status}
+                                    txId={contacts[activeContact].txId}
+                            validatorAddress={contacts[activeContact].validatorAddress}
                             />
                     </div>
                 </Slide>

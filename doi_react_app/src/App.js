@@ -21,13 +21,14 @@ const App = (props) => {
     console.log('cordova is:',props.cordova)
     const [global,setGlobal] = useGlobal()
     const changed = false;
-    useEffect(
+    if(!global.currentTab && !global.modus && !global.activeWallet) initStorage(props.cordova,global,setGlobal)
+    /*useEffect(
         () => {
             console.log("render App just one time!");
             initStorage(props.cordova,global,setGlobal)
         },
-        [changed]
-    );
+        [global.currentTab===undefined]
+    );*/
 /*
    const settings = {  //RegTest
         testnet:true,
@@ -88,29 +89,30 @@ const App = (props) => {
             'aria-controls': `simple-tabpanel-${index}`,
         };
     }
-    console.log('currentTAb:',currentTab)
+    const our_CurrentTab = currentTab?currentTab:0
+    console.log('currentTAb:',our_CurrentTab)
     return (
         <div>
             <AppBar position="static">
-                <Tabs value={Number(currentTab?currentTab:0)} onChange={(event, newValue) => {
+                <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
                     setCurrentTab(newValue)
                     setActiveWallet(undefined)
                     setModus('list')
                 }} aria-label="Doichain Contacts">
                     <Tab label="Contacts" {...a11yProps(0)} />
                     <Tab label="Wallets" {...a11yProps(1)} />
-                    <Tab label="Settings" {...a11yProps(2)} />
+                    <Tab label="Clearances" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
-            <TabPanel value={Number(currentTab)} index={0}>
+            <TabPanel value={Number(our_CurrentTab)} index={0}>
                 {currentTab==0 && <ContactsPage/>}
 
             </TabPanel>
-            <TabPanel value={Number(currentTab)} index={1}>
+            <TabPanel value={Number(our_CurrentTab)} index={1}>
                 {currentTab==1 && <WalletsPage/>}
             </TabPanel>
-            <TabPanel value={Number(currentTab)} index={2}>
-              Settings
+            <TabPanel value={Number(our_CurrentTab)} index={2}>
+              My Clearances
             </TabPanel>
             <div style={{float:'right'}}>
                 {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}

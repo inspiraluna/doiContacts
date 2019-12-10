@@ -325,7 +325,7 @@ const ContactForm = () => {
                           onChange={(e) => {setWallet(e.target.value); calculateOwnQRCode();}}
                           className={classes.select}
                       > {
-                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
+                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} ({wallet.balance} DOI)</option>)
                       }
                       </NativeSelect><br/>
                       <RequestAddress className={classes.textField}/>
