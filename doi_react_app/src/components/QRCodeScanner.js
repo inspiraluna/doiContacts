@@ -6,6 +6,8 @@ import IconButton from "@material-ui/core/IconButton";
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
 import Button from "@material-ui/core/Button";
+import s from  './QRCodeScanner.module.css';
+import CloseIcon from '@material-ui/icons/Close';
 
 
 class QRCodeScannerContents extends React.Component {
@@ -143,10 +145,14 @@ const handleCancel = (setScanning) => {
 
 export const QRCodeScannerStopButton = () => {
     const [scanning, setScanning] =  useGlobal("scanning")
-    return (<div style={{backgroundColor: 'transparent'}}><Button color={'primary'}
-                                                                  variant="contained"
-                                                                  onClick={() => {
-                                                                      handleCancel(setScanning)}
-                                                                  }>Stop Scan</Button></div>)
+    return (<div className={s.stopButton}  style={{ backgroundColor: "transparent" }}>
+    <CloseIcon
+           color={"primary"}
+           variant="contained"
+           onClick={handleCancel }
+           className={s.stopButton}
+           style={{cursor : "pointer"}}
+         ></CloseIcon>
+</div>)
 }
 
