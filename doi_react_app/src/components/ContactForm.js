@@ -146,6 +146,7 @@ const ContactForm = () => {
         const ourFrom = wallets[wallet].senderEmail
 
         const templateData = {
+            "sender": ourFrom, //TODO the sender of this email shouldn't be necessary to transmit (we only need this for the Doichain footer to tell the recipient whom he grants the permission) Unfortunately, we don't want to trust either the transmitting node nor the sending validator to know such data
             "recipient": email,
             "content": ourWallet.content,
             "redirect": ourWallet.redirectUrl,
@@ -325,7 +326,7 @@ const ContactForm = () => {
                           onChange={(e) => {setWallet(e.target.value); calculateOwnQRCode();}}
                           className={classes.select}
                       > {
-                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} {wallet.senderEmail}</option>)
+                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.walletName} ({wallet.balance} DOI)</option>)
                       }
                       </NativeSelect><br/>
                       <RequestAddress className={classes.textField}/>

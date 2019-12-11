@@ -102,7 +102,7 @@ const WalletsPage = () => {
         return (
             <div>
             <ComponentHead/>
-            <WalletList checked={activeWallet!==undefined} />
+            <WalletList checked={global.activeWallet===undefined} />
             <div style={{float:'right'}}>
                 <Fab aria-label={"new contact"}
                      color={"primary"}

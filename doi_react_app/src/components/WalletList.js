@@ -15,7 +15,6 @@ const WalletList = ({checked}) => {
     const global = useGlobal()
     const [ wallets, setWallets ] = useGlobal('wallets')
 
-
    const handleDetail = (index) => {
        const currentGlobal = global;
        currentGlobal.activeWallet = index
@@ -23,7 +22,6 @@ const WalletList = ({checked}) => {
        setGlobal(currentGlobal)
        console.log('activeWallet now in global', global.activeWallet + "/" + global.modus)
    }
-
 
    const handleEdit = (index) => {
        const  currentGlobal = global;
@@ -39,8 +37,8 @@ const WalletList = ({checked}) => {
         setWallets(currentWallets)
     }
 
-    console.log('wallets',wallets)
     const ourWallets = wallets?wallets:[]//global.wallets?global.wallets:[]
+    console.log('ourWallets',ourWallets)
     const walletNode = ourWallets.map((item,index) => {
     console.log('item',item)
         return (
@@ -65,7 +63,7 @@ const WalletList = ({checked}) => {
             </ListItem>)
     });
 
-    return (<List dense={true} hidden={checked}>{walletNode}</List>)
+    return (<List dense={true} >{walletNode}</List>)
 }
 
 export default WalletList

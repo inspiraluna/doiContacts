@@ -8,7 +8,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):"0"
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):'list'
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
-        console.log('setting globa values')
+        console.log('setting global values')
         setGlobal({contacts: initialContacts,
             wallets: initialWallets,
             errors: false,
@@ -17,7 +17,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             modus: initialModus,
             activeWallet: initialActiveWallet
         })
-        console.log('initialized local storage')
+        console.log('initialized local storage',global)
     }else{
         console.log('initializing native storage')
         window.NativeStorage.getItem("contacts",
