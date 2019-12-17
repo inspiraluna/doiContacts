@@ -7,8 +7,10 @@ import WalletItem from "../components/WalletItem";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
-import QRCode from "qrcode-react";
+import QRCode from "qrcode-react"; 
 import SendAmount from "../components/SendAmount";
+import EditEmailTemplate from '../components/EditEmailTemplate'
+import { NavLink } from 'react-router-dom'
 
 const WalletsPage = () => {
 
@@ -27,7 +29,7 @@ const WalletsPage = () => {
         const our_walletName = "Example Wallet"
         const our_senderEmail = "info@doichain.org"
         const our_subject = "Doichain Contacts Request"
-        const our_content = "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nNico"
+        const our_content = "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nPeter" 
         const our_contentType = "text/plain"
         const our_redirectUrl = "http://www.doichain.org"
         const our_returnPath = "doichain@doichain.org"
@@ -81,6 +83,10 @@ const WalletsPage = () => {
     const handleCancel = (e) => {
         setModus('list')
         setActiveWallet(undefined)
+    };
+    const editEmailTemplate = (e) => {
+        setModus('editEmailTemplate')
+       
     };
 
     useEffect(() => {
@@ -190,6 +196,9 @@ const WalletsPage = () => {
             } else if(global.modus==='send') {
                 return (<SendAmount />)
             }
+            else if(global.modus==='editEmailTemplate') {
+                return (<EditEmailTemplate />)
+            }
             else if(global.modus==='edit' || global.modus === 'add') {
                 return (
                         <div>
@@ -251,15 +260,18 @@ const WalletsPage = () => {
                                     </select>
                                     <br/>
 
-                                    <TextField
+                                     {/* <TextField
                                         id="content"
                                         label="Email Content Template"
                                         fullWidth={true}
                                         rows={5}
                                         defaultValue={wallets[activeWallet]?wallets[activeWallet].content:''}
                                         margin="normal"
-                                    /> <br/>
-
+                                    /> */}
+                                       <Button variant="outlined" color="primary" onClick={() => editEmailTemplate()}>
+                                         Edit Email template
+                                    </Button>
+                                    <br/>  
                                     <TextField
                                         id="redirectUrl"
                                         label="Redirect URL (after commit)"
@@ -283,7 +295,7 @@ const WalletsPage = () => {
                                     </Button>
                                 </form>
                                 <Button color={'primary'} variant="contained"  onClick={() => handleCancel()}>Cancel</Button>
-                            </div>
+                           </div>
                         </Slide>
                     </div>
                 )
@@ -296,4 +308,5 @@ export default WalletsPage
 export const ComponentHead = () => {
     return (<h1>DoiCoin Wallets</h1>)
 }
+
 
