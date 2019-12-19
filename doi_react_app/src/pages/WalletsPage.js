@@ -27,7 +27,7 @@ const WalletsPage = () => {
         const our_walletName = "Example Wallet"
         const our_senderEmail = "info@doichain.org"
         const our_subject = "Doichain Contacts Request"
-        const our_content = "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nNico"
+        const our_content = "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\n Bob"
         const our_contentType = "text/plain"
         const our_redirectUrl = "http://www.doichain.org"
         const our_returnPath = "doichain@doichain.org"
@@ -102,7 +102,7 @@ const WalletsPage = () => {
         return (
             <div>
             <ComponentHead/>
-            <WalletList checked={global.activeWallet===undefined} />
+            <WalletList  />
             <div style={{float:'right'}}>
                 <Fab aria-label={"new contact"}
                      color={"primary"}

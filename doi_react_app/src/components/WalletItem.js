@@ -23,7 +23,7 @@ const WalletItem = ({   walletName,
              try{
                  const address = bitcore.getAddressOfPublicKey(publicKey).toString()
                  if(address && !balance){
-                     console.log('fetching...')
+                     console.log('fetching from Doichain node...')
                      const response = await bitcore.getUTXOAndBalance(address.toString())
                      const balanceAllUTXOs = response.balanceAllUTXOs
                      const currentWallet = wallets[global.activeWallet]

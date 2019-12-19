@@ -18,7 +18,6 @@ const ContactsPage = () => {
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [modus, setModus] = useGlobal("modus")
     const [activeContact, setActiveContact ] = useGlobal("activeContact")
-    //const [global] = useGlobal()
 
     useEffect(() => {
     },[contacts])
@@ -45,12 +44,12 @@ const ContactsPage = () => {
         setContactItemsChanged(true);
         setModus('detail')
     }
+
     useEffect(() => {
         setContactItemsChanged(false)
     },[contactItemsChanged])
 
     if(global.modus==='detail') {
-        console.log('showing list')
         return (
             <div>
                 <h1>Doi Contacts</h1>
@@ -73,7 +72,6 @@ const ContactsPage = () => {
             </div>)
     }
     else{
-        console.log('showing list')
         return (
             <div>
                 <Slide aria-label="contact-detail"

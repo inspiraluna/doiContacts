@@ -10,7 +10,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import DetailsIcon from '@material-ui/icons/Details';
 import List from "@material-ui/core/List";
 
-const WalletList = ({checked}) => {
+const WalletList = () => {
 
     const global = useGlobal()
     const [ wallets, setWallets ] = useGlobal('wallets')
@@ -20,7 +20,6 @@ const WalletList = ({checked}) => {
        currentGlobal.activeWallet = index
        currentGlobal.modus = 'detail'
        setGlobal(currentGlobal)
-       console.log('activeWallet now in global', global.activeWallet + "/" + global.modus)
    }
 
    const handleEdit = (index) => {
@@ -28,7 +27,6 @@ const WalletList = ({checked}) => {
         currentGlobal.activeWallet = index
         currentGlobal.modus = 'edit'
         setGlobal(currentGlobal)
-        console.log('activeWallet now in global',global.activeWallet+"/"+global.modus)
     }
 
     const handleRemove = (index) => {
@@ -37,10 +35,9 @@ const WalletList = ({checked}) => {
         setWallets(currentWallets)
     }
 
-    const ourWallets = wallets?wallets:[]//global.wallets?global.wallets:[]
-    console.log('ourWallets',ourWallets)
+    const ourWallets = wallets?wallets:[]
     const walletNode = ourWallets.map((item,index) => {
-    console.log('item',item)
+
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>

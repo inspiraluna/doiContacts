@@ -5,7 +5,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
-import Button from "@material-ui/core/Button";
 import s from  './QRCodeScanner.module.css';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -62,7 +61,7 @@ export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onCh
     }
 
     function showScanner() {
-        console.log('showing scanner - cordova available', window.cordova !== undefined)
+       // console.log('showing scanner - cordova available', window.cordova !== undefined)
         window.QRScanner.show();
         scan()
     }
@@ -97,7 +96,7 @@ export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onCh
             handleCancel(setScanning)
         }
     }
-    console.log('re-rendering QR-Code component with qr-code',qrCode)
+    //console.log('re-rendering QR-Code component with qr-code',qrCode)
     return (
         <div>
             <FormControl fullWidth variant="outlined" >

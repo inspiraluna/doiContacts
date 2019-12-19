@@ -5,8 +5,7 @@ import {useState} from "react";
 import {Formik} from "formik";
 import InputLabel from "@material-ui/core/InputLabel";
 import ProgressButton from "react-progress-button";
-import bitcore from "bitcore-doichain";
-import {getUTXOs} from "../utils/doichain-transaction-utils";
+import {broadcastTransaction, createDoicoinTransaction, updateWalletBalance} from "../utils/doichain-transaction-utils";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
 
@@ -15,6 +14,7 @@ import  QRCodeScannerContents,{QRCodeScannerTextField } from "./QRCodeScanner";
 const SendAmount = () => {
 
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+    const [wallets,setWallets] = useGlobal("wallets")
     const [utxos, setUTXOs ] = useGlobal("utxos")
     const [ openError, setOpenError ] = useGlobal("errors")
     const [global] = useGlobal()
@@ -23,55 +23,22 @@ const SendAmount = () => {
     const [scanning, setScanning] =  useGlobal("scanning")
     const [qrCode, setQRCode] =  useGlobal("qrCode")
 
-    const handleSendTransaction = (toAddress,amount) => {
+    const handleSendTransaction = async (toAddress,amount) => {
 
         try {
+            const our_wallet  =  wallets[activeWallet]
 
-            const ourAddress = global.wallets[global.activeWallet].addresses[0].address
-            const changeAddress = ourAddress
-            const fee = 100000 //TODO please calculate correct fee for transaction
-            const privateKey = global.wallets[global.activeWallet].privateKey
+            const offChainUtxos = global.utxos
+            const txData = await createDoicoinTransaction(our_wallet,toAddress,amount,offChainUtxos) //returns only tx and changeAddress
+            console.log("txData created for broadcast",txData)
+            const utxosResponse = await broadcastTransaction(txData,null)
+            setUTXOs(utxosResponse)
+            updateWalletBalance(our_wallet,utxosResponse.balance)
 
-            let tx = bitcore.Transaction();
-            tx.to(toAddress, Number(amount*100000000));
-            tx.change(changeAddress);
-            tx.fee(fee);
+            const msg = 'broadcasted doichain transaction to Doichain node'
+            setOpenError({open:true,msg:msg,type:'success'})
+            setButtonState('success')
 
-            bitcore.getUTXOAndBalance(ourAddress, amount).then(function (utxo) {
-
-                if (utxo.utxos.length === 0 && (!global.utxos || global.utxos.length===0)){
-                    const err = 'insufficiant funds'
-                    setOpenError({open:true,msg:err,type:'info'})
-                    setButtonState('error')
-                    throw err
-                }
-                else if(utxo.utxos.length === 0 && global.utxos){
-                    utxo.utxos = global.utxos
-                }
-
-                tx.from(utxo.utxos);
-                tx.sign(privateKey);
-                const txSerialized = tx.serialize(true)
-
-                //TODO please create to different methodes broadcastRawDOITransaction broadcastRawTransaction
-                bitcore.broadcastTransaction(null,
-                    txSerialized,null,null).then((response) => {
-
-                        getUTXOs(changeAddress,response,setUTXOs)
-                        const msg = 'broadcasted doichain transaction to Doichain node'
-                        setOpenError({open:true,msg:msg,type:'success'})
-                        setButtonState('success')
-
-                        return "ok"
-                    }).catch((ex)=>{
-                        const err = 'error while broadcasting transaction '
-                        console.log(err,ex)
-                        setOpenError({open:true,msg:err,type:'error'})
-                        setButtonState('error')
-                        throw err
-                    });
-
-            })
         }catch(ex){
             const err = 'error while broadcasting transaction '
             console.log(err,ex)

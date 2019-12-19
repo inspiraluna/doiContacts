@@ -31,19 +31,20 @@ const App = (props) => {
     );*/
 /*
    const settings = {  //RegTest
-        testnet:true,
-        from: 'newsletter@doichain.org',
-        port:4000,
+        testnet: true,
+        from: 'bob@ci-doichain.org',
+        port:3000,
         host:"localhost"
-    }
-
-    const settings = {  //testnet 2
-        testnet:true,
-        from: 'newsletter@doichain.org',
-        port:4010,
-        host:"5.9.154.231"
-    }
+    } */
+    /*
+        const settings = {  //testnet 2
+            testnet:true,
+            from: 'newsletter@doichain.org',
+            port:4010,
+            host:"5.9.154.231"
+        }
 */
+
     const settings = {  //testnet 2
         testnet:true,
         from: 'newsletter@doichain.org',
@@ -51,6 +52,7 @@ const App = (props) => {
         ssl:true,
         host:"doichain-testnet.le-space.de"
     }
+
     bitcore.settings.setSettings(settings)
 
     console.log(bitcore.settings.getSettings(), bitcore.getUrl())
@@ -90,7 +92,6 @@ const App = (props) => {
         };
     }
     const our_CurrentTab = currentTab?currentTab:0
-    console.log('currentTAb:',our_CurrentTab)
     return (
         <div>
             <AppBar position="static">
