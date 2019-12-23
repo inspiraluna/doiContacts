@@ -27,6 +27,7 @@ const WalletList = ({checked}) => {
        const  currentGlobal = global;
         currentGlobal.activeWallet = index
         currentGlobal.modus = 'edit'
+        currentGlobal.tempWallet = wallets[index]
         setGlobal(currentGlobal)
         console.log('activeWallet now in global',global.activeWallet+"/"+global.modus)
     }
@@ -49,7 +50,7 @@ const WalletList = ({checked}) => {
                     </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                    primary={item.walletName+' / '+item.senderEmail}
+                    primary={item.senderEmail}
                     secondary={"Balance: "+wallets[index].balance}
                 />
                 <ListItemSecondaryAction>

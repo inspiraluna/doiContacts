@@ -73,7 +73,7 @@ const SendAmount = () => {
 
             })
         }catch(ex){
-            const err = 'error while broadcasting transaction '
+            const err = 'error while broadcasting transaction'
             console.log(err,ex)
             setOpenError({open:true,msg:err,type:'error'})
             setButtonState('error')

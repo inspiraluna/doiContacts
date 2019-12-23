@@ -7,7 +7,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
         const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):"0"
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):'list'
-        const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
+        const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):'0'
         console.log('setting global values')
         setGlobal({contacts: initialContacts,
             wallets: initialWallets,
