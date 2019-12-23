@@ -62,6 +62,7 @@ const WalletsPage = () => {
         setWalletItemsChanged(true);
         setActiveWallet(wallets.length-1)
         setModus('detail')
+        setTempWallet(undefined)
     }
 
     const updateWallet = (walletName,senderEmail, subject,content,contentType,redirectUrl,returnPath) => {
@@ -79,6 +80,7 @@ const WalletsPage = () => {
         setWallets(wallets)
         setWalletItemsChanged(true);
         setModus('detail')
+        setTempWallet(undefined)
     }
 
     const handleCancel = (e) => {
