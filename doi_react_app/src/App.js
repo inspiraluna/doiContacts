@@ -17,7 +17,6 @@ import initStorage from "./utils/storage"
 
 
 const App = (props) => {
-
     console.log('cordova is:',props.cordova)
     const [global,setGlobal] = useGlobal()
     const changed = false;
@@ -107,7 +106,6 @@ const App = (props) => {
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
                 {currentTab==0 && <ContactsPage/>}
-
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={1}>
                 {currentTab==1 && <WalletsPage/>}

@@ -12,12 +12,38 @@ import CheckIcon from '@material-ui/icons/Check';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import verify from "bitcore-doichain/lib/doichain/verify";
 import {setGlobal, useGlobal} from "reactn";
+import List from "@material-ui/core/List";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
-const ContactList = ({remove}) => {
+const ContactList = () => {
 
     const global = useGlobal()
     const [ wallets, setWallets ] = useGlobal('wallets')
     const [ contacts, setContacts ] = useGlobal('contacts')
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+        const currentGlobal = global;
+       currentGlobal.modus = 'list'
+       setGlobal(currentGlobal)
+    };
+    const handleRemove = (index) => {
+        const currentContacts = contacts
+        currentContacts.splice(index, 1);
+        setContacts(currentContacts)
+        const currentGlobal = global;
+        currentGlobal.modus = 'list'
+        setGlobal(currentGlobal)
+    }
 
     const handleDetail = (index) => {
         const currentGlobal = global;
@@ -67,8 +93,29 @@ const ContactList = ({remove}) => {
                 />
                 <ListItemSecondaryAction>
                     <StatusIcon contact={contact}/>
-                    <IconButton edge="end" aria-label="delete" onClick={() => remove(index)}>
+                    <IconButton edge="end" aria-label="delete" onClick={handleClickOpen}>
                         <DeleteIcon />
+                        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Do you really want to delete this contact? this process cannot be undone
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleClose()} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => handleRemove(index)} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
                     </IconButton>
                 </ListItemSecondaryAction>
         </ListItem>)

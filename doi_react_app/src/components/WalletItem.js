@@ -73,23 +73,18 @@ const WalletItem = ({   walletName,
     if(!publicKey) return null
     else
     return (
-
         <div>
             <li style={{"fontSize":"9px"}}>
-                <b>{walletName}</b> <br/>
                 DoiCoin-Address: <b>{(address)?address.toString():''}</b><br/>
                 Balance: {balance} DOI
             </li>
             <div style={{"fontSize":"9px","border":'2px solid lightgrey'}}>
-
-                                    <label htmlFor={"walletName"}>Wallet: </label>{walletName}<br/>
                                     <label htmlFor={"senderEmail"}>Email: </label>{senderEmail}<br/>
                                     <label htmlFor={"subject"}></label>Subject: {subject}<br/>
                                     <label htmlFor={"content"}></label>Content: {content}<br/>
                                     <label htmlFor={"contentType"}></label>Content-Type: {contentType}<br/>
                                     <label htmlFor={"redirectUrl"}></label>Redirect-Url: {redirectUrl}><br/>
-                                    <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/>
-
+                                    {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                    <b>PubKey:<input type={"text"} readOnly={true} defaultValue={publicKey} size={40}/></b><br/>
             </div>
         </div>
