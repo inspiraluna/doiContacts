@@ -11,7 +11,6 @@ import QRCode from "qrcode-react";
 import SendAmount from "../components/SendAmount";
 import EditEmailTemplate from '../components/EditEmailTemplate'
 
-
 const WalletsPage = () => {
 
     const [amount, setAmount] = useState(0) //receive amount
