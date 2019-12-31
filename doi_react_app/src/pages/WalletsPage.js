@@ -24,24 +24,25 @@ const WalletsPage = () => {
     useEffect(() => {
     },[modus])
 
-    const addWallet = (walletName,senderEmail, subject,content,contentType,redirectUrl,returnPath) => {
-
+    const checkDefaults = (wallet) => {
         // const our_walletName = "Example Wallet"
         const our_senderEmail = "info@doichain.org"
         const our_subject = "Doichain Contacts Request"
         const our_content = "'Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nPeter'"
         const our_contentType = "text/plain"
         const our_redirectUrl = "http://www.doichain.org"
-        // const our_returnPath = "doichain@doichain.org"
+        const our_returnPath = "doichain@doichain.org"
 
         // if(!walletName) walletName = our_walletName
-        if(!senderEmail) senderEmail = our_senderEmail
-        if(!subject) subject = our_subject
-        if(!content) content = our_content
-        if(!contentType) contentType = our_contentType
-        if(!redirectUrl) redirectUrl = our_redirectUrl
-        // if(!returnPath) returnPath = our_returnPath
-
+        if(!wallet.senderEmail) wallet.senderEmail = our_senderEmail
+        if(!wallet.subject) wallet.subject = our_subject
+        if(!wallet.content) wallet.content = our_content
+        if(!wallet.contentType) wallet.contentType = our_contentType
+        if(!wallet.redirectUrl) wallet.redirectUrl = our_redirectUrl
+        if(!wallet.returnPath) wallet.returnPath = our_returnPath
+        return wallet
+    }
+    const addWallet = (walletName,senderEmail, subject,content,contentType,redirectUrl,returnPath) => {
         const ourWallet = bitcore.createWallet(walletName)
         const wallet = {}
         // wallet.walletName = walletName
@@ -50,13 +51,13 @@ const WalletsPage = () => {
         wallet.content = content
         wallet.contentType = contentType
         wallet.redirectUrl = redirectUrl
-        // wallet.returnPath = returnPath
+        wallet.returnPath = returnPath
         wallet.privateKey = ourWallet.privateKey.toString()
         wallet.publicKey = ourWallet.publicKey.toString()
 
         let newwallets = wallets
-        newwallets.push(wallet)
-        console.log("adding wallet",wallet)
+        newwallets.push(checkDefaults(wallet))
+
         setWallets(wallets)
         setWalletItemsChanged(true);
         setActiveWallet(wallets.length-1)
@@ -75,7 +76,7 @@ const WalletsPage = () => {
         wallet.redirectUrl = redirectUrl
         wallet.returnPath = returnPath
 
-        wallets[activeWallet] = wallet
+        wallets[activeWallet] = checkDefaults(wallet)
         setWallets(wallets)
         setWalletItemsChanged(true);
         setModus('detail')
@@ -213,13 +214,13 @@ const WalletsPage = () => {
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
 
-                                    const walletName = e.target.walletName?e.target.walletName.value:undefined
-                                    const senderEmail = e.target.senderEmail.value
-                                    const subject = e.target.subject.value
-                                    const content = (tempWallet && tempWallet.content)?tempWallet.content:''
-                                    const contentType = e.target.contentType.value
-                                    const redirectUrl = e.target.redirectUrl.value
-                                    const returnPath = e.target.returnPath?e.target.returnPath.value:undefined
+                                    const walletName = e.target.walletName?e.target.walletName.value.trim():undefined
+                                    const senderEmail = e.target.senderEmail.value.trim()
+                                    const subject = e.target.subject.value.trim()
+                                    const content = (tempWallet && tempWallet.content)?tempWallet.content.trim():''
+                                    const contentType = e.target.contentType.value.trim()
+                                    const redirectUrl = e.target.redirectUrl.value.trim()
+                                    const returnPath = e.target.returnPath?e.target.returnPath.value.trim():undefined
 
                                     if(activeWallet===undefined)
                                         addWallet(walletName,senderEmail,subject,content, contentType, redirectUrl,returnPath)
