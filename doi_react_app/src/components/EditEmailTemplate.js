@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 const EditEmailTemplate = () => {
 
     const [modus, setModus] = useGlobal("modus")
-    const [global] = useGlobal()
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
 
     const handleCancel = (e) => {
@@ -15,7 +14,7 @@ const EditEmailTemplate = () => {
     return (
         <div>
             <TextareaAutosize
-                rows="8" cols="205"
+                rows={16}  cols="65"
                 aria-label="maximum height"
                 placeholder=""
                 defaultValue={tempWallet ? tempWallet.content : ''}

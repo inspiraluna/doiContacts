@@ -13,7 +13,6 @@ const WalletItem = ({   walletName,
 
     const [address, setAddress] = useState()
     const [balance, setBalance] = useState()
-
     const [wallets, setWallets] = useGlobal("wallets")
     const [global] = useGlobal()
 
@@ -43,7 +42,6 @@ const WalletItem = ({   walletName,
                                      somethingWasUpdated=true //so re-render otherwise no!
                                  }
                                  currentWalletBalance+=currentAddresses[x].balance
-                                 //break;
                              }
                          }
                          if(!found){
