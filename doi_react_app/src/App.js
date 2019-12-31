@@ -15,19 +15,14 @@ import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 import bitcore from "bitcore-doichain";
 import initStorage from "./utils/storage"
 
-
 const App = (props) => {
-    console.log('cordova is:',props.cordova)
+
     const [global,setGlobal] = useGlobal()
-    const changed = false;
-    if(!global.currentTab && !global.modus && !global.activeWallet) initStorage(props.cordova,global,setGlobal)
-    /*useEffect(
-        () => {
-            console.log("render App just one time!");
-            initStorage(props.cordova,global,setGlobal)
-        },
-        [global.currentTab===undefined]
-    );*/
+    const [currentTab, setCurrentTab] = useGlobal("currentTab")
+    const [modus, setModus] = useGlobal("modus")
+    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+
+
 /*
    const settings = {  //RegTest
         testnet: true,
@@ -54,12 +49,20 @@ const App = (props) => {
 
     bitcore.settings.setSettings(settings)
 
-    console.log(bitcore.settings.getSettings(), bitcore.getUrl())
+    //console.log(bitcore.settings.getSettings(), bitcore.getUrl())
     register()
 
-    const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus, setModus] = useGlobal("modus")
-    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+    useEffect(
+        () => {
+            console.log("render App just one time!",global.currentTab);
+            if(!global.currentTab && !global.modus && !global.activeWallet){
+                initStorage(props.cordova,global,setGlobal)
+                console.log('storage initialized')
+            }
+        },
+        [global.currentTab]
+    );
+
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -91,10 +94,12 @@ const App = (props) => {
         };
     }
     const our_CurrentTab = currentTab?currentTab:0
+    //console.log('rendering app',)
     return (
         <div>
             <AppBar position="static">
                 <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
+                    console.log("setting tab to",newValue)
                     setCurrentTab(newValue)
                     setActiveWallet(undefined)
                     setModus('list')
@@ -105,7 +110,7 @@ const App = (props) => {
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
-                {currentTab==0 && <ContactsPage/>}
+              {currentTab==0 && <ContactsPage/>}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={1}>
                 {currentTab==1 && <WalletsPage/>}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {setGlobal, useGlobal,useState} from "reactn";
 import _ from "lodash"
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -11,8 +11,6 @@ import FolderIcon from '@material-ui/icons/Folder'
 import CheckIcon from '@material-ui/icons/Check';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import verify from "bitcore-doichain/lib/doichain/verify";
-import {setGlobal, useGlobal} from "reactn";
-import List from "@material-ui/core/List";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -23,18 +21,18 @@ import Button from '@material-ui/core/Button';
 const ContactList = () => {
 
     const global = useGlobal()
-    const [ wallets, setWallets ] = useGlobal('wallets')
-    const [ contacts, setContacts ] = useGlobal('contacts')
-    const [open, setOpen] = React.useState(false);
+    const [wallets, setWallets] = useGlobal('wallets')
+    const [contacts, setContacts] = useGlobal('contacts')
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
-      setOpen(true);
+        setOpen(true);
     };
-  
+
     const handleClose = () => {
         const currentGlobal = global;
-       currentGlobal.modus = 'list'
-       setGlobal(currentGlobal)
+        currentGlobal.modus = 'list'
+        setGlobal(currentGlobal)
     };
     const handleRemove = (index) => {
         const currentContacts = contacts
@@ -53,27 +51,28 @@ const ContactList = () => {
         console.log('activeContact now in global', global.activeContact + "/" + global.modus)
     }
 
-    const ourContacts = contacts?contacts:[]
+    const ourContacts = contacts ? contacts : []
+    console.log('contactList rendering',ourContacts)
     const contactNode = ourContacts.map((contact, index) => {
 
-        _.find(wallets, function(wallet) {
+        _.find(wallets, function (wallet) {
             let changed = false
-            if(wallet.publicKey === contact.wallet){
-                console.log("checking "+contact.email,contact.confirmed)
-                verify(contact.email,wallet.senderEmail,contact.nameId,wallet.publicKey).then((status)=>{
-                    if(status && status.val===true && !contact.confirmed){
+            if (wallet.publicKey === contact.wallet) {
+                console.log("checking " + contact.email, contact.confirmed)
+                verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then((status) => {
+                    if (status && status.val === true && !contact.confirmed) {
 
-                        changed=true
-                        contact.confirmed=true
-                      //  console.log('changed contact to be confirmed '+changed,contact.email)
+                        changed = true
+                        contact.confirmed = true
+                        //  console.log('changed contact to be confirmed '+changed,contact.email)
                     }
-                    if(status && status.val!==true && contact.confirmed){
-                        changed=true
-                        contact.confirmed=false
+                    if (status && status.val !== true && contact.confirmed) {
+                        changed = true
+                        contact.confirmed = false
                     }
-                 //   console.log("checking "+contact.email,contact.confirmed)
-                    if(changed) {
-                      //  console.log('changed global contacts')
+                    //   console.log("checking "+contact.email,contact.confirmed)
+                    if (changed) {
+                          console.log('changed global contacts')
                         setContacts(contacts)
                     }
                 })
@@ -81,56 +80,55 @@ const ContactList = () => {
         })
 
         return (
-            <ListItem key={index}  onClick={() => handleDetail(index)}>
+            <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>
                     <Avatar>
-                        <FolderIcon />
+                        <FolderIcon/>
                     </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                     primary={contact.email}
-                    secondary={(contact && contact.position && contact.position.address)?contact.position.address.city+" "+contact.position.address.country:''}
+                    secondary={(contact && contact.position && contact.position.address) ? contact.position.address.city + " " + contact.position.address.country : ''}
                 />
                 <ListItemSecondaryAction>
                     <StatusIcon contact={contact}/>
                     <IconButton edge="end" aria-label="delete" onClick={handleClickOpen}>
-                        <DeleteIcon />
+                        <DeleteIcon/>
                         <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Do you really want to delete this contact? this process cannot be undone
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => handleClose()} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={() => handleRemove(index)} color="primary" autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Do you really want to delete this contact? this process cannot be undone
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => handleClose()} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={() => handleRemove(index)} color="primary" autoFocus>
+                                    Delete
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                     </IconButton>
                 </ListItemSecondaryAction>
-        </ListItem>)
+            </ListItem>)
     });
     return contactNode
 }
 
 
 const StatusIcon = ({contact}) => {
-    const [global] = useGlobal()
     return (
         <IconButton edge="end" aria-label="edit">
-        { contact.confirmed && <CheckIcon/>}
-        { !contact.confirmed && <ImportExportIcon/>}
-    </IconButton>)
+            {contact.confirmed && <CheckIcon/>}
+            {!contact.confirmed && <ImportExportIcon/>}
+        </IconButton>)
 }
 
 export default ContactList

@@ -14,19 +14,10 @@ import ContactItem from "../components/ContactItem";
 const ContactsPage = () => {
 
     const [add, setAdd] = useState(false);
-    const [contactItemsChanged, setContactItemsChanged] = useState(false)
+    const global = useGlobal()
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [modus, setModus] = useGlobal("modus")
     const [activeContact, setActiveContact ] = useGlobal("activeContact")
-
-    useEffect(() => {
-    },[contacts])
-
-    const handleRemove = (index) => {
-        const currentContacts = contacts
-        currentContacts.splice(index, 1);
-        setContacts(currentContacts)
-    }
 
     const updateContact = (wallet,email,nameId,requestedAt,status,txId,validatorAddress) => {
 
@@ -41,49 +32,45 @@ const ContactsPage = () => {
 
         contacts[activeContact] = contact
         setContacts(contacts)
-        setContactItemsChanged(true);
+        //setContactItemsChanged(true);
         setModus('detail')
     }
 
-    useEffect(() => {
-        setContactItemsChanged(false)
-    },[contactItemsChanged])
-
     if(global.modus==='detail') {
+        console.log('rendering contactspage',modus)
         return (
             <div>
                 <h1>Doi Contacts</h1>
                 <Slide aria-label="contact-detail"
-                               direction={"up"}
-                               in={activeContact !== undefined && modus === 'detail'}
-                               mountOnEnter unmountOnExit>
+                       direction={"up"}
+                       in={activeContact !== undefined && modus === 'detail'}
+                       mountOnEnter unmountOnExit>
                             <div>
-                                <ContactItem
-                                    wallet={contacts[activeContact].wallet}
-                                    email={contacts[activeContact].email}
-                                    nameId={contacts[activeContact].nameId}
-                                    requestedAt={contacts[activeContact].requestedAt}
-                                    status={contacts[activeContact].status}
-                                    txId={contacts[activeContact].txId}
-                            validatorAddress={contacts[activeContact].validatorAddress}
-                            />
+                                    <ContactItem
+                                        wallet={contacts[activeContact].wallet}
+                                        email={contacts[activeContact].email}
+                                        nameId={contacts[activeContact].nameId}
+                                        requestedAt={contacts[activeContact].requestedAt}
+                                        status={contacts[activeContact].status}
+                                        txId={contacts[activeContact].txId}
+                                        validatorAddress={contacts[activeContact].validatorAddress}
+                                />
                     </div>
                 </Slide>
             </div>)
     }
     else{
+        console.log('rendering contactspage',modus)
         return (
             <div>
                 <Slide aria-label="contact-detail"
                        direction={"up"}
                        in={!add}
                        mountOnEnter unmountOnExit>
-
                     <div>
                         <h1>Doi Contacts</h1>
                         <List dense={true}>
-                            <ContactList remove={handleRemove}
-                            />
+                         <ContactList />
                         </List>
                         <div style={{float:'right'}}>
                             <Fab aria-label={"new contact"}

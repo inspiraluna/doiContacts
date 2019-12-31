@@ -17,77 +17,59 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             activeWallet: initialActiveWallet
         })
     }else{
-        window.NativeStorage.getItem("contacts",
-            (obj) => {
-                let newGlobal = global
-                newGlobal.contacts = obj
-                setGlobal(newGlobal)
-            },
-            (obj) => {
-              //  console.log("couldn't get contacts value from native storage",obj);
-                let newGlobal = global
-                newGlobal.contacts = []
-                setGlobal(newGlobal)
-            });
-        window.NativeStorage.getItem("wallets",(obj) => {
-           // console.log("got wallets from native storage",obj);
-            let newGlobal = global
-            newGlobal.wallets = obj
-            setGlobal(newGlobal)
-        },(obj) => {
-          //  console.log("couldn't get wallets value from native storage",obj);
-            let newGlobal = global
-            newGlobal.wallets = []
-            setGlobal(newGlobal)
-        });
 
-       try{
-           window.NativeStorage.getItem("currentTab",(obj) => {
-              // console.log("got currentTab from native storage",obj);
-               let newGlobal = global
-               newGlobal.currentTab = obj
-               setGlobal(newGlobal)
-           },(obj) => {
-             //  console.log("couldn't get currentTab from native storage",obj);
-               let newGlobal = global
-               newGlobal.currentTab = "0"
-               setGlobal(newGlobal)
-           });
-       } catch(ex){
-          // console.log("caught exception currentTab from native storage",ex);
-           let newGlobal = global
-           newGlobal.currentTab = "0"
-           setGlobal(newGlobal)
-       }
+        const nObjects = [
+            {name:'contacts',defaultValue:[]},
+            {name:'wallets',defaultValue:[]},
+            {name:'currentTab',defaultValue:"0"},
+            {name:'modus',defaultValue:'list'},
+            {name:'activeWallet',defaultValue:"0"},
+        ]
 
-        window.NativeStorage.getItem("modus",(obj) => {
-           // console.log("got modus from native storage",obj);
-            let newGlobal = global
-            newGlobal.modus = obj
-            setGlobal(newGlobal)
-        },(obj) => {
-           // console.log("couldn't get modus from native storage",obj);
-            let newGlobal = global
-            newGlobal.modus = 'list'
-            setGlobal(newGlobal)
-        });
+        const loadNativeStorage = (nObjectList) => {
 
-        try{
-            window.NativeStorage.getItem("activeWallet",(obj) => {
-               // console.log("got activeWallet from native storage",obj);
-                let newGlobal = global
-                newGlobal.activeWallet = obj
-                setGlobal(newGlobal)
-            },(obj) => {
-               // console.log("couldn't get activeWallet from native storage",obj);
-                let newGlobal = global
-                newGlobal.activeWallet = 0
-                setGlobal(newGlobal)
-            });
-        } catch(ex){}
+            const newGlobal = {}
+            let counter = 0
+
+            nObjectList.forEach( (it) => {
+                console.log(it)
+                try{
+                    window.NativeStorage.getItem(it.name,
+                        (obj) => {
+                            console.log('setting '+it.name+' to:',obj)
+                            newGlobal[it.name] = obj
+                            counter++
+                            console.log('counter now:'+counter,newGlobal)
+                            if(counter==nObjectList.length) {
+                                console.log('setting global state from native storage', newGlobal)
+                                setGlobal(newGlobal)
+                            }
+                        },
+                        (obj) => {
+                            newGlobal[it.name] = it.defaultValue
+                            counter++
+                            console.log('counter now:'+counter,newGlobal)
+                            if(counter==nObjectList.length) {
+                                console.log('setting global state from native storage', newGlobal)
+                                setGlobal(newGlobal)
+                            }
+                    });
+                } catch(ex){
+                    newGlobal[it.name] = it.defaultValue
+                    counter++
+                    console.log('counter now:'+counter,newGlobal)
+                    if(counter==nObjectList.length) {
+                        console.log('setting global state from native storage', newGlobal)
+                        setGlobal(newGlobal)
+                    }
+                }
+            })
+        }
+        loadNativeStorage(nObjects)
     }
 
     addCallback(global => {
+        console.log('global changed',global)
         if((window.device && window.device.platform==='browser') || !window.cordova) {
             localStorage.setItem('contacts',JSON.stringify(global.contacts))
             localStorage.setItem('wallets',JSON.stringify(global.wallets))
@@ -95,6 +77,8 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             localStorage.setItem('modus',global.modus)
             localStorage.setItem('activeWallet',global.activeWallet)
         }else{
+            //TODO only set items in NativeStorgage which changed (don't set all of them all the time)
+            //First get the value from NativeStorage and compare it with value in global state - if different store it in Native Storage
             window.NativeStorage.setItem("contacts",global.contacts?global.contacts:[],(obj) => {
                     //console.log("set contacts in native storage",obj);
                     },(err) => {console.log('error contacts',err)})
@@ -103,17 +87,17 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                     //console.log("set wallets in native storage",obj);
                 },(err) => {console.log('error wallets',err)})
 
-            if(global.currentTab)
+            //if(global.currentTab)
                 window.NativeStorage.setItem("currentTab",global.currentTab,(obj) => {
-                   // console.log("set currentTab in native storage",obj);
+                    console.log("set currentTab in native storage",obj);
                     },(err) => {console.log('error currentTab '+global.currentTab,err)})
 
-            if(global.modus)
+           // if(global.modus)
                 window.NativeStorage.setItem("modus",global.modus,(obj) => {
                    // console.log("set modus in native storage",obj);
                     },(err) => {console.log('error modus '+global.modus,err)})
 
-            if(global.activeWallet)
+            //if(global.activeWallet)
                 window.NativeStorage.setItem("activeWallet",global.activeWallet,(obj) => {
                    // console.log("set contacts in activeWallet storage",obj);
                     },(err) => {console.log('error activeWallet'+global.activeWallet,err)})
