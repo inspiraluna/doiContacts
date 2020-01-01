@@ -86,7 +86,7 @@ const ContactForm = () => {
                 setUTXOs(utxosResponse)
                 updateWalletBalance(our_wallet,utxosResponse.balance)
 
-                const msg = 'broadcasted doichain transaction to doichain node '
+                const msg = 'Broadcasted DOI permission transaction to Doichain node...'
                 const contact = {
                     requestedAt: new Date(),
                     email: email,

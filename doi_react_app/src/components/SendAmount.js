@@ -35,12 +35,12 @@ const SendAmount = () => {
             setUTXOs(utxosResponse)
             updateWalletBalance(our_wallet,utxosResponse.balance)
 
-            const msg = 'broadcasted doichain transaction to Doichain node'
+            const msg = 'Broadcasted Doicoin transaction to Doichain node...'
             setOpenError({open:true,msg:msg,type:'success'})
             setButtonState('success')
 
         }catch(ex){
-            const err = 'error while broadcasting transaction'
+            const err = 'error while broadcasting Doicoin transaction'
             console.log(err,ex)
             setOpenError({open:true,msg:err,type:'error'})
             setButtonState('error')
