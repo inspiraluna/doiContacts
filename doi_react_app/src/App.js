@@ -48,8 +48,6 @@ const App = (props) => {
     }
 
     bitcore.settings.setSettings(settings)
-
-    //console.log(bitcore.settings.getSettings(), bitcore.getUrl())
     register()
 
     useEffect(

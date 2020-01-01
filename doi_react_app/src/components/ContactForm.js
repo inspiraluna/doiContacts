@@ -54,7 +54,8 @@ const ContactForm = () => {
     const [utxos, setUTXOs ] = useGlobal("utxos")
     const [scanning, setScanning] =  useGlobal("scanning")
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
-    const [global] = useGlobal()
+    const [ test, setTest ] = useGlobal("test")
+   // const [global] = useGlobal()
 
     const addContact = async (email) => {
         const runAddContact =  async (email) => {
@@ -96,7 +97,7 @@ const ContactForm = () => {
                     validatorAddress:txData.validatorAddress,
                     confirmed: false,
                     status: DOI_STATE_WAITING_FOR_CONFIRMATION,
-                    position: global.test
+                    position: test
                 }
 
                 contacts.push(contact)
@@ -117,7 +118,6 @@ const ContactForm = () => {
 
     const calculateOwnQRCode = () => {
         const url="mailto:"+wallets[wallet].senderEmail
-       // console.log('setting qr code',url)
         setOwnQrCode(url)
     }
 
@@ -125,7 +125,7 @@ const ContactForm = () => {
         const senderEmail = wallets[wallet].senderEmail
         if(senderEmail) calculateOwnQRCode()
     },[wallets[wallet].senderEmail])
-
+console.log('scanning',scanning)
   return (
       <QRCodeScannerContents
           scanning={scanning}

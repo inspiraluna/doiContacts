@@ -5,7 +5,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
-import s from  './QRCodeScanner.module.css';
+import style from './QRCodeScanner.module.css';
 import CloseIcon from '@material-ui/icons/Close';
 
 
@@ -13,23 +13,26 @@ class QRCodeScannerContents extends React.Component {
     constructor(props) {
         super(props);
     }
+
     render() {
-        if(this.props.scanning)
-            return(<QRCodeScannerStopButton/>)
-        else{
-             return this.props.render
+        if (this.props.scanning)
+            return (<QRCodeScannerStopButton/>)
+        else {
+            return this.props.render
         }
     }
 }
+
 export default QRCodeScannerContents
 
 
 export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onChange, handleChange, handleBlur, errors, touched}) => {
 
-    if(!handleChange) handleChange = onChange; //if this is not a formik form
+    if (!handleChange) handleChange = onChange; //if this is not a formik form
 
-    const [scanning, setScanning] =  useGlobal("scanning")
-    const [qrCode, setQRCode] =  useGlobal("qrCode")
+    const [scanning, setScanning] = useGlobal("scanning")
+    const [qrCode, setQRCode] = useGlobal("qrCode")
+
     function prepareScan() {
         setScanning(true)
         if (window.QRScanner)
@@ -61,15 +64,14 @@ export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onCh
     }
 
     function showScanner() {
-       // console.log('showing scanner - cordova available', window.cordova !== undefined)
         window.QRScanner.show();
         scan()
     }
 
     function scan() {
 
-        window.QRScanner.getStatus(function(status){
-            console.log("QRScanner status:",JSON.stringify(status));
+        window.QRScanner.getStatus(function (status) {
+            console.log("QRScanner status:", JSON.stringify(status));
         });
 
         window.QRScanner.scan(displayContents);
@@ -78,28 +80,29 @@ export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onCh
             if (err) {
                 // an error occurred, or the scan was canceled (error code `6`)
                 console.log("error during scanning...", err)
-                window.QRScanner.getStatus(function(status){
-                    console.log("error QRScanner status: err"+err,JSON.stringify(status));
+                window.QRScanner.getStatus(function (status) {
+                    console.log("error QRScanner status: err" + err, JSON.stringify(status));
                 });
             } else {
                 // The scan completed, display the contents of the QR code:
-                window.QRScanner.getStatus(function(status){
-                    console.log("QRScanner success status: text:\n"+JSON.stringify(status),text);
+                window.QRScanner.getStatus(function (status) {
+                    console.log("QRScanner success status: text:\n" + JSON.stringify(status), text);
 
-                    const result = (text.result===undefined)?text:text.result
-                    if (urlPrefix.length==0 || urlPrefix==undefined || result.startsWith(urlPrefix))
+                    const result = (text.result === undefined) ? text : text.result
+                    if (urlPrefix.length == 0 || urlPrefix == undefined || result.startsWith(urlPrefix))
                         setQRCode(result.substring(urlPrefix.length))
                     else
-                        console.log('stopping scan because qr code incompatible with form, url should start with ',urlPrefix)
+                        console.log('stopping scan because qr code incompatible with form, url should start with ', urlPrefix)
                 });
             }
             handleCancel(setScanning)
         }
     }
+
     //console.log('re-rendering QR-Code component with qr-code',qrCode)
     return (
         <div>
-            <FormControl fullWidth variant="outlined" >
+            <FormControl fullWidth variant="outlined">
                 <InputLabel htmlFor="outlined-adornment">{label}</InputLabel>
                 <OutlinedInput
                     name={name}
@@ -113,29 +116,28 @@ export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onCh
                     endAdornment={
                         <InputAdornment position="end" margin={'none'}>
                             <IconButton onClick={() => prepareScan()}>
-                                <CropFreeIcon />
+                                <CropFreeIcon/>
                             </IconButton>
                         </InputAdornment>
                     }
                 />
             </FormControl>
-
-    </div>)
+        </div>)
 }
 
 const handleCancel = (setScanning) => {
-    console.log('cancel scan ',window.QRScanner)
-    if(window.QRScanner){
+    console.log('cancel scan ')
+    if (window.QRScanner) {
         window.QRScanner.hide((status) => {
-            console.log("QRScanner.hide",status);
+            console.log("QRScanner.hide", status);
         });
 
-        window.QRScanner.destroy((destroyStatus) =>{
-            console.log("destroyStatus",destroyStatus);
+        window.QRScanner.destroy((destroyStatus) => {
+            console.log("destroyStatus", destroyStatus);
             setScanning(false)
 
-            if(destroyStatus.scanning || destroyStatus.previewing) window.QRScanner.cancelScan(function(cancelStatus){
-                console.log("cancelStatus",cancelStatus);
+            if (destroyStatus.scanning || destroyStatus.previewing) window.QRScanner.cancelScan(function (cancelStatus) {
+                console.log("cancelStatus", cancelStatus);
                 setScanning(false)
             });
         });
@@ -143,15 +145,17 @@ const handleCancel = (setScanning) => {
 }
 
 export const QRCodeScannerStopButton = () => {
-    const [scanning, setScanning] =  useGlobal("scanning")
-    return (<div className={s.stopButton}  style={{ backgroundColor: "transparent" }}>
-    <CloseIcon
-           color={"primary"}
-           variant="contained"
-           onClick={handleCancel }
-           className={s.stopButton}
-           style={{cursor : "pointer"}}
-         ></CloseIcon>
-</div>)
+    const [scanning, setScanning] = useGlobal("scanning")
+    return (
+        <div className={style.stopButton} style={{backgroundColor: "transparent"}}>
+            <CloseIcon
+                color={"primary"}
+                variant="contained"
+                onClick={() => {handleCancel(setScanning)}}
+                className={style.stopButton}
+                style={{cursor: "pointer"}}
+            ></CloseIcon>
+        </div>
+    )
 }
 
