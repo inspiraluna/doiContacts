@@ -47,24 +47,14 @@ const ContactForm = () => {
     const [wallet, setWallet] = useState(0)
     const [submitting, setSubmitting] = useState()
 
-<<<<<<< HEAD
-    const [global] = useGlobal()
-    const [wallets] = useGlobal("wallets")
-    const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
-    const [qrCode, setQrCode] = useState('')
-    const [modus, setModus] = useGlobal("modus")
-
-=======
     const [modus, setModus] = useGlobal("modus")
     const [wallets,setWallets] = useGlobal("wallets")
->>>>>>> master
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
     const [utxos, setUTXOs ] = useGlobal("utxos")
     const [scanning, setScanning] =  useGlobal("scanning")
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
     const [ test, setTest ] = useGlobal("test")
-   // const [global] = useGlobal()
 
     const addContact = async (email) => {
         const runAddContact =  async (email) => {

@@ -11,7 +11,7 @@ import FolderIcon from '@material-ui/icons/Folder'
 import CheckIcon from '@material-ui/icons/Check';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import verify from "bitcore-doichain/lib/doichain/verify";
-import { green, red } from '@material-ui/core/colors'
+import {green, orange} from '@material-ui/core/colors'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -120,15 +120,10 @@ const ContactList = () => {
 const StatusIcon = ({contact}) => {
     return (
         <IconButton edge="end" aria-label="edit">
-<<<<<<< HEAD
         { contact.confirmed && <CheckIcon style={{ color: green[500] }}/>}
-        { !contact.confirmed && <ImportExportIcon style={{ color: red[500] }}/>}
-    </IconButton>)
-=======
-            {contact.confirmed && <CheckIcon/>}
-            {!contact.confirmed && <ImportExportIcon/>}
-        </IconButton>)
->>>>>>> master
+        { !contact.confirmed && <ImportExportIcon style={{ color: orange[500] }}/>}
+        </IconButton>
+    )
 }
 
 export default ContactList
