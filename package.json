@@ -1,7 +1,7 @@
 {
   "name": "doicontacts",
   "displayName": "Doi Contacts",
-  "version": "0.0.30",
+  "version": "0.0.32",
   "description": "blockchain based contact management via Doichain",
   "main": "index.js",
   "scripts": {
@@ -35,9 +35,9 @@
       "cordova-plugin-qrscanner": {}
     },
     "platforms": [
-      "android",
       "ios",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }

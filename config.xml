@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.doichain.contacts.app" version="1.0.30" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.doichain.contacts.app" version="1.0.32" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DoiContacts</name>
     <description>
        Request qualified email permissions via Doichain blockchain
@@ -7,6 +7,7 @@
     <author email="nico@le-space.de" href="https://le-space.de">
         Doichain Core Team
     </author>
+    <icon src="res/icon.png" />
     <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="*" />
