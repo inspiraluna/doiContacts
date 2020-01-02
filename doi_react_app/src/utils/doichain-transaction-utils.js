@@ -66,15 +66,10 @@ const checkUTXOs = (utxosFromNode,offChainUTXOSs,amount) => {
 }
 
 export const createDOIRequestTransaction = async (email, ourWallet, offChainUtxos) => {
-    console.log('creating transaction')
+
     const validatorPublicKeyData = await getValidatorPublicKey(email)
-    console.log('got '+validatorPublicKeyData.type+' validatorPubliyKey',validatorPublicKeyData.key)
-
     const doichainEntry = await createDoichainEntry(validatorPublicKeyData.key,email,ourWallet)
-    console.log('got doichainEntry',doichainEntry)
-
     const utxos = await getUTXOs4DoiRequest(ourWallet,offChainUtxos)
-    console.log('got utxos from node',utxos)
 
     const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
     const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKeyData.key).toString()
@@ -148,9 +143,6 @@ export const broadcastTransaction = async (txData,encryptedTemplateData) => {
 }
 
 export const updateWalletBalance = (our_wallet, balance) => {
-    console.log('updating wallet ',our_wallet)
-    console.log('updating wallet balance with value',balance)
-
     our_wallet.balance = balance
 }
 

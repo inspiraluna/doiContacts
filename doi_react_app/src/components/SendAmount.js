@@ -27,17 +27,16 @@ const SendAmount = () => {
 
         try {
             const our_wallet  =  wallets[activeWallet]
-
             const offChainUtxos = global.utxos
             const txData = await createDoicoinTransaction(our_wallet,toAddress,amount,offChainUtxos) //returns only tx and changeAddress
-            console.log("txData created for broadcast",txData)
             const utxosResponse = await broadcastTransaction(txData,null)
             setUTXOs(utxosResponse)
             updateWalletBalance(our_wallet,utxosResponse.balance)
 
-            const msg = 'Broadcasted Doicoin transaction to Doichain node...'
+            const msg = 'Broadcasted Doicoin tx to Doichain node'
             setOpenError({open:true,msg:msg,type:'success'})
             setButtonState('success')
+            setModus("detail")
 
         }catch(ex){
             const err = 'error while broadcasting Doicoin transaction'
