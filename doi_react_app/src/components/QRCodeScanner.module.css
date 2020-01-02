@@ -1,5 +1,4 @@
 .stopButton {
     display: grid;
-      justify-self: end;
-  }
-  
+    justify-self: end;
+}

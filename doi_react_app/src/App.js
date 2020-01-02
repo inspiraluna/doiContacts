@@ -15,35 +15,30 @@ import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 import bitcore from "bitcore-doichain";
 import initStorage from "./utils/storage"
 
-
 const App = (props) => {
 
-    console.log('cordova is:',props.cordova)
     const [global,setGlobal] = useGlobal()
-    const changed = false;
-    if(!global.currentTab && !global.modus && !global.activeWallet) initStorage(props.cordova,global,setGlobal)
-    /*useEffect(
-        () => {
-            console.log("render App just one time!");
-            initStorage(props.cordova,global,setGlobal)
-        },
-        [global.currentTab===undefined]
-    );*/
+    const [currentTab, setCurrentTab] = useGlobal("currentTab")
+    const [modus, setModus] = useGlobal("modus")
+    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+
+
 /*
    const settings = {  //RegTest
-        testnet:true,
-        from: 'newsletter@doichain.org',
-        port:4000,
+        testnet: true,
+        from: 'bob@ci-doichain.org',
+        port:3000,
         host:"localhost"
-    }
-
-    const settings = {  //testnet 2
-        testnet:true,
-        from: 'newsletter@doichain.org',
-        port:4010,
-        host:"5.9.154.231"
-    }
+    } */
+    /*
+        const settings = {  //testnet 2
+            testnet:true,
+            from: 'newsletter@doichain.org',
+            port:4010,
+            host:"5.9.154.231"
+        }
 */
+
     const settings = {  //testnet 2
         testnet:true,
         from: 'newsletter@doichain.org',
@@ -51,14 +46,21 @@ const App = (props) => {
         ssl:true,
         host:"doichain-testnet.le-space.de"
     }
-    bitcore.settings.setSettings(settings)
 
-    console.log(bitcore.settings.getSettings(), bitcore.getUrl())
+    bitcore.settings.setSettings(settings)
     register()
 
-    const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus, setModus] = useGlobal("modus")
-    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
+    useEffect(
+        () => {
+            console.log("render App just one time!",global.currentTab);
+            if(!global.currentTab && !global.modus && !global.activeWallet){
+                initStorage(props.cordova,global,setGlobal)
+                console.log('storage initialized')
+            }
+        },
+        [global.currentTab]
+    );
+
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
@@ -90,11 +92,12 @@ const App = (props) => {
         };
     }
     const our_CurrentTab = currentTab?currentTab:0
-    console.log('currentTAb:',our_CurrentTab)
+    //console.log('rendering app',)
     return (
         <div>
             <AppBar position="static">
                 <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
+                    console.log("setting tab to",newValue)
                     setCurrentTab(newValue)
                     setActiveWallet(undefined)
                     setModus('list')
@@ -105,8 +108,7 @@ const App = (props) => {
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
-                {currentTab==0 && <ContactsPage/>}
-
+              {currentTab==0 && <ContactsPage/>}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={1}>
                 {currentTab==1 && <WalletsPage/>}

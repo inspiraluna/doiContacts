@@ -5,3 +5,4 @@ platforms/
 .vscode/
 jsconfig.json
 typings/
+.idea/
