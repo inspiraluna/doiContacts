@@ -47,8 +47,17 @@ const ContactForm = () => {
     const [wallet, setWallet] = useState(0)
     const [submitting, setSubmitting] = useState()
 
+<<<<<<< HEAD
+    const [global] = useGlobal()
+    const [wallets] = useGlobal("wallets")
+    const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
+    const [qrCode, setQrCode] = useState('')
+    const [modus, setModus] = useGlobal("modus")
+
+=======
     const [modus, setModus] = useGlobal("modus")
     const [wallets,setWallets] = useGlobal("wallets")
+>>>>>>> master
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
     const [utxos, setUTXOs ] = useGlobal("utxos")
@@ -138,8 +147,8 @@ console.log('scanning',scanning)
                       addContact(email).then((response)=>{
 
                           setButtonState('success')
-                          setSubmitting(false);
-                          setTimeout(function(){ setModus('detail'); }, 1000);
+                          setSubmitting(false)
+                          setModus('list');
 
                       }).catch((response)=>{
                           console.log('response was error',response)
