@@ -1,4 +1,4 @@
-import React, { useGlobal,setGlobal } from 'reactn';
+import React, {useGlobal, setGlobal, useState} from 'reactn';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -9,61 +9,92 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete'
 import DetailsIcon from '@material-ui/icons/Details';
 import List from "@material-ui/core/List";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
-const WalletList = ({checked}) => {
+const WalletList = () => {
 
-    const global = useGlobal()
-    const [ wallets, setWallets ] = useGlobal('wallets')
+    const [wallets, setWallets] = useGlobal('wallets')
+    const [open, setOpen] = useState(undefined);
+    const [modus, setModus] = useGlobal("modus")
+    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
+    const [tempWallet, setTempWallet] = useGlobal("tempWallet")
 
-   const handleDetail = (index) => {
-       const currentGlobal = global;
-       currentGlobal.activeWallet = index
-       currentGlobal.modus = 'detail'
-       setGlobal(currentGlobal)
-       console.log('activeWallet now in global', global.activeWallet + "/" + global.modus)
-   }
+    const handleClose = () => {
+        setOpen(undefined)
+    };
 
-   const handleEdit = (index) => {
-       const  currentGlobal = global;
-        currentGlobal.activeWallet = index
-        currentGlobal.modus = 'edit'
-        setGlobal(currentGlobal)
-        console.log('activeWallet now in global',global.activeWallet+"/"+global.modus)
+    const handleDetail = (index) => {
+        setModus('detail')
+        setActiveWallet(index)
     }
 
-    const handleRemove = (index) => {
+    const handleEdit = (index) => {
+        setModus('edit')
+        setActiveWallet(index)
+        setTempWallet(wallets[index])
+    }
+
+    const handleRemove = () => {
+        const index = open
         const currentWallets = wallets
         currentWallets.splice(index, 1);
         setWallets(currentWallets)
+        setModus('list')
     }
 
-    const ourWallets = wallets?wallets:[]//global.wallets?global.wallets:[]
-    console.log('ourWallets',ourWallets)
-    const walletNode = ourWallets.map((item,index) => {
-    console.log('item',item)
+    const ourWallets = wallets ? wallets : []
+    const walletNode = ourWallets.map((item, index) => {
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>
                     <Avatar>
-                        <FolderIcon />
+                        <FolderIcon/>
                     </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                    primary={item.walletName+' / '+item.senderEmail}
-                    secondary={"Balance: "+wallets[index].balance}
+                    primary={item.senderEmail}
+                    secondary={"Balance: " + wallets[index].balance}
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">
-                        <DetailsIcon />
+                        <DetailsIcon/>
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleRemove(index)}>
-                        <DeleteIcon />
+                    <IconButton edge="end" aria-label="delete" onClick={ () => setOpen(index) }>
+                        <DeleteIcon/>
                     </IconButton>
                 </ListItemSecondaryAction>
             </ListItem>)
     });
 
-    return (<List dense={true} >{walletNode}</List>)
+    return (<div>
+        <Dialog
+            open={open!==undefined}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Do you really want to delete this wallet? this process cannot be undone
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => handleClose()} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={() => handleRemove()} color="primary" autoFocus>
+                    Delete
+                </Button>
+            </DialogActions>
+        </Dialog>
+        <List dense={true}>{walletNode}</List>
+    </div>)
 }
 
 export default WalletList

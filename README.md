@@ -1,30 +1,31 @@
-# Doi Contacts Cordova App with React.JS
+# DoiContacts Cordova App with ReactJS
 ## Description
-This app is a study around the concept of Doichain. A blockchain based on Namecoin (and Bitcoin) which focuses
-on email permissions stored on a blockchain on the one side and on the other hand it is able to create an atomic proof for 
-an so called Double-Opt-In (DOI) email permission. This means the email permission was acquired from the right person and was not just invented by some email marketing company.
-Doichain will allow white listing of of email recipients and will reduce spam.
+This app is an experimental study around the concept of Doichain. A blockchain forked from  Namecoin (and Bitcoin).
+It focuses on atomic email permissions / double-opt-ins (DOI) requested through and stored on a blockchain.
 
-Remark: Double-Opt-In permissions are legally necessary in the EU by law. This means as a business needs the permission from a customer to send an email.
+Doichains goal is about to reduce email spam.
+
+Remark: Double-Opt-In permissions are necessary by EU-law.
 For more information about DOI's and Doichain, please visit Doichain.org
 
-This app doesn't use any cloud storage. All data are only stored on your mobile phone! 
+Doichain stores email permissions in form of signatures but doesn't store ANY encrypted nor unencrypted personal data.
+This app doesn't use any cloud storage. All data are only stored on your mobile phone!
+
 
 ## Features
 - Contacts
-    - Add an email and request a email permission from that email address through a Doichain transaction
-    - store current geo position where when entering the email, so you can later automatically see which people you meet on which place
+    - add an email address and request a email permission via a Doichain transaction
+    - store current geo position when requesting the permission, so you can later remember where you meet
     - show contacts status of a requested email permission (confirmed - yes/no)
-    - (under development) scan QR-Code (scan email address or an already signed SOI-Transaction of a second Doi Contacts App)
-    - (under development) create a QR-Code with containing an address / containing an signed SOI transaction ready to be scanned (and signed) by a second party
+    - scan email QR-Code from a second doiContact wallet
+    - (under development) scan an IPFS-address QR-Code pointing to a IPFS-file with a signed SOI transaction ready to broadcasted (and signed) by a second party (Bob)
 - Wallets
-    - Create multiple Doichain Wallets (so far one wallet per email address (or project e.g. private, project a, project b))
-    - Edit subject and email template to be sent to the entered recipient email address
-    - (under development) show status of all request email permissions from a wallet
-    - (under development) send/receive DOI-coins to another wallet (scan / create QR-code) 
-    - (under development) list all transactions of a wallet 
-    
-## How to start developing òn the reactJS part
+    - create multiple Doichain Wallets and associate it with an email address (e.g. private, project a, project b, startup a, startup b))
+    - edit subject and email template to be sent from this wallet
+    - send/receive DOI-coins to another wallet (scan / create QR-code)
+    - (under development) list all transactions of a wallet
+
+## How to start developing òn the ReactJS part
 - checkout this repository and ```cd doi_react_app``
 - run ```yarn install```
 - run ```yarn start```
@@ -40,29 +41,15 @@ This app doesn't use any cloud storage. All data are only stored on your mobile 
 - www/ - cordova directory - do not edit anything here.
 - cordova build / cordova run ios/android from the directory of this file
 
-## Logic
-## QR-Code creation / scan
-- Modell a) 
-    - create a QR-Code with doichain transaction containing a SOI
-        - signed by the creator of the QR-Code (alice) (Alice requests permission from Bob) 
-        - URL form: doichain:signeddoichaintx?from=alice@email.com&to=bobs@email.com
-        - listens on mempool transaction (needs live websocket to validator)
-        - displays confirmed DOI 
-    - bob scans a QR-Code (a DOI-permission request) from Alice
-        - decodes and shows from and to from after scan provides confirm button
-        - broadcasts transaction to validator
-        - stores given DOI under contacts with flag permission granted  
-        
-
 ## Further information and sources (as option - yet untested)
-- Intents in Cordova 
+- Intents in Cordova
     - https://ourcodeworld.com/articles/read/101/how-to-list-your-cordova-app-in-open-with-menu-in-android-and-handle-the-intent-event
-- Geo Coding 
+- Geo Coding
 - via Cordova
     - cordova geo-coder plugin - https://github.com/sebastianbaar/cordova-plugin-nativegeocoder
     - cordova geo-location plugin - https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-geolocation/
 - directly via react
-    - ReactJS component for current position - https://www.npmjs.com/package/use-position 
+    - ReactJS component for current position - https://www.npmjs.com/package/use-position
         - https://itnext.io/creating-react-useposition-hook-for-getting-browsers-geolocation-2f27fc1d96de
 - Nominatim Geo-REST-API https://nominatim.org/release-docs/develop/api/Overview/
 - Terrestris Components https://terrestris.github.io/react-geo-ws/map-integration/index.html
@@ -76,4 +63,4 @@ This app doesn't use any cloud storage. All data are only stored on your mobile 
 - Material-UI in React for Beginners https://reactgo.com/material-ui-react-tutorial/
     - Tabs https://material-ui.com/components/tabs/
     - Icons https://material-ui.com/components/icons/
-    
+
