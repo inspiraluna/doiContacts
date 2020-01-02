@@ -12,6 +12,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import verify from "bitcore-doichain/lib/doichain/verify";
 import {setGlobal, useGlobal} from "reactn";
+import { green, red } from '@material-ui/core/colors'
 
 const ContactList = ({remove}) => {
 
@@ -81,8 +82,8 @@ const StatusIcon = ({contact}) => {
     const [global] = useGlobal()
     return (
         <IconButton edge="end" aria-label="edit">
-        { contact.confirmed && <CheckIcon/>}
-        { !contact.confirmed && <ImportExportIcon/>}
+        { contact.confirmed && <CheckIcon style={{ color: green[500] }}/>}
+        { !contact.confirmed && <ImportExportIcon style={{ color: red[500] }}/>}
     </IconButton>)
 }
 

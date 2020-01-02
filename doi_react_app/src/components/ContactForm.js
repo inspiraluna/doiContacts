@@ -56,6 +56,7 @@ const ContactForm = () => {
     const [wallets] = useGlobal("wallets")
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
     const [qrCode, setQrCode] = useState('')
+    const [modus, setModus] = useGlobal("modus")
 
     const [ contacts, setContacts ] = useGlobal('contacts')
     const [ openError, setOpenError ] = useGlobal("errors")
@@ -307,7 +308,8 @@ const ContactForm = () => {
                       addContact(email).then((response)=>{
                           console.log('response was ',response)
                           setButtonState('success')
-                          setSubmitting(false);
+                          setSubmitting(false)
+                          setModus('list');
 
                       }).catch((response)=>{
                           console.log('response was error',response)
