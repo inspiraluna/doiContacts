@@ -30,7 +30,7 @@ const SendAmount = () => {
             const offChainUtxos = global.utxos
             const txData = await createDoicoinTransaction(our_wallet,toAddress,amount,offChainUtxos) //returns only tx and changeAddress
             const utxosResponse = await broadcastTransaction(txData,null)
-            setUTXOs(utxosResponse)
+            setUTXOs(utxosResponse)  //TODO for some reason sometimes the sent amount just adds to
             updateWalletBalance(our_wallet,utxosResponse.balance)
 
             const msg = 'Broadcasted Doicoin tx to Doichain node'
@@ -39,7 +39,7 @@ const SendAmount = () => {
             setModus("detail")
 
         }catch(ex){
-            const err = 'error while broadcasting Doicoin transaction'
+            const err = 'error while broadcasting Doicoin transaction '+ex
             console.log(err,ex)
             setOpenError({open:true,msg:err,type:'error'})
             setButtonState('error')
@@ -48,7 +48,7 @@ const SendAmount = () => {
 
     const address = global.wallets[global.activeWallet].addresses[0].address;
     const walletName = global.wallets[global.activeWallet].walletName
-
+    const balance  =  Number(global.wallets[global.activeWallet].balance).toFixed(8)
     return (
         <div>
             <Slide aria-label="wallet-send"
@@ -62,8 +62,9 @@ const SendAmount = () => {
                         toAddress={global.toAddress}
                         render={(<div style={{backgroundColor: 'white'}}>
                             <h1>{walletName} </h1>
-                            Send DOI from address: {address} <br></br>
-
+                            Send DOI from address: <br/>
+                            <b>{address}</b> <br/>
+                            Balance {balance} DOI
                             <Formik
                                 initialValues={{toAddress: '', amount: 0}}
                                 validate={values => {

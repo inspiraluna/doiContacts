@@ -14,12 +14,14 @@ const WalletItem = ({
                     }) => {
 
     const [address, setAddress] = useState()
-    const [balance, setBalance] = useState()
+    const [balance, setBalance] = useState(0)
+    const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
     const [wallets, setWallets] = useGlobal("wallets")
     const [utxos, setUTXOs] = useGlobal("utxos")
     const [global] = useGlobal()
 
     useEffect(() => {
+        //TODO this looks like it needs refactoring
         async function fetchData() {
             bitcore.Networks.defaultNetwork = bitcore.Networks.get('doichain-testnet')
             try {
@@ -30,13 +32,18 @@ const WalletItem = ({
                 // balance of the change address (could be 0 after tx,
                 // could also coutain a number bigger then 0 in case there are other utxos in the wallet!
                 let balanceAllUTXOs = response.balanceAllUTXOs
-
+                let unconfirmedUTXOs = 0
                 // if we have offchain utxos then add them to the returned balance from Doichain node
-                if(utxos && utxos.utxos &&
-                    utxos.utxos.length>0 &&
-                    utxos.utxos[0].address===address &&
-                    utxos.utxos[0].amount>0)
-                    balanceAllUTXOs+=utxos.utxos[0].amount
+
+                if(utxos && utxos.utxos && utxos.utxos.length>0){
+                    utxos.utxos.forEach((utxo) => {
+                        if(utxo.address===address && utxo.amount>0){
+                            balanceAllUTXOs+=utxo.amount
+                            unconfirmedUTXOs+=utxo.amount
+                        }
+                    })
+                }
+                setUnconfirmedBalance(Number(unconfirmedUTXOs).toFixed(8))
 
                 const currentWallet = wallets[global.activeWallet]
 
@@ -66,7 +73,7 @@ const WalletItem = ({
 
                 wallets[global.activeWallet].addresses = currentAddresses
                 wallets[global.activeWallet].balance = currentWalletBalance
-                setBalance(balanceAllUTXOs)
+                setBalance(Number(balanceAllUTXOs).toFixed(8))
 
                 if (somethingWasUpdated) setWallets(wallets) //so re-render
                 setAddress(address)
@@ -87,9 +94,11 @@ const WalletItem = ({
         return (
             <div>
                 <li style={{"fontSize": "9px"}}>
-                    DoiCoin-Address: <b>{(address) ? address.toString() : ''}</b><br/>
-                    Balance: {balance} DOI
+                    DoiCoin-Address: <br/>
+                    <b>{(address) ? address.toString() : ''}</b><br/>
+                    Balance: {balance} DOI {(unconfirmedBalance && unconfirmedBalance>0)?'(unconfirmed:'+unconfirmedBalance+' DOI) ':''}
                 </li>
+                <br/>
                 <div style={{"fontSize": "9px", "border": '2px solid lightgrey'}}>
                     <label htmlFor={"senderEmail"}>Email: </label>{senderEmail}<br/>
                     <label htmlFor={"subject"}></label>Subject: {subject}<br/>

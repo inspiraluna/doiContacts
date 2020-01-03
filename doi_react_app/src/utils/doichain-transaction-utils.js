@@ -46,20 +46,27 @@ const getUTXOs4DoiRequest = async (ourWallet,offChainUTXOSs) => {
 }
 
 const checkUTXOs = (utxosFromNode,offChainUTXOSs,amount) => {
+
     if ((utxosFromNode.utxos.length === 0 || utxosFromNode.balanceAllUTXOs<amount) //in case blockchain doesn't have enough funds yet and no offchain utxos are stored
         && (!offChainUTXOSs || !offChainUTXOSs.utxos || offChainUTXOSs.utxos.length===0)){
-        const err = 'insufficiant funds - no utxos from node or utxos smaller then amount'
+        const err = 'insufficient funds - no utxos from node or utxos balance less then amount'
         console.log(err)
         throw err
     }
     //we spent all outputs but have a offchain balance left when adding amounts of change addresses
     else if(utxosFromNode.utxos.length === 0 && offChainUTXOSs.utxos.length>0){
         if(offChainUTXOSs.balance < amount) { //if the offchain utxos balance is also not sufficient
-            const err = 'insufficiant funds - no utxos from node and no utxos in change'
+            const err = 'insufficient funds - no utxos from node and no utxos in change'
+            console.log(err)
             throw err
         }
         utxosFromNode.utxos = offChainUTXOSs.utxos //this is our new base for new transactions
-        utxosFromNode.change = offChainUTXOSs.balance-amount //substract the amount we want to transfer to receive the new change
+        utxosFromNode.change = offChainUTXOSs.balance-amount //subtract the amount we want to transfer to receive the new change
+    }
+    if(utxosFromNode.change < 0) { //if the offchain utxos balance is also not sufficient
+        const err = 'insufficient funds - utxos available but insufficient'
+        console.log(err)
+        throw err
     }
     console.log('returning utxos',utxosFromNode)
     return utxosFromNode

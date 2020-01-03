@@ -58,7 +58,7 @@ const WalletList = () => {
                 </ListItemAvatar>
                 <ListItemText
                     primary={item.senderEmail}
-                    secondary={"Balance: " + wallets[index].balance}
+                    secondary={"Balance: " + Number(wallets[index].balance).toFixed(8)}
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">
