@@ -52,7 +52,6 @@ const App = (props) => {
 
     useEffect(
         () => {
-            console.log("render App just one time!",global.currentTab);
             if(!global.currentTab && !global.modus && !global.activeWallet){
                 initStorage(props.cordova,global,setGlobal)
                 console.log('storage initialized')
@@ -60,7 +59,6 @@ const App = (props) => {
         },
         [global.currentTab]
     );
-
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props;
