@@ -76,12 +76,10 @@ const ContactForm = () => {
                 const our_wallet = wallets[wallet]
                 const offChainUtxos = utxos
                 const txData =  await createDOIRequestTransaction(email,our_wallet,offChainUtxos)
-                console.log('txData are consistent for broadcast? ',txData)
                 const encryptedTemplateData = await encryptTemplate(txData.validatorPublicKeyData,email,our_wallet)
 
                 //TODO handle response and create offchain utxos and update balance
                 const utxosResponse = await broadcastTransaction(txData,encryptedTemplateData)
-                console.log('got utxosResponse storing it globally',utxosResponse)
                 setUTXOs(utxosResponse)
                 updateWalletBalance(our_wallet,utxosResponse.balance)
 

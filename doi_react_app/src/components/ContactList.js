@@ -46,7 +46,6 @@ const ContactList = () => {
     }
 
     const ourContacts = contacts ? contacts : []
-    console.log('contactList rendering', ourContacts)
     const contactNode = ourContacts.map((contact, index) => {
 
         _.find(wallets, function (wallet) {

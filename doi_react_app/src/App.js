@@ -54,7 +54,6 @@ const App = (props) => {
         () => {
             if(!global.currentTab && !global.modus && !global.activeWallet){
                 initStorage(props.cordova,global,setGlobal)
-                console.log('storage initialized')
             }
         },
         [global.currentTab]
@@ -90,7 +89,7 @@ const App = (props) => {
         };
     }
     const our_CurrentTab = currentTab?currentTab:0
-    //console.log('rendering app',)
+
     return (
         <div>
             <AppBar position="static">

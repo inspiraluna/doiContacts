@@ -1,14 +1,12 @@
+import React, {useGlobal} from "reactn";
+import {Formik} from "formik";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
-import React, {useGlobal} from "reactn";
-import {useState} from "react";
-import {Formik} from "formik";
 import InputLabel from "@material-ui/core/InputLabel";
 import ProgressButton from "react-progress-button";
-import {broadcastTransaction, createDoicoinTransaction, updateWalletBalance} from "../utils/doichain-transaction-utils";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
-
+import {broadcastTransaction, createDoicoinTransaction, updateWalletBalance} from "../utils/doichain-transaction-utils";
 import  QRCodeScannerContents,{QRCodeScannerTextField } from "./QRCodeScanner";
 
 const SendAmount = () => {

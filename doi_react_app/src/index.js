@@ -13,9 +13,9 @@ const startApp = (cordova) => {
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 if(!window.cordova) {
-    console.log('didnt find cordova')
+    console.log('cordova isnt activated')
     startApp(false)
 } else {
-    console.log('found cordova')
+    console.log('activated cordova - starting react app')
     document.addEventListener('deviceready', () => startApp(true), false)
 }
