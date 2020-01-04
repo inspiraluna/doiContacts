@@ -25,11 +25,13 @@ const SendAmount = () => {
 
         try {
             const our_wallet  =  wallets[activeWallet]
-            const offChainUtxos = global.utxos
-            const txData = await createDoicoinTransaction(our_wallet,toAddress,amount,offChainUtxos) //returns only tx and changeAddress
+            const txData = await createDoicoinTransaction(our_wallet,toAddress,amount,utxos) //returns only tx and changeAddress
             const utxosResponse = await broadcastTransaction(txData,null)
 
-            setUTXOs(utxosResponse)  //here are only additional new utxos what about potential old utxos?
+            let newUTXOS = utxos
+            if(!utxos) newUTXOS = []
+            newUTXOS.push(utxosResponse)
+            setUTXOs(newUTXOS)  //here are only additional new utxos what about potential old utxos?
             updateWalletBalance(our_wallet,utxos)
 
             const msg = 'Broadcasted Doicoin tx to Doichain node'

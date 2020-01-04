@@ -23,13 +23,13 @@ const App = (props) => {
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
 
 
-/*
+
    const settings = {  //RegTest
         testnet: true,
-        from: 'bob@ci-doichain.org',
+        from: 'alice@ci-doichain.org',
         port:3000,
         host:"localhost"
-    } */
+    }
     /*
         const settings = {  //testnet 2
             testnet:true,
@@ -37,7 +37,7 @@ const App = (props) => {
             port:4010,
             host:"5.9.154.231"
         }
-*/
+
 
     const settings = {  //testnet 2
         testnet:true,
@@ -46,8 +46,10 @@ const App = (props) => {
         ssl:true,
         host:"doichain-testnet.le-space.de"
     }
-
+*/
     bitcore.settings.setSettings(settings)
+    bitcore.Networks.defaultNetwork = bitcore.Networks.get('doichain-testnet')
+
     register()
 
     useEffect(
@@ -94,7 +96,6 @@ const App = (props) => {
         <div>
             <AppBar position="static">
                 <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
-                    console.log("setting tab to",newValue)
                     setCurrentTab(newValue)
                     setActiveWallet(undefined)
                     setModus('list')

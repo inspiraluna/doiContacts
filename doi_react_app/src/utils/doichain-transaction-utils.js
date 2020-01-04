@@ -9,20 +9,22 @@ export const DOI_STATE_VALIDATOR_RECEIVED_CONFIRMATION = 3
 
 
 export const createDoicoinTransaction = async (our_wallet,toAddress,amount,offChainUTXOSs) => {
-
     const ourAddress = our_wallet.addresses[0].address
     const changeAddress = ourAddress
     const privateKey = our_wallet.privateKey
-    const fee = 100000 //TODO please calculate correct fee for transaction
-
+    const fee = 100000 //0,00100000 TODO please calculate correct fee for transaction
+    const feeInBTC = 0.00100000
+    const amountComplete = Number(amount)+feeInBTC
+    console.log("amountComplete "+amount,amountComplete)
     let tx = bitcore.Transaction();
         tx.to(toAddress, Number(amount*100000000));
         tx.change(changeAddress);
         tx.fee(fee);
 
     let our_txSerialized = undefined
-    await bitcore.getUTXOAndBalance(ourAddress, amount).then(function (utxosFromNode) {
-        const utxos = checkUTXOs(utxosFromNode,offChainUTXOSs,amount)
+    await bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxosFromNode) {
+        console.log('utxosFromNode should be more then 1 here', utxosFromNode)
+        const utxos = checkUTXOs(utxosFromNode,offChainUTXOSs,amountComplete)
         tx.from(utxos.utxos);
         tx.sign(privateKey);
         our_txSerialized = tx.serialize(true)
@@ -42,33 +44,6 @@ const getUTXOs4DoiRequest = async (ourWallet,offChainUTXOSs) => {
         our_utxos = checkUTXOs(utxosFromNode,offChainUTXOSs,amountComplete)
     })
     return our_utxos
-}
-
-const checkUTXOs = (utxosFromNode,offChainUTXOSs,amount) => {
-
-    if ((utxosFromNode.utxos.length === 0 || utxosFromNode.balanceAllUTXOs<amount) //in case blockchain doesn't have enough funds yet and no offchain utxos are stored
-        && (!offChainUTXOSs || !offChainUTXOSs.utxos || offChainUTXOSs.utxos.length===0)){
-        const err = 'insufficient funds - no utxos from node or utxos balance less then amount'
-        console.log(err)
-        throw err
-    }
-    //we spent all outputs but have a offchain balance left when adding amounts of change addresses
-    else if(utxosFromNode.utxos.length === 0 && offChainUTXOSs.utxos.length>0){
-        if(offChainUTXOSs.balance < amount) { //if the offchain utxos balance is also not sufficient
-            const err = 'insufficient funds - no utxos from node and no utxos in change'
-            console.log(err)
-            throw err
-        }
-        utxosFromNode.utxos = offChainUTXOSs.utxos //this is our new base for new transactions
-        utxosFromNode.change = offChainUTXOSs.balance-amount //subtract the amount we want to transfer to receive the new change
-    }
-    if(utxosFromNode.change < 0) { //if the offchain utxos balance is also not sufficient
-        const err = 'insufficient funds - utxos available but insufficient'
-        console.log(err)
-        throw err
-    }
-    console.log('returning utxos',utxosFromNode)
-    return utxosFromNode
 }
 
 export const createDOIRequestTransaction = async (email, ourWallet, offChainUtxos) => {
@@ -103,8 +78,39 @@ export const createDOIRequestTransaction = async (email, ourWallet, offChainUtxo
     }
 }
 
+const checkUTXOs = (utxosFromNode,offChainUTXOSs,amount) => {
+    console.log('checkingUTXOs: utxosFromNode'+JSON.stringify(utxosFromNode)+' offChainUTXOSs:'+offChainUTXOSs+' amount'+amount)
+    if ((utxosFromNode.utxos.length === 0 || utxosFromNode.balanceAllUTXOs<amount) //in case blockchain doesn't have enough funds yet and no offchain utxos are stored
+        && (!offChainUTXOSs || !offChainUTXOSs.utxos || offChainUTXOSs.utxos.length===0)){
+        const err = 'insufficient funds - no utxos from node or utxos balance less then amount'
+        console.log(err)
+        throw err
+    }
+    //we spent all outputs but have a offchain balance left when adding amounts of change addresses
+    else if(utxosFromNode.utxos.length === 0 && offChainUTXOSs.utxos.length>0){
+        if(offChainUTXOSs.balance < amount) { //if the offchain utxos balance is also not sufficient
+            const err = 'insufficient funds - no utxos from node and no utxos in change'
+            console.log(err)
+            throw err
+        }
+        //utxoObject cointains txid,utxos,balance
+        if(!utxosFromNode.utxos) utxosFromNode.utxos=[]
+
+        offChainUTXOSs.utxos.forEach((utxoObject)=>{
+            utxosFromNode.utxos.push(utxoObject.utxos)
+        }) //this is our new base for new transactions
+        utxosFromNode.change = offChainUTXOSs.balance-amount //subtract the amount we want to transfer to receive the new change
+    }
+    if(utxosFromNode.change < 0) { //if the offchain utxos balance is also not sufficient
+        const err = 'insufficient funds - offchain utxos available but insufficient'
+        console.log(err)
+        throw err
+    }
+    console.log('returning utxos',utxosFromNode)
+    return utxosFromNode
+}
+
 export const getValidatorPublicKey = async (email) => {
-    console.log('getValidatorPublicKey of email',email)
     const parts = email.split("@");
     const domain = parts[parts.length-1];
     let our_validatorPublicKeyData = undefined

@@ -59,8 +59,9 @@ const WalletList = () => {
                 <ListItemText
                     primary={item.senderEmail}
                     secondary={
-                        "Balance: DOI " + Number(item.balance).toFixed(8)+" "+(
-                            (item.unconfirmedBalance!==undefined && item.unconfirmedBalance>0)?'(unconfirmed: DOI '+item.unconfirmedBalance+') ':''
+                        "Balance: DOI " + Number(item.balance?item.balance:0).toFixed(8)+" "+(
+                            (item.unconfirmedBalance!==undefined &&
+                                item.unconfirmedBalance>0)?'(unconfirmed: DOI '+item.unconfirmedBalance+') ':''
                         )
                     }
                 />

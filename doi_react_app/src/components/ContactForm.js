@@ -122,7 +122,7 @@ const ContactForm = () => {
         const senderEmail = wallets[wallet].senderEmail
         if(senderEmail) calculateOwnQRCode()
     },[wallets[wallet].senderEmail])
-console.log('scanning',scanning)
+
   return (
       <QRCodeScannerContents
           scanning={scanning}
