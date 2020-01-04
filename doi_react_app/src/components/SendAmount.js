@@ -30,8 +30,9 @@ const SendAmount = () => {
             const offChainUtxos = global.utxos
             const txData = await createDoicoinTransaction(our_wallet,toAddress,amount,offChainUtxos) //returns only tx and changeAddress
             const utxosResponse = await broadcastTransaction(txData,null)
-            setUTXOs(utxosResponse)  //TODO for some reason sometimes the sent amount just adds to
-            updateWalletBalance(our_wallet,utxosResponse.balance)
+
+            setUTXOs(utxosResponse)  //here are only additional new utxos what about potential old utxos?
+            updateWalletBalance(our_wallet,utxos)
 
             const msg = 'Broadcasted Doicoin tx to Doichain node'
             setOpenError({open:true,msg:msg,type:'success'})

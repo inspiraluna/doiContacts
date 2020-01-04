@@ -41,7 +41,6 @@ const getUTXOs4DoiRequest = async (ourWallet,offChainUTXOSs) => {
     await bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxosFromNode) {
         our_utxos = checkUTXOs(utxosFromNode,offChainUTXOSs,amountComplete)
     })
-    console.log('got utxos ',our_utxos)
     return our_utxos
 }
 
@@ -116,7 +115,6 @@ export const getValidatorPublicKey = async (email) => {
 }
 
 export const createDoichainEntry = async (validatorPublicKey,email,ourWallet) => {
-
     const ourPrivateKey = ourWallet.privateKey
     const ourFrom = ourWallet.senderEmail
 

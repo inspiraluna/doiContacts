@@ -26,7 +26,6 @@ const WalletItem = ({
             bitcore.Networks.defaultNetwork = bitcore.Networks.get('doichain-testnet')
             try {
                 const address = bitcore.getAddressOfPublicKey(publicKey).toString()
-                console.log('fetching from Doichain node...')
                 const response = await bitcore.getUTXOAndBalance(address.toString())
 
                 // balance of the change address (could be 0 after tx,
@@ -65,7 +64,6 @@ const WalletItem = ({
                         }
                     }
                     if (!found) {
-                        console.log('couldnt find address pushing it with new balance', address)
                         currentAddresses.push({address: address, balance: balanceAllUTXOs})
                         somethingWasUpdated = true
                     }
@@ -73,6 +71,7 @@ const WalletItem = ({
 
                 wallets[global.activeWallet].addresses = currentAddresses
                 wallets[global.activeWallet].balance = currentWalletBalance
+                wallets[global.activeWallet].unconfirmedBalance = unconfirmedBalance
                 setBalance(Number(balanceAllUTXOs).toFixed(8))
 
                 if (somethingWasUpdated) setWallets(wallets) //so re-render
@@ -86,8 +85,6 @@ const WalletItem = ({
         if (publicKey && !balance) fetchData(); //generates a Doichain address */
 
     }, [balance])
-
-    console.log('rerender WalletItem')
 
     if (!publicKey) return null
     else

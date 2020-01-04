@@ -49,6 +49,7 @@ const WalletList = () => {
 
     const ourWallets = wallets ? wallets : []
     const walletNode = ourWallets.map((item, index) => {
+        console.log(item, item.unconfirmedBalance)
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
                 <ListItemAvatar>
@@ -58,7 +59,12 @@ const WalletList = () => {
                 </ListItemAvatar>
                 <ListItemText
                     primary={item.senderEmail}
-                    secondary={"Balance: " + Number(wallets[index].balance).toFixed(8)}
+                    secondary={
+                        "Balance: DOI " + Number(item.balance).toFixed(8)+" "+(
+                            (item.unconfirmedBalance!==undefined && item.unconfirmedBalance>0)?'(unconfirmed: DOI '+item.unconfirmedBalance+') ':''
+                        )
+
+                    }
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">

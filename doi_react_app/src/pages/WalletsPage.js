@@ -118,14 +118,12 @@ const WalletsPage = () => {
 
     const handleReceive = e => {
         setModus("receive");
-        console.log("now activating receive");
     };
 
     const handleSend = e => {
         setModus("send");
-        console.log("now activating send");
     };
-    console.log("WalletsPage modus", modus);
+
     if (global.modus === "list") {
         return (
             <div>
