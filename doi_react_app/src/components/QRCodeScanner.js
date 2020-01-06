@@ -7,6 +7,7 @@ import CropFreeIcon from '@material-ui/icons/CropFree';
 import React, {useGlobal} from "reactn";
 import style from './QRCodeScanner.module.css';
 import CloseIcon from '@material-ui/icons/Close';
+import {useEffect} from "react";
 
 
 class QRCodeScannerContents extends React.Component {
@@ -98,6 +99,9 @@ export const QRCodeScannerTextField = ({label, labelWidth, urlPrefix, name, onCh
             handleCancel(setScanning)
         }
     }
+    useEffect( () => {
+        setQRCode('')
+    },[qrCode])
 
     //console.log('re-rendering QR-Code component with qr-code',qrCode)
     return (
