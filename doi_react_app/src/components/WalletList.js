@@ -59,7 +59,11 @@ const WalletList = () => {
                 </ListItemAvatar>
                 <ListItemText
                     primary={item.senderEmail}
-                    secondary={"Balance: " + wallets[index].balance}
+                    secondary={
+                        "Balance: DOI " + Number(item.balance).toFixed(8)+" "+(
+                            (item.unconfirmedBalance!==undefined && item.unconfirmedBalance>0)?'(unconfirmed: DOI '+item.unconfirmedBalance+') ':''
+                        )
+                    }
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">

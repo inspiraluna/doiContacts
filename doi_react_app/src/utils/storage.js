@@ -3,6 +3,7 @@ import {addCallback} from "reactn";
 const initStorage = (cordovaEnabled,global,setGlobal) => {
 
     if(!cordovaEnabled || (window.device && window.device.platform==='browser')) {
+        console.log('using localstorage')
         const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
         const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
         const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):"0"
@@ -17,7 +18,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             activeWallet: initialActiveWallet
         })
     }else{
-
+        console.log('using nativestorage')
         const nObjects = [
             {name:'contacts',defaultValue:[]},
             {name:'wallets',defaultValue:[]},
@@ -69,7 +70,6 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
     }
 
     addCallback(global => {
-        console.log('global changed',global)
         if((window.device && window.device.platform==='browser') || !window.cordova) {
             localStorage.setItem('contacts',JSON.stringify(global.contacts))
             localStorage.setItem('wallets',JSON.stringify(global.wallets))

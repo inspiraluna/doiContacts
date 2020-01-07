@@ -41,40 +41,41 @@ const getUTXOs4DoiRequest = async (ourWallet,offChainUTXOSs) => {
     await bitcore.getUTXOAndBalance(ourAddress, amountComplete).then(function (utxosFromNode) {
         our_utxos = checkUTXOs(utxosFromNode,offChainUTXOSs,amountComplete)
     })
-    console.log('got utxos ',our_utxos)
     return our_utxos
 }
 
 const checkUTXOs = (utxosFromNode,offChainUTXOSs,amount) => {
+
     if ((utxosFromNode.utxos.length === 0 || utxosFromNode.balanceAllUTXOs<amount) //in case blockchain doesn't have enough funds yet and no offchain utxos are stored
         && (!offChainUTXOSs || !offChainUTXOSs.utxos || offChainUTXOSs.utxos.length===0)){
-        const err = 'insufficiant funds - no utxos from node or utxos smaller then amount'
+        const err = 'insufficient funds - no utxos from node or utxos balance less then amount'
         console.log(err)
         throw err
     }
     //we spent all outputs but have a offchain balance left when adding amounts of change addresses
     else if(utxosFromNode.utxos.length === 0 && offChainUTXOSs.utxos.length>0){
         if(offChainUTXOSs.balance < amount) { //if the offchain utxos balance is also not sufficient
-            const err = 'insufficiant funds - no utxos from node and no utxos in change'
+            const err = 'insufficient funds - no utxos from node and no utxos in change'
+            console.log(err)
             throw err
         }
         utxosFromNode.utxos = offChainUTXOSs.utxos //this is our new base for new transactions
-        utxosFromNode.change = offChainUTXOSs.balance-amount //substract the amount we want to transfer to receive the new change
+        utxosFromNode.change = offChainUTXOSs.balance-amount //subtract the amount we want to transfer to receive the new change
+    }
+    if(utxosFromNode.change < 0) { //if the offchain utxos balance is also not sufficient
+        const err = 'insufficient funds - utxos available but insufficient'
+        console.log(err)
+        throw err
     }
     console.log('returning utxos',utxosFromNode)
     return utxosFromNode
 }
 
 export const createDOIRequestTransaction = async (email, ourWallet, offChainUtxos) => {
-    console.log('creating transaction')
+
     const validatorPublicKeyData = await getValidatorPublicKey(email)
-    console.log('got '+validatorPublicKeyData.type+' validatorPubliyKey',validatorPublicKeyData.key)
-
     const doichainEntry = await createDoichainEntry(validatorPublicKeyData.key,email,ourWallet)
-    console.log('got doichainEntry',doichainEntry)
-
     const utxos = await getUTXOs4DoiRequest(ourWallet,offChainUtxos)
-    console.log('got utxos from node',utxos)
 
     const ourAddress = bitcore.getAddressOfPublicKey(ourWallet.publicKey).toString()
     const validatorAddress = bitcore.getAddressOfPublicKey(validatorPublicKeyData.key).toString()
@@ -114,7 +115,6 @@ export const getValidatorPublicKey = async (email) => {
 }
 
 export const createDoichainEntry = async (validatorPublicKey,email,ourWallet) => {
-
     const ourPrivateKey = ourWallet.privateKey
     const ourFrom = ourWallet.senderEmail
 
@@ -148,9 +148,6 @@ export const broadcastTransaction = async (txData,encryptedTemplateData) => {
 }
 
 export const updateWalletBalance = (our_wallet, balance) => {
-    console.log('updating wallet ',our_wallet)
-    console.log('updating wallet balance with value',balance)
-
     our_wallet.balance = balance
 }
 
