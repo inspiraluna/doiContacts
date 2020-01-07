@@ -18,6 +18,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
+import EditIcon from '@material-ui/icons/Edit';
 
 const ContactList = () => {
   const [modus, setModus] = useGlobal("modus");
@@ -39,10 +40,17 @@ const ContactList = () => {
     setModus("list");
   };
 
-  const handleDetail = index => {
+  const handleDetail = (index) => {
     setModus("detail");
     setActiveContact(index);
   };
+  
+  const handleEdit = (index) => {
+    setModus('edit')
+    const currentContacts = contacts;
+    setContacts(currentContacts);
+    setActiveContact(index);
+}
 
   const ourContacts = contacts ? contacts : [];
   console.log("contactList rendering", ourContacts);
@@ -72,7 +80,7 @@ const ContactList = () => {
         });
       }
     });
-
+    console.log("hello")
     return (
       <ListItem key={index} onClick={() => handleDetail(index)}>
         <ListItemAvatar>
@@ -92,6 +100,9 @@ const ContactList = () => {
         />
         <ListItemSecondaryAction>
           <StatusIcon contact={contact} />
+          <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">
+                        <EditIcon/>
+                    </IconButton>
           <IconButton
             edge="end"
             aria-label="delete"
