@@ -157,17 +157,6 @@ const WalletsPage = () => {
                         unmountOnExit
                     >
                         <div>
-                            <WalletItem
-                                walletName={global.wallets[global.activeWallet].walletName}
-                                senderEmail={global.wallets[global.activeWallet].senderEmail}
-                                subject={global.wallets[global.activeWallet].subject}
-                                content={global.wallets[global.activeWallet].content}
-                                publicKey={global.wallets[global.activeWallet].publicKey}
-                                contentType={global.wallets[global.activeWallet].contentType}
-                                redirectUrl={global.wallets[global.activeWallet].redirectUrl}
-                                returnPath={global.wallets[global.activeWallet].returnPath}
-                            />
-
                             <Button
                                 color={"primary"}
                                 variant="contained"
@@ -189,6 +178,17 @@ const WalletsPage = () => {
                             >
                                 Cancel
                             </Button>
+                           <br/><br/>
+                            <WalletItem
+                                walletName={global.wallets[global.activeWallet].walletName}
+                                senderEmail={global.wallets[global.activeWallet].senderEmail}
+                                subject={global.wallets[global.activeWallet].subject}
+                                content={global.wallets[global.activeWallet].content}
+                                publicKey={global.wallets[global.activeWallet].publicKey}
+                                contentType={global.wallets[global.activeWallet].contentType}
+                                redirectUrl={global.wallets[global.activeWallet].redirectUrl}
+                                returnPath={global.wallets[global.activeWallet].returnPath}
+                            />
                         </div>
                     </Slide>
                 </div>

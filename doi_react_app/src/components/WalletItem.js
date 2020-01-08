@@ -1,8 +1,7 @@
 import React, {useGlobal, useEffect, useState, setState} from "reactn";
 import bitcore from "bitcore-doichain";
-import Moment from 'react-moment';
-import 'moment-timezone';
-import List from "@material-ui/core/List";
+
+import TransactionList from "./TransactionList";
 
 const WalletItem = ({
                         walletName,
@@ -17,7 +16,6 @@ const WalletItem = ({
 
     const [address, setAddress] = useState('')
     const [balance, setBalance] = useState(0)
-    const [txs,setTxs] = useState([])
 
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
     const [wallets, setWallets] = useGlobal("wallets")
@@ -36,7 +34,7 @@ const WalletItem = ({
     const fetchBalanceData = async (address) => {
         try {
             const currentWallet = wallets[activeWallet]
-            const response = await bitcore.getUTXOAndBalance(address.toString())
+            const response = await bitcore.getUTXOAndBalance(address.toString(),0)
             let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
             let unconfirmedUTXOs = 0
             // if we have offchain utxos then add them to the returned balance from Doichain node
@@ -50,71 +48,52 @@ const WalletItem = ({
             let currentAddresses = currentWallet.addresses
             if (currentAddresses === undefined) currentAddresses = []
             else {
-               // let found = false;
+                // let found = false;
                 //go through all adresses of this wallet and set balance from blockchain
                 for (let x = 0; x < currentAddresses.length; x++) {
                     if (currentAddresses[x].address == address) {
                         currentAddresses[x].balance = balanceAllUTXOs
                         currentWalletBalance += currentAddresses[x].balance
-                       // found = true
+                        // found = true
                     }
                 }
-//                if (!found) currentAddresses.push({address: address, balance: balanceAllUTXOs})
-            }
-            console.log("currentAddresses",currentAddresses)
-            wallets[activeWallet].addresses = currentAddresses
-            wallets[activeWallet].balance = currentWalletBalance
-            wallets[activeWallet].unconfirmedBalance = unconfirmedBalance
+                console.log("currentAddresses", currentAddresses)
+                wallets[activeWallet].addresses = currentAddresses
+                wallets[activeWallet].balance = currentWalletBalance
+                wallets[activeWallet].unconfirmedBalance = unconfirmedBalance
 
-            return {
-                wallets:wallets,
-                balance:Number(balanceAllUTXOs).toFixed(8),
-                unconfirmedBalance:Number(unconfirmedUTXOs).toFixed(8),
-                //somethingWasUpdated:somethingWasUpdated
+                return {
+                    wallets: wallets,
+                    balance: Number(balanceAllUTXOs).toFixed(8),
+                    unconfirmedBalance: Number(unconfirmedUTXOs).toFixed(8),
+                }
             }
-
-            //console.log(wallets)
-        } catch (ex) {
+        } catch (ex){
             console.log("error while fetching utxos from server", ex)
             return undefined;
         }
     }
 
     useEffect(() => {
-        const generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
-        setAddress(generatedAddress)
-
         if (publicKey && !balance){
-            console.log('fetching balance for wallet from node')
+            const generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
+            setAddress(generatedAddress)
+            console.log('fetching balance for wallet from node',generatedAddress)
             fetchBalanceData(generatedAddress).then((retBalanceData)=>{
-                console.log('retBalanceData',retBalanceData)
-                console.log('balanceAllUTXOs'+balance,retBalanceData.balance)
-                if(retBalanceData.balance==balance) setUnconfirmedBalance(0) //reset unconfirmedBalance in case balance from Node is the same as here
-
-
                 if(retBalanceData){
+                    console.log('retBalanceData',retBalanceData)
+                    console.log('balanceAllUTXOs'+balance,retBalanceData.balance)
                     setWallets(retBalanceData.wallets)
                     setBalance(retBalanceData.balance)
-                    setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
+                    if(retBalanceData.balance==balance)
+                        setUnconfirmedBalance(0) //reset unconfirmedBalance in case balance from Node is the same as here
+                    else
+                        setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
+
                 }
             })
         }
     }, [balance])
-
-    useEffect(()=>{
-        const generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
-        bitcore.listTransactions(generatedAddress).then((txs)=>{
-            console.log('got transactions of address '+address,txs)
-            if(txs.status==='success')
-                setTxs(txs.data)
-        })
-    },[])
-
-    let ourTxs = []
-    if(txs) ourTxs=txs
-    const transactionList = ourTxs.map((tx, index) => {
-        return (<li key={index}><Moment format="YYYY-MM-DD">{tx.time*1000}</Moment><div align={"right"}> DOI {Number(tx.amount).toFixed(8)} </div></li>)
-        })
 
     if (!publicKey) return null
     else
@@ -135,9 +114,8 @@ const WalletItem = ({
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                     <b>PubKey:<input type={"text"} readOnly={true} defaultValue={publicKey} size={40}/></b><br/>
                 </div>
-                <div><List dense={true}>{transactionList}</List></div>
+                <div><TransactionList address={address}/></div>
             </div>
-
         )
 }
 

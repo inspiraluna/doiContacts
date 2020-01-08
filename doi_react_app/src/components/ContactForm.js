@@ -1,43 +1,44 @@
-import React, { useGlobal,setGlobal } from 'reactn';
-import NativeSelect from '@material-ui/core/NativeSelect';
+import React, { useGlobal, setGlobal } from "reactn";
+import NativeSelect from "@material-ui/core/NativeSelect";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import ProgressButton from "react-progress-button";
-import './ProgressButton.css'
-import {useEffect, useState} from "react";
-import { usePosition } from 'use-position';
+import "./ProgressButton.css";
+import { useEffect, useState } from "react";
+import { usePosition } from "use-position";
 import QRCode from "qrcode-react";
-import QRCodeScannerContents, {QRCodeScannerTextField} from "./QRCodeScanner";
+import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner";
 import {
-    createDOIRequestTransaction,
-    encryptTemplate,
-    broadcastTransaction,
-    DOI_STATE_WAITING_FOR_CONFIRMATION, updateWalletBalance
+  createDOIRequestTransaction,
+  encryptTemplate,
+  broadcastTransaction,
+  DOI_STATE_WAITING_FOR_CONFIRMATION,
+  updateWalletBalance
 } from "../utils/doichain-transaction-utils";
 
 const useStyles = makeStyles(theme => ({
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 300,
-    },
-    label: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 300,
-    },
-    select: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 300,
-    },
-    button: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 300,
-        height: 50
-    }
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 300
+  },
+  label: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 300
+  },
+  select: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 300
+  },
+  button: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 300,
+    height: 50
+  }
 }));
 
 const ContactForm = () => {
@@ -165,85 +166,106 @@ const ContactForm = () => {
               </div>
 
           )} />
-
-
   );
-}
+};
 
-const RequestAddress = ({className}) => {
+const RequestAddress = ({ className }) => {
+  const [test, setTest] = useGlobal("test");
+  const [position, setPosition] = useState("");
+  const [address, setAddress] = useState("");
+  const { latitude, longitude, timestamp, accuracy, error } = usePosition({
+    enableHighAccuracy: true
+  }); //false,{enableHighAccuracy: true}
 
-    const [ test, setTest ] = useGlobal("test")
-    const [position,setPosition ] = useState('')
-    const [address,setAddress] = useState('')
-    const { latitude, longitude, timestamp, accuracy, error } = usePosition({enableHighAccuracy: true}); //false,{enableHighAccuracy: true}
+  const queryGeoEncode = async () => {
+    if (!latitude || !longitude) return null;
 
-    const queryGeoEncode = async () => {
-        if(!latitude || !longitude) return null
+    const response = await geoencode(latitude, longitude);
+    const currentPosition = {
+      latitude: latitude,
+      longitude: longitude,
+      address: response.features[0].properties.address
+    };
+    return currentPosition;
+  };
+  const query = () => {
+    if (!position)
+      queryGeoEncode()
+        .then(currentPosition => {
+          if (currentPosition && currentPosition.address) {
+            const our_road = currentPosition.address.road
+              ? currentPosition.address.road + " "
+              : "";
+            const our_house_number = currentPosition.address.house_number
+              ? currentPosition.address.house_number + " "
+              : "";
+            const our_city = currentPosition.address.city
+              ? currentPosition.address.city + " "
+              : "";
+            const our_country = currentPosition.address.country
+              ? currentPosition.address.country + " "
+              : "";
+            const our_address =
+              our_road + our_house_number + our_city + our_country;
+            setAddress(our_address);
+            setTest(currentPosition);
+          }
+          setPosition(currentPosition);
+        })
+        .catch(e => {
+          console.log("error during geocoding", e);
+        });
+  };
+  query();
 
-        const response = await geoencode(latitude,longitude)
-        const currentPosition = {
-            latitude: latitude,
-            longitude: longitude,
-            address:response.features[0].properties.address
-        }
-       return currentPosition
-    }
-    const query  = () => {
+  if (latitude === undefined || longitude === undefined) {
+    const onSuccess = position => {
+      //  console.log('sucesss: got position',position)
+      query();
+    };
 
-        if (!position)
-            queryGeoEncode().then((currentPosition) => {
-                if (currentPosition && currentPosition.address) {
-                    const our_road = currentPosition.address.road?currentPosition.address.road+" " :""
-                    const our_house_number = currentPosition.address.house_number?currentPosition.address.house_number +" ":""
-                    const our_city = currentPosition.address.city?currentPosition.address.city + " ":""
-                    const our_country =  currentPosition.address.country?currentPosition.address.country+" ":""
-                    const our_address = our_road + our_house_number + our_city + our_country
-                    setAddress(our_address)
-                    setTest(currentPosition)
-                }
-                setPosition(currentPosition)
-            }).catch((e) => {
-                console.log('error during geocoding', e)
-            })
-    }
-    query()
+    const onError = error => {
+      console.log(
+        "code: " + error.code + "\n" + "message: " + error.message + "\n"
+      );
+    };
+    navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+      enableHighAccuracy: true
+    });
+  }
+  // console.log('rerender latitude/longitude',latitude+"/"+longitude+" address"+position)
 
-    if(latitude===undefined || longitude===undefined){
-        const onSuccess = (position) => {
-         //  console.log('sucesss: got position',position)
-            query()
-        };
+  return (
+    <div>
+      <input
+        type={"hidden"}
+        name={"position"}
+        value={JSON.stringify(position)}
+      />
+      <TextField
+        type="text"
+        name="address"
+        id="address"
+        value={address}
+        label="Current Address"
+        margin="normal"
+        className={className}
+      />
+    </div>
+  );
+};
 
-        const onError = (error) => {
-            console.log('code: '    + error.code    + '\n' +
-                'message: ' + error.message + '\n');
-        }
-        navigator.geolocation.getCurrentPosition(onSuccess, onError,{enableHighAccuracy: true });
-    }
-   // console.log('rerender latitude/longitude',latitude+"/"+longitude+" address"+position)
+const geoencode = async (lat, lng) => {
+  // console.log('lat'+lat,'long'+lng)
+  const url =
+    "https://nominatim.openstreetmap.org/reverse?format=geojson&lat=" +
+    lat +
+    "&lon=" +
+    lng +
+    "&zoom=18&addressdetails=2    ";
+  const response = await fetch(url, { method: "GET" });
+  const json = await response.json();
+  return json;
+};
 
-    return (
-        <div>
-            <input type={"hidden"} name={'position'} value={JSON.stringify(position)}/>
-            <TextField
-                type="text"
-                name="address"
-                id="address"
-                value={address}
-                label="Current Address"
-                margin="normal"
-                className={className}
-            />
-        </div>
-       )
-}
-
-const geoencode = async (lat,lng) => {
-   // console.log('lat'+lat,'long'+lng)
-    const url = "https://nominatim.openstreetmap.org/reverse?format=geojson&lat="+lat+"&lon="+lng+"&zoom=18&addressdetails=2    ";
-    const response = await fetch(url, {method: 'GET'})
-    const json = await response.json();
-    return json
-}
-
-export default ContactForm
+export default ContactForm;

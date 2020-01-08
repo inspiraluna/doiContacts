@@ -15,6 +15,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
 
 const WalletList = () => {
 
@@ -67,7 +68,7 @@ const WalletList = () => {
                 />
                 <ListItemSecondaryAction>
                     <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">
-                        <DetailsIcon/>
+                        <EditIcon/>
                     </IconButton>
                     <IconButton edge="end" aria-label="delete" onClick={ () => setOpen(index) }>
                         <DeleteIcon/>
