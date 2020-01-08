@@ -15,7 +15,6 @@ const SendAmount = () => {
     const [wallets,setWallets] = useGlobal("wallets")
     const [utxos, setUTXOs ] = useGlobal("utxos")
     const [ openError, setOpenError ] = useGlobal("errors")
-    const [global] = useGlobal()
     const [buttonState,setButtonState] = useGlobal("buttonState")
     const [modus, setModus] = useGlobal("modus")
     const [scanning, setScanning] =  useGlobal("scanning")
@@ -47,20 +46,18 @@ const SendAmount = () => {
         }
     }
 
-    const address = global.wallets[global.activeWallet].addresses[0].address;
-    const walletName = global.wallets[global.activeWallet].walletName
-    const balance  =  Number(global.wallets[global.activeWallet].balance).toFixed(8)
+    const address = wallets[activeWallet].addresses[0].address;
+    const walletName = wallets[activeWallet].walletName
+    const balance  =  Number(wallets[activeWallet].balance).toFixed(8)
     return (
         <div>
             <Slide aria-label="wallet-send"
                    direction={"up"}
-                   in={activeWallet !== undefined && global.modus === 'send'}
+                   in={activeWallet !== undefined && modus === 'send'}
                    mountOnEnter unmountOnExit>
                 <div>
                     <QRCodeScannerContents
                         scanning={scanning}
-                        walletName={walletName}
-                        toAddress={global.toAddress}
                         render={(<div style={{backgroundColor: 'white'}}>
                             <h1>{walletName} </h1>
                             Send DOI from address: <br/>

@@ -35,6 +35,7 @@ const WalletItem = ({
         try {
             const currentWallet = wallets[activeWallet]
             const response = await bitcore.getUTXOAndBalance(address.toString(),0)
+            console.log("getUTXOAndBalance response",response)
             let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
             let unconfirmedUTXOs = 0
             // if we have offchain utxos then add them to the returned balance from Doichain node
@@ -45,33 +46,31 @@ const WalletItem = ({
                 })
             }
             let currentWalletBalance = 0
-            let currentAddresses = currentWallet.addresses
-            if (currentAddresses === undefined) currentAddresses = []
-            else {
-                // let found = false;
-                //go through all adresses of this wallet and set balance from blockchain
-                for (let x = 0; x < currentAddresses.length; x++) {
-                    if (currentAddresses[x].address == address) {
-                        currentAddresses[x].balance = balanceAllUTXOs
-                        currentWalletBalance += currentAddresses[x].balance
-                        // found = true
-                    }
-                }
-                console.log("currentAddresses", currentAddresses)
-                wallets[activeWallet].addresses = currentAddresses
-                wallets[activeWallet].balance = currentWalletBalance
-                wallets[activeWallet].unconfirmedBalance = unconfirmedBalance
+            if ( currentWallet.addresses === undefined ||  currentWallet.addresses.length===0)
+                currentWallet.addresses = [{address:address}]
 
-                return {
-                    wallets: wallets,
-                    balance: Number(balanceAllUTXOs).toFixed(8),
-                    unconfirmedBalance: Number(unconfirmedUTXOs).toFixed(8),
+            let currentAddresses = currentWallet.addresses
+            for (let x = 0; x < currentAddresses.length; x++) {
+               if (currentAddresses[x].address === address) {
+                    currentAddresses[x].balance = balanceAllUTXOs
+                    currentWalletBalance += currentAddresses[x].balance
                 }
             }
+            wallets[activeWallet].addresses = currentAddresses
+            wallets[activeWallet].balance = currentWalletBalance
+            wallets[activeWallet].unconfirmedBalance = unconfirmedBalance
+
+            return {
+                wallets: wallets,
+                balance: Number(balanceAllUTXOs).toFixed(8),
+                unconfirmedBalance: Number(unconfirmedUTXOs).toFixed(8),
+            }
+            //}
         } catch (ex){
             console.log("error while fetching utxos from server", ex)
             return undefined;
         }
+        console.log("returning nothing")
     }
 
     useEffect(() => {
@@ -81,8 +80,6 @@ const WalletItem = ({
             console.log('fetching balance for wallet from node',generatedAddress)
             fetchBalanceData(generatedAddress).then((retBalanceData)=>{
                 if(retBalanceData){
-                    console.log('retBalanceData',retBalanceData)
-                    console.log('balanceAllUTXOs'+balance,retBalanceData.balance)
                     setWallets(retBalanceData.wallets)
                     setBalance(retBalanceData.balance)
                     if(retBalanceData.balance==balance)
@@ -93,7 +90,7 @@ const WalletItem = ({
                 }
             })
         }
-    }, [balance])
+    }, [address]) //only recalculate when address changes.
 
     if (!publicKey) return null
     else

@@ -22,8 +22,6 @@ const App = (props) => {
     const [modus, setModus] = useGlobal("modus")
     const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
 
-
-
    const settings = {  //RegTest
         testnet: true,
         from: 'alice@ci-doichain.org',
