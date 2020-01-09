@@ -17,6 +17,7 @@
     "moment-timezone": "^0.5.27",
     "qrcode-react": "^0.1.16",
     "react": "^16.12.0",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.12.0",
     "react-moment": "^0.9.7",
     "react-motion": "^0.5.2",
