@@ -21,14 +21,14 @@ const App = (props) => {
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
-
+    /*
    const settings = {  //RegTest
         testnet: true,
         from: 'alice@ci-doichain.org',
         port:3000,
         host:"localhost"
     }
-    /*
+
         const settings = {  //testnet 2
             testnet:true,
             from: 'newsletter@doichain.org',
@@ -36,7 +36,7 @@ const App = (props) => {
             host:"5.9.154.231"
         }
 
-
+*/
     const settings = {  //testnet 2
         testnet:true,
         from: 'newsletter@doichain.org',
@@ -44,7 +44,7 @@ const App = (props) => {
         ssl:true,
         host:"doichain-testnet.le-space.de"
     }
-*/
+
     bitcore.settings.setSettings(settings)
     bitcore.Networks.defaultNetwork = bitcore.Networks.get('doichain-testnet')
 
