@@ -53,7 +53,7 @@ const ContactForm = () => {
     const [ contacts, setContacts ] = useGlobal('contacts')
     const setOpenError = useGlobal("errors")[1]
     const [utxos, setUTXOs ] = useGlobal("utxos")
-    const [scanning] =  useGlobal("scanning")[1]
+    const [scanning] =  useGlobal("scanning")
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
     const [ test ] = useGlobal("test")
 
@@ -115,14 +115,16 @@ const ContactForm = () => {
     }
 
     const calculateOwnQRCode = () => {
-        const url="mailto:"+wallets[wallet].senderEmail
-        setOwnQrCode(url)
+        const senderEmail = wallets[wallet].senderEmail
+        if(senderEmail){
+            const url="mailto:"+wallets[wallet].senderEmail
+            setOwnQrCode(url)
+        }
     }
 
     useEffect( () => {
-        const senderEmail = wallets[wallet].senderEmail
-        if(senderEmail) calculateOwnQRCode()
-    },[wallets[wallet].senderEmail])
+            calculateOwnQRCode()
+    })
 
   return (
       <QRCodeScannerContents
@@ -170,12 +172,13 @@ const ContactForm = () => {
 };
 
 const RequestAddress = ({ className }) => {
-  const setTest = useGlobal("test")[1];
+  const setTest = useGlobal("test")[1]
   const [position, setPosition] = useState("");
   const [address, setAddress] = useState("");
+
   const { latitude, longitude } = usePosition({
     enableHighAccuracy: true
-  }); //false,{enableHighAccuracy: true}
+  });
 
   const queryGeoEncode = async () => {
     if (!latitude || !longitude) return null;

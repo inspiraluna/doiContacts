@@ -116,9 +116,8 @@ export const QRCodeScannerTextField = ({
     }
     useEffect(() => {
         setQRCode("")
-    }, [qrCode])
+    }, [qrCode,setQRCode])
 
-    //console.log('re-rendering QR-Code component with qr-code',qrCode)
     return (
         <div>
             <FormControl fullWidth variant="outlined">

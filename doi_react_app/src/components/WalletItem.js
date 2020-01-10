@@ -23,69 +23,71 @@ const WalletItem = ({
     const [utxos,setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
-    /**
-     * - connects to a Doichain node and requests utxos (and balances)
-     * - it sums up "offchain" (unconfirmed) utxos and puts it to the wallets balance.
-     * - it sets the balance of each address
-     *
-     * TODO this looks like it needs refactoring(!)
-     *
-     * @returns {Promise<void>}
-     */
-    const fetchBalanceData = async address => {
-        try {
-            const currentWallet = wallets[activeWallet]
-            const response = await bitcore.getUTXOAndBalance(address.toString(),0)
-            console.log("getUTXOAndBalance response block:"+ response.block,response)
-            const block = response.block
-            let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
-            let unconfirmedUTXOsBalance = 0
-            // if we have offchain utxos then add them to the returned balance from Doichain node
-            console.log('working with current offchain utxos',utxos)
-            const utxoRounds = utxos
-            if(utxoRounds && utxoRounds.length>0){
-                utxoRounds.forEach((utxoRound) => {
-                    console.log('utxoRound',utxoRound)
-                    utxoRound.utxos.forEach((utxo) => {
-                        console.log('adding utxo.amount to unconfirmedUTXOsBalance'+unconfirmedUTXOsBalance,utxo.amount)
-                        if(utxo.address===address && utxo.amount>0)
-                            unconfirmedUTXOsBalance+=utxo.amount
-                    })
-                })
-                setUnconfirmedBalance(unconfirmedUTXOsBalance)
-            }
-
-            let currentWalletBalance = 0
-            if (currentWallet.addresses === undefined ||  currentWallet.addresses.length===0)
-                currentWallet.addresses = [{address:address}]
-
-            let currentAddresses = currentWallet.addresses
-            for (let x = 0; x < currentAddresses.length; x++) {
-               if (currentAddresses[x].address === address) {
-                    currentAddresses[x].balance = balanceAllUTXOs
-                    currentWalletBalance += currentAddresses[x].balance
-                }
-            }
-
-            wallets[activeWallet].block = block
-            wallets[activeWallet].addresses = currentAddresses
-            wallets[activeWallet].balance = currentWalletBalance
-            wallets[activeWallet].unconfirmedBalance = unconfirmedUTXOsBalance
-            console.log('unconfirmedBalance now',unconfirmedUTXOsBalance)
-            return {
-                block: block,
-                wallets: wallets,
-                balance: Number(balanceAllUTXOs).toFixed(8),
-                unconfirmedBalance: Number(unconfirmedUTXOsBalance).toFixed(8),
-            }
-            //}
-        } catch (ex) {
-            console.log("error while fetching utxos from server", ex)
-            return undefined
-        }
-    }
 
     useEffect(() => {
+
+        /**
+         * - connects to a Doichain node and requests utxos (and balances)
+         * - it sums up "offchain" (unconfirmed) utxos and puts it to the wallets balance.
+         * - it sets the balance of each address
+         *
+         * TODO this looks like it needs refactoring(!)
+         *
+         * @returns {Promise<void>}
+         */
+        const fetchBalanceData = async address => {
+            try {
+                const currentWallet = wallets[activeWallet]
+                const response = await bitcore.getUTXOAndBalance(address.toString(),0)
+                console.log("getUTXOAndBalance response block:"+ response.block,response)
+                const block = response.block
+                let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
+                let unconfirmedUTXOsBalance = 0
+                // if we have offchain utxos then add them to the returned balance from Doichain node
+                console.log('working with current offchain utxos',utxos)
+                const utxoRounds = utxos
+                if(utxoRounds && utxoRounds.length>0){
+                    utxoRounds.forEach((utxoRound) => {
+                        console.log('utxoRound',utxoRound)
+                        utxoRound.utxos.forEach((utxo) => {
+                            console.log('adding utxo.amount to unconfirmedUTXOsBalance'+unconfirmedUTXOsBalance,utxo.amount)
+                            if(utxo.address===address && utxo.amount>0)
+                                unconfirmedUTXOsBalance+=utxo.amount
+                        })
+                    })
+                    setUnconfirmedBalance(unconfirmedUTXOsBalance)
+                }
+
+                let currentWalletBalance = 0
+                if (currentWallet.addresses === undefined ||  currentWallet.addresses.length===0)
+                    currentWallet.addresses = [{address:address}]
+
+                let currentAddresses = currentWallet.addresses
+                for (let x = 0; x < currentAddresses.length; x++) {
+                    if (currentAddresses[x].address === address) {
+                        currentAddresses[x].balance = balanceAllUTXOs
+                        currentWalletBalance += currentAddresses[x].balance
+                    }
+                }
+
+                wallets[activeWallet].block = block
+                wallets[activeWallet].addresses = currentAddresses
+                wallets[activeWallet].balance = currentWalletBalance
+                wallets[activeWallet].unconfirmedBalance = unconfirmedUTXOsBalance
+                console.log('unconfirmedBalance now',unconfirmedUTXOsBalance)
+                return {
+                    block: block,
+                    wallets: wallets,
+                    balance: Number(balanceAllUTXOs).toFixed(8),
+                    unconfirmedBalance: Number(unconfirmedUTXOsBalance).toFixed(8),
+                }
+                //}
+            } catch (ex) {
+                console.log("error while fetching utxos from server", ex)
+                return undefined
+            }
+        }
+
         if (publicKey && !balance) {
             const generatedAddress = bitcore
                 .getAddressOfPublicKey(publicKey)
@@ -112,7 +114,7 @@ const WalletItem = ({
                 }
             })
         }
-    }, [address]) //only recalculate when address changes.
+    }, [publicKey, balance, setWallets, block, setUTXOs, setBlock, activeWallet, utxos, wallets]) //[address] only recalculate when address changes.
 
     if (!publicKey) return null
     else
