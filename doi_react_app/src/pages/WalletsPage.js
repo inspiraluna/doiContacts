@@ -1,9 +1,7 @@
 import React, {
     useEffect,
     useState,
-    useGlobal,
-    setGlobal,
-    addCallback
+    useGlobal
 } from "reactn";
 import bitcore from "bitcore-doichain";
 import WalletList from "../components/WalletList";
@@ -16,6 +14,8 @@ import Button from "@material-ui/core/Button";
 import QRCode from "qrcode-react";
 import SendAmount from "../components/SendAmount";
 import EditEmailTemplate from "../components/EditEmailTemplate";
+
+/* eslint no-template-curly-in-string: "off" */
 
 const WalletsPage = () => {
     const [amount, setAmount] = useState(0); //receive amount
@@ -34,7 +34,7 @@ const WalletsPage = () => {
         const our_senderEmail = "info@doichain.org";
         const our_subject = "Doichain Contacts Request";
         const our_content =
-            "'Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nPeter'";
+            "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nPeter";
         const our_contentType = "text/plain";
         const our_redirectUrl = "http://www.doichain.org";
         const our_returnPath = "doichain@doichain.org";

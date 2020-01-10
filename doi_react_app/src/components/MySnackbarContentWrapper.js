@@ -1,4 +1,4 @@
-import React, { useGlobal,setGlobal } from 'reactn';
+import React, { useGlobal } from 'reactn';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
@@ -79,14 +79,8 @@ MySnackbarContentWrapper.propTypes = {
     variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
 };
 
-const useStyles2 = makeStyles(theme => ({
-    margin: {
-        margin: theme.spacing(1),
-    },
-}));
 
 export default function CustomizedSnackbars() {
-    const classes = useStyles2();
     const [ open, setOpen ] = useGlobal("errors")
 
     const handleClose = (event, reason) => {

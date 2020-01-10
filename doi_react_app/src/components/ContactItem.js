@@ -1,8 +1,8 @@
-import React,  { useGlobal, setGlobal } from "reactn";
+import React,  { useGlobal } from "reactn";
 
 const ContactItem = () => {
-  const [contacts, setContacts] = useGlobal("contacts");
-  const [activeContact, setActiveContact] = useGlobal("activeContact");
+  const [contacts] = useGlobal("contacts");
+  const [activeContact] = useGlobal("activeContact");
 
   return (
     <div>

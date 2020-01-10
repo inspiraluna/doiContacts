@@ -11,14 +11,14 @@ import  QRCodeScannerContents,{QRCodeScannerTextField } from "./QRCodeScanner";
 
 const SendAmount = () => {
 
-    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
-    const [wallets,setWallets] = useGlobal("wallets")
+    const [activeWallet] = useGlobal("activeWallet")
+    const [wallets] = useGlobal("wallets")
     const [utxos, setUTXOs ] = useGlobal("utxos")
-    const [ openError, setOpenError ] = useGlobal("errors")
-    const [buttonState,setButtonState] = useGlobal("buttonState")
+    const setOpenError  = useGlobal("errors")[1]
+    const setButtonState = useGlobal("buttonState")[1]
     const [modus, setModus] = useGlobal("modus")
-    const [scanning, setScanning] =  useGlobal("scanning")
-    const [qrCode, setQRCode] =  useGlobal("qrCode")
+    const [scanning] =  useGlobal("scanning")
+    const [qrCode] =  useGlobal("qrCode")
 
     const handleSendTransaction = async (toAddress,amount) => {
 

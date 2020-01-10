@@ -1,7 +1,9 @@
-import React, {useGlobal, useEffect, useState, setState} from "reactn";
-import bitcore from "bitcore-doichain";
+import React, { useGlobal, useEffect, useState } from "reactn"
+import bitcore from "bitcore-doichain"
 
-import TransactionList from "./TransactionList";
+import TransactionList from "./TransactionList"
+import { CopyToClipboard } from "react-copy-to-clipboard"
+import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 const WalletItem = ({
                         senderEmail,
@@ -17,8 +19,9 @@ const WalletItem = ({
 
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
     const [wallets, setWallets] = useGlobal("wallets")
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
-    const [utxos, setUTXOs] = useGlobal("utxos")
+    const [activeWallet] = useGlobal("activeWallet")
+    const [utxos,setUTXOs] = useGlobal("utxos")
+    const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
     /**
      * - connects to a Doichain node and requests utxos (and balances)
@@ -29,13 +32,12 @@ const WalletItem = ({
      *
      * @returns {Promise<void>}
      */
-    const fetchBalanceData = async (address) => {
+    const fetchBalanceData = async address => {
         try {
             const currentWallet = wallets[activeWallet]
             const response = await bitcore.getUTXOAndBalance(address.toString(),0)
             console.log("getUTXOAndBalance response block:"+ response.block,response)
             const block = response.block
-
             let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
             let unconfirmedUTXOsBalance = 0
             // if we have offchain utxos then add them to the returned balance from Doichain node
@@ -44,7 +46,6 @@ const WalletItem = ({
             if(utxoRounds && utxoRounds.length>0){
                 utxoRounds.forEach((utxoRound) => {
                     console.log('utxoRound',utxoRound)
-                    const txUtxoRound = utxoRound.tx
                     utxoRound.utxos.forEach((utxo) => {
                         console.log('adding utxo.amount to unconfirmedUTXOsBalance'+unconfirmedUTXOsBalance,utxo.amount)
                         if(utxo.address===address && utxo.amount>0)
@@ -77,15 +78,18 @@ const WalletItem = ({
                 balance: Number(balanceAllUTXOs).toFixed(8),
                 unconfirmedBalance: Number(unconfirmedUTXOsBalance).toFixed(8),
             }
-        } catch (ex){
+            //}
+        } catch (ex) {
             console.log("error while fetching utxos from server", ex)
-            return undefined;
+            return undefined
         }
     }
 
     useEffect(() => {
-        if (publicKey && !balance){
-            const generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
+        if (publicKey && !balance) {
+            const generatedAddress = bitcore
+                .getAddressOfPublicKey(publicKey)
+                .toString()
             setAddress(generatedAddress)
             console.log('fetching balance for wallet from node',generatedAddress)
             fetchBalanceData(generatedAddress).then((retBalanceData)=>{
@@ -110,27 +114,54 @@ const WalletItem = ({
         }
     }, [address]) //only recalculate when address changes.
 
-    console.log(wallets[activeWallet],'test')
-
     if (!publicKey) return null
     else
         return (
             <div>
                 <li style={{"fontSize": "9px"}}>
                     DoiCoin-Address: <br/>
-                    <b>{(address) ? address.toString() : ''}</b><br/>
+                    <b>{address ? address.toString() : ""}{" "}
+                        <CopyToClipboard
+                            text={address ? address.toString() : ""}
+                            onCopy={() =>
+                                setOpenSnackbar({
+                                    open: true,
+                                    msg: "copied",
+                                    type: "success"
+                                })
+                            }
+                        ><FileCopyIcon color={"primary"}></FileCopyIcon></CopyToClipboard>
+                    </b>
+                    <br />
                     <b>Balance: {balance} DOI {(unconfirmedBalance && unconfirmedBalance>0)?'(unconfirmed:'+unconfirmedBalance+' DOI) ':''}</b><br/>
                     <b>Block: {wallets[0].block}</b>
                 </li>
-                <br/>
-                <div style={{"fontSize": "9px", "border": '2px solid lightgrey'}}>
-                    <label htmlFor={"senderEmail"}>Email: </label>{senderEmail}<br/>
-                    <label htmlFor={"subject"}></label>Subject: {subject}<br/>
-                    <label htmlFor={"content"}></label>Content: {content}<br/>
-                    <label htmlFor={"contentType"}></label>Content-Type: {contentType}<br/>
-                    <label htmlFor={"redirectUrl"}></label>Redirect-Url: {redirectUrl}><br/>
+                <br />
+                <div style={{ fontSize: "9px", border: "2px solid lightgrey" }}>
+                    <label htmlFor={"senderEmail"}>Email: </label>
+                    {senderEmail}
+                    <br />
+                    <label htmlFor={"subject"}></label>Subject: {subject}
+                    <br />
+                    <label htmlFor={"content"}></label>Content: {content}
+                    <br />
+                    <label htmlFor={"contentType"}></label>Content-Type:{" "}
+                    {contentType}
+                    <br />
+                    <label htmlFor={"redirectUrl"}></label>Redirect-Url:{" "}
+                    {redirectUrl}>
+                    <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
-                    <b>PubKey:<input type={"text"} readOnly={true} defaultValue={publicKey} size={40}/></b><br/>
+                    <b>
+                        PubKey:
+                        <input
+                            type={"text"}
+                            readOnly={true}
+                            defaultValue={publicKey}
+                            size={40}
+                        />
+                    </b>
+                    <br />
                 </div>
                 <div>{address?<TransactionList address={address}/>:''}</div>
             </div>

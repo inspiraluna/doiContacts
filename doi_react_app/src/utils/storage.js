@@ -1,6 +1,7 @@
 import {addCallback} from "reactn";
 
 const initStorage = (cordovaEnabled,global,setGlobal) => {
+    console.log('cordova is defined', (window.NativeStorage!==undefined))
 
     if((!cordovaEnabled || !window.NativeStorage) || (window.device && window.device.platform==='browser')) {
         console.log('using localstorage')
@@ -39,23 +40,20 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                         (obj) => {
                             newGlobal[it.name] = obj
                             counter++
-                            if(counter==nObjectList.length)
+                            if(counter===nObjectList.length)
                                 setGlobal(newGlobal)
 
-                        },
-                        (obj) => {
+                        },(obj) => {
                             newGlobal[it.name] = it.defaultValue
                             counter++
-                            if(counter==nObjectList.length) {
-                                console.log('setting global state from native storage', newGlobal)
+                            if(counter===nObjectList.length)
                                 setGlobal(newGlobal)
-                            }
                     });
                 } catch(ex){
                     newGlobal[it.name] = it.defaultValue
                     counter++
                     console.log('counter now:'+counter,newGlobal)
-                    if(counter==nObjectList.length) {
+                    if(counter===nObjectList.length) {
                         console.log('setting global state from native storage', newGlobal)
                         setGlobal(newGlobal)
                     }
@@ -67,11 +65,11 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
 
     addCallback(global => {
         if((window.device && window.device.platform==='browser') || !window.cordova) {
-            if(global.contacts!=undefined) localStorage.setItem('contacts',JSON.stringify(global.contacts))
-            if(global.wallets!=undefined) localStorage.setItem('wallets',JSON.stringify(global.wallets))
-            if(global.currentTab!=undefined) localStorage.setItem('currentTab',global.currentTab)
-            if(global.modus!=undefined) localStorage.setItem('modus',global.modus)
-            if(global.activeWallet!=undefined) localStorage.setItem('activeWallet',global.activeWallet)
+            if(global.contacts!==undefined) localStorage.setItem('contacts',JSON.stringify(global.contacts))
+            if(global.wallets!==undefined) localStorage.setItem('wallets',JSON.stringify(global.wallets))
+            if(global.currentTab!==undefined) localStorage.setItem('currentTab',global.currentTab)
+            if(global.modus!==undefined) localStorage.setItem('modus',global.modus)
+            if(global.activeWallet!==undefined) localStorage.setItem('activeWallet',global.activeWallet)
         }else{
             //TODO only set items in NativeStorgage which changed (don't set all of them all the time)
             //First get the value from NativeStorage and compare it with value in global state - if different store it in Native Storage
