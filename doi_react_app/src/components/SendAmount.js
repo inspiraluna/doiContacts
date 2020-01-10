@@ -31,7 +31,7 @@ const SendAmount = () => {
             if(!utxos) newUTXOS = []
             newUTXOS.push(utxosResponse)
             setUTXOs(newUTXOS)  //here are only additional new utxos what about potential old utxos?
-            updateWalletBalance(our_wallet,utxos)
+            updateWalletBalance(our_wallet,utxosResponse.balance)
 
             const msg = 'Broadcasted Doicoin tx to Doichain node'
             setOpenError({open:true,msg:msg,type:'success'})

@@ -180,14 +180,13 @@ const WalletsPage = () => {
                             </Button>
                            <br/><br/>
                             <WalletItem
-                                walletName={global.wallets[global.activeWallet].walletName}
-                                senderEmail={global.wallets[global.activeWallet].senderEmail}
-                                subject={global.wallets[global.activeWallet].subject}
-                                content={global.wallets[global.activeWallet].content}
-                                publicKey={global.wallets[global.activeWallet].publicKey}
-                                contentType={global.wallets[global.activeWallet].contentType}
-                                redirectUrl={global.wallets[global.activeWallet].redirectUrl}
-                                returnPath={global.wallets[global.activeWallet].returnPath}
+                                senderEmail={wallets[activeWallet].senderEmail}
+                                subject={wallets[activeWallet].subject}
+                                content={wallets[activeWallet].content}
+                                publicKey={wallets[activeWallet].publicKey}
+                                contentType={wallets[activeWallet].contentType}
+                                redirectUrl={wallets[activeWallet].redirectUrl}
+                                returnPath={wallets[activeWallet].returnPath}
                             />
                         </div>
                     </Slide>
