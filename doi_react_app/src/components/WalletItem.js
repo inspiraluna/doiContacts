@@ -126,7 +126,7 @@ const WalletItem = ({
                             onCopy={() =>
                                 setOpenSnackbar({
                                     open: true,
-                                    msg: "copied",
+                                    msg: "Doichain address copied to clipboard",
                                     type: "success"
                                 })
                             }
