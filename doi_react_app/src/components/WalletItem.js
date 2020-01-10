@@ -1,8 +1,7 @@
-import React, { useGlobal, useEffect, useState, setState } from "reactn"
+import React, { useGlobal, useEffect, useState } from "reactn"
 import bitcore from "bitcore-doichain"
 
 import TransactionList from "./TransactionList"
-import Button from "@material-ui/core/Button"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
@@ -21,9 +20,9 @@ const WalletItem = ({
 
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
     const [wallets, setWallets] = useGlobal("wallets")
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
-    const [utxos, setUTXOs] = useGlobal("utxos")
-    const [openSnackbar, setOpenSnackbar] = useGlobal("errors")
+    const [activeWallet] = useGlobal("activeWallet")
+    const [utxos] = useGlobal("utxos")
+    const setOpenSnackbar = useGlobal("errors")[1]
 
     /**
      * - connects to a Doichain node and requests utxos (and balances)
@@ -41,6 +40,7 @@ const WalletItem = ({
                 address.toString(),
                 0
             )
+            console.log("getUTXOAndBalance response", response)
             let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
             let unconfirmedUTXOs = 0
             // if we have offchain utxos then add them to the returned balance from Doichain node
@@ -51,29 +51,29 @@ const WalletItem = ({
                 })
             }
             let currentWalletBalance = 0
-            let currentAddresses = currentWallet.addresses
-            if (currentAddresses === undefined) currentAddresses = []
-            else {
-                // let found = false;
-                //go through all adresses of this wallet and set balance from blockchain
-                for (let x = 0; x < currentAddresses.length; x++) {
-                    if (currentAddresses[x].address == address) {
-                        currentAddresses[x].balance = balanceAllUTXOs
-                        currentWalletBalance += currentAddresses[x].balance
-                        // found = true
-                    }
-                }
-                console.log("currentAddresses", currentAddresses)
-                wallets[activeWallet].addresses = currentAddresses
-                wallets[activeWallet].balance = currentWalletBalance
-                wallets[activeWallet].unconfirmedBalance = unconfirmedBalance
+            if (
+                currentWallet.addresses === undefined ||
+                currentWallet.addresses.length === 0
+            )
+                currentWallet.addresses = [{ address: address }]
 
-                return {
-                    wallets: wallets,
-                    balance: Number(balanceAllUTXOs).toFixed(8),
-                    unconfirmedBalance: Number(unconfirmedUTXOs).toFixed(8)
+            let currentAddresses = currentWallet.addresses
+            for (let x = 0; x < currentAddresses.length; x++) {
+                if (currentAddresses[x].address === address) {
+                    currentAddresses[x].balance = balanceAllUTXOs
+                    currentWalletBalance += currentAddresses[x].balance
                 }
             }
+            wallets[activeWallet].addresses = currentAddresses
+            wallets[activeWallet].balance = currentWalletBalance
+            wallets[activeWallet].unconfirmedBalance = unconfirmedBalance
+
+            return {
+                wallets: wallets,
+                balance: Number(balanceAllUTXOs).toFixed(8),
+                unconfirmedBalance: Number(unconfirmedUTXOs).toFixed(8)
+            }
+            //}
         } catch (ex) {
             console.log("error while fetching utxos from server", ex)
             return undefined
@@ -92,14 +92,9 @@ const WalletItem = ({
             )
             fetchBalanceData(generatedAddress).then(retBalanceData => {
                 if (retBalanceData) {
-                    console.log("retBalanceData", retBalanceData)
-                    console.log(
-                        "balanceAllUTXOs" + balance,
-                        retBalanceData.balance
-                    )
                     setWallets(retBalanceData.wallets)
                     setBalance(retBalanceData.balance)
-                    if (retBalanceData.balance == balance)
+                    if (retBalanceData.balance === balance)
                         setUnconfirmedBalance(0)
                     //reset unconfirmedBalance in case balance from Node is the same as here
                     else
@@ -107,7 +102,7 @@ const WalletItem = ({
                 }
             })
         }
-    }, [balance])
+    }, [address]) //only recalculate when address changes.
 
     if (!publicKey) return null
     else

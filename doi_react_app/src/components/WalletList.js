@@ -1,4 +1,4 @@
-import React, {useGlobal, setGlobal, useState} from 'reactn';
+import React, {useGlobal, useState} from 'reactn';
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
@@ -7,7 +7,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from '@material-ui/icons/Delete'
-import DetailsIcon from '@material-ui/icons/Details';
 import List from "@material-ui/core/List";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -21,9 +20,9 @@ const WalletList = () => {
 
     const [wallets, setWallets] = useGlobal('wallets')
     const [open, setOpen] = useState(undefined);
-    const [modus, setModus] = useGlobal("modus")
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
-    const [tempWallet, setTempWallet] = useGlobal("tempWallet")
+    const setModus = useGlobal("modus")[1]
+    const setActiveWallet = useGlobal("activeWallet")[1]
+    const setTempWallet = useGlobal("tempWallet")[1]
 
     const handleClose = () => {
         setOpen(undefined)

@@ -1,4 +1,4 @@
-import React, { useGlobal,useEffect,setGlobal } from 'reactn';
+import React, { useGlobal,useEffect } from 'reactn';
 import * as PropTypes from "prop-types";
 import './App.css';
 
@@ -19,10 +19,8 @@ const App = (props) => {
 
     const [global,setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus, setModus] = useGlobal("modus")
-    const [activeWallet, setActiveWallet ] = useGlobal("activeWallet")
-
-
+    const setModus = useGlobal("modus")[1]
+    const setActiveWallet = useGlobal("activeWallet")[1]
 
    const settings = {  //RegTest
         testnet: true,
@@ -106,10 +104,10 @@ const App = (props) => {
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
-              {currentTab==0 && <ContactsPage/>}
+              {currentTab===0 && <ContactsPage/>}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={1}>
-                {currentTab==1 && <WalletsPage/>}
+                {currentTab===1 && <WalletsPage/>}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={2}>
               My Clearances

@@ -1,4 +1,4 @@
-import React, { useEffect, useGlobal, setGlobal, addCallback } from "reactn";
+import React, { useGlobal } from "reactn";
 
 import ContactForm from "../components/ContactForm";
 import ContactList from "../components/ContactList";
@@ -8,38 +8,11 @@ import List from "@material-ui/core/List";
 import Slide from "@material-ui/core/Slide";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import { useState } from "react";
 import ContactItem from "../components/ContactItem";
 
 const ContactsPage = () => {
-  const global = useGlobal()
-  const [contacts, setContacts] = useGlobal("contacts")
   const [modus, setModus] = useGlobal("modus")
-  const [activeContact, setActiveContact] = useGlobal("activeContact")
-
-  const updateContact = (
-    wallet,
-    email,
-    nameId,
-    requestedAt,
-    status,
-    txId,
-    validatorAddress
-  ) => {
-    const contact = contacts[activeContact]
-    contact.wallet = wallet
-    contact.email = email
-    contact.nameId = nameId
-    contact.requestedAt = requestedAt
-    contact.status = status
-    contact.txId = txId
-    contact.validatorAddress = validatorAddress
-
-    contacts[activeContact] = contact
-    setContacts(contacts)
-    //setContactItemsChanged(true);
-    setModus("detail")
-  }
+  const [activeContact] = useGlobal("activeContact")
 
   if (modus === "detail") {
     console.log("rendering contactspage", modus)

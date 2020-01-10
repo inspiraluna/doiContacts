@@ -1,6 +1,7 @@
 import {addCallback} from "reactn";
 
 const initStorage = (cordovaEnabled,global,setGlobal) => {
+    console.log('cordova is defined', (window.NativeStorage!==undefined))
 
     if(!cordovaEnabled || (window.device && window.device.platform==='browser')) {
         console.log('using localstorage')
@@ -41,7 +42,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                             newGlobal[it.name] = obj
                             counter++
                             console.log('counter now:'+counter,newGlobal)
-                            if(counter==nObjectList.length) {
+                            if(counter===nObjectList.length) {
                                 console.log('setting global state from native storage', newGlobal)
                                 setGlobal(newGlobal)
                             }
@@ -50,7 +51,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                             newGlobal[it.name] = it.defaultValue
                             counter++
                             console.log('counter now:'+counter,newGlobal)
-                            if(counter==nObjectList.length) {
+                            if(counter===nObjectList.length) {
                                 console.log('setting global state from native storage', newGlobal)
                                 setGlobal(newGlobal)
                             }
@@ -59,7 +60,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                     newGlobal[it.name] = it.defaultValue
                     counter++
                     console.log('counter now:'+counter,newGlobal)
-                    if(counter==nObjectList.length) {
+                    if(counter===nObjectList.length) {
                         console.log('setting global state from native storage', newGlobal)
                         setGlobal(newGlobal)
                     }

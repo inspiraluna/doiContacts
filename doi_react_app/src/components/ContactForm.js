@@ -1,4 +1,4 @@
-import React, { useGlobal, setGlobal } from "reactn";
+import React, { useGlobal } from "reactn";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
@@ -48,26 +48,26 @@ const ContactForm = () => {
     const [wallet, setWallet] = useState(0)
     const [submitting, setSubmitting] = useState()
 
-    const [modus, setModus] = useGlobal("modus")
-    const [wallets,setWallets] = useGlobal("wallets")
+    const setModus = useGlobal("modus")[1]
+    const [wallets] = useGlobal("wallets")
     const [ contacts, setContacts ] = useGlobal('contacts')
-    const [ openError, setOpenError ] = useGlobal("errors")
+    const setOpenError = useGlobal("errors")[1]
     const [utxos, setUTXOs ] = useGlobal("utxos")
-    const [scanning, setScanning] =  useGlobal("scanning")
+    const [scanning] =  useGlobal("scanning")[1]
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
-    const [ test, setTest ] = useGlobal("test")
+    const [ test ] = useGlobal("test")
 
     const addContact = async (email) => {
         const runAddContact =  async (email) => {
 
-            if(!email || email.length==0){
+            if(!email || email.length===0){
                 const err = 'no email '
                 setOpenError({open:true,msg:err,type:'error'})
                 setButtonState('error') //Progress Button should be red
                 return
             }
 
-            if(!wallets || wallets.length==0){
+            if(!wallets || wallets.length===0){
                 const err = 'no wallets defined'
                 setOpenError({open:true,msg:err,type:'info'})
                 setButtonState('error') //Progress Button should be red
@@ -170,10 +170,10 @@ const ContactForm = () => {
 };
 
 const RequestAddress = ({ className }) => {
-  const [test, setTest] = useGlobal("test");
+  const setTest = useGlobal("test")[1];
   const [position, setPosition] = useState("");
   const [address, setAddress] = useState("");
-  const { latitude, longitude, timestamp, accuracy, error } = usePosition({
+  const { latitude, longitude } = usePosition({
     enableHighAccuracy: true
   }); //false,{enableHighAccuracy: true}
 
@@ -226,7 +226,7 @@ const RequestAddress = ({ className }) => {
 
     const onError = error => {
       console.log(
-        "code: " + error.code + "\n" + "message: " + error.message + "\n"
+        "code: " + error.code + "\nmessage: " + error.message + "\n"
       );
     };
     navigator.geolocation.getCurrentPosition(onSuccess, onError, {

@@ -1,10 +1,10 @@
-import React, {useEffect, useState, useGlobal, setGlobal, addCallback} from 'reactn';
+import React, { useGlobal } from 'reactn';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import Button from '@material-ui/core/Button';
 
 const EditEmailTemplate = () => {
 
-    const [modus, setModus] = useGlobal("modus")
+    const setModus = useGlobal("modus")[1]
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
 
     const handleCancel = (e) => {

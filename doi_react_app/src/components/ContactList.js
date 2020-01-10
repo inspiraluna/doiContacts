@@ -1,4 +1,4 @@
-import React, { setGlobal, useGlobal, useState } from "reactn";
+import React, { useGlobal, useState } from "reactn";
 import _ from "lodash";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -21,10 +21,10 @@ import Button from "@material-ui/core/Button";
 import EditIcon from '@material-ui/icons/Edit';
 
 const ContactList = () => {
-  const [modus, setModus] = useGlobal("modus");
-  const [wallets, setWallets] = useGlobal("wallets");
+  const setModus = useGlobal("modus")[1];
+  const [wallets] = useGlobal("wallets");
   const [contacts, setContacts] = useGlobal("contacts");
-  const [activeContact, setActiveContact] = useGlobal("activeContact");
+  const setActiveContact = useGlobal("activeContact")[1];
 
   const [open, setOpen] = useState(undefined);
 
