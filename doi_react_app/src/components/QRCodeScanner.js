@@ -39,6 +39,7 @@ export const QRCodeScannerTextField = ({
     function prepareScan() {
         setScanning(true)
         if (window.QRScanner) window.QRScanner.prepare(onDone) // show the prompt
+        else alert('no scanner found')
     }
 
     function onDone(err, status) {
@@ -161,7 +162,7 @@ const handleCancel = setScanning => {
                     setScanning(false)
                 })
         })
-    }
+    }else setScanning(false)
 }
 
 export const QRCodeScannerStopButton = () => {

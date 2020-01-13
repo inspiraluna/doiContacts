@@ -1,30 +1,33 @@
 {
-  "_from": "git+https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909",
-  "_id": "cordova-plugin-qrscanner@3.0.1",
+  "_from": "cordova-plugin-qrscanner-inspiraluna",
+  "_id": "cordova-plugin-qrscanner-inspiraluna@3.0.6",
   "_inBundle": false,
-  "_integrity": "",
-  "_location": "/cordova-plugin-qrscanner",
+  "_integrity": "sha512-Jqt5Jw6Qj1ikyUtCdLyIYikQWbgTbWEWYhoquoBrV95++hkViJCQeKjrxJqtCu8L0YF0weudZsc6YeuDSckd8Q==",
+  "_location": "/cordova-plugin-qrscanner-inspiraluna",
   "_phantomChildren": {},
   "_requested": {
-    "type": "git",
-    "raw": "https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909",
-    "rawSpec": "https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909",
-    "saveSpec": "git+https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909",
-    "fetchSpec": "https://github.com/inspiraluna/cordova-plugin-qrscanner.git",
-    "gitCommittish": "1d4fce99be9756838dca414f25cb337ea7050909"
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-qrscanner-inspiraluna",
+    "name": "cordova-plugin-qrscanner-inspiraluna",
+    "escapedName": "cordova-plugin-qrscanner-inspiraluna",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "git+https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909",
-  "_spec": "https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-qrscanner-inspiraluna/-/cordova-plugin-qrscanner-inspiraluna-3.0.6.tgz",
+  "_shasum": "b6391887e1e22bee68d22543bb475c9340aa4249",
+  "_spec": "cordova-plugin-qrscanner-inspiraluna",
   "_where": "/Users/nico/Documents/doi2cordova",
   "author": {
-    "name": "Jason Dreyzehner"
+    "name": "Nico Krause"
   },
   "bugs": {
-    "url": "https://github.com/bitpay/cordova-plugin-qrscanner/issues"
+    "url": "https://github.com/inspiraluna/cordova-plugin-qrscanner/issues"
   },
   "bundleDependencies": false,
   "config": {
@@ -36,9 +39,10 @@
     }
   },
   "cordova": {
-    "id": "cordova-plugin-qrscanner",
+    "id": "cordova-plugin-qrscanner-inspiraluna",
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ]
   },
   "dependencies": {
@@ -51,18 +55,20 @@
     "conventional-changelog-cli": "^1.2.0",
     "cz-conventional-changelog": "^2.0.0",
     "express": "^4.14.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-insert": "^0.5.0",
     "husky": "^0.13.1",
-    "jshint": "^2.9.2",
+    "jshint": "^2.10.3",
+    "lodash": "^4.17.15",
+    "minimatch": "^3.0.4",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "raw-loader": "^0.5.1",
-    "trash-cli": "^1.3.0",
+    "trash-cli": "^3.0.0",
     "validate-commit-msg": "^2.6.1",
     "webpack": "^2.7.0"
   },
-  "homepage": "https://github.com/bitpay/cordova-plugin-qrscanner",
+  "homepage": "https://github.com/inspiraluna/cordova-plugin-qrscanner",
   "keywords": [
     "cordova",
     "qr",
@@ -80,10 +86,10 @@
   ],
   "license": "MIT",
   "main": "dist/cordova-plugin-qrscanner-lib.min.js",
-  "name": "cordova-plugin-qrscanner",
+  "name": "cordova-plugin-qrscanner-inspiraluna",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bitpay/cordova-plugin-qrscanner.git"
+    "url": "git+https://github.com/inspiraluna/cordova-plugin-qrscanner.git"
   },
   "scripts": {
     "build": "gulp && npm run clean-build",
@@ -104,5 +110,5 @@
     "test:library": "npm run build && node tests/library/test.js",
     "test:windows": "cd ../cordova-plugin-test-projects/cordova-plugin-qrscanner-tests && npm run test:windows"
   },
-  "version": "3.0.1"
+  "version": "3.0.6"
 }

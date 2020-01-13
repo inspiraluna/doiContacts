@@ -8,6 +8,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import FormControl from "@material-ui/core/FormControl";
 import {broadcastTransaction, createDoicoinTransaction, updateWalletBalance} from "../utils/doichain-transaction-utils";
 import  QRCodeScannerContents,{QRCodeScannerTextField } from "./QRCodeScanner";
+import {ComponentHead} from "../pages/WalletsPage";
 
 const SendAmount = () => {
 
@@ -51,6 +52,7 @@ const SendAmount = () => {
     const balance  =  Number(wallets[activeWallet].balance).toFixed(8)
     return (
         <div>
+            <ComponentHead/>
             <Slide aria-label="wallet-send"
                    direction={"up"}
                    in={activeWallet !== undefined && modus === 'send'}
@@ -59,10 +61,14 @@ const SendAmount = () => {
                     <QRCodeScannerContents
                         scanning={scanning}
                         render={(<div style={{backgroundColor: 'white'}}>
+                            <Button color={'primary'} variant="contained"
+                                    onClick={() => setModus('detail')}>Back</Button><br/><br/>
                             <h1>{walletName} </h1>
                             Send DOI from address: <br/>
                             <b>{address}</b> <br/>
                             Balance {balance} DOI
+                            <br></br>
+                            <br/>
                             <Formik
                                 initialValues={{toAddress: '', amount: 0}}
                                 validate={values => {
@@ -123,11 +129,7 @@ const SendAmount = () => {
                                             </FormControl>
                                             {errors.position && touched.position && errors.position}
                                         </div>
-
-                                        <p>&nbsp;</p>
-
-                                        <Button color={'primary'} variant="contained"
-                                                onClick={() => setModus('detail')}>Back</Button>
+                                        <br></br>
                                         <ProgressButton type="submit" color={"primary"}
                                                         state={global.buttonState}
                                                         disabled={isSubmitting}>Send DOI</ProgressButton>
