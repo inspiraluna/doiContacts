@@ -99,7 +99,7 @@ const App = (props) => {
                 }} aria-label="Doichain Contacts">
                     <Tab label="Contacts" {...a11yProps(0)} />
                     <Tab label="Wallets" {...a11yProps(1)} />
-                    <Tab label="Clearances" {...a11yProps(2)} />
+                    <Tab label="Consents" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
