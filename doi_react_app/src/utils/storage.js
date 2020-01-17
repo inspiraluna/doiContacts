@@ -8,7 +8,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
         const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
         const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):"0"
-        const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):'list'
+        const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):undefined
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):'0'
         setGlobal({contacts: initialContacts,
             wallets: initialWallets,
@@ -24,7 +24,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             {name:'contacts',defaultValue:[]},
             {name:'wallets',defaultValue:[]},
             {name:'currentTab',defaultValue:"0"},
-            {name:'modus',defaultValue:'list'},
+            {name:'modus',defaultValue:undefined},
             {name:'activeWallet',defaultValue:"0"},
         ]
 
