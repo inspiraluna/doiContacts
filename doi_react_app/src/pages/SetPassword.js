@@ -1,7 +1,5 @@
 import React, { useState, useGlobal, useEffect } from "reactn"
 import s from "./CreateNewWalletPage.module.css"
-import { makeStyles } from "@material-ui/core/styles"
-import TextField from "@material-ui/core/TextField"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import InputLabel from "@material-ui/core/InputLabel"
@@ -10,12 +8,11 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
-import clsx from "clsx"
 const SetPassword = () => {
     const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("")
     const [showPassword, setShowPassword] = useState(false)
-    const [checked, setChecked] = useGlobal("checked")
+    const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
 
     useEffect(() => {

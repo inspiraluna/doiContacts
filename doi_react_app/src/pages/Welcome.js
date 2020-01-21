@@ -2,10 +2,10 @@ import React, {useGlobal} from "reactn"
 import s from "./Welcome.module.css"
 import logo from "./logo.jpg"
 import Button from "@material-ui/core/Button"
-import CreateNewWalletPage from "./CreateNewWalletPage"
+
 
 const Welcome = () => {
-      const [modus, setModus] = useGlobal("modus")
+      const setModus = useGlobal("modus")[1]
 
       const createNewWallet = e => {
          setModus("createNewWallet")

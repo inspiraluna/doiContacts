@@ -1,11 +1,10 @@
-import React, { useGlobal, useEffect, useState } from "reactn"
+import React, { useGlobal } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
 import RestoreWalletPage from "./RestoreWalletPage"
 import SetPassword from "./SetPassword"
 import AppBar from "@material-ui/core/AppBar"
-import Tab from "@material-ui/core/Tab"
 import Button from "@material-ui/core/Button"
 import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
@@ -13,7 +12,8 @@ import { makeStyles } from "@material-ui/core/styles"
 
 const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
-    const [checked, setChecked] = useGlobal("checked");
+    const [checked] = useGlobal("checked");
+    const [wallets, setWallets] = useGlobal("wallets");
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -36,6 +36,10 @@ const WalletCreator = () => {
     const next = e => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
+        if (modus === "setPassword") {
+            let newwallets = wallets;
+            newwallets.push(setWallets(wallets));
+        }
     }
 
     const classes = useStyles()
