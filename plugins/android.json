@@ -13,9 +13,6 @@
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
-    "cordova-plugin-nativestorage": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     }

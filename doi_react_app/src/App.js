@@ -109,7 +109,7 @@ const App = (props) => {
                 {currentTab===1 && <WalletsPage/>}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={2}>
-              My Clearances
+              My Consents
             </TabPanel>
             <div style={{float:'right'}}>
                 {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}
