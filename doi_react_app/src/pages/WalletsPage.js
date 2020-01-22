@@ -24,10 +24,6 @@ const WalletsPage = () => {
     const [tempWallet, setTempWallet] = useGlobal("tempWallet");
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet");
     const [modus, setModus] = useGlobal("modus");
-    const [global] = useGlobal();
-
-    useEffect(() => {
-    }, [modus]);
 
     const checkDefaults = wallet => {
         // const our_walletName = "Example Wallet"
@@ -124,7 +120,7 @@ const WalletsPage = () => {
         setModus("send");
     };
 
-    if (global.modus === "list") {
+    if (modus === "list") {
         return (
             <div>
                 <ComponentHead/>
@@ -145,14 +141,14 @@ const WalletsPage = () => {
             </div>
         );
     } else {
-        if (global.modus === "detail") {
+        if (modus === "detail") {
             return (
                 <div>
                     <ComponentHead/>
                     <Slide
                         aria-label="wallet-detail"
                         direction={"up"}
-                        in={activeWallet !== undefined && global.modus === "detail"}
+                        in={activeWallet !== undefined && modus === "detail"}
                         mountOnEnter
                         unmountOnExit
                     >
@@ -180,20 +176,19 @@ const WalletsPage = () => {
                             </Button>
                            <br/><br/>
                             <WalletItem
-                                walletName={global.wallets[global.activeWallet].walletName}
-                                senderEmail={global.wallets[global.activeWallet].senderEmail}
-                                subject={global.wallets[global.activeWallet].subject}
-                                content={global.wallets[global.activeWallet].content}
-                                publicKey={global.wallets[global.activeWallet].publicKey}
-                                contentType={global.wallets[global.activeWallet].contentType}
-                                redirectUrl={global.wallets[global.activeWallet].redirectUrl}
-                                returnPath={global.wallets[global.activeWallet].returnPath}
+                                senderEmail={wallets[activeWallet].senderEmail}
+                                subject={wallets[activeWallet].subject}
+                                content={wallets[activeWallet].content}
+                                publicKey={wallets[activeWallet].publicKey}
+                                contentType={wallets[activeWallet].contentType}
+                                redirectUrl={wallets[activeWallet].redirectUrl}
+                                returnPath={wallets[activeWallet].returnPath}
                             />
                         </div>
                     </Slide>
                 </div>
             );
-        } else if (global.modus === "receive") {
+        } else if (modus === "receive") {
 
             const handleAmount = e => {
                 const ourAmount = e.target.value;
@@ -201,8 +196,8 @@ const WalletsPage = () => {
                 setAmount(ourAmount);
             }
 
-            const address = global.wallets[global.activeWallet].addresses[0].address;
-            const walletName = global.wallets[global.activeWallet].walletName;
+            const address = wallets[activeWallet].addresses[0].address;
+            const walletName = wallets[activeWallet].walletName;
             let url = "doicoin:" + address;
             if (amount) url += "?amount" + amount;
 
@@ -212,11 +207,18 @@ const WalletsPage = () => {
                     <Slide
                         aria-label="wallet-receive"
                         direction={"up"}
-                        in={activeWallet !== undefined && global.modus === "receive"}
+                        in={activeWallet !== undefined && modus === "receive"}
                         mountOnEnter
                         unmountOnExit
                     >
                         <div>
+                            <Button
+                                color={"primary"}
+                                variant="contained"
+                                onClick={() => setModus("detail")}
+                            >
+                                Back
+                            </Button>  <br/> <br/>
                             {walletName} <br/>
                             Receive DOI for address: <br/> {address} <br/>
                             Amount: <br/>
@@ -233,29 +235,22 @@ const WalletsPage = () => {
                             <QRCode value={url}/>
                             <br/>
                             <br/>
-                            <Button
-                                color={"primary"}
-                                variant="contained"
-                                onClick={() => handleCancel()}
-                            >
-                                Cancel
-                            </Button>
                         </div>
                     </Slide>
                 </div>
             );
-        } else if (global.modus === "send") {
+        } else if (modus === "send") {
             return <SendAmount/>;
-        } else if (global.modus === "editEmailTemplate") {
+        } else if (modus === "editEmailTemplate") {
             return <EditEmailTemplate/>;
-        } else if (global.modus === "edit" || global.modus === "add") {
+        } else if (modus === "edit" || modus === "add") {
             return (
                 <div>
                     <ComponentHead/>
                     <Slide
                         aria-label="wallet-edit"
                         direction={"up"}
-                        in={global.modus === "edit" || global.modus === "add"}
+                        in={modus === "edit" || modus === "add"}
                         mountOnEnter
                         unmountOnExit
                     >
@@ -263,7 +258,6 @@ const WalletsPage = () => {
                             <form
                                 onSubmit={e => {
                                     e.preventDefault();
-
                                     const walletName = e.target.walletName
                                         ? e.target.walletName.value.trim()
                                         : undefined;

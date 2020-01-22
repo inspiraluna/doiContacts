@@ -39,10 +39,10 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-qrscanner": {
+  "cordova-plugin-qrscanner-inspiraluna": {
     "source": {
       "type": "registry",
-      "id": "https://github.com/inspiraluna/cordova-plugin-qrscanner.git#1d4fce99be9756838dca414f25cb337ea7050909"
+      "id": "cordova-plugin-qrscanner-inspiraluna@^3.0.6"
     },
     "is_top_level": true,
     "variables": {}

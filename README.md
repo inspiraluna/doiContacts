@@ -6,11 +6,12 @@ It focuses on atomic email permissions / double-opt-ins (DOI) requested through 
 Doichains goal is about to reduce email spam.
 
 Remark: Double-Opt-In permissions are necessary by EU-law.
-For more information about DOI's and Doichain, please visit Doichain.org
+For more information about DOI's and Doichain, please visit www.Doichain.org
 
 Doichain stores email permissions in form of signatures but doesn't store ANY encrypted nor unencrypted personal data.
 This app doesn't use any cloud storage. All data are only stored on your mobile phone!
 
+For sending signed transactions between mobile phones (and also browsers) we plan to integrate IPFS for that.
 
 ## Features
 - Contacts
