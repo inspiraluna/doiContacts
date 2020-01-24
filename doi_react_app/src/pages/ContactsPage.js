@@ -67,6 +67,7 @@ const ContactsPage = () => {
               <Fab
                 aria-label={"new contact"}
                 color={"primary"}
+                id={"addButton"}
                 style={{ position: "absolute", right: "7em", bottom: "3em" }}
                 onClick={() => setModus('add')}
               >

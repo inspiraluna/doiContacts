@@ -129,6 +129,7 @@ const WalletsPage = () => {
                     <Fab
                         aria-label={"new contact"}
                         color={"primary"}
+                        id={"add"}
                         style={{position: "absolute", right: "7em", bottom: "3em"}}
                         onClick={() => {
                             setModus("add");
@@ -389,7 +390,7 @@ const WalletsPage = () => {
                                             ourTempWallet.returnPath = e.target.value
                                             setTempWallet(ourTempWallet)}}
                                     />     <br/> */}
-                                <Button type="submit" color={"primary"} variant="contained">
+                                <Button type="submit" id={"addWallet"} color={"primary"} variant="contained">
                                     {activeWallet !== undefined ? "Update Wallet" : "Add Wallet"}
                                 </Button>
                             </form>
