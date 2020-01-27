@@ -66,10 +66,10 @@ const WalletList = () => {
                     }
                 />
                 <ListItemSecondaryAction>
-                    <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">
+                    <IconButton onClick={() => handleEdit(index)} edge="end" id="editWallet" aria-label="edit">
                         <EditIcon/>
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={ () => setOpen(index) }>
+                    <IconButton edge="end" aria-label="delete" id="deleteWallet" onClick={ () => setOpen(index) }>
                         <DeleteIcon/>
                     </IconButton>
                 </ListItemSecondaryAction>
@@ -90,10 +90,10 @@ const WalletList = () => {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => handleClose()} color="primary">
+                <Button onClick={() => handleClose()} id="closeAlert"  color="primary">
                     Cancel
                 </Button>
-                <Button onClick={() => handleRemove()} color="primary" autoFocus>
+                <Button onClick={() => handleRemove()} id="removeWallet" color="primary" autoFocus>
                     Delete
                 </Button>
             </DialogActions>

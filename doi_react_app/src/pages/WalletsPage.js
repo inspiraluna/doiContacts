@@ -157,12 +157,14 @@ const WalletsPage = () => {
                             <Button
                                 color={"primary"}
                                 variant="contained"
+                                id={"receive"}
                                 onClick={() => handleReceive()}
                             >
                                 Receive{" "}
                             </Button>
                             <Button
                                 color={"primary"}
+                                id={"send"}
                                 variant="contained"
                                 onClick={() => handleSend()}
                             >
@@ -170,6 +172,7 @@ const WalletsPage = () => {
                             </Button>
                             <Button
                                 color={"primary"}
+                                id={"cancel"}
                                 variant="contained"
                                 onClick={() => handleCancel()}
                             >
@@ -215,6 +218,7 @@ const WalletsPage = () => {
                         <div>
                             <Button
                                 color={"primary"}
+                                id={"back"}
                                 variant="contained"
                                 onClick={() => setModus("detail")}
                             >
