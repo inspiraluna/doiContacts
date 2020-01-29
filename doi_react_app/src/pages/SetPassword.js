@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 const SetPassword = () => {
-    const [password1, setPassword1] = useState("")
+    const [password1, setPassword1] = useGlobal("password1")
     const [password2, setPassword2] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const setChecked = useGlobal("checked")[1]
@@ -66,7 +66,7 @@ const SetPassword = () => {
                 <p>Set a password to protect your wallet in everyday use.</p>
                 <br></br>
             </div>
-            <FormControl fullWidth error={error}>
+            <FormControl fullWidth error={error?true:false}>
                 <InputLabel htmlFor="standard-adornment-password">
                     Password
                 </InputLabel>
@@ -74,7 +74,6 @@ const SetPassword = () => {
                     id="standard-adornment-password"
                     fullWidth
                     type={showPassword ? "text" : "password"}
-                    value={password1}
                     onChange={e => {
                         setPassword1(e.target.value)
                         // comparePasswords()
@@ -99,15 +98,14 @@ const SetPassword = () => {
                 </FormHelperText>
             </FormControl>
             <br></br>
-            <FormControl fullWidth error={error}>
+            <FormControl fullWidth error={error?true:false}>
                 <InputLabel htmlFor="standard-adornment-password">
                     Re-type your password
                 </InputLabel>
                 <Input
-                    id="standard-adornment-password"
+                    id="standard-adornment-password2"
                     fullWidth
                     type={showPassword ? "text" : "password"}
-                    value={password2}
                     onChange={e => {
                         setPassword2(e.target.value)
                         // comparePasswords()

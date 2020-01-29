@@ -1,15 +1,22 @@
-import React, { useState, useGlobal } from "reactn"
+import React, { useState, useGlobal, useEffect } from "reactn"
 import s from "./CreateNewWalletPage.module.css"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 
 const CreateNewWalletPage = () => {
     const [checked, setChecked] = useGlobal("checked")
+    const [seed, setSeed] = useGlobal('seed')
 
     const handleChange = e => {
         setChecked(!checked)
     }
-
+    
+    useEffect(() => {
+        const Mnemonic = require('bitcore-mnemonic');
+        const code = new Mnemonic();
+        setSeed(code.toString())
+    },[])
+  
     return (
         <div className={s.content}>
             <span>
@@ -32,18 +39,14 @@ const CreateNewWalletPage = () => {
                 <br />
                 <div className={s.thirdContent}>
                     <h1>
-                        sea verb useless merit cupboard income rural quantum
-                        when hundred useful wreck choice snack decide turn
-                        degree guitar naive chronic brand own local approve
+                        {seed}
                     </h1>
                 </div>
             </span>
             <FormControlLabel
                 control={
-                    <Checkbox
-                        checked={checked}
+                    <Checkbox id="checked"
                         onChange={() => handleChange()}
-                        value="checked"
                     />
                 }
                 label="I have safely stored my recovery phrase offline"

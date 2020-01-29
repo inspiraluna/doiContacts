@@ -6,11 +6,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
+import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 
 const ConfirmRecoveryPhrase = ({next}) => {
     const [checked, setChecked] = useGlobal("checked")
     const [open, setOpen] = useState(undefined);
+    const [seed, setSeed] = useGlobal('seed')
 
     const handleClose = () => {     
       setOpen(undefined);
@@ -18,7 +19,7 @@ const ConfirmRecoveryPhrase = ({next}) => {
   
     useEffect(() => {
         setChecked(false)
-    }, [checked])
+    }, [])
 
     return (
         <div>
@@ -26,7 +27,7 @@ const ConfirmRecoveryPhrase = ({next}) => {
             <p>Please confirm your recovery phrase</p>
             </div>
             <span>
-                <Button color="primary">cycle</Button>
+                {/* <Button color="primary">cycle</Button>
                 <Button color="primary">search</Button>
                 <Button color="primary">lend</Button>
                 <Button color="primary">secret</Button>
@@ -49,10 +50,20 @@ const ConfirmRecoveryPhrase = ({next}) => {
                 <Button color="primary">cram</Button>
                 <Button color="primary">blur</Button>
                 <Button color="primary">page</Button>
-                <Button color="primary">twist</Button>
+                <Button color="primary">twist</Button> */}
+                  <TextareaAutosize
+                rows={16}  cols="65"
+                aria-label="maximum height"
+                placeholder="Please entry your seed phrase"
+                onChange={(e) => {
+                     if(e.target.value === seed) {
+                      setChecked(true)
+                     } else setChecked(false)
+                }}
+            />
             </span>
             <div className={s.content}>
-            <Button  onClick={() => setOpen(!open)}>Skip</Button>
+            <Button  onClick={() => setOpen(!open)} id="skipButton">Skip</Button>
             </div>
             <Dialog
         open={open !== undefined}
@@ -69,10 +80,10 @@ const ConfirmRecoveryPhrase = ({next}) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose()} color="primary">
+          <Button onClick={() => handleClose()} id="close" color="primary">
             Cancel
           </Button>
-          <Button color="primary" onClick={next} autoFocus>
+          <Button color="primary" onClick={next} id="skip" autoFocus>
             Skip
           </Button>
         </DialogActions>

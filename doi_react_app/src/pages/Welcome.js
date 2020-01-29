@@ -24,7 +24,7 @@ const Welcome = () => {
                 <p>Welcome to DoiContacts</p>
                 </div>
                 <div className={s.createButton}>
-                <Button onClick={createNewWallet} color="primary">
+                <Button onClick={createNewWallet} id="createWallet" color="primary">
                     Create a new wallet
                 </Button>
                </div>

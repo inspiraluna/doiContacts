@@ -12,8 +12,10 @@ import { makeStyles } from "@material-ui/core/styles"
 
 const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
-    const [checked] = useGlobal("checked");
-    const [wallets, setWallets] = useGlobal("wallets");
+    const [checked] = useGlobal("checked")
+    const [wallets, setWallets] = useGlobal("wallets")
+    const [seed] = useGlobal("seed")
+    const [password1] = useGlobal("password1")
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -37,8 +39,12 @@ const WalletCreator = () => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
         if (modus === "setPassword") {
-            let newwallets = wallets;
-            newwallets.push(setWallets(wallets));
+            // let newwallets = wallets;
+            // newwallets.push(setWallets(wallets));
+            var Mnemonic = require("bitcore-mnemonic")
+            var code = new Mnemonic(seed)
+            var privateKey = code.toHDPrivateKey(password1)
+            console.log('privateKey', privateKey.privateKey.toString())
         }
     }
 
@@ -48,18 +54,46 @@ const WalletCreator = () => {
         <div>
             <AppBar position="static">
                 <Toolbar>
-                   {modus? <IconButton onClick={back} edge="start" className={classes.menuButton} color="inherit" aria-label="menu" ><ArrowLeft /></IconButton>:''}
+                    {modus ? (
+                        <IconButton
+                            onClick={back}
+                            id="preview"
+                            edge="start"
+                            className={classes.menuButton}
+                            color="inherit"
+                            aria-label="menu"
+                        >
+                            <ArrowLeft />
+                        </IconButton>
+                    ) : (
+                        ""
+                    )}
                     <Typography variant="h6" className={classes.title}>
                         DoiContacts
                     </Typography>
-                    {modus? <Button color="inherit" disabled={!checked} onClick={next}>Next</Button>:'' }
+                    {modus ? (
+                        <Button
+                            color="inherit"
+                            disabled={!checked}
+                            id="next"
+                            onClick={next}
+                        >
+                            Next
+                        </Button>
+                    ) : (
+                        ""
+                    )}
                 </Toolbar>
-            </AppBar>      
-            {(modus === undefined)?<Welcome />:''}
-            {(modus === "createNewWallet")?<CreateNewWalletPage />:''}
-            {(modus === "confirmRecoveryPhrase")?<ConfirmRecoveryPhrase next={next} />:''}
-            {(modus === "setPassword")?<SetPassword />:''}
-            {(modus === "restoreWallet")?<RestoreWalletPage />:''}
+            </AppBar>
+            {modus === undefined ? <Welcome /> : ""}
+            {modus === "createNewWallet" ? <CreateNewWalletPage /> : ""}
+            {modus === "confirmRecoveryPhrase" ? (
+                <ConfirmRecoveryPhrase next={next} />
+            ) : (
+                ""
+            )}
+            {modus === "setPassword" ? <SetPassword /> : ""}
+            {modus === "restoreWallet" ? <RestoreWalletPage /> : ""}
         </div>
     )
 }
