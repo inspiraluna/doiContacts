@@ -1,4 +1,4 @@
-import React, { useGlobal } from "reactn"
+import React, { useGlobal, useEffect } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -16,6 +16,7 @@ const WalletCreator = () => {
     const [wallets, setWallets] = useGlobal("wallets")
     const [seed] = useGlobal("seed")
     const [password1] = useGlobal("password1")
+    const [hdKey, setHdKey] = useGlobal("hdKey")
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -38,13 +39,19 @@ const WalletCreator = () => {
     const next = e => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
-        if (modus === "setPassword") {
-            // let newwallets = wallets;
-            // newwallets.push(setWallets(wallets));
+        if (modus === "setPassword" || modus === "restoreWallet") {
             var Mnemonic = require("bitcore-mnemonic")
             var code = new Mnemonic(seed)
-            var privateKey = code.toHDPrivateKey(password1)
-            console.log('privateKey', privateKey.privateKey.toString())
+            var hdKey = code.toHDPrivateKey(password1 ? password1 : "mnemonic")
+            console.log("privateKey", hdKey.privateKey.toString())
+            const wallet = {}
+            wallet.senderEmail = "me@example.com"
+            wallet.privateKey = hdKey.privateKey.toString()
+            wallet.publicKey = hdKey.publicKey.toString()
+
+            let newwallets = wallets
+            newwallets.push(wallet)
+            setWallets(newwallets)
         }
     }
 

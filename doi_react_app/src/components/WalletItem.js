@@ -6,26 +6,24 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 const WalletItem = ({
-                        senderEmail,
-                        subject,
-                        content,
-                        publicKey,
-                        contentType,
-                        redirectUrl
-                    }) => {
-
-    const [address, setAddress] = useState('')
+    senderEmail,
+    subject,
+    content,
+    publicKey,
+    contentType,
+    redirectUrl
+}) => {
+    const [address, setAddress] = useState("")
     const [balance, setBalance] = useState(0)
 
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")
-    const [utxos,setUTXOs] = useGlobal("utxos")
+    const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
 
     useEffect(() => {
-
         /**
          * - connects to a Doichain node and requests utxos (and balances)
          * - it sums up "offchain" (unconfirmed) utxos and puts it to the wallets balance.
@@ -38,29 +36,31 @@ const WalletItem = ({
         const fetchBalanceData = async address => {
             try {
                 const currentWallet = wallets[activeWallet]
-                const response = await bitcore.getUTXOAndBalance(address.toString(),0)
-                console.log("getUTXOAndBalance response block:"+ response.block,response)
+                const response = await bitcore.getUTXOAndBalance(address.toString(), 0)
+                console.log("getUTXOAndBalance response block:" + response.block, response)
                 const block = response.block
                 let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
                 let unconfirmedUTXOsBalance = 0
                 // if we have offchain utxos then add them to the returned balance from Doichain node
-                console.log('working with current offchain utxos',utxos)
+                console.log("working with current offchain utxos", utxos)
                 const utxoRounds = utxos
-                if(utxoRounds && utxoRounds.length>0){
-                    utxoRounds.forEach((utxoRound) => {
-                        console.log('utxoRound',utxoRound)
-                        utxoRound.utxos.forEach((utxo) => {
-                            console.log('adding utxo.amount to unconfirmedUTXOsBalance'+unconfirmedUTXOsBalance,utxo.amount)
-                            if(utxo.address===address && utxo.amount>0)
-                                unconfirmedUTXOsBalance+=utxo.amount
-                        })
+                if (utxoRounds && utxoRounds.length > 0) {
+                    utxoRounds.forEach(utxoRound => {
+                        console.log("utxoRound", utxoRound)
+                        utxoRound.utxos.forEach(utxo => {
+                            console.log("adding utxo.amount to unconfirmedUTXOsBalance" + unconfirmedUTXOsBalance, utxo.amount)
+                            if (utxo.address === address && utxo.amount > 0)
+                                unconfirmedUTXOsBalance += utxo.amount})
                     })
                     setUnconfirmedBalance(unconfirmedUTXOsBalance)
                 }
 
                 let currentWalletBalance = 0
-                if (currentWallet.addresses === undefined ||  currentWallet.addresses.length===0)
-                    currentWallet.addresses = [{address:address}]
+                if (
+                    currentWallet.addresses === undefined ||
+                    currentWallet.addresses.length === 0
+                )
+                    currentWallet.addresses = [{ address: address }]
 
                 let currentAddresses = currentWallet.addresses
                 for (let x = 0; x < currentAddresses.length; x++) {
@@ -74,12 +74,12 @@ const WalletItem = ({
                 wallets[activeWallet].addresses = currentAddresses
                 wallets[activeWallet].balance = currentWalletBalance
                 wallets[activeWallet].unconfirmedBalance = unconfirmedUTXOsBalance
-                console.log('unconfirmedBalance now',unconfirmedUTXOsBalance)
+                console.log("unconfirmedBalance now", unconfirmedUTXOsBalance)
                 return {
                     block: block,
                     wallets: wallets,
                     balance: Number(balanceAllUTXOs).toFixed(8),
-                    unconfirmedBalance: Number(unconfirmedUTXOsBalance).toFixed(8),
+                    unconfirmedBalance: Number(unconfirmedUTXOsBalance).toFixed(8)
                 }
                 //}
             } catch (ex) {
@@ -93,36 +93,51 @@ const WalletItem = ({
                 .getAddressOfPublicKey(publicKey)
                 .toString()
             setAddress(generatedAddress)
-            console.log('fetching balance for wallet from node',generatedAddress)
-            fetchBalanceData(generatedAddress).then((retBalanceData)=>{
-                console.log("retBalanceData",retBalanceData)
-                if(retBalanceData){
+            console.log("fetching balance for wallet from node", generatedAddress)
+            fetchBalanceData(generatedAddress).then(retBalanceData => {
+                debugger
+                console.log("retBalanceData", retBalanceData)
+                if (retBalanceData) {
                     setWallets(retBalanceData.wallets)
-                    console.log('retBalanceData.balance ',retBalanceData.balance)
-                    console.log('retBalanceData.unconfirmedBalance ',retBalanceData.unconfirmedBalance)
+                    console.log("retBalanceData.balance ", retBalanceData.balance)
+                    console.log("retBalanceData.unconfirmedBalance ", retBalanceData.unconfirmedBalance)
                     //if(retBalanceData.balance==balance)
-                      //  setUnconfirmedBalance(0) //reset unconfirmedBalance in case balance from Node is the same as here
+                    //  setUnconfirmedBalance(0) //reset unconfirmedBalance in case balance from Node is the same as here
                     setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
                     setBalance(retBalanceData.balance)
 
-                    if(block !== retBalanceData.block) setUTXOs(undefined) //reset utxos for new block
+                    if (block !== retBalanceData.block) setUTXOs(undefined) //reset utxos for new block
                     setBlock(retBalanceData.block)
-
-                }else {
-                    console.log('no retBalanceData for ',generatedAddress)
-                   // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
+                } else {
+                    console.log("no retBalanceData for ", generatedAddress)
+                    // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
                 }
             })
         }
-    }, [publicKey, balance, setWallets, block, setUTXOs, setBlock, activeWallet, utxos, wallets]) //[address] only recalculate when address changes.
+        //}, [])
+    }, [
+        publicKey,
+        unconfirmedBalance,
+        setUnconfirmedBalance,
+        balance,
+        address,
+        setWallets,
+        block,
+        setUTXOs,
+        setBlock,
+        activeWallet,
+        utxos,
+        wallets
+    ]) //[address] only recalculate when address changes.
 
     if (!publicKey) return null
     else
         return (
             <div>
-                <li style={{"fontSize": "9px"}}>
-                    DoiCoin-Address: <br/>
-                    <b>{address ? address.toString() : ""}{" "}
+                <li style={{ fontSize: "9px" }}>
+                    DoiCoin-Address: <br />
+                    <b>
+                        {address ? address.toString() : ""}{" "}
                         <CopyToClipboard
                             text={address ? address.toString() : ""}
                             onCopy={() =>
@@ -132,10 +147,18 @@ const WalletItem = ({
                                     type: "success"
                                 })
                             }
-                        ><FileCopyIcon color={"primary"}></FileCopyIcon></CopyToClipboard>
+                        >
+                            <FileCopyIcon color={"primary"}></FileCopyIcon>
+                        </CopyToClipboard>
                     </b>
                     <br />
-                    <b>Balance: {balance} DOI {(unconfirmedBalance && unconfirmedBalance>0)?'(unconfirmed:'+unconfirmedBalance+' DOI) ':''}</b><br/>
+                    <b>
+                        Balance: {balance} DOI{" "}
+                        {unconfirmedBalance && unconfirmedBalance > 0
+                            ? "(unconfirmed:" + unconfirmedBalance + " DOI) "
+                            : ""}
+                    </b>
+                    <br />
                     <b>Block: {wallets[0].block}</b>
                 </li>
                 <br />
@@ -165,7 +188,9 @@ const WalletItem = ({
                     </b>
                     <br />
                 </div>
-                <div>{address?<TransactionList address={address}/>:''}</div>
+                <div>
+                    {address ? <TransactionList address={address} /> : ""}
+                </div>
             </div>
         )
 }

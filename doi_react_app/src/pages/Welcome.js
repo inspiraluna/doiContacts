@@ -29,7 +29,7 @@ const Welcome = () => {
                 </Button>
                </div>
                <div className={s.restoreButton}>
-                <Button color="primary" onClick={restoreWallet}>
+                <Button color="primary" onClick={restoreWallet} id="restoreWallet">
                     Restore a wallet
                 </Button>
                 </div>
