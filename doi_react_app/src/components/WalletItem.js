@@ -121,20 +121,7 @@ const WalletItem = ({
                 // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
             }
         })
-    }, [
-        // publicKey,
-        // unconfirmedBalance,
-        // setUnconfirmedBalance,
-        // balance,
-        // address,
-        // setWallets,
-        // block,
-        // setUTXOs,
-        // setBlock,
-        // activeWallet,
-        // utxos,
-        // wallets
-    ]) //[address] only recalculate when address changes.
+    }, []) 
 
     if (!publicKey) return null
     else
