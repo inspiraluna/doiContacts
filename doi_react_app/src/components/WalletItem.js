@@ -4,6 +4,7 @@ import bitcore from "bitcore-doichain"
 import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
+import isEqual from 'lodash.isequal';
 
 const WalletItem = ({
     senderEmail,
@@ -15,8 +16,8 @@ const WalletItem = ({
 }) => {
     const [address, setAddress] = useState("")
     const [balance, setBalance] = useState(0)
-
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
+
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")
     const [utxos, setUTXOs] = useGlobal("utxos")
@@ -52,7 +53,7 @@ const WalletItem = ({
                             if (utxo.address === address && utxo.amount > 0)
                                 unconfirmedUTXOsBalance += utxo.amount})
                     })
-                    setUnconfirmedBalance(unconfirmedUTXOsBalance)
+                    //setUnconfirmedBalance(unconfirmedUTXOsBalance)
                 }
 
                 let currentWalletBalance = 0
@@ -88,46 +89,51 @@ const WalletItem = ({
             }
         }
 
-        if (publicKey && !balance) {
-            const generatedAddress = bitcore
-                .getAddressOfPublicKey(publicKey)
-                .toString()
+        let generatedAddress 
+        if (publicKey && !balance && !address) {
+            generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
             setAddress(generatedAddress)
-            console.log("fetching balance for wallet from node", generatedAddress)
-            fetchBalanceData(generatedAddress).then(retBalanceData => {
-                debugger
-                console.log("retBalanceData", retBalanceData)
-                if (retBalanceData) {
-                    setWallets(retBalanceData.wallets)
-                    console.log("retBalanceData.balance ", retBalanceData.balance)
-                    console.log("retBalanceData.unconfirmedBalance ", retBalanceData.unconfirmedBalance)
-                    //if(retBalanceData.balance==balance)
-                    //  setUnconfirmedBalance(0) //reset unconfirmedBalance in case balance from Node is the same as here
-                    setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
-                    setBalance(retBalanceData.balance)
-
-                    if (block !== retBalanceData.block) setUTXOs(undefined) //reset utxos for new block
-                    setBlock(retBalanceData.block)
-                } else {
-                    console.log("no retBalanceData for ", generatedAddress)
-                    // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
-                }
-            })
         }
-        //}, [])
+        console.log("fetching balance for wallet from node", generatedAddress)
+        fetchBalanceData(generatedAddress).then(retBalanceData => {
+            console.log("retBalanceData", retBalanceData)
+            if (retBalanceData) {
+                if (!isEqual(wallets, retBalanceData.wallets)) setWallets(retBalanceData.wallets)
+                console.log("retBalanceData.balance ", retBalanceData.balance)
+                console.log("retBalanceData.unconfirmedBalance ", retBalanceData.unconfirmedBalance)
+                if (retBalanceData.unconfirmedBalance !== unconfirmedBalance)
+                    setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
+
+                if (
+                    retBalanceData.balance === balance &&
+                    retBalanceData.unconfirmedBalance !== unconfirmedBalance
+                )
+                    setUnconfirmedBalance(0)
+
+                if (retBalanceData.balance !== balance) setBalance(retBalanceData.balance)
+
+                if (block !== retBalanceData.block) {
+                    setUTXOs(undefined) //reset utxos for new block
+                    setBlock(retBalanceData.block)
+                }
+            } else {
+                console.log("no retBalanceData for ", generatedAddress)
+                // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
+            }
+        })
     }, [
-        publicKey,
-        unconfirmedBalance,
-        setUnconfirmedBalance,
-        balance,
-        address,
-        setWallets,
-        block,
-        setUTXOs,
-        setBlock,
-        activeWallet,
-        utxos,
-        wallets
+        // publicKey,
+        // unconfirmedBalance,
+        // setUnconfirmedBalance,
+        // balance,
+        // address,
+        // setWallets,
+        // block,
+        // setUTXOs,
+        // setBlock,
+        // activeWallet,
+        // utxos,
+        // wallets
     ]) //[address] only recalculate when address changes.
 
     if (!publicKey) return null

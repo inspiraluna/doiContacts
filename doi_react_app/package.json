@@ -45,7 +45,8 @@
     },
     "prettier": {
         "tabWidth": 4,
-        "semi": false
+        "semi": false,
+        "printWidth": 100
     },
     "browserslist": {
         "production": [
