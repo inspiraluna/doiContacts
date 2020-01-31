@@ -89,8 +89,9 @@ const WalletItem = ({
         }
 
         if (publicKey && !balance) {
+            const network = bitcore.Networks.get('doichain') //TODO get this from global state in case we have testnet or regest
             const generatedAddress = bitcore
-                .getAddressOfPublicKey(publicKey)
+                .getAddressOfPublicKey(publicKey,network)
                 .toString()
             setAddress(generatedAddress)
             console.log('fetching balance for wallet from node',generatedAddress)

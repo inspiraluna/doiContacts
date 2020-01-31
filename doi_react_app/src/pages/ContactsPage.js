@@ -36,7 +36,7 @@ const ContactsPage = () => {
   } else if (modus === "edit" || modus === "add") {
     return (
       <Slide
-        aria-label="wallet-detail"
+        aria-label="contact-detail"
         direction={"up"}
         in={modus === "edit" || modus === "add"}
         mountOnEnter
@@ -48,7 +48,6 @@ const ContactsPage = () => {
       </Slide>
     );
   } else {
-    console.log("rendering contactspage", modus);
     return (
       <div>
         <Slide

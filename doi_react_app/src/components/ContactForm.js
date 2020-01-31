@@ -9,13 +9,7 @@ import { useEffect, useState } from "react";
 import { usePosition } from "use-position";
 import QRCode from "qrcode-react";
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner";
-import {
-  createDOIRequestTransaction,
-  encryptTemplate,
-  broadcastTransaction,
-  DOI_STATE_WAITING_FOR_CONFIRMATION,
-  updateWalletBalance
-} from "../utils/doichain-transaction-utils";
+import bitcore from "bitcore-doichain";
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -76,13 +70,20 @@ const ContactForm = () => {
             try {
                 const our_wallet = wallets[wallet]
                 const offChainUtxos = utxos
-                const txData =  await createDOIRequestTransaction(email,our_wallet,offChainUtxos)
-                const encryptedTemplateData = await encryptTemplate(txData.validatorPublicKeyData,email,our_wallet)
+
+                const network = bitcore.Networks.get('doichain') //TODO get this from global state in case we have testnet or regest
+                const txData =  await bitcore.createDOIRequestTransaction(email,our_wallet,offChainUtxos,network)
+                console.log("txData",txData)
+                const encryptedTemplateData = await bitcore.encryptTemplate(txData.validatorPublicKeyData,email,our_wallet)
 
                 //TODO handle response and create offchain utxos and update balance
-                const utxosResponse = await broadcastTransaction(txData,encryptedTemplateData)
+                const utxosResponse = await bitcore.broadcastTransaction(txData.nameId,
+                    txData.tx,
+                    encryptedTemplateData,
+                    txData.validatorPublicKey)
+
                 setUTXOs(utxosResponse)
-                updateWalletBalance(our_wallet,utxosResponse.balance)
+                bitcore.updateWalletBalance(our_wallet,utxosResponse.balance)
 
                 const msg = 'Broadcasted DOI permission transaction to Doichain node...'
                 const contact = {
@@ -94,7 +95,7 @@ const ContactForm = () => {
                     nameId:txData.doichainEntry.nameId,
                     validatorAddress:txData.validatorAddress,
                     confirmed: false,
-                    status: DOI_STATE_WAITING_FOR_CONFIRMATION,
+                    status: bitcore.DOI_STATE_WAITING_FOR_CONFIRMATION,
                     position: test
                 }
 
@@ -158,7 +159,7 @@ const ContactForm = () => {
                           onChange={(e) => {setWallet(e.target.value); calculateOwnQRCode();}}
                           className={classes.select}
                       > {
-                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.email} ({wallet.balance} DOI)</option>)
+                          wallets.map((wallet,index) => <option key={index} value={index} >{wallet.senderEmail} ({wallet.balance} DOI)</option>)
                       }
                       </NativeSelect><br/>
                       <RequestAddress className={classes.textField}/>
