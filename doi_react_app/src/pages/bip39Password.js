@@ -4,7 +4,7 @@ import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 
 const Bip39Password = props => {
-    const [password1, setPassword1] = useState()
+    const [password1, setPassword1] = useGlobal('password1')
 
     if (props.display === true) {
         return (

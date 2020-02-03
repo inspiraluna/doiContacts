@@ -40,14 +40,25 @@ const WalletCreator = () => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
         if (modus === "setPassword" || modus === "restoreWallet") {
-            var Mnemonic = require("bitcore-mnemonic")
-            var code = new Mnemonic(seed)
-            var hdKey = code.toHDPrivateKey(password1 ? password1 : "mnemonic")
-            console.log("privateKey", hdKey.privateKey.toString())
+
+            const bip39 = require('bip39')
+            const HDKey = require('hdkey')
+
+            const seedPhrase = bip39.mnemonicToSeedSync(seed, 
+                password1 ? password1 : "mnemonic").toString('hex')
+            console.log('seed',seed)
+            console.log('seedPhrase',seedPhrase)
+            
+            const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'))
+            console.log("hdKey", hdKey)
+            const childkey = hdkey.derive("m/0/0/1")
             const wallet = {}
+            //console.log(hdkey.privateKey.toString('hex'))
+            //console.log(hdkey.publicKey.toString('hex'))
+
             wallet.senderEmail = "me@example.com"
-            wallet.privateKey = hdKey.privateKey.toString()
-            wallet.publicKey = hdKey.publicKey.toString()
+            wallet.privateKey = childkey.privateKey.toString('hex')
+            wallet.publicKey = childkey.publicKey.toString('hex')
 
             let newwallets = wallets
             newwallets.push(wallet)
@@ -56,7 +67,6 @@ const WalletCreator = () => {
     }
 
     const classes = useStyles()
-    console.log(modus)
     return (
         <div>
             <AppBar position="static">

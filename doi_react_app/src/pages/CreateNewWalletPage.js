@@ -12,9 +12,13 @@ const CreateNewWalletPage = () => {
     }
     
     useEffect(() => {
-        const Mnemonic = require('bitcore-mnemonic');
-        const code = new Mnemonic();
-        setSeed(code.toString())
+       // const Mnemonic = require('bitcore-mnemonic');
+       // const code = new Mnemonic();
+        const bip39 = require('bip39')
+        const mnemonic = bip39.generateMnemonic()
+        console.log("mnemonic",mnemonic)
+        console.log("mnemonic",mnemonic.toString())
+        setSeed(mnemonic.toString())
     },[])
   
     return (

@@ -55,7 +55,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                     rows={10}
                     cols="210"
                     aria-label="maximum height"
-                    placeholder="Please entry your seed phrase"
+                    placeholder="Please enter your seed phrase"
                     onChange={e => {
                         if (e.target.value === seed) {
                             setChecked(true)
@@ -79,13 +79,11 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Please make sure that your recovery phrase matches the
-                        following:<br></br>
-                        address ancient happy secret appear twist chicken sudden
-                        clay page render cherry embrace hint lend march immense
-                        champion blur cycle search cram absent regular<br></br>
-                        It is recommended not to skip verification, so that any
-                        misspellings could be deteted
+                        <b>Please make sure that your recovery phrase matches the
+                        following:</b><br></br>
+                        {seed}<br></br>
+                        <b>It is recommended not to skip verification, so that any
+                        misspellings could be deteted</b>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
