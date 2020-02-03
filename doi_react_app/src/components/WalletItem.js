@@ -156,18 +156,18 @@ const WalletItem = ({
                 </li>
                 <br />
                 <div style={{ fontSize: "9px", border: "2px solid lightgrey" }}>
-                    <label htmlFor={"senderEmail"}>Email: </label>
-                    {senderEmail}
+                    <label htmlFor={"senderEmail"}>Email: </label><div id="sentEmail">
+                    {senderEmail}</div>
                     <br />
-                    <label htmlFor={"subject"}></label>Subject: {subject}
+                    <label htmlFor={"subject"}></label><div id="subj">Subject: {subject}</div>
                     <br />
-                    <label htmlFor={"content"}></label>Content: {content}
+                    <label htmlFor={"content"}></label><div id="content">Content: {content}</div>
                     <br />
-                    <label htmlFor={"contentType"}></label>Content-Type:{" "}
-                    {contentType}
+                    <label htmlFor={"contentType"}></label><div>Content-Type:{" "}
+                    {contentType}</div>
                     <br />
-                    <label htmlFor={"redirectUrl"}></label>Redirect-Url:{" "}
-                    {redirectUrl}
+                    <label htmlFor={"redirectUrl"}></label><div id="redUrl">Redirect-Url:{" "}
+                    {redirectUrl}</div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                     <b>

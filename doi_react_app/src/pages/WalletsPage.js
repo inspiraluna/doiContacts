@@ -396,7 +396,7 @@ const WalletsPage = () => {
                                     />     <br/> */}
                                 <Button
                                     type="submit"
-                                    id={"addWallet"}
+                                    id={"saveWallet"}
                                     color={"primary"}
                                     variant="contained"
                                 >
