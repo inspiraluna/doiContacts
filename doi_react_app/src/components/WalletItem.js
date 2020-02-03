@@ -167,7 +167,7 @@ const WalletItem = ({
                     {contentType}
                     <br />
                     <label htmlFor={"redirectUrl"}></label>Redirect-Url:{" "}
-                    {redirectUrl}>
+                    {redirectUrl}
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                     <b>

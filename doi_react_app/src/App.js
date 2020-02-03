@@ -12,7 +12,7 @@ import { register } from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import bitcore from "bitcore-doichain"
 import initStorage from "./utils/storage"
-import WalletCreator from './pages/WalletCreator';
+import WalletCreator from './pages/walletCreator/WalletCreator';
 import AppBar from "@material-ui/core/AppBar"
 
 

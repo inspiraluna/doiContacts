@@ -273,10 +273,11 @@ const WalletsPage = () => {
                                             ? tempWallet.content.trim()
                                             : ""
                                     const contentType = e.target.contentType.value.trim()
-                                    const redirectUrl = e.target.redirectUrl.value.trim()
-                                    const returnPath = e.target.returnPath
-                                        ? e.target.returnPath.value.trim()
-                                        : undefined
+                                    let redirectUrl = e.target.redirectUrl.value.trim()
+                                    if (!redirectUrl.startsWith("http://") && !redirectUrl.startsWith("https://"))
+                                        redirectUrl = "https://" + redirectUrl
+
+                                    const returnPath = e.target.returnPath? e.target.returnPath.value.trim(): undefined
 
                                     if (activeWallet === undefined)
                                         addWallet(
@@ -316,16 +317,11 @@ const WalletsPage = () => {
                                     id="senderEmail"
                                     label="Sender email"
                                     fullWidth={true}
-                                    defaultValue={
-                                        tempWallet ? tempWallet.senderEmail : ""
-                                    }
+                                    defaultValue={tempWallet ? tempWallet.senderEmail : ""}
                                     margin="normal"
                                     onChange={e => {
-                                        const ourTempWallet = tempWallet
-                                            ? tempWallet
-                                            : {}
-                                        ourTempWallet.senderEmail =
-                                            e.target.value
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
+                                        ourTempWallet.senderEmail = e.target.value
                                         setTempWallet(ourTempWallet)
                                     }}
                                 />{" "}
@@ -334,14 +330,10 @@ const WalletsPage = () => {
                                     id="subject"
                                     label="Subject"
                                     fullWidth={true}
-                                    defaultValue={
-                                        tempWallet ? tempWallet.subject : ""
-                                    }
+                                    defaultValue={tempWallet ? tempWallet.subject : ""}
                                     margin="normal"
                                     onChange={e => {
-                                        const ourTempWallet = tempWallet
-                                            ? tempWallet
-                                            : {}
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
                                         ourTempWallet.subject = e.target.value
                                         setTempWallet(ourTempWallet)
                                     }}
@@ -352,17 +344,13 @@ const WalletsPage = () => {
                                 <select
                                     name="contentType"
                                     defaultValue={
-                                        wallets[activeWallet] && tempWallet
-                                            ? tempWallet.contentType
-                                            : ""
+                                        wallets[activeWallet] && tempWallet?tempWallet.contentType: ""
                                     }
                                 >
                                     {/* <select name="contentType" defaultValue={wallets[activeWallet] && wallets[activeWallet].contentType}> */}
                                     <option value="text">text/plain</option>
                                     <option value="html">text/html</option>
-                                    <option value="json">
-                                        text/json (mixed)
-                                    </option>
+                                    <option value="json">text/json (mixed)</option>
                                 </select>
                                 <br />
                                 {/* <TextField
@@ -375,6 +363,7 @@ const WalletsPage = () => {
                                     /> */}
                                 <Button
                                     variant="outlined"
+                                    id="editEmailTemplate"
                                     color="primary"
                                     onClick={() => editEmailTemplate()}
                                 >
@@ -385,16 +374,11 @@ const WalletsPage = () => {
                                     id="redirectUrl"
                                     label="Redirect URL (after commit)"
                                     fullWidth={true}
-                                    defaultValue={
-                                        tempWallet ? tempWallet.redirectUrl : ""
-                                    }
+                                    defaultValue={tempWallet ? tempWallet.redirectUrl : ""}
                                     margin="normal"
                                     onChange={e => {
-                                        const ourTempWallet = tempWallet
-                                            ? tempWallet
-                                            : {}
-                                        ourTempWallet.redirectUrl =
-                                            e.target.value
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
+                                         ourTempWallet.redirectUrl = e.target.value
                                         setTempWallet(ourTempWallet)
                                     }}
                                 />{" "}
@@ -416,9 +400,7 @@ const WalletsPage = () => {
                                     color={"primary"}
                                     variant="contained"
                                 >
-                                    {activeWallet !== undefined
-                                        ? "Update Wallet"
-                                        : "Add Wallet"}
+                                    {activeWallet !== undefined ? "Update Wallet" : "Add Wallet"}
                                 </Button>
                             </form>
                             <Button
