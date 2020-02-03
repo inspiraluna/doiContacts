@@ -13,23 +13,17 @@ const Welcome = () => {
       const restoreWallet = e => {
           setModus("restoreWallet")
       }
-//https://github.com/bitcoinjs/bip39
-//https://github.com/cryptocoinjs/hdkey
 
-      //sadness faculty elephant wish polar useless service exhaust century catalog move spin
-//Bla12345
-/*
-const bip39 = require('bip39')
-const seed = bip39.mnemonicToSeedSync('sadness faculty elephant wish polar useless service exhaust century catalog move spin', 'Bla12345').toString('hex')
-console.log('seed',seed)
-//console.log("seeb",'5cf2d4a8b0355e90295bdfc565a022a409af063d5365bb57bf74d9528f494bfa4400f53d8349b80fdae44082d7f9541e1dba2b003bcfec9d0d53781ca676651f')
+      //kiwi acquire security left champion peasant royal sheriff absent calm alert letter
+      //13456abC  
+      //moJ98NR1pRCihivY6V9nLKjh18js1unRwV
+      //moJ98NR1pRCihivY6V9nLKjh18js1unRwV
+      //56e30f99bad1bffed8fe34cc41b3ce09c278e7149e8775205cc6fb65293046ce9c5e0b901d1fb5a5f518e5ca41e8181bd58996593ef82e24953d3ab48596a6a2
+      //privateKey 8ad16785c40f0ca75c4b94179d809af3e973ce1f5c7aac9b116db22d3b6fc542
+      //privateKe<y 8ad16785c40f0ca75c4b94179d809af3e973ce1f5c7aac9b116db22d3b6fc542
+      //publicKey  029a47b9c44fe3575525d1bc221ccf60ea28737eeaad6af0fcac52268bceb8dbbd
+      //publicKey  029a47b9c44fe3575525d1bc221ccf60ea28737eeaad6af0fcac52268bceb8dbbd
 
-var HDKey = require('hdkey')
-//var seed = 'a0c42a9c3ac6abf2ba6a9946ae83af18f51bf1c9fa7dacc4c92513cc4dd015834341c775dcd4c0fac73547c5662d81a9e9361a0aac604a73a321bd9103bce8af'
-var hdkey = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'))
-console.log(hdkey.privateKey.toString('hex'))
-console.log(hdkey.publicKey.toString('hex')) */
- 
     return (
         <div className={s.welcomePage}>
             <span >
