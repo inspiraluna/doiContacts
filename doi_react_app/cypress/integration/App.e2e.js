@@ -4,6 +4,7 @@ describe("App E2E", () => {
     })
     const createNewWallet = () => {
         // balance blanket camp festival party robot social stairs noodle piano copy drastic
+        //kiwi acquire security left champion peasant royal sheriff absent calm alert letter (password: 13456abC)
         cy.get("#createWallet").click()
         cy.get("#preview").click()
         cy.get("#createWallet").click()
@@ -64,14 +65,14 @@ describe("App E2E", () => {
         cy.get("#preview").click()
         cy.get("#restoreWallet").click()
         cy.get("#textarea").type(
-            "balance blanket camp festival party robot social stairs noodle piano copy drastic"
+            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
         )
         cy.get("#checked").click()
-        cy.get("#standard-adornment-password").type("aaaaaA1aa")
+        cy.get("#standard-adornment-password").type("13456abC")
         cy.get("#next").click()
         cy.contains("Wallets").click()
         cy.get("#detail").click()
-        cy.wait(5000)
+        cy.wait(2000)
         cy.contains("Wallets").click()
     })
 
@@ -131,23 +132,45 @@ describe("App E2E", () => {
         cy.visit("http://localhost:3000")
         cy.contains("Wallets").click()
     })
+
     it("should have a balance", () => {
         cy.get("#restoreWallet").click()
         cy.get("#preview").click()
         cy.get("#restoreWallet").click()
         cy.get("#textarea").type(
-            "balance blanket camp festival party robot social stairs noodle piano copy drastic"
+            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
         )
         cy.get("#checked").click()
-        cy.get("#standard-adornment-password").type("aaaaaA1aa")
+        cy.get("#standard-adornment-password").type("13456abC")
         cy.get("#next").click()
         cy.contains("Wallets").click()
         cy.get("#detail").click()
-        cy.wait(5000)
-        cy.contains("Balance").should("have.text", "Balance: 1.00000000 DOI")
+        cy.wait(2000)
+        cy.contains("Balance").should("have.text", "Balance: 96.99700000 DOI")
+        cy.contains("Balance").should("have.text", "(unconfirmed:94.99700000 DOI)")
         cy.get("#send").click()
         cy.get("#back").click()
         cy.get("#receive").click()
+        cy.get("#back").click()
+    })
+
+    it("should send amount", () => {
+        cy.get("#restoreWallet").click()
+        cy.get("#preview").click()
+        cy.get("#restoreWallet").click()
+        cy.get("#textarea").type(
+            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
+        )
+        cy.get("#checked").click()
+        cy.get("#standard-adornment-password").type("13456abC")
+        cy.get("#next").click()
+        cy.contains("Wallets").click()
+        cy.get("#detail").click()
+        cy.wait(2000)
+        cy.get("#send").click()
+        cy.get("#toAddress").type("n1NTAvj98a2zRGcwrPASLmWoxSDpoHZeQX")
+        cy.get("#amount").type("0.01")
+        cy.get("#sendAmount").click()
         cy.get("#back").click()
     })
 })

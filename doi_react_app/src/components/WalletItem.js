@@ -146,9 +146,9 @@ const WalletItem = ({
                     </b>
                     <br />
                     <b>
-                        Balance: {balance} DOI{" "}
+                        Balance: {balance} DOI{""}
                         {unconfirmedBalance && unconfirmedBalance > 0
-                            ? "(unconfirmed:" + unconfirmedBalance + " DOI) "
+                            ? "(unconfirmed:" + unconfirmedBalance + " DOI)"
                             : ""}
                     </b>
                     <br />

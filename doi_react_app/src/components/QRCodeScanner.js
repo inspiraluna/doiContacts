@@ -126,6 +126,7 @@ export const QRCodeScannerTextField = ({
                 <OutlinedInput
                     name={name}
                     type={"text"}
+                    id={"toAddress"}
                     margin={"none"}
                     fullWidth={true}
                     defaultValue={qrCode}

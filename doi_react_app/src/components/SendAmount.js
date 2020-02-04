@@ -130,7 +130,7 @@ const SendAmount = () => {
                                             {errors.position && touched.position && errors.position}
                                         </div>
                                         <br></br>
-                                        <ProgressButton type="submit" color={"primary"}
+                                        <ProgressButton type="submit" color={"primary"} id="sendAmount"
                                                         state={global.buttonState}
                                                         disabled={isSubmitting}>Send DOI</ProgressButton>
                                     </form>
