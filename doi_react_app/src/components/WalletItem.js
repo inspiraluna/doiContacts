@@ -89,7 +89,7 @@ const WalletItem = ({
             }
         }
 
-        let generatedAddress 
+        let generatedAddress
         if (publicKey && !balance && !address) {
             generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
             setAddress(generatedAddress)
@@ -121,7 +121,7 @@ const WalletItem = ({
                 // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
             }
         })
-    }, []) 
+    }, [])
 
     if (!publicKey) return null
     else

@@ -14,12 +14,15 @@ import EditEmailTemplate from "../components/EditEmailTemplate"
 /* eslint no-template-curly-in-string: "off" */
 
 const WalletsPage = () => {
-    const [amount, setAmount] = useState(0) //receive amount
-    const [walletItemsChanged, setWalletItemsChanged] = useState(false)
-    const [wallets, setWallets] = useGlobal("wallets")
-    const [tempWallet, setTempWallet] = useGlobal("tempWallet")
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
-    const [modus, setModus] = useGlobal("modus")
+
+    const [amount, setAmount] = useState(0); //receive amount
+    const [walletItemsChanged, setWalletItemsChanged] = useState(false);
+    const [wallets, setWallets] = useGlobal("wallets");
+    const [tempWallet, setTempWallet] = useGlobal("tempWallet");
+    const [activeWallet, setActiveWallet] = useGlobal("activeWallet");
+    const [modus, setModus] = useGlobal("modus");
+    const [utxos, setUTXOs ] = useGlobal("utxos")
+
 
     const checkDefaults = wallet => {
         // const our_walletName = "Example Wallet"
@@ -115,6 +118,58 @@ const WalletsPage = () => {
         setModus("send")
     }
 
+    const handleVerify = async () => {
+        const our_wallet = wallets[activeWallet]
+        const senderEmail = our_wallet.senderEmail
+        const privateKey = our_wallet.privateKey
+        const address =  our_wallet.addresses[0].address
+        console.log('preparing email for verification', senderEmail)
+        const parts = senderEmail.split("@");
+        const domain = parts[parts.length - 1];
+        const publicKeyAndAddressOfValidator = await bitcore.getValidatorPublicKey(domain);
+        console.log('publicKeyAndAddressOfValidator',publicKeyAndAddressOfValidator)
+        const validatorPublicKey = publicKeyAndAddressOfValidator.key
+        //create a signature over our email address
+        //1. create a signature with our_sender_email and our private_key, use it as our nameId
+        const signature =  bitcore.getSignature(senderEmail,privateKey)
+        console.log(address+' signature for '+senderEmail,privateKey)
+        //2. store encrypted entry on ipfs and call name_doi on Doichain. Encrypted with PublicKey of validator
+        // - recipient address is public key gathered by domain name (dns) - responsible validator (Bob)
+
+        const nameId = "es/" + signature
+        const encryptedEmailVerification = bitcore.encryptEmailVerification(validatorPublicKey,senderEmail,address)
+        //const unspentTx = await getUTXOs4DoiRequest(address,utxos)
+        //console.log('all unspentTx for address'+address,unspentTx)
+
+        const utxosForEmailVerificationRequest = await bitcore.getUTXOs4EmailVerificationRequest(address,utxos)
+        console.log('utxosForEmailVerificationRequest',utxosForEmailVerificationRequest)
+        //addIPFS
+// a testnet address from a public key
+        // from a der hex encoded string
+        const _publicKey = new bitcore.PublicKey(validatorPublicKey);
+        const network = bitcore.Networks.get('doichain')
+        const destAddress = new bitcore.Address(_publicKey,network).toString();
+        console.log("destAddress",destAddress)
+        const changeAddress = address
+        const txSignedSerialized = bitcore.createRawDoichainTX(
+            nameId,
+            'ipfs-hash should be here',
+            destAddress,
+            changeAddress,
+            privateKey,
+            utxosForEmailVerificationRequest, //here's the necessary utxos and the balance and change included
+            bitcore.constants.NETWORK_FEE.satoshis, //for storing this record
+            bitcore.constants.EMAIL_VERIFICATION_FEE.satoshis //for validator bob (0.01), to validate (reward) and store (0.01) the email verification
+        )
+
+        //TODO handle response and create offchain utxos and update balance
+        const utxosResponse = await bitcore.broadcastTransaction(null,txSignedSerialized)
+        setUTXOs(utxosResponse)
+        bitcore.updateWalletBalance(our_wallet,utxosResponse.balance)
+
+
+    };
+
     if (modus === "list") {
         return (
             <div>
@@ -177,8 +232,14 @@ const WalletsPage = () => {
                             >
                                 Cancel
                             </Button>
-                            <br />
-                            <br />
+                            <Button
+                                color={"primary"}
+                                variant="contained"
+                                onClick={() => handleVerify()}
+                            >
+                                Verify
+                            </Button>
+                           <br/><br/>
                             <WalletItem
                                 senderEmail={wallets[activeWallet].senderEmail}
                                 subject={wallets[activeWallet].subject}

@@ -16,7 +16,7 @@ const TransactionList = ({address}) => {
 
     const txNode = txs.map((tx, index) => {
         return (<li key={index}>
-            <Moment format="YYYY-MM-DD hh-mm-ss">{tx.time * 1000}</Moment>
+            <Moment format="YYYY-MM-DD hh-mm-ss">{tx.createdAt}</Moment>
             <div align={"right"}>{tx.category} DOI {Number(tx.amount).toFixed(8)}</div>
         </li>)
     })

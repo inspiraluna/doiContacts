@@ -17,6 +17,7 @@
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "^4.0.2",
+    "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-qrscanner-inspiraluna": "^3.0.6"
   },
   "devDependencies": {
@@ -28,8 +29,13 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-plugin-nativestorage": {}
     },
-    "platforms": []
+    "platforms": [
+      "ios",
+      "android",
+      "browser"
+    ]
   }
 }
