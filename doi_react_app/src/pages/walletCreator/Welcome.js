@@ -2,6 +2,7 @@ import React, {useGlobal} from "reactn"
 import s from "./Welcome.module.css"
 import logo from "./logo.jpg"
 import Button from "@material-ui/core/Button"
+import { appVersion } from './../../appVersion';
 
 
 const Welcome = () => {
@@ -26,26 +27,22 @@ const Welcome = () => {
 
     return (
         <div className={s.welcomePage}>
-            <span >
-                <div className={s.welcomeImg}>
-                    <img src={logo} />
-                <span>
-                <div className={s.description}>
-                <p>Welcome to DoiContacts</p>
+                <img className={s.welcomeImg} src={logo} />
+                <div>
+                    <p>Welcome to DoiContacts</p>
                 </div>
-                <div className={s.createButton}>
-                <Button onClick={createNewWallet} id="createWallet" color="primary">
-                    Create a new wallet
-                </Button>
-               </div>
-               <div className={s.restoreButton}>
-                <Button color="primary" onClick={restoreWallet} id="restoreWallet">
-                    Restore a wallet
-                </Button>
+                <div>
+                    <Button onClick={createNewWallet} id="createWallet" color="primary">
+                        Create a new wallet
+                    </Button>
                 </div>
-                </span>
+                <div>
+                    <Button color="primary" onClick={restoreWallet} id="restoreWallet">
+                        Restore a wallet
+                    </Button>
                 </div>
-            </span>
+                <br></br>
+                <div>v{appVersion}</div>
         </div>
     )
 }

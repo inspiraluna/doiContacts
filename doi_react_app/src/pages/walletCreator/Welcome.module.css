@@ -1,27 +1,10 @@
 .welcomePage {
     display: grid;
-  align-items: center;
-  justify-content: center;
-  width:auto;
-  /* height: 99vh;
-  border: 3px solid steelblue; */
-  /* margin: auto; */
-  margin-top: 150px;
-      }
-      
-      
-.welcomeImg img {
+    text-align: center;
+    margin-top: 100px;
+}
+          
+.welcomeImg {
     width: 200px;
     margin: 0 auto;
-}
-
-.description {
-    padding-left: 15px;
-}
-.createButton {
-    padding-left: 10px;
-}
-
-.restoreButton {
-    padding-left: 18px;
 }
