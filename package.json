@@ -30,8 +30,8 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-geolocation": {},
-      "cordova-plugin-nativestorage": {},
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-plugin-nativestorage": {}
     },
     "platforms": [
       "ios",

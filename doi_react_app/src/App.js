@@ -1,52 +1,54 @@
-import React, { useGlobal,useEffect } from 'reactn';
-import * as PropTypes from "prop-types";
-import './App.css';
+import React, { useGlobal, useEffect } from "reactn"
+import * as PropTypes from "prop-types"
+import "./App.css"
+import ContactsPage from "./pages/ContactsPage"
+import WalletsPage from "./pages/WalletsPage"
 
-import AppBar from '@material-ui/core/AppBar';
-import ContactsPage from "./pages/ContactsPage";
-import WalletsPage from "./pages/WalletsPage";
-
-import Tabs from "@material-ui/core/Tabs";
-import Tab from '@material-ui/core/Tab'
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import {register} from "./serviceWorker"
-import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
-import bitcore from "bitcore-doichain";
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
+import Typography from "@material-ui/core/Typography"
+import Box from "@material-ui/core/Box"
+import { register } from "./serviceWorker"
+import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
+import bitcore from "bitcore-doichain"
 import initStorage from "./utils/storage"
+import WalletCreator from './pages/walletCreator/WalletCreator';
+import AppBar from "@material-ui/core/AppBar"
 
-const App = (props) => {
 
-    const [global,setGlobal] = useGlobal()
+const App = props => {
+    const [global, setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const [modus,setModus] = useGlobal("modus")
-    const [activeWallet,setActiveWallet] = useGlobal("activeWallet")
+    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
+    const [wallets, setWallets] = useGlobal("wallets");
 
-   const settings = {  //RegTest
-        testnet: true,
-        from: 'alice@ci-doichain.org',
-        port:3000,
-        host:"localhost"
-    }
-       /*
-        const settings = {  //testnet 2
-            testnet:true,
-            from: 'newsletter@doichain.org',
-            port:4010,
-            host:"5.9.154.231"
-        }
+    // const settings = {
+    //     //RegTest
+    //     testnet: true,
+    //     from: "alice@ci-doichain.org",
+    //     port: 3000,
+    //     host: "localhost"
+    // }
+
+        // const settings = {  //testnet 2
+        //     testnet:true,
+        //     from: 'newsletter@doichain.org',
+        //     port:4010,
+        //     host:"5.9.154.231"
+        // }
 
 
-    const settings = {  //testnet 2
-        testnet:true,
-        from: 'newsletter@doichain.org',
-        port:443,
-        ssl:true,
-        host:"doichain-testnet.le-space.de"
-    }    */
+     const settings = {  //testnet 2
+         testnet:true,
+         from: 'newsletter@doichain.org',
+         port:443,
+         ssl:true,
+         host:"doichain-testnet.le-space.de"
+     }
 
     bitcore.settings.setSettings(settings)
-    bitcore.Networks.defaultNetwork = bitcore.Networks.get('doichain-testnet')
+    bitcore.Networks.defaultNetwork = bitcore.Networks.get("doichain-testnet")
 
     register()
 
@@ -59,7 +61,7 @@ const App = (props) => {
     );
 
     function TabPanel(props) {
-        const { children, value, index, ...other } = props;
+        const { children, value, index, ...other } = props
 
         return (
             <Typography
@@ -72,26 +74,30 @@ const App = (props) => {
             >
                 <Box p={3}>{children}</Box>
             </Typography>
-        );
+        )
     }
 
     TabPanel.propTypes = {
         children: PropTypes.node,
         index: PropTypes.any.isRequired,
-        value: PropTypes.any.isRequired,
-    };
+        value: PropTypes.any.isRequired
+    }
 
     function a11yProps(index) {
         return {
             id: `simple-tab-${index}`,
-            'aria-controls': `simple-tabpanel-${index}`,
-        };
+            "aria-controls": `simple-tabpanel-${index}`
+        }
     }
-    const our_CurrentTab = currentTab?currentTab:0
+    const our_CurrentTab = currentTab ? currentTab : 0
 
+       if(!wallets || wallets.length === 0){
+           return <WalletCreator />
+       }else{
     return (
-        <div>
-            <AppBar position="static">
+
+         <div>
+             <AppBar position="static">
                 <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
                     setCurrentTab(newValue)
                     setActiveWallet(undefined)
@@ -109,7 +115,7 @@ const App = (props) => {
                 {currentTab===1 && <WalletsPage/>}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={2}>
-              My Clearances
+              My Consents
             </TabPanel>
             <div style={{float:'right'}}>
                 {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}
@@ -118,4 +124,5 @@ const App = (props) => {
         </div>
     );
 }
-export default App;
+}
+export default App

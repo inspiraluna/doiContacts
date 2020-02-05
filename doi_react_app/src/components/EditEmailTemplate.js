@@ -16,6 +16,7 @@ const EditEmailTemplate = () => {
             <TextareaAutosize
                 rows={16}  cols="65"
                 aria-label="maximum height"
+                id="editTemp"
                 placeholder=""
                 defaultValue={tempWallet ? tempWallet.content : ''}
                 onChange={(e) => {
@@ -25,7 +26,7 @@ const EditEmailTemplate = () => {
                 }}
             />
             <br/>
-            <Button color={'primary'} variant="contained" onClick={() => handleCancel()}>Back</Button>
+            <Button color={'primary'} id="back" variant="contained" onClick={() => handleCancel()}>Back</Button>
         </div>
     )
 }

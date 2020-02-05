@@ -68,7 +68,7 @@ const SendAmount = () => {
                     <QRCodeScannerContents
                         scanning={scanning}
                         render={(<div style={{backgroundColor: 'white'}}>
-                            <Button color={'primary'} variant="contained"
+                            <Button color={'primary'} variant="contained" id="back"
                                     onClick={() => setModus('detail')}>Back</Button><br/><br/>
                             <h1>{walletName} </h1>
                             Send DOI from address: <br/>
@@ -137,7 +137,7 @@ const SendAmount = () => {
                                             {errors.position && touched.position && errors.position}
                                         </div>
                                         <br></br>
-                                        <ProgressButton type="submit" color={"primary"}
+                                        <ProgressButton type="submit" color={"primary"} id="sendAmount"
                                                         state={global.buttonState}
                                                         disabled={isSubmitting}>Send DOI</ProgressButton>
                                     </form>

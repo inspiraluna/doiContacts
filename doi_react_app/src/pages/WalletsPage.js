@@ -1,24 +1,20 @@
-import React, {
-    useEffect,
-    useState,
-    useGlobal
-} from "reactn";
-import bitcore from "bitcore-doichain";
-import WalletList from "../components/WalletList";
-import Slide from "@material-ui/core/Slide";
-import TextField from "@material-ui/core/TextField";
-import WalletItem from "../components/WalletItem";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import Button from "@material-ui/core/Button";
-import QRCode from "qrcode-react";
-import SendAmount from "../components/SendAmount";
-import EditEmailTemplate from "../components/EditEmailTemplate";
-import {getUTXOs4DoiRequest} from "bitcore-doichain/lib/doichain/transactionUtils";
+import React, { useEffect, useState, useGlobal } from "reactn"
+import bitcore from "bitcore-doichain"
+import WalletList from "../components/WalletList"
+import Slide from "@material-ui/core/Slide"
+import TextField from "@material-ui/core/TextField"
+import WalletItem from "../components/WalletItem"
+import Fab from "@material-ui/core/Fab"
+import AddIcon from "@material-ui/icons/Add"
+import Button from "@material-ui/core/Button"
+import QRCode from "qrcode-react"
+import SendAmount from "../components/SendAmount"
+import EditEmailTemplate from "../components/EditEmailTemplate"
 
 /* eslint no-template-curly-in-string: "off" */
 
 const WalletsPage = () => {
+
     const [amount, setAmount] = useState(0); //receive amount
     const [walletItemsChanged, setWalletItemsChanged] = useState(false);
     const [wallets, setWallets] = useGlobal("wallets");
@@ -27,25 +23,26 @@ const WalletsPage = () => {
     const [modus, setModus] = useGlobal("modus");
     const [utxos, setUTXOs ] = useGlobal("utxos")
 
+
     const checkDefaults = wallet => {
         // const our_walletName = "Example Wallet"
-        const our_senderEmail = "info@doichain.org";
-        const our_subject = "Doichain Contacts Request";
+        const our_senderEmail = "info@doichain.org"
+        const our_subject = "Doichain Contacts Request"
         const our_content =
-            "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nPeter";
-        const our_contentType = "text/plain";
-        const our_redirectUrl = "http://www.doichain.org";
-        const our_returnPath = "doichain@doichain.org";
+            "Hello, please give me permission to write you an email.\n\n${confirmation_url}\n\n Yours\n\nPeter"
+        const our_contentType = "text/plain"
+        const our_redirectUrl = "http://www.doichain.org"
+        const our_returnPath = "doichain@doichain.org"
 
         // if(!walletName) walletName = our_walletName
-        if (!wallet.senderEmail) wallet.senderEmail = our_senderEmail;
-        if (!wallet.subject) wallet.subject = our_subject;
-        if (!wallet.content) wallet.content = our_content;
-        if (!wallet.contentType) wallet.contentType = our_contentType;
-        if (!wallet.redirectUrl) wallet.redirectUrl = our_redirectUrl;
-        if (!wallet.returnPath) wallet.returnPath = our_returnPath;
-        return wallet;
-    };
+        if (!wallet.senderEmail) wallet.senderEmail = our_senderEmail
+        if (!wallet.subject) wallet.subject = our_subject
+        if (!wallet.content) wallet.content = our_content
+        if (!wallet.contentType) wallet.contentType = our_contentType
+        if (!wallet.redirectUrl) wallet.redirectUrl = our_redirectUrl
+        if (!wallet.returnPath) wallet.returnPath = our_returnPath
+        return wallet
+    }
     const addWallet = (
         walletName,
         senderEmail,
@@ -55,27 +52,26 @@ const WalletsPage = () => {
         redirectUrl,
         returnPath
     ) => {
-        const ourWallet = bitcore.createWallet(walletName);
-        const wallet = {};
+        const ourWallet = bitcore.createWallet(walletName)
+        const wallet = {}
         // wallet.walletName = walletName
-        wallet.senderEmail = senderEmail;
-        wallet.subject = subject;
-        wallet.content = content;
-        wallet.contentType = contentType;
-        wallet.redirectUrl = redirectUrl;
-        wallet.returnPath = returnPath;
-        wallet.privateKey = ourWallet.privateKey.toString();
-        wallet.publicKey = ourWallet.publicKey.toString();
+        wallet.senderEmail = senderEmail
+        wallet.subject = subject
+        wallet.content = content
+        wallet.contentType = contentType
+        wallet.redirectUrl = redirectUrl
+        wallet.returnPath = returnPath
+        wallet.privateKey = ourWallet.privateKey.toString()
+        wallet.publicKey = ourWallet.publicKey.toString()
 
-        let newwallets = wallets;
-        newwallets.push(checkDefaults(wallet));
-
-        setWallets(wallets);
-        setWalletItemsChanged(true);
-        setActiveWallet(wallets.length - 1);
-        setModus("detail");
-        setTempWallet(undefined);
-    };
+        let newwallets = wallets
+        newwallets.push(checkDefaults(wallet))
+        setWallets(newwallets)
+        setWalletItemsChanged(true)
+        setActiveWallet(wallets.length - 1)
+        setModus("detail")
+        setTempWallet(undefined)
+    }
 
     const updateWallet = (
         walletName,
@@ -86,41 +82,41 @@ const WalletsPage = () => {
         redirectUrl,
         returnPath
     ) => {
-        const wallet = wallets[activeWallet];
-        wallet.walletName = walletName;
-        wallet.senderEmail = senderEmail;
-        wallet.subject = subject;
-        wallet.content = content;
-        wallet.contentType = contentType;
-        wallet.redirectUrl = redirectUrl;
-        wallet.returnPath = returnPath;
+        const wallet = wallets[activeWallet]
+        wallet.walletName = walletName
+        wallet.senderEmail = senderEmail
+        wallet.subject = subject
+        wallet.content = content
+        wallet.contentType = contentType
+        wallet.redirectUrl = redirectUrl
+        wallet.returnPath = returnPath
 
-        wallets[activeWallet] = checkDefaults(wallet);
-        setWallets(wallets);
-        setWalletItemsChanged(true);
-        setModus("detail");
-        setTempWallet(undefined);
-    };
+        wallets[activeWallet] = checkDefaults(wallet)
+        setWallets(wallets)
+        setWalletItemsChanged(true)
+        setModus("detail")
+        setTempWallet(undefined)
+    }
 
     const handleCancel = e => {
-        setModus("list");
-        setActiveWallet(undefined);
-    };
+        setModus("list")
+        setActiveWallet(undefined)
+    }
     const editEmailTemplate = e => {
-        setModus("editEmailTemplate");
-    };
+        setModus("editEmailTemplate")
+    }
 
     useEffect(() => {
-        setWalletItemsChanged(false);
-    }, [walletItemsChanged]);
+        setWalletItemsChanged(false)
+    }, [walletItemsChanged])
 
     const handleReceive = e => {
-        setModus("receive");
-    };
+        setModus("receive")
+    }
 
     const handleSend = e => {
-        setModus("send");
-    };
+        setModus("send")
+    }
 
     const handleVerify = async () => {
         const our_wallet = wallets[activeWallet]
@@ -177,28 +173,33 @@ const WalletsPage = () => {
     if (modus === "list") {
         return (
             <div>
-                <ComponentHead/>
-                <WalletList/>
-                <div style={{float: "right"}}>
+                <ComponentHead />
+                <WalletList />
+                <div style={{ float: "right" }}>
                     <Fab
                         aria-label={"new contact"}
                         color={"primary"}
-                        style={{position: "absolute", right: "7em", bottom: "3em"}}
+                        id={"add"}
+                        style={{
+                            position: "absolute",
+                            right: "7em",
+                            bottom: "3em"
+                        }}
                         onClick={() => {
-                            setModus("add");
-                            setActiveWallet(undefined);
+                            setModus("add")
+                            setActiveWallet(undefined)
                         }}
                     >
-                        <AddIcon/>
+                        <AddIcon />
                     </Fab>
                 </div>
             </div>
-        );
+        )
     } else {
         if (modus === "detail") {
             return (
                 <div>
-                    <ComponentHead/>
+                    <ComponentHead />
                     <Slide
                         aria-label="wallet-detail"
                         direction={"up"}
@@ -210,12 +211,14 @@ const WalletsPage = () => {
                             <Button
                                 color={"primary"}
                                 variant="contained"
+                                id={"receive"}
                                 onClick={() => handleReceive()}
                             >
                                 Receive{" "}
                             </Button>
                             <Button
                                 color={"primary"}
+                                id={"send"}
                                 variant="contained"
                                 onClick={() => handleSend()}
                             >
@@ -223,6 +226,7 @@ const WalletsPage = () => {
                             </Button>
                             <Button
                                 color={"primary"}
+                                id={"cancel"}
                                 variant="contained"
                                 onClick={() => handleCancel()}
                             >
@@ -248,23 +252,22 @@ const WalletsPage = () => {
                         </div>
                     </Slide>
                 </div>
-            );
+            )
         } else if (modus === "receive") {
-
             const handleAmount = e => {
-                const ourAmount = e.target.value;
-                if (isNaN(ourAmount)) return;
-                setAmount(ourAmount);
+                const ourAmount = e.target.value
+                if (isNaN(ourAmount)) return
+                setAmount(ourAmount)
             }
 
-            const address = wallets[activeWallet].addresses[0].address;
-            const walletName = wallets[activeWallet].walletName;
-            let url = "doicoin:" + address;
-            if (amount) url += "?amount" + amount;
+            const address = wallets[activeWallet].addresses[0].address
+            const walletName = wallets[activeWallet].walletName
+            let url = "doicoin:" + address
+            if (amount) url += "?amount" + amount
 
             return (
                 <div>
-                    <ComponentHead/>
+                    <ComponentHead />
                     <Slide
                         aria-label="wallet-receive"
                         direction={"up"}
@@ -275,14 +278,16 @@ const WalletsPage = () => {
                         <div>
                             <Button
                                 color={"primary"}
+                                id={"back"}
                                 variant="contained"
                                 onClick={() => setModus("detail")}
                             >
                                 Back
-                            </Button>  <br/> <br/>
-                            {walletName} <br/>
-                            Receive DOI for address: <br/> {address} <br/>
-                            Amount: <br/>
+                            </Button>{" "}
+                            <br /> <br />
+                            {walletName} <br />
+                            Receive DOI for address: <br /> {address} <br />
+                            Amount: <br />
                             <TextField
                                 id="amount"
                                 name="amount"
@@ -292,22 +297,22 @@ const WalletsPage = () => {
                                 onChange={e => handleAmount(e)}
                                 onBlur={e => handleAmount(e)}
                             />{" "}
-                            <br/>
-                            <QRCode value={url}/>
-                            <br/>
-                            <br/>
+                            <br />
+                            <QRCode value={url} />
+                            <br />
+                            <br />
                         </div>
                     </Slide>
                 </div>
-            );
+            )
         } else if (modus === "send") {
-            return <SendAmount/>;
+            return <SendAmount />
         } else if (modus === "editEmailTemplate") {
-            return <EditEmailTemplate/>;
+            return <EditEmailTemplate />
         } else if (modus === "edit" || modus === "add") {
             return (
                 <div>
-                    <ComponentHead/>
+                    <ComponentHead />
                     <Slide
                         aria-label="wallet-edit"
                         direction={"up"}
@@ -318,21 +323,22 @@ const WalletsPage = () => {
                         <div>
                             <form
                                 onSubmit={e => {
-                                    e.preventDefault();
+                                    e.preventDefault()
                                     const walletName = e.target.walletName
                                         ? e.target.walletName.value.trim()
-                                        : undefined;
-                                    const senderEmail = e.target.senderEmail.value.trim();
-                                    const subject = e.target.subject.value.trim();
+                                        : undefined
+                                    const senderEmail = e.target.senderEmail.value.trim()
+                                    const subject = e.target.subject.value.trim()
                                     const content =
                                         tempWallet && tempWallet.content
                                             ? tempWallet.content.trim()
-                                            : "";
-                                    const contentType = e.target.contentType.value.trim();
-                                    const redirectUrl = e.target.redirectUrl.value.trim();
-                                    const returnPath = e.target.returnPath
-                                        ? e.target.returnPath.value.trim()
-                                        : undefined;
+                                            : ""
+                                    const contentType = e.target.contentType.value.trim()
+                                    let redirectUrl = e.target.redirectUrl.value.trim()
+                                    if (!redirectUrl.startsWith("http://") && !redirectUrl.startsWith("https://"))
+                                        redirectUrl = "https://" + redirectUrl
+
+                                    const returnPath = e.target.returnPath? e.target.returnPath.value.trim(): undefined
 
                                     if (activeWallet === undefined)
                                         addWallet(
@@ -343,7 +349,7 @@ const WalletsPage = () => {
                                             contentType,
                                             redirectUrl,
                                             returnPath
-                                        );
+                                        )
                                     else
                                         updateWallet(
                                             walletName,
@@ -353,7 +359,7 @@ const WalletsPage = () => {
                                             contentType,
                                             redirectUrl,
                                             returnPath
-                                        );
+                                        )
                                 }}
                             >
                                 {/* <TextField
@@ -375,12 +381,12 @@ const WalletsPage = () => {
                                     defaultValue={tempWallet ? tempWallet.senderEmail : ""}
                                     margin="normal"
                                     onChange={e => {
-                                        const ourTempWallet = tempWallet ? tempWallet : {};
-                                        ourTempWallet.senderEmail = e.target.value;
-                                        setTempWallet(ourTempWallet);
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
+                                        ourTempWallet.senderEmail = e.target.value
+                                        setTempWallet(ourTempWallet)
                                     }}
                                 />{" "}
-                                <br/>
+                                <br />
                                 <TextField
                                     id="subject"
                                     label="Subject"
@@ -388,20 +394,18 @@ const WalletsPage = () => {
                                     defaultValue={tempWallet ? tempWallet.subject : ""}
                                     margin="normal"
                                     onChange={e => {
-                                        const ourTempWallet = tempWallet ? tempWallet : {};
-                                        ourTempWallet.subject = e.target.value;
-                                        setTempWallet(ourTempWallet);
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
+                                        ourTempWallet.subject = e.target.value
+                                        setTempWallet(ourTempWallet)
                                     }}
                                 />{" "}
-                                <br/>
+                                <br />
                                 <label>Content-Type</label>
-                                <br/>
+                                <br />
                                 <select
                                     name="contentType"
                                     defaultValue={
-                                        wallets[activeWallet] && tempWallet
-                                            ? tempWallet.contentType
-                                            : ""
+                                        wallets[activeWallet] && tempWallet?tempWallet.contentType: ""
                                     }
                                 >
                                     {/* <select name="contentType" defaultValue={wallets[activeWallet] && wallets[activeWallet].contentType}> */}
@@ -409,7 +413,7 @@ const WalletsPage = () => {
                                     <option value="html">text/html</option>
                                     <option value="json">text/json (mixed)</option>
                                 </select>
-                                <br/>
+                                <br />
                                 {/* <TextField
                                         id="content"
                                         label="Email Content Template"
@@ -420,12 +424,13 @@ const WalletsPage = () => {
                                     /> */}
                                 <Button
                                     variant="outlined"
+                                    id="editEmailTemplate"
                                     color="primary"
                                     onClick={() => editEmailTemplate()}
                                 >
                                     Edit Email template
                                 </Button>
-                                <br/>
+                                <br />
                                 <TextField
                                     id="redirectUrl"
                                     label="Redirect URL (after commit)"
@@ -433,12 +438,12 @@ const WalletsPage = () => {
                                     defaultValue={tempWallet ? tempWallet.redirectUrl : ""}
                                     margin="normal"
                                     onChange={e => {
-                                        const ourTempWallet = tempWallet ? tempWallet : {};
-                                        ourTempWallet.redirectUrl = e.target.value;
-                                        setTempWallet(ourTempWallet);
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
+                                         ourTempWallet.redirectUrl = e.target.value
+                                        setTempWallet(ourTempWallet)
                                     }}
                                 />{" "}
-                                <br/>
+                                <br />
                                 {/* <TextField
                                         id="returnPath"
                                         label="ReturnPath (email)"
@@ -450,7 +455,12 @@ const WalletsPage = () => {
                                             ourTempWallet.returnPath = e.target.value
                                             setTempWallet(ourTempWallet)}}
                                     />     <br/> */}
-                                <Button type="submit" color={"primary"} variant="contained">
+                                <Button
+                                    type="submit"
+                                    id={"saveWallet"}
+                                    color={"primary"}
+                                    variant="contained"
+                                >
                                     {activeWallet !== undefined ? "Update Wallet" : "Add Wallet"}
                                 </Button>
                             </form>
@@ -469,8 +479,8 @@ const WalletsPage = () => {
     }
 }
 
-export default WalletsPage;
+export default WalletsPage
 
 export const ComponentHead = () => {
-    return <h1>DoiCoin Wallets</h1>;
-};
+    return <h1>DoiCoin Wallets</h1>
+}

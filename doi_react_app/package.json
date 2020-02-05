@@ -1,59 +1,68 @@
 {
-  "name": "doi_react_app",
-  "version": "0.0.35",
-  "private": true,
-  "homepage": "../www/",
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.25",
-    "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@fortawesome/react-fontawesome": "^0.1.6",
-    "@material-ui/core": "^4.7.1",
-    "@material-ui/icons": "^4.5.1",
-    "bitcore-doichain": "^0.1.29",
-    "crypto-browserify": "^3.12.0",
-    "formik": "^2.0.6",
-    "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "moment-timezone": "^0.5.27",
-    "qrcode-react": "^0.1.16",
-    "react": "^16.12.0",
-    "react-copy-to-clipboard": "^5.0.2",
-    "react-dom": "^16.12.0",
-    "react-moment": "^0.9.7",
-    "react-motion": "^0.5.2",
-    "react-progress-button": "^5.1.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.1.2",
-    "react-swipe": "^6.0.4",
-    "reactn": "^2.2.4",
-    "serialize-javascript": "^2.1.2",
-    "swipe-js-iso": "^2.1.5",
-    "use-position": "^0.0.6"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && rm -rf ../www/ && cp -a ./build/. ../www/",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "prettier": {
-    "tabWidth": 4,
-    "semi": false
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {}
+    "name": "doi_react_app",
+    "version": "0.0.35",
+    "private": true,
+    "homepage": "../www/",
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.25",
+        "@fortawesome/free-solid-svg-icons": "^5.11.2",
+        "@fortawesome/react-fontawesome": "^0.1.6",
+        "@material-ui/core": "^4.7.1",
+        "@material-ui/icons": "^4.5.1",
+        "bip39": "^3.0.2",
+        "bitcore-doichain": "^0.1.29",
+        "crypto-browserify": "^3.12.0",
+        "formik": "^2.0.6",
+        "hdkey": "^1.1.1",
+        "lodash": "^4.17.15",
+        "moment": "^2.24.0",
+        "moment-timezone": "^0.5.27",
+        "password-validator": "^5.0.3",
+        "qrcode-react": "^0.1.16",
+        "react": "^16.12.0",
+        "react-copy-to-clipboard": "^5.0.2",
+        "react-dom": "^16.12.0",
+        "react-moment": "^0.9.7",
+        "react-motion": "^0.5.2",
+        "react-progress-button": "^5.1.0",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.1.2",
+        "react-swipe": "^6.0.4",
+        "reactn": "^2.2.4",
+        "serialize-javascript": "^2.1.2",
+        "swipe-js-iso": "^2.1.5",
+        "use-position": "^0.0.6"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build && rm -rf ../www/ && cp -a ./build/. ../www/",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "test:cypress": "start-server-and-test start http://localhost:3000 cypress",
+        "cypress": "cypress open"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "semi": false,
+        "printWidth": 100
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "cypress": "^3.8.2",
+        "start-server-and-test": "^1.10.7"
+    }
 }
