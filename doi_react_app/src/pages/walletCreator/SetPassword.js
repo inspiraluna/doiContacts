@@ -61,22 +61,17 @@ const SetPassword = () => {
     }
 
     return (
-        <div>
-            <div className={s.content}>
-                <p>Set a password to protect your wallet in everyday use.</p>
-                <br></br>
-            </div>
-            <FormControl fullWidth error={error?true:false}>
-                <InputLabel htmlFor="standard-adornment-password">
-                    Password
-                </InputLabel>
+        <div className={s.content}>
+            <p>Set a password to protect your wallet in everyday use.</p>
+            <br></br>
+            <FormControl fullWidth error={error ? true : false}>
+                <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                 <Input
                     id="standard-adornment-password"
                     fullWidth
                     type={showPassword ? "text" : "password"}
                     onChange={e => {
                         setPassword1(e.target.value)
-                        // comparePasswords()
                     }}
                     endAdornment={
                         <InputAdornment position="end">
@@ -84,31 +79,22 @@ const SetPassword = () => {
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
                             >
-                                {showPassword ? (
-                                    <Visibility />
-                                ) : (
-                                    <VisibilityOff />
-                                )}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                     }
                 />
-                <FormHelperText id="component-error-text">
-                    {error}
-                </FormHelperText>
+                <FormHelperText id="component-error-text">{error}</FormHelperText>
             </FormControl>
             <br></br>
-            <FormControl fullWidth error={error?true:false}>
-                <InputLabel htmlFor="standard-adornment-password">
-                    Re-type your password
-                </InputLabel>
+            <FormControl fullWidth error={error ? true : false}>
+                <InputLabel htmlFor="standard-adornment-password">Re-type your password</InputLabel>
                 <Input
                     id="standard-adornment-password2"
                     fullWidth
                     type={showPassword ? "text" : "password"}
                     onChange={e => {
                         setPassword2(e.target.value)
-                        // comparePasswords()
                     }}
                     endAdornment={
                         <InputAdornment position="end">
@@ -116,18 +102,12 @@ const SetPassword = () => {
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
                             >
-                                {showPassword ? (
-                                    <Visibility />
-                                ) : (
-                                    <VisibilityOff />
-                                )}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                     }
                 />
-                <FormHelperText id="component-error-text">
-                    {error}
-                </FormHelperText>
+                <FormHelperText id="component-error-text">{error}</FormHelperText>
             </FormControl>
         </div>
     )

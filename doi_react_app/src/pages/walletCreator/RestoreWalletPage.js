@@ -8,48 +8,44 @@ const bip39 = require('bip39')
 
 const RestoreWalletPage = props => {
     const [checked, setChecked] = useGlobal("checked")
-    const [seed, setSeed] = useGlobal('seed')
+    const [seed, setSeed] = useGlobal("seed")
     const [showPassword, setShowPassword] = useState(false)
-    const [password1, setPassword1] = useGlobal('password1')
+    const [password1, setPassword1] = useGlobal("password1")
 
-    useEffect(() => { setChecked(false) }, [])
+    useEffect(() => {
+        setChecked(false)
+    }, [])
 
     const handleChange = () => {
         setShowPassword(!showPassword)
     }
 
     return (
-        <div>
-            <div className={s.content}>
-                <p>Please confirm your recovery phrase</p>
-            </div>
-            <br></br>
-            <span>
-                <TextareaAutosize
-                    rows={10}
-                    cols="210"
-                    id="textarea"
-                    aria-label="maximum height"
-                    placeholder="Please entry your seed phrase"
-                    onChange={e => {
-                        console.log('checking seedPhrase',e.target.value)
-                        console.log('valid without pw',bip39.validateMnemonic(e.target.value))
-                        console.log('valid with pw:'+password1,bip39.validateMnemonic(e.target.value,password1))
-                        if (bip39.validateMnemonic(e.target.value)) {
-                            console.log('seedPhrase',e.target.value)
-                            setSeed(e.target.value)
-                            setChecked(true)
-                        } else setChecked(false)
-                    }}
-                />
-            </span>
-            <div>
-                <Bip39Password display={showPassword} />
-            </div>
+        <div className={s.content}>
+            <p>Please confirm your recovery phrase</p>
+            <TextareaAutosize
+                rows={10}
+                cols="210"
+                id="textarea"
+                aria-label="maximum height"
+                placeholder="Please entry your seed phrase"
+                onChange={e => {
+                    console.log("checking seedPhrase", e.target.value)
+                    console.log("valid without pw", bip39.validateMnemonic(e.target.value))
+                    console.log(
+                        "valid with pw:" + password1,
+                        bip39.validateMnemonic(e.target.value, password1)
+                    )
+                    if (bip39.validateMnemonic(e.target.value)) {
+                        console.log("seedPhrase", e.target.value)
+                        setSeed(e.target.value)
+                        setChecked(true)
+                    } else setChecked(false)
+                }}
+            />
+            <Bip39Password display={showPassword} />
             <FormControlLabel
-                control={
-                    <Checkbox id="checked" onChange={() => handleChange()} />
-                }
+                control={<Checkbox id="checked" onChange={() => handleChange()} />}
                 label="To restore your wallet, please provide the same BIP39 password you used when created the protected recovery phrase."
             />
         </div>

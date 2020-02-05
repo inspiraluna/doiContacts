@@ -22,12 +22,11 @@ const ConfirmRecoveryPhrase = ({ next }) => {
     }, [])
 
     return (
-        <div>
-            <div className={s.content}>
+        <div className={s.content}>
+            <div>
                 <p>Please confirm your recovery phrase</p>
             </div>
-            <span>
-                {/* <Button color="primary">cycle</Button>
+            {/* <Button color="primary">cycle</Button>
                 <Button color="primary">search</Button>
                 <Button color="primary">lend</Button>
                 <Button color="primary">secret</Button>
@@ -51,47 +50,42 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                 <Button color="primary">blur</Button>
                 <Button color="primary">page</Button>
                 <Button color="primary">twist</Button> */}
-                <TextareaAutosize
-                    rows={10}
-                    cols="210"
-                    aria-label="maximum height"
-                    placeholder="Please enter your seed phrase"
-                    onChange={e => {
-                        if (e.target.value === seed) {
-                            setChecked(true)
-                        } else setChecked(false)
-                    }}
-                />
-            </span>
-            <div className={s.content}>
-                <Button onClick={() => setOpen(!open)} id="skipButton">
-                    Skip
-                </Button>
-            </div>
+            <TextareaAutosize
+                rows={10}
+                cols="210"
+                aria-label="maximum height"
+                placeholder="Please enter your seed phrase"
+                onChange={e => {
+                    if (e.target.value === seed) {
+                        setChecked(true)
+                    } else setChecked(false)
+                }}
+            />
+            <br></br>
+            <Button onClick={() => setOpen(!open)} id="skipButton">
+                Skip
+            </Button>
             <Dialog
                 open={open !== undefined}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {"Skipping Verification"}
-                </DialogTitle>
+                <DialogTitle id="alert-dialog-title">{"Skipping Verification"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        <b>Please make sure that your recovery phrase matches the
-                        following:</b><br></br>
-                        {seed}<br></br>
-                        <b>It is recommended not to skip verification, so that any
-                        misspellings could be deteted</b>
+                        <b>Please make sure that your recovery phrase matches the following:</b>
+                        <br></br>
+                        {seed}
+                        <br></br>
+                        <b>
+                            It is recommended not to skip verification, so that any misspellings
+                            could be deteted
+                        </b>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        onClick={() => handleClose()}
-                        id="close"
-                        color="primary"
-                    >
+                    <Button onClick={() => handleClose()} id="close" color="primary">
                         Cancel
                     </Button>
                     <Button color="primary" onClick={next} id="skip" autoFocus>

@@ -1,20 +1,5 @@
 .content {
     display: grid;
-  align-items: center;
-  justify-content: center;
-  width:auto;
-  margin: auto;
-
-}
-
-.firstContent {
-    padding-left: 300px;
-}
-
-.secondContent {
-    padding-left: 500px;
-}
-
-.thirdContent {
-    padding-left: 50px;
+    text-align: center;
+    margin-top: 10px;
 }

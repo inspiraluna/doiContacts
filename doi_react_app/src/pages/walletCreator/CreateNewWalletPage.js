@@ -23,8 +23,7 @@ const CreateNewWalletPage = () => {
   
     return (
         <div className={s.content}>
-            <span>
-                <div className={s.firstContent}>
+                <div>
                     <p>
                         Please write your recovery phrase down on paper and keep
                         it in a safe, offline place. Never enter it in any
@@ -33,7 +32,7 @@ const CreateNewWalletPage = () => {
                 </div>
                 <br />
                 <br />
-                <div className={s.secondContent}>
+                <div>
                     <p>
                         if you lose your recovery phrase, your wallets cannot be
                         recovered
@@ -41,12 +40,11 @@ const CreateNewWalletPage = () => {
                 </div>
                 <br />
                 <br />
-                <div className={s.thirdContent}>
+                <div>
                     <h1>
                         {seed}
                     </h1>
                 </div>
-            </span>
             <FormControlLabel
                 control={
                     <Checkbox id="checked"
