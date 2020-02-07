@@ -14,6 +14,7 @@ import bitcore from "bitcore-doichain"
 import initStorage from "./utils/storage"
 import WalletCreator from './pages/walletCreator/WalletCreator';
 import AppBar from "@material-ui/core/AppBar"
+import {appVersion} from "./appVersion";
 
 
 const App = props => {
@@ -106,6 +107,7 @@ const App = props => {
                     <Tab label="Contacts" {...a11yProps(0)} />
                     <Tab label="Wallets" {...a11yProps(1)} />
                     <Tab label="Consents" {...a11yProps(2)} />
+                    <div style={{align:"center",verticalAlign:"middle", fontSize:"9px"}}>{appVersion}</div>
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
