@@ -1,7 +1,7 @@
 {
   "name": "doicontacts",
   "displayName": "Doi Contacts",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "blockchain based contact management via Doichain",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,9 @@
   "author": "Nico Krause",
   "license": "Apache-2.0",
   "dependencies": {
+    "cordova-android": "^8.1.0",
     "cordova-browser": "^6.0.0",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "^4.0.2",
@@ -32,6 +34,10 @@
       "cordova-plugin-device": {},
       "cordova-plugin-nativestorage": {}
     },
-    "platforms": []
+    "platforms": [
+      "android",
+      "ios",
+      "browser"
+    ]
   }
 }

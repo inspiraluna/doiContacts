@@ -8,24 +8,24 @@
   },
   "installed_plugins": {
     "cordova-plugin-device": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-geolocation": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-nativestorage": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-qrscanner-inspiraluna": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     }
   },
   "dependent_plugins": {
     "cordova-plugin-add-swift-support": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
+      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     }
   }
 }
