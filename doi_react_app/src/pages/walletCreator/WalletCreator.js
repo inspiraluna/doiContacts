@@ -41,11 +41,9 @@ const WalletCreator = () => {
         if (modus === "setPassword" || modus === "restoreWallet") {
             const bip39 = require("bip39")
             const HDKey = require("hdkey")
-            const seedPhrase = bip39
-                .mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic")
-                .toString("hex")
-
-            const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, "hex"))
+            const masterSeed = bip39.mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic").toString("hex")
+            console.log("masterSeed",masterSeed)
+            const hdkey = HDKey.fromMasterSeed(Buffer.from(masterSeed, "hex"))
             const childkey = hdkey.derive("m/0/0/1")
             const wallet = {}
             wallet.senderEmail = "me@example.com"
