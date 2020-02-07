@@ -9,9 +9,9 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import TextareaAutosize from "@material-ui/core/TextareaAutosize"
 
 const ConfirmRecoveryPhrase = ({ next }) => {
-    const [checked, setChecked] = useGlobal("checked")
+    const setChecked = useGlobal("checked")[1]
     const [open, setOpen] = useState(undefined)
-    const [seed, setSeed] = useGlobal("seed")
+    const [seed] = useGlobal("seed")
 
     const handleClose = () => {
         setOpen(undefined)

@@ -137,7 +137,7 @@ const WalletsPage = () => {
         // - recipient address is public key gathered by domain name (dns) - responsible validator (Bob)
 
         const nameId = "es/" + signature
-        const encryptedEmailVerification = bitcore.encryptEmailVerification(validatorPublicKey,senderEmail,address)
+        // const encryptedEmailVerification = bitcore.encryptEmailVerification(validatorPublicKey,senderEmail,address)
         //const unspentTx = await getUTXOs4DoiRequest(address,utxos)
         //console.log('all unspentTx for address'+address,unspentTx)
 

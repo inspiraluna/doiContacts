@@ -1,4 +1,4 @@
-import React, { useGlobal, useEffect } from "reactn"
+import React, { useGlobal } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"

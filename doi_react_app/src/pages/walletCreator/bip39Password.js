@@ -1,10 +1,10 @@
-import React, { useState, useGlobal, useEffect } from "reactn"
+import React, { useGlobal } from "reactn"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 
 const Bip39Password = props => {
-    const [password1, setPassword1] = useGlobal("password1")
+    const setPassword1 = useGlobal("password1")[1]
 
     if (props.display === true) {
         return (

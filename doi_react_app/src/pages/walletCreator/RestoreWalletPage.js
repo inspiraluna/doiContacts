@@ -7,10 +7,10 @@ import Checkbox from "@material-ui/core/Checkbox"
 const bip39 = require('bip39')
 
 const RestoreWalletPage = props => {
-    const [checked, setChecked] = useGlobal("checked")
-    const [seed, setSeed] = useGlobal("seed")
+    const setChecked = useGlobal("checked")[1]
+    const setSeed = useGlobal("seed")[1]
     const [showPassword, setShowPassword] = useState(false)
-    const [password1, setPassword1] = useGlobal("password1")
+    const [password1] = useGlobal("password1")
 
     useEffect(() => {
         setChecked(false)

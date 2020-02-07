@@ -1,4 +1,4 @@
-import React, { useState, useGlobal, useEffect } from "reactn"
+import React, {  useGlobal, useEffect } from "reactn"
 import s from "./CreateNewWalletPage.module.css"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"

@@ -146,10 +146,10 @@ const WalletItem = ({
                     </b>
                     <br />
                     <b>
-                        Balance: {balance} DOI{""}
-                        {unconfirmedBalance && unconfirmedBalance > 0
+                        Balance: <span id="balance">{balance}</span> DOI{""}
+                        <span id="unconfirmedBalance">{unconfirmedBalance && unconfirmedBalance > 0
                             ? "(unconfirmed:" + unconfirmedBalance + " DOI)"
-                            : ""}
+                            : ""}</span>
                     </b>
                     <br />
                     <b>Block: {wallets[0].block}</b>

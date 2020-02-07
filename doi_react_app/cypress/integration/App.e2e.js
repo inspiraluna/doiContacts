@@ -133,7 +133,7 @@ describe("App E2E", () => {
         cy.contains("Wallets").click()
     })
 
-    it("should have a balance", () => {
+    it("should test the balance", () => {
         cy.get("#restoreWallet").click()
         cy.get("#preview").click()
         cy.get("#restoreWallet").click()
@@ -146,31 +146,29 @@ describe("App E2E", () => {
         cy.contains("Wallets").click()
         cy.get("#detail").click()
         cy.wait(2000)
-        cy.contains("Balance").should("have.text", "Balance: 96.99700000 DOI")
-        cy.contains("Balance").should("have.text", "(unconfirmed:94.99700000 DOI)")
-        cy.get("#send").click()
-        cy.get("#back").click()
-        cy.get("#receive").click()
-        cy.get("#back").click()
-    })
-
-    it("should send amount", () => {
-        cy.get("#restoreWallet").click()
-        cy.get("#preview").click()
-        cy.get("#restoreWallet").click()
-        cy.get("#textarea").type(
-            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
-        )
-        cy.get("#checked").click()
-        cy.get("#standard-adornment-password").type("13456abC")
-        cy.get("#next").click()
-        cy.contains("Wallets").click()
-        cy.get("#detail").click()
-        cy.wait(2000)
+        let oldBalance = 0
+        cy.get("#balance").then($span => {
+            const balance = parseFloat($span.text())
+            if (balance > 0) oldBalance = balance
+            else
+                cy.get("#unconfirmedBalance").then($span => {
+                    oldBalance = parseFloat($span.text())
+                })
+        })
+        cy.log(oldBalance)
         cy.get("#send").click()
         cy.get("#toAddress").type("n1NTAvj98a2zRGcwrPASLmWoxSDpoHZeQX")
-        cy.get("#amount").type("0.01")
+        const amountToSend = 0.5
+        cy.get("#amount").type(amountToSend)
         cy.get("#sendAmount").click()
         cy.get("#back").click()
+        cy.get("#balance").then(($span) => {
+            const balance = parseFloat($span.text())
+            expect(balance).to.eq(0)
+        }) 
+        cy.get("#unconfirmedBalance").then($span => {
+            oldBalance = parseFloat($span.text())
+            expect(oldBalance).to.eq(oldBalance - amountToSend)
+        })
     })
 })
