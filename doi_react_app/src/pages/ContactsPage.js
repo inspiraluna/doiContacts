@@ -19,7 +19,6 @@ const ContactsPage = () => {
         console.log("activeContact", activeContact)
         return (
             <div>
-                <h1>Doi Contacts</h1>
                 <Slide
                     aria-label="contact-detail"
                     direction={"up"}
@@ -58,7 +57,6 @@ const ContactsPage = () => {
                     unmountOnExit
                 >
                     <div>
-                        <h1>Doi Contacts</h1>
                         <List dense={true}>
                             <ContactList />
                         </List>

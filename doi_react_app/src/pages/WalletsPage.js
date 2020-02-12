@@ -178,7 +178,6 @@ const WalletsPage = () => {
     if (modus === "list") {
         return (
             <div>
-                <ComponentHead />
                 <WalletList />
                 <div style={{ float: "right" }}>
                     <Fab
@@ -204,7 +203,6 @@ const WalletsPage = () => {
         if (modus === "detail") {
             return (
                 <div>
-                    <ComponentHead />
                     <Slide
                         aria-label="wallet-detail"
                         direction={"up"}
@@ -273,7 +271,6 @@ const WalletsPage = () => {
 
             return (
                 <div>
-                    <ComponentHead />
                     <Slide
                         aria-label="wallet-receive"
                         direction={"up"}
@@ -318,7 +315,6 @@ const WalletsPage = () => {
         } else if (modus === "edit" || modus === "add") {
             return (
                 <div>
-                    <ComponentHead />
                     <Slide
                         aria-label="wallet-edit"
                         direction={"up"}
@@ -495,7 +491,3 @@ const WalletsPage = () => {
 }
 
 export default WalletsPage
-
-export const ComponentHead = () => {
-    return <h1>DoiCoin Wallets</h1>
-}

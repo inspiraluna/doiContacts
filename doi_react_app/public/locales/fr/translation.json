@@ -47,14 +47,14 @@
         "consents": "consentements"
     },
     "contactForm": {
-        "1": "Portefeuille / Email",
-        "2": "Demande d'autorisation",
-        "3": "Adresse actuelle",
-        "4": "Adresse e-mail pour la demande d'autorisation",
-        "5": "pas d'email",
-        "6": "aucun portefeuille défini",
-        "7": "Transaction d'autorisation DOI diffusée sur le nœud Doichain ...",
-        "8": "erreur lors de la diffusion de la transaction"
+        "walletOrEmail": "Portefeuille / Email",
+        "requestPermission": "Demande d'autorisation",
+        "currentAddress": "Adresse actuelle",
+        "EmailPermissionToRequest": "Adresse e-mail pour la demande d'autorisation",
+        "noEmail": "pas d'email",
+        "noWalletsDefined": "aucun portefeuille défini",
+        "BroadcastedDoiTx": "Transaction d'autorisation DOI diffusée sur le nœud Doichain ...",
+        "broadcastingError": "erreur lors de la diffusion de la transaction"
     },
     "contactItem": {
         "created": "Créé",
@@ -85,25 +85,25 @@
         "updateWallet": "Mettre à jour le portefeuille"
     },
     "sendAmount": {
-        "1": "Doicoin transaction diffusée au nœud Doichain",
-        "2": "erreur lors de la diffusion de la transaction Doicoin",
-        "3": "Envoyer DOI depuis l'adresse:",
-        "4": "Solde",
-        "5": "à l'adresse Doichain",
-        "6": "Montant (DOI)",
-        "7": "Envoyer DOI"
+        "broadcastedDoicoinTx": "Doicoin transaction diffusée au nœud Doichain",
+        "broadcastingError": "erreur lors de la diffusion de la transaction Doicoin",
+        "sendFromAddress": "Envoyer DOI depuis l'adresse:",
+        "balance": "Solde",
+        "doichainAddress": "à l'adresse Doichain",
+        "amount": "Montant (DOI)",
+        "sendDoi": "Envoyer DOI"
     },
     "walletItem": {
-        "1": "Adresse DoiCoin:",
-        "2": "Adresse Doichain copiée dans le presse-papiers",
-        "3": "Solde:",
-        "4": "(non confirmé:",
-        "5": "Bloc:",
-        "6": "Email:",
-        "7": "Sujet:",
-        "8": "Contenu:",
-        "9": "Type de contenu:",
-        "10": "URL de redirection:",
-        "11": "Clé publique:"
+        "doiCoinAddress": "Adresse DoiCoin:",
+        "doiCoinAddressCopied": "Adresse Doichain copiée dans le presse-papiers",
+        "balance": "Solde:",
+        "unconfirmed": "(non confirmé:",
+        "block": "Bloc:",
+        "email": "Email:",
+        "subject": "Sujet:",
+        "content": "Contenu:",
+        "contentType": "Type de contenu:",
+        "redirectUrl": "URL de redirection:",
+        "pubKey": "Clé publique:"
     }
 }

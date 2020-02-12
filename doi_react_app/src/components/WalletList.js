@@ -60,11 +60,14 @@ const WalletList = () => {
                 <ListItemText
                     primary={item.senderEmail}
                     secondary={
-                        "Balance: DOI " +
+                        t("walletItem.balance") +
+                        " " +
+                        "DOI" +
+                        " " +
                         Number(item.balance ? item.balance : 0).toFixed(8) +
                         " " +
                         (item.unconfirmedBalance !== undefined && item.unconfirmedBalance > 0
-                            ? "(unconfirmed: DOI " + item.unconfirmedBalance + ") "
+                            ? t("walletItem.unconfirmed") + "DOI " + item.unconfirmedBalance + ") "
                             : "")
                     }
                 />

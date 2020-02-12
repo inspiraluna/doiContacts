@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"
 const EditEmailTemplate = () => {
     const setModus = useGlobal("modus")[1]
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
-    const { t, i18n } = useTranslation()
+    const [t] = useTranslation()
 
     const handleCancel = e => {
         setModus("edit")

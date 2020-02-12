@@ -125,7 +125,7 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
         return (
             <div>
                 <li style={{ fontSize: "9px" }}>
-                    {t("walletItem.1")} <br />
+                    {t("walletItem.doiCoinAddress")} <br />
                     <b>
                         {address ? address.toString() : ""}{" "}
                         <CopyToClipboard
@@ -133,7 +133,7 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
                             onCopy={() =>
                                 setOpenSnackbar({
                                     open: true,
-                                    msg: t("walletItem.2"),
+                                    msg: t("walletItem.doiCoinAddressCopied"),
                                     type: "success"
                                 })
                             }
@@ -143,44 +143,44 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
                     </b>
                     <br />
                     <b>
-                        {t("walletItem.3")} {balance} DOI{""}
+                        {t("walletItem.balance")} {balance} DOI{""}
                         {unconfirmedBalance && unconfirmedBalance > 0
-                            ? t("walletItem.4") + unconfirmedBalance + " DOI)"
+                            ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"
                             : ""}
                     </b>
                     <br />
                     <b>
-                        {t("walletItem.5")} {wallets[0].block}
+                        {t("walletItem.block")} {wallets[0].block}
                     </b>
                 </li>
                 <br />
                 <div style={{ fontSize: "9px", border: "2px solid lightgrey" }}>
-                    <label htmlFor={"senderEmail"}>{t("walletItem.6")} </label>
+                    <label htmlFor={"senderEmail"}>{t("walletItem.email")} </label>
                     <div id="sentEmail">{senderEmail}</div>
                     <br />
                     <label htmlFor={"subject"}></label>
                     <div id="subj">
-                        {t("walletItem.7")} {subject}
+                        {t("walletItem.subject")} {subject}
                     </div>
                     <br />
                     <label htmlFor={"content"}></label>
                     <div id="content">
-                        {t("walletItem.8")} {content}
+                        {t("walletItem.content")} {content}
                     </div>
                     <br />
                     <label htmlFor={"contentType"}></label>
                     <div>
-                        {t("walletItem.9")} {contentType}
+                        {t("walletItem.contentType")} {contentType}
                     </div>
                     <br />
                     <label htmlFor={"redirectUrl"}></label>
                     <div id="redUrl">
-                        {t("walletItem.10")} {redirectUrl}
+                        {t("walletItem.redirectUrl")} {redirectUrl}
                     </div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                     <b>
-                        {t("walletItem.11")}
+                        {t("walletItem.pubKey")}
                         <input type={"text"} readOnly={true} defaultValue={publicKey} size={40} />
                     </b>
                     <br />

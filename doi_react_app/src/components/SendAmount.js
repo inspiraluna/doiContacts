@@ -8,7 +8,6 @@ import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
 import bitcore from "bitcore-doichain"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
-import { ComponentHead } from "../pages/WalletsPage"
 import { useTranslation } from "react-i18next"
 
 const SendAmount = () => {
@@ -49,12 +48,12 @@ const SendAmount = () => {
             setUTXOs(newUTXOS)  //here are only additional new utxos what about potential old utxos?
             bitcore.updateWalletBalance(our_wallet,utxosResponse.balance)*/
 
-            const msg = t("sendAmount.1")
+            const msg = t("sendAmount.broadcastedDoicoinTx")
             setOpenError({ open: true, msg: msg, type: "success" })
             setButtonState("success")
             setModus("detail")
         } catch (ex) {
-            const err = t("sendAmount.2") + ex
+            const err = t("sendAmount.broadcastingError") + ex
             console.log(err, ex)
             setOpenError({ open: true, msg: err, type: "error" })
             setButtonState("error")
@@ -66,7 +65,6 @@ const SendAmount = () => {
     const balance = Number(wallets[activeWallet].balance).toFixed(8)
     return (
         <div>
-            <ComponentHead />
             <Slide
                 aria-label="wallet-send"
                 direction={"up"}
@@ -90,9 +88,9 @@ const SendAmount = () => {
                                 <br />
                                 <br />
                                 <h1>{walletName} </h1>
-                                {t("sendAmount.3")} <br />
+                                {t("sendAmount.sendFromAddress")} <br />
                                 <b>{address}</b> <br />
-                                {t("sendAmount.4")} {balance} DOI
+                                {t("sendAmount.balance")} {balance} DOI
                                 <br></br>
                                 <br />
                                 <Formik
@@ -130,7 +128,7 @@ const SendAmount = () => {
                                     }) => (
                                         <form onSubmit={handleSubmit}>
                                             <QRCodeScannerTextField
-                                                label={t("sendAmount.5")}
+                                                label={t("sendAmount.doichainAddress")}
                                                 urlPrefix={"doicoin:"}
                                                 name={"toAddress"}
                                                 handleChange={handleChange}
@@ -144,7 +142,7 @@ const SendAmount = () => {
                                             <div>
                                                 <FormControl fullWidth variant="outlined">
                                                     <InputLabel htmlFor="outlined-adornment">
-                                                        {t("sendAmount.6")}
+                                                        {t("sendAmount.amount")}
                                                     </InputLabel>
                                                     <OutlinedInput
                                                         id="amount"
@@ -169,7 +167,7 @@ const SendAmount = () => {
                                                 state={global.buttonState}
                                                 disabled={isSubmitting}
                                             >
-                                                {t("sendAmount.7")}
+                                                {t("sendAmount.sendDoi")}
                                             </ProgressButton>
                                         </form>
                                     )}

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 const ContactItem = () => {
     const [contacts] = useGlobal("contacts")
     const [activeContact] = useGlobal("activeContact")
-    const { t, i18n } = useTranslation()
+    const [t] = useTranslation()
 
     return (
         <div>

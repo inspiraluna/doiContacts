@@ -50,19 +50,19 @@ const ContactForm = () => {
     const [scanning] = useGlobal("scanning")
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
     const [test] = useGlobal("test")
-    const { t, i18n } = useTranslation()
+    const [t] = useTranslation()
 
     const addContact = async email => {
         const runAddContact = async email => {
             if (!email || email.length === 0) {
-                const err = t("contactForm.5")
+                const err = t("contactForm.noEmail")
                 setOpenError({ open: true, msg: err, type: "error" })
                 setButtonState("error") //Progress Button should be red
                 return
             }
 
             if (!wallets || wallets.length === 0) {
-                const err = t("contactForm.6")
+                const err = t("contactForm.noWalletsDefined")
                 setOpenError({ open: true, msg: err, type: "info" })
                 setButtonState("error") //Progress Button should be red
                 return
@@ -96,7 +96,7 @@ const ContactForm = () => {
                 setUTXOs(utxosResponse)
                 bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
 
-                const msg = t("contactForm.7")
+                const msg = t("contactForm.BroadcastedDoiTx")
                 const contact = {
                     requestedAt: new Date(),
                     email: email,
@@ -163,7 +163,7 @@ const ContactForm = () => {
                     >
                         <QRCodeScannerTextField
                             name="email"
-                            label={t("contactForm.4")}
+                            label={t("contactForm.EmailPermissionToRequest")}
                             labelWidth={200}
                             urlPrefix={"mailto:"}
                         />
@@ -173,7 +173,7 @@ const ContactForm = () => {
                             htmlFor="age-customized-native-simple"
                             className={classes.label}
                         >
-                            {t("contactForm.1")}
+                            {t("contactForm.walletOrEmail")}
                         </InputLabel>
                         <NativeSelect
                             name="wallet"
@@ -200,7 +200,7 @@ const ContactForm = () => {
                             state={buttonState}
                             disabled={submitting}
                         >
-                            {t("contactForm.2")}
+                            {t("contactForm.requestPermission")}
                         </ProgressButton>
                     </form>
                 </div>
@@ -217,7 +217,7 @@ const RequestAddress = ({ className }) => {
     const { latitude, longitude } = usePosition({
         enableHighAccuracy: true
     })
-    const { t, i18n } = useTranslation()
+    const [t] = useTranslation()
 
     const queryGeoEncode = async () => {
         if (!latitude || !longitude) return null
@@ -282,7 +282,7 @@ const RequestAddress = ({ className }) => {
                 name="address"
                 id="address"
                 value={address}
-                label={t("contactForm.3")}
+                label={t("contactForm.currentAddress")}
                 margin="normal"
                 className={className}
             />

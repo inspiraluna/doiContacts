@@ -47,14 +47,14 @@
         "consents": "Consents"
     },
     "contactForm": {
-        "1": "Wallet / Email",
-        "2": "Request Permission",
-        "3": "Current Address",
-        "4": "Email permssion to request",
-        "5": "no email",
-        "6": "no wallets defined",
-        "7": "Broadcasted DOI permission transaction to Doichain node...",
-        "8": "error while broadcasting transaction"
+        "walletOrEmail": "Wallet / Email",
+        "requestPermission": "Request Permission",
+        "currentAddress": "Current Address",
+        "EmailPermissionToRequest": "Email permssion to request",
+        "noEmail": "no email",
+        "noWalletsDefined": "no wallets defined",
+        "BroadcastedDoiTx": "Broadcasted DOI permission transaction to Doichain node...",
+        "broadcastingError": "error while broadcasting transaction"
     },
     "contactItem": {
         "created": "Created",
@@ -87,25 +87,25 @@
         "updateWallet": "Update Wallet"
     },
     "sendAmount": {
-        "1": "Broadcasted Doicoin tx to Doichain node",
-        "2": "error while broadcasting Doicoin transaction",
-        "3": "Send DOI from address:",
-        "4": "Balance",
-        "5": "to Doichain Address",
-        "6": "Amount (DOI)",
-        "7": "Send DOI"
+        "broadcastedDoicoinTx": "Broadcasted Doicoin tx to Doichain node",
+        "broadcastingError": "error while broadcasting Doicoin transaction",
+        "sendFromAddress": "Send DOI from address:",
+        "balance": "Balance",
+        "doichainAddress": "to Doichain Address",
+        "amount": "Amount (DOI)",
+        "sendDoi": "Send DOI"
     },
     "walletItem": {
-        "1": "DoiCoin-Address:",
-        "2": "Doichain address copied to clipboard",
-        "3": "Balance:",
-        "4": "(unconfirmed:",
-        "5": "Block:",
-        "6": "Email:",
-        "7": "Subject:",
-        "8": "Content:",
-        "9": "Content-Type:",
-        "10": "Redirect-Url:",
-        "11": "PubKey:"
+        "doiCoinAddress": "DoiCoin-Address:",
+        "doiCoinAddressCopied": "Doichain address copied to clipboard",
+        "balance": "Balance:",
+        "unconfirmed": "(unconfirmed:",
+        "block": "Block:",
+        "email": "Email:",
+        "subject": "Subject:",
+        "content": "Content:",
+        "contentType": "Content-Type:",
+        "redirectUrl": "Redirect-Url:",
+        "pubKey": "PubKey:"
     }
 }
