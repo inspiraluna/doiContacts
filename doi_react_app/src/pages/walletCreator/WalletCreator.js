@@ -1,4 +1,4 @@
-import React, { useGlobal, useEffect } from "reactn"
+import React, { useGlobal } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button"
 import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
+import { useTranslation } from "react-i18next"
 
 const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
@@ -16,7 +17,7 @@ const WalletCreator = () => {
     const [wallets, setWallets] = useGlobal("wallets")
     const [seed] = useGlobal("seed")
     const [password1] = useGlobal("password1")
-    const [hdKey, setHdKey] = useGlobal("hdKey")
+    const [t] = useTranslation()
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -40,18 +41,18 @@ const WalletCreator = () => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
         if (modus === "setPassword" || modus === "restoreWallet") {
+            const bip39 = require("bip39")
+            const HDKey = require("hdkey")
+            const seedPhrase = bip39
+                .mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic")
+                .toString("hex")
 
-            const bip39 = require('bip39')
-            const HDKey = require('hdkey')
-            const seedPhrase = bip39.mnemonicToSeedSync(seed, 
-                password1 ? password1 : "mnemonic").toString('hex')
-
-            const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, 'hex'))
+            const hdkey = HDKey.fromMasterSeed(Buffer.from(seed, "hex"))
             const childkey = hdkey.derive("m/0/0/1")
             const wallet = {}
             wallet.senderEmail = "me@example.com"
-            wallet.privateKey = childkey.privateKey.toString('hex')
-            wallet.publicKey = childkey.publicKey.toString('hex')
+            wallet.privateKey = childkey.privateKey.toString("hex")
+            wallet.publicKey = childkey.publicKey.toString("hex")
 
             let newwallets = wallets
             newwallets.push(wallet)
@@ -82,13 +83,8 @@ const WalletCreator = () => {
                         DoiContacts
                     </Typography>
                     {modus ? (
-                        <Button
-                            color="inherit"
-                            disabled={!checked}
-                            id="next"
-                            onClick={next}
-                        >
-                            Next
+                        <Button color="inherit" disabled={!checked} id="next" onClick={next}>
+                            {t("button.next")}
                         </Button>
                     ) : (
                         ""
@@ -97,11 +93,7 @@ const WalletCreator = () => {
             </AppBar>
             {modus === undefined ? <Welcome /> : ""}
             {modus === "createNewWallet" ? <CreateNewWalletPage /> : ""}
-            {modus === "confirmRecoveryPhrase" ? (
-                <ConfirmRecoveryPhrase next={next} />
-            ) : (
-                ""
-            )}
+            {modus === "confirmRecoveryPhrase" ? <ConfirmRecoveryPhrase next={next} /> : ""}
             {modus === "setPassword" ? <SetPassword /> : ""}
             {modus === "restoreWallet" ? <RestoreWalletPage /> : ""}
         </div>

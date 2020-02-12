@@ -8,12 +8,14 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
+import { useTranslation } from "react-i18next"
 const SetPassword = () => {
     const [password1, setPassword1] = useGlobal("password1")
     const [password2, setPassword2] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
+    const [t] = useTranslation()
 
     useEffect(() => {
         // const comparePasswords = () => {
@@ -52,7 +54,7 @@ const SetPassword = () => {
             }
         } else {
             setChecked(false)
-            setError("Passwords do not match")
+            setError(t("setPassword.errorAlert"))
         }
     }, [password1, password2])
 
@@ -63,12 +65,12 @@ const SetPassword = () => {
     return (
         <div>
             <div className={s.content}>
-                <p>Set a password to protect your wallet in everyday use.</p>
+                <p>{t("setPassword.setPassword")}</p>
                 <br></br>
             </div>
-            <FormControl fullWidth error={error?true:false}>
+            <FormControl fullWidth error={error ? true : false}>
                 <InputLabel htmlFor="standard-adornment-password">
-                    Password
+                    {t("setPassword.password")}
                 </InputLabel>
                 <Input
                     id="standard-adornment-password"
@@ -84,23 +86,17 @@ const SetPassword = () => {
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
                             >
-                                {showPassword ? (
-                                    <Visibility />
-                                ) : (
-                                    <VisibilityOff />
-                                )}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                     }
                 />
-                <FormHelperText id="component-error-text">
-                    {error}
-                </FormHelperText>
+                <FormHelperText id="component-error-text">{error}</FormHelperText>
             </FormControl>
             <br></br>
-            <FormControl fullWidth error={error?true:false}>
+            <FormControl fullWidth error={error ? true : false}>
                 <InputLabel htmlFor="standard-adornment-password">
-                    Re-type your password
+                    {t("setPassword.reTypePassword")}
                 </InputLabel>
                 <Input
                     id="standard-adornment-password2"
@@ -116,18 +112,12 @@ const SetPassword = () => {
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
                             >
-                                {showPassword ? (
-                                    <Visibility />
-                                ) : (
-                                    <VisibilityOff />
-                                )}
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                         </InputAdornment>
                     }
                 />
-                <FormHelperText id="component-error-text">
-                    {error}
-                </FormHelperText>
+                <FormHelperText id="component-error-text">{error}</FormHelperText>
             </FormControl>
         </div>
     )

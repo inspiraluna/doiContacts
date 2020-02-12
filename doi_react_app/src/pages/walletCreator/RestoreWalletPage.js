@@ -4,15 +4,19 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize"
 import Bip39Password from "./bip39Password"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
-const bip39 = require('bip39')
+import { useTranslation } from "react-i18next"
+const bip39 = require("bip39")
 
 const RestoreWalletPage = props => {
-    const [checked, setChecked] = useGlobal("checked")
-    const [seed, setSeed] = useGlobal('seed')
+    const setChecked = useGlobal("checked")[1]
+    const setSeed = useGlobal("seed")[1]
     const [showPassword, setShowPassword] = useState(false)
-    const [password1, setPassword1] = useGlobal('password1')
+    const [password1] = useGlobal("password1")
+    const [t] = useTranslation()
 
-    useEffect(() => { setChecked(false) }, [])
+    useEffect(() => {
+        setChecked(false)
+    }, [])
 
     const handleChange = () => {
         setShowPassword(!showPassword)
@@ -21,7 +25,7 @@ const RestoreWalletPage = props => {
     return (
         <div>
             <div className={s.content}>
-                <p>Please confirm your recovery phrase</p>
+                <p>{t("restoreRecoveryPhrase.confirm")}</p>
             </div>
             <br></br>
             <span>
@@ -30,13 +34,16 @@ const RestoreWalletPage = props => {
                     cols="210"
                     id="textarea"
                     aria-label="maximum height"
-                    placeholder="Please entry your seed phrase"
+                    placeholder={t("restoreRecoveryPhrase.enterSeed")}
                     onChange={e => {
-                        console.log('checking seedPhrase',e.target.value)
-                        console.log('valid without pw',bip39.validateMnemonic(e.target.value))
-                        console.log('valid with pw:'+password1,bip39.validateMnemonic(e.target.value,password1))
+                        console.log("checking seedPhrase", e.target.value)
+                        console.log("valid without pw", bip39.validateMnemonic(e.target.value))
+                        console.log(
+                            "valid with pw:" + password1,
+                            bip39.validateMnemonic(e.target.value, password1)
+                        )
                         if (bip39.validateMnemonic(e.target.value)) {
-                            console.log('seedPhrase',e.target.value)
+                            console.log("seedPhrase", e.target.value)
                             setSeed(e.target.value)
                             setChecked(true)
                         } else setChecked(false)
@@ -47,10 +54,8 @@ const RestoreWalletPage = props => {
                 <Bip39Password display={showPassword} />
             </div>
             <FormControlLabel
-                control={
-                    <Checkbox id="checked" onChange={() => handleChange()} />
-                }
-                label="To restore your wallet, please provide the same BIP39 password you used when created the protected recovery phrase."
+                control={<Checkbox id="checked" onChange={() => handleChange()} />}
+                label={t("restoreRecoveryPhrase.showPassword")}
             />
         </div>
     )

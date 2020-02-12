@@ -1,0 +1,109 @@
+{
+    "welcome": {
+        "1": "Bienvenue sur DoiContacts"
+    },
+    "button": {
+        "createNewWallet": "Créer un nouveau portefeuille",
+        "restoreWallet": "Restaurer un portefeuille",
+        "next": "Suivant",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "receive": "Recevoir",
+        "send": "Envoyer",
+        "verify": "Vérifier",
+        "back": "Retour",
+        "skip": "Sauter"
+    },
+    "option": {
+        "choose": "Choisissez une langue s'il vous plait"
+    },
+    "saveRecoveryPhrase": {
+        "save": "Veuillez noter votre phrase de récupération sur papier et la conserver dans un endroit sûr et hors ligne. Ne la saisissez jamais sur un site Web ou un service en ligne",
+        "alert": "Si vous perdez votre phrase de récupération, vos portefeuilles ne peuvent pas être récupérés",
+        "confirm": "J'ai enregistré ma phrase de récupération en toute sécurité hors ligne"
+    },
+    "restoreRecoveryPhrase": {
+        "confirm": "Veuillez confirmer votre phrase de récupération",
+        "enterSeed": "Veuillez saisir votre phrase de récupération",
+        "showPassword": "Pour restaurer votre portefeuille, veuillez fournir le même mot de passe BIP39 que vous avez utilisé lors de la création de la phrase de récupération protégée.",
+        "password": "Mot de passe"
+    },
+    "confirmRecoveryPhrase": {
+        "confirm": "Veuillez confirmer votre phrase de récupération",
+        "enterSeed": "Veuillez saisir votre phrase de récupération",
+        "checkRecoveryPhrase": "Veuillez vous assurer que votre phrase de récupération correspond à ce qui suit:",
+        "alert": "Il est recommandé de ne pas ignorer la vérification, afin que toute faute d'orthographe puisse être supprimée",
+        "skippingVerification": "Ignorer la vérification"
+    },
+    "setPassword": {
+        "setPassword": "Définissez un mot de passe pour protéger votre portefeuille au quotidien.",
+        "password": "Mot de passe",
+        "reTypePassword": "Retapez votre mot de passe",
+        "errorAlert": "Les mots de passe ne correspondent pas"
+    },
+    "tabs": {
+        "contacts": "Contacts",
+        "wallets": "Portefeuilles",
+        "consents": "consentements"
+    },
+    "contactForm": {
+        "1": "Portefeuille / Email",
+        "2": "Demande d'autorisation",
+        "3": "Adresse actuelle",
+        "4": "Adresse e-mail pour la demande d'autorisation",
+        "5": "pas d'email",
+        "6": "aucun portefeuille défini",
+        "7": "Transaction d'autorisation DOI diffusée sur le nœud Doichain ...",
+        "8": "erreur lors de la diffusion de la transaction"
+    },
+    "contactItem": {
+        "created": "Créé",
+        "email": "Email",
+        "nameId": "id du nom",
+        "txId": "Hachage",
+        "status": "Statut",
+        "validatorAddress": "Adresse du validateur"
+    },
+    "deleteContact": {
+        "alert": "Êtes-vous sûr?",
+        "confirm": "Voulez-vous vraiment supprimer ce contact? ce processus est irréversible"
+    },
+    "deleteWallet": {
+        "alert": "Êtes-vous sûr?",
+        "confirm": "Voulez-vous vraiment supprimer ce portefeuille? ce processus est irréversible"
+    },
+    "walletPage": {
+        "receiveDoi": "Recevoir DOI pour l'adresse:",
+        "amount": "Montant:",
+        "amountLabel": "Montant (DOI)",
+        "senderLabel": "E-mail de l'expéditeur",
+        "subjectLabel": "Sujet",
+        "contentTypeLabel": "Type de contenu",
+        "editEmailTemp": "Modifier le modèle d'e-mail",
+        "labelRedUrl": "URL de redirection (après validation)",
+        "addWallet": "Ajouter un portefeuille",
+        "updateWallet": "Mettre à jour le portefeuille"
+    },
+    "sendAmount": {
+        "1": "Doicoin transaction diffusée au nœud Doichain",
+        "2": "erreur lors de la diffusion de la transaction Doicoin",
+        "3": "Envoyer DOI depuis l'adresse:",
+        "4": "Solde",
+        "5": "à l'adresse Doichain",
+        "6": "Montant (DOI)",
+        "7": "Envoyer DOI"
+    },
+    "walletItem": {
+        "1": "Adresse DoiCoin:",
+        "2": "Adresse Doichain copiée dans le presse-papiers",
+        "3": "Solde:",
+        "4": "(non confirmé:",
+        "5": "Bloc:",
+        "6": "Email:",
+        "7": "Sujet:",
+        "8": "Contenu:",
+        "9": "Type de contenu:",
+        "10": "URL de redirection:",
+        "11": "Clé publique:"
+    }
+}

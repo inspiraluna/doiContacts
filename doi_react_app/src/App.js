@@ -12,16 +12,17 @@ import { register } from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import bitcore from "bitcore-doichain"
 import initStorage from "./utils/storage"
-import WalletCreator from './pages/walletCreator/WalletCreator';
+import WalletCreator from "./pages/walletCreator/WalletCreator"
 import AppBar from "@material-ui/core/AppBar"
-
+import { useTranslation } from "react-i18next"
 
 const App = props => {
     const [global, setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus,setModus] = useGlobal("modus")
+    const [modus, setModus] = useGlobal("modus")
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
-    const [wallets, setWallets] = useGlobal("wallets");
+    const [wallets] = useGlobal("wallets")
+    const [t] = useTranslation()
 
     // const settings = {
     //     //RegTest
@@ -31,34 +32,32 @@ const App = props => {
     //     host: "localhost"
     // }
 
-        // const settings = {  //testnet 2
-        //     testnet:true,
-        //     from: 'newsletter@doichain.org',
-        //     port:4010,
-        //     host:"5.9.154.231"
-        // }
+    // const settings = {  //testnet 2
+    //     testnet:true,
+    //     from: 'newsletter@doichain.org',
+    //     port:4010,
+    //     host:"5.9.154.231"
+    // }
 
-
-     const settings = {  //testnet 2
-         testnet:true,
-         from: 'newsletter@doichain.org',
-         port:443,
-         ssl:true,
-         host:"doichain-testnet.le-space.de"
-     }
+    const settings = {
+        //testnet 2
+        testnet: true,
+        from: "newsletter@doichain.org",
+        port: 443,
+        ssl: true,
+        host: "doichain-testnet.le-space.de"
+    }
 
     bitcore.settings.setSettings(settings)
     bitcore.Networks.defaultNetwork = bitcore.Networks.get("doichain-testnet")
 
     register()
 
-    useEffect(
-        () => {
-            if(!currentTab && !modus && !activeWallet){
-                initStorage(props.cordova,global,setGlobal)
-            }
+    useEffect(() => {
+        if (!currentTab && !modus && !activeWallet) {
+            initStorage(props.cordova, global, setGlobal)
         }
-    );
+    })
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
@@ -91,38 +90,41 @@ const App = props => {
     }
     const our_CurrentTab = currentTab ? currentTab : 0
 
-       if(!wallets || wallets.length === 0){
-           return <WalletCreator />
-       }else{
-    return (
-
-         <div>
-             <AppBar position="static">
-                <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
-                    setCurrentTab(newValue)
-                    setActiveWallet(undefined)
-                    setModus('list')
-                }} aria-label="Doichain Contacts">
-                    <Tab label="Contacts" {...a11yProps(0)} />
-                    <Tab label="Wallets" {...a11yProps(1)} />
-                    <Tab label="Consents" {...a11yProps(2)} />
-                </Tabs>
-            </AppBar>
-            <TabPanel value={Number(our_CurrentTab)} index={0}>
-              {currentTab===0 && <ContactsPage/>}
-            </TabPanel>
-            <TabPanel value={Number(our_CurrentTab)} index={1}>
-                {currentTab===1 && <WalletsPage/>}
-            </TabPanel>
-            <TabPanel value={Number(our_CurrentTab)} index={2}>
-              My Consents
-            </TabPanel>
-            <div style={{float:'right'}}>
-                {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}
+    if (!wallets || wallets.length === 0) {
+        return <WalletCreator />
+    } else {
+        return (
+            <div>
+                <AppBar position="static">
+                    <Tabs
+                        value={Number(our_CurrentTab)}
+                        onChange={(event, newValue) => {
+                            setCurrentTab(newValue)
+                            setActiveWallet(undefined)
+                            setModus("list")
+                        }}
+                        aria-label="Doichain Contacts"
+                    >
+                        <Tab label={t("tabs.contacts")} {...a11yProps(0)} />
+                        <Tab label={t("tabs.wallets")} {...a11yProps(1)} />
+                        <Tab label={t("tabs.consents")} {...a11yProps(2)} />
+                    </Tabs>
+                </AppBar>
+                <TabPanel value={Number(our_CurrentTab)} index={0}>
+                    {currentTab === 0 && <ContactsPage />}
+                </TabPanel>
+                <TabPanel value={Number(our_CurrentTab)} index={1}>
+                    {currentTab === 1 && <WalletsPage />}
+                </TabPanel>
+                <TabPanel value={Number(our_CurrentTab)} index={2}>
+                    My Consents
+                </TabPanel>
+                <div style={{ float: "right" }}>
+                    {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}
+                </div>
+                <CustomizedSnackbars />
             </div>
-            <CustomizedSnackbars />
-        </div>
-    );
-}
+        )
+    }
 }
 export default App

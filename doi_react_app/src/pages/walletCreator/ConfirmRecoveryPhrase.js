@@ -7,11 +7,13 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import TextareaAutosize from "@material-ui/core/TextareaAutosize"
+import { useTranslation } from "react-i18next"
 
 const ConfirmRecoveryPhrase = ({ next }) => {
-    const [checked, setChecked] = useGlobal("checked")
+    const setChecked = useGlobal("checked")[1]
     const [open, setOpen] = useState(undefined)
-    const [seed, setSeed] = useGlobal("seed")
+    const [seed] = useGlobal("seed")
+    const [t] = useTranslation()
 
     const handleClose = () => {
         setOpen(undefined)
@@ -24,7 +26,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
     return (
         <div>
             <div className={s.content}>
-                <p>Please confirm your recovery phrase</p>
+                <p>{t("confirmRecoveryPhrase.confirm")}</p>
             </div>
             <span>
                 {/* <Button color="primary">cycle</Button>
@@ -55,7 +57,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                     rows={10}
                     cols="210"
                     aria-label="maximum height"
-                    placeholder="Please enter your seed phrase"
+                    placeholder={t("confirmRecoveryPhrase.enterSeed")}
                     onChange={e => {
                         if (e.target.value === seed) {
                             setChecked(true)
@@ -65,7 +67,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
             </span>
             <div className={s.content}>
                 <Button onClick={() => setOpen(!open)} id="skipButton">
-                    Skip
+                    {t("confirmRecoveryPhrase.skip")}
                 </Button>
             </div>
             <Dialog
@@ -75,27 +77,23 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Skipping Verification"}
+                    {t("confirmRecoveryPhrase.skippingVerification")}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        <b>Please make sure that your recovery phrase matches the
-                        following:</b><br></br>
-                        {seed}<br></br>
-                        <b>It is recommended not to skip verification, so that any
-                        misspellings could be deteted</b>
+                        <b>{t("confirmRecoveryPhrase.checkRecoveryPhrase")}</b>
+                        <br></br>
+                        {seed}
+                        <br></br>
+                        <b>{t("confirmRecoveryPhrase.alert")}</b>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        onClick={() => handleClose()}
-                        id="close"
-                        color="primary"
-                    >
-                        Cancel
+                    <Button onClick={() => handleClose()} id="close" color="primary">
+                        {t("button.cancel")}
                     </Button>
                     <Button color="primary" onClick={next} id="skip" autoFocus>
-                        Skip
+                        {t("button.skip")}
                     </Button>
                 </DialogActions>
             </Dialog>

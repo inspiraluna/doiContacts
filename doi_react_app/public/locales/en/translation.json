@@ -1,0 +1,111 @@
+{
+    "welcome": {
+        "1": "Welcome to DoiContacts"
+    },
+    "button": {
+        "createNewWallet": "Create a new wallet",
+        "restoreWallet": "Restore a wallet",
+        "next": "Next",
+        "receive": "Receive",
+        "send": "Send",
+        "verify": "Verify",
+        "back": "Back",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "skip": "Skip"
+    },
+    "option": {
+        "choose": "Please choose a language"
+    },
+    "saveRecoveryPhrase": {
+        "save": "Please write your recovery phrase down on paper and keep it in a safe, offline place. Never enter it in any online website or service",
+        "alert": "If you lose your recovery phrase, your wallets cannot be recovered",
+        "confirm": "I have safely stored my recovery phrase offline"
+    },
+    "restoreRecoveryPhrase": {
+        "confirm": "Please confirm your recovery phrase",
+        "enterSeed": "Please entry your seed phrase",
+        "showPassword": "To restore your wallet, please provide the same BIP39 password you used when created the protected recovery phrase.",
+        "password": "Password"
+    },
+    "confirmRecoveryPhrase": {
+        "confirm": "Please confirm your recovery phrase",
+        "enterSeed": "Please entry your seed phrase",
+        "checkRecoveryPhrase": "Please make sure that your recovery phrase matches the following:",
+        "alert": "It is recommended not to skip verification, so that any misspellings could be deteted",
+        "skippingVerification": "Skipping Verification"
+    },
+    "setPassword": {
+        "setPassword": "Set a password to protect your wallet in everyday use.",
+        "password": "Password",
+        "reTypePassword": "Re-type your password",
+        "errorAlert": "Passwords do not match"
+    },
+    "tabs": {
+        "contacts": "Contacts",
+        "wallets": "Wallets",
+        "consents": "Consents"
+    },
+    "contactForm": {
+        "1": "Wallet / Email",
+        "2": "Request Permission",
+        "3": "Current Address",
+        "4": "Email permssion to request",
+        "5": "no email",
+        "6": "no wallets defined",
+        "7": "Broadcasted DOI permission transaction to Doichain node...",
+        "8": "error while broadcasting transaction"
+    },
+    "contactItem": {
+        "created": "Created",
+        "email": "Email",
+        "nameId": "NameId",
+        "txId": "txId",
+        "status": "Status",
+        "validatorAddress": "ValidatorAddress"
+    },
+    "deleteContact": {
+        "alert": "Are you sure?",
+        "confirm": "Do you really want to delete this contact? this process cannot be undone",
+        "cancel": "Cancel",
+        "delete": "Delete"
+    },
+    "deleteWallet": {
+        "alert": "Are you sure?",
+        "confirm": "Do you really want to delete this wallet? this process cannot be undone"
+    },
+    "walletPage": {
+        "receiveDoi": "Receive DOI for address:",
+        "amount": "Amount:",
+        "amountLabel": "Amount (DOI)",
+        "senderLabel": "Sender email",
+        "subjectLabel": "Subject",
+        "contentTypeLabel": "Content-Type",
+        "editEmailTemp": "Edit Email template",
+        "labelRedUrl": "Redirect URL (after commit)",
+        "addWallet": "Add Wallet",
+        "updateWallet": "Update Wallet"
+    },
+    "sendAmount": {
+        "1": "Broadcasted Doicoin tx to Doichain node",
+        "2": "error while broadcasting Doicoin transaction",
+        "3": "Send DOI from address:",
+        "4": "Balance",
+        "5": "to Doichain Address",
+        "6": "Amount (DOI)",
+        "7": "Send DOI"
+    },
+    "walletItem": {
+        "1": "DoiCoin-Address:",
+        "2": "Doichain address copied to clipboard",
+        "3": "Balance:",
+        "4": "(unconfirmed:",
+        "5": "Block:",
+        "6": "Email:",
+        "7": "Subject:",
+        "8": "Content:",
+        "9": "Content-Type:",
+        "10": "Redirect-Url:",
+        "11": "PubKey:"
+    }
+}

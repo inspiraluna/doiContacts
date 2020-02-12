@@ -4,16 +4,10 @@ import bitcore from "bitcore-doichain"
 import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
-import isEqual from 'lodash.isequal';
+import isEqual from "lodash.isequal"
+import { useTranslation } from "react-i18next"
 
-const WalletItem = ({
-    senderEmail,
-    subject,
-    content,
-    publicKey,
-    contentType,
-    redirectUrl
-}) => {
+const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
     const [balance, setBalance] = useState(0)
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
@@ -23,6 +17,7 @@ const WalletItem = ({
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
+    const [t] = useTranslation()
 
     useEffect(() => {
         /**
@@ -49,18 +44,20 @@ const WalletItem = ({
                     utxoRounds.forEach(utxoRound => {
                         console.log("utxoRound", utxoRound)
                         utxoRound.utxos.forEach(utxo => {
-                            console.log("adding utxo.amount to unconfirmedUTXOsBalance" + unconfirmedUTXOsBalance, utxo.amount)
+                            console.log(
+                                "adding utxo.amount to unconfirmedUTXOsBalance" +
+                                    unconfirmedUTXOsBalance,
+                                utxo.amount
+                            )
                             if (utxo.address === address && utxo.amount > 0)
-                                unconfirmedUTXOsBalance += utxo.amount})
+                                unconfirmedUTXOsBalance += utxo.amount
+                        })
                     })
                     //setUnconfirmedBalance(unconfirmedUTXOsBalance)
                 }
 
                 let currentWalletBalance = 0
-                if (
-                    currentWallet.addresses === undefined ||
-                    currentWallet.addresses.length === 0
-                )
+                if (currentWallet.addresses === undefined || currentWallet.addresses.length === 0)
                     currentWallet.addresses = [{ address: address }]
 
                 let currentAddresses = currentWallet.addresses
@@ -128,7 +125,7 @@ const WalletItem = ({
         return (
             <div>
                 <li style={{ fontSize: "9px" }}>
-                    DoiCoin-Address: <br />
+                    {t("walletItem.1")} <br />
                     <b>
                         {address ? address.toString() : ""}{" "}
                         <CopyToClipboard
@@ -136,7 +133,7 @@ const WalletItem = ({
                             onCopy={() =>
                                 setOpenSnackbar({
                                     open: true,
-                                    msg: "Doichain address copied to clipboard",
+                                    msg: t("walletItem.2"),
                                     type: "success"
                                 })
                             }
@@ -146,44 +143,49 @@ const WalletItem = ({
                     </b>
                     <br />
                     <b>
-                        Balance: {balance} DOI{""}
+                        {t("walletItem.3")} {balance} DOI{""}
                         {unconfirmedBalance && unconfirmedBalance > 0
-                            ? "(unconfirmed:" + unconfirmedBalance + " DOI)"
+                            ? t("walletItem.4") + unconfirmedBalance + " DOI)"
                             : ""}
                     </b>
                     <br />
-                    <b>Block: {wallets[0].block}</b>
+                    <b>
+                        {t("walletItem.5")} {wallets[0].block}
+                    </b>
                 </li>
                 <br />
                 <div style={{ fontSize: "9px", border: "2px solid lightgrey" }}>
-                    <label htmlFor={"senderEmail"}>Email: </label><div id="sentEmail">
-                    {senderEmail}</div>
+                    <label htmlFor={"senderEmail"}>{t("walletItem.6")} </label>
+                    <div id="sentEmail">{senderEmail}</div>
                     <br />
-                    <label htmlFor={"subject"}></label><div id="subj">Subject: {subject}</div>
+                    <label htmlFor={"subject"}></label>
+                    <div id="subj">
+                        {t("walletItem.7")} {subject}
+                    </div>
                     <br />
-                    <label htmlFor={"content"}></label><div id="content">Content: {content}</div>
+                    <label htmlFor={"content"}></label>
+                    <div id="content">
+                        {t("walletItem.8")} {content}
+                    </div>
                     <br />
-                    <label htmlFor={"contentType"}></label><div>Content-Type:{" "}
-                    {contentType}</div>
+                    <label htmlFor={"contentType"}></label>
+                    <div>
+                        {t("walletItem.9")} {contentType}
+                    </div>
                     <br />
-                    <label htmlFor={"redirectUrl"}></label><div id="redUrl">Redirect-Url:{" "}
-                    {redirectUrl}</div>
+                    <label htmlFor={"redirectUrl"}></label>
+                    <div id="redUrl">
+                        {t("walletItem.10")} {redirectUrl}
+                    </div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                     <b>
-                        PubKey:
-                        <input
-                            type={"text"}
-                            readOnly={true}
-                            defaultValue={publicKey}
-                            size={40}
-                        />
+                        {t("walletItem.11")}
+                        <input type={"text"} readOnly={true} defaultValue={publicKey} size={40} />
                     </b>
                     <br />
                 </div>
-                <div>
-                    {address ? <TransactionList address={address} /> : ""}
-                </div>
+                <div>{address ? <TransactionList address={address} /> : ""}</div>
             </div>
         )
 }
