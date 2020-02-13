@@ -4,16 +4,10 @@ import bitcore from "bitcore-doichain"
 import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
-import isEqual from 'lodash.isequal';
+import isEqual from "lodash.isequal"
+import { useTranslation } from "react-i18next"
 
-const WalletItem = ({
-    senderEmail,
-    subject,
-    content,
-    publicKey,
-    contentType,
-    redirectUrl
-}) => {
+const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
     const [balance, setBalance] = useState(0)
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
@@ -23,6 +17,7 @@ const WalletItem = ({
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
+    const [t] = useTranslation()
 
     useEffect(() => {
         /**
@@ -49,18 +44,20 @@ const WalletItem = ({
                     utxoRounds.forEach(utxoRound => {
                         console.log("utxoRound", utxoRound)
                         utxoRound.utxos.forEach(utxo => {
-                            console.log("adding utxo.amount to unconfirmedUTXOsBalance" + unconfirmedUTXOsBalance, utxo.amount)
+                            console.log(
+                                "adding utxo.amount to unconfirmedUTXOsBalance" +
+                                    unconfirmedUTXOsBalance,
+                                utxo.amount
+                            )
                             if (utxo.address === address && utxo.amount > 0)
-                                unconfirmedUTXOsBalance += utxo.amount})
+                                unconfirmedUTXOsBalance += utxo.amount
+                        })
                     })
                     //setUnconfirmedBalance(unconfirmedUTXOsBalance)
                 }
 
                 let currentWalletBalance = 0
-                if (
-                    currentWallet.addresses === undefined ||
-                    currentWallet.addresses.length === 0
-                )
+                if (currentWallet.addresses === undefined || currentWallet.addresses.length === 0)
                     currentWallet.addresses = [{ address: address }]
 
                 let currentAddresses = currentWallet.addresses
@@ -127,63 +124,66 @@ const WalletItem = ({
     else
         return (
             <div>
-                <li style={{ fontSize: "9px" }}>
-                    DoiCoin-Address: <br />
-                    <b>
-                        {address ? address.toString() : ""}{" "}
-                        <CopyToClipboard
-                            text={address ? address.toString() : ""}
-                            onCopy={() =>
-                                setOpenSnackbar({
-                                    open: true,
-                                    msg: "Doichain address copied to clipboard",
-                                    type: "success"
-                                })
-                            }
-                        >
-                            <FileCopyIcon color={"primary"}></FileCopyIcon>
-                        </CopyToClipboard>
-                    </b>
+                <li style={{ fontSize: "15px" }}>
+                    <b> {t("walletItem.doiCoinAddress")} </b>
+                    {address ? address.toString() : ""}{" "}
+                    <CopyToClipboard
+                        text={address ? address.toString() : ""}
+                        onCopy={() =>
+                            setOpenSnackbar({
+                                open: true,
+                                msg: t("walletItem.doiCoinAddressCopied"),
+                                type: "success"
+                            })
+                        }
+                    >
+                        <FileCopyIcon color={"primary"}></FileCopyIcon>
+                    </CopyToClipboard>
                     <br />
-                    <b>
-                        Balance: <span id="balance">{balance}</span> DOI{""}
-                        <span id="unconfirmedBalance">{unconfirmedBalance && unconfirmedBalance > 0
-                            ? "(unconfirmed:" + unconfirmedBalance + " DOI)"
-                            : ""}</span>
-                    </b>
+                    <b>{t("walletItem.balance")}</b> <span id="balance">{balance}</span> DOI{""}
+                    <span id="unconfirmedBalance">
+                        {unconfirmedBalance && unconfirmedBalance > 0
+                            ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"
+                            : ""}
+                    </span>
                     <br />
-                    <b>Block: {wallets[0].block}</b>
+                    <b>{t("walletItem.block")}</b> {wallets[0].block}
                 </li>
                 <br />
-                <div style={{ fontSize: "9px", border: "2px solid lightgrey" }}>
-                    <label htmlFor={"senderEmail"}>Email: </label><div id="sentEmail">
-                    {senderEmail}</div>
+                <div style={{ fontSize: "15px", border: "2px solid lightgrey" }}>
+                    <label htmlFor={"senderEmail"}></label>
+                    <div id="sentEmail">
+                        <b>{t("walletItem.email")}</b> {senderEmail}
+                    </div>
                     <br />
-                    <label htmlFor={"subject"}></label><div id="subj">Subject: {subject}</div>
+                    <label htmlFor={"subject"}></label>
+                    <div id="subj">
+                        <b>{t("walletItem.subject")}</b> {subject}
+                    </div>
                     <br />
-                    <label htmlFor={"content"}></label><div id="content">Content: {content}</div>
+                    <label htmlFor={"content"}></label>
+                    <div id="content">
+                        <b>{t("walletItem.content")}</b> {content}
+                    </div>
                     <br />
-                    <label htmlFor={"contentType"}></label><div>Content-Type:{" "}
-                    {contentType}</div>
+                    <label htmlFor={"contentType"}></label>
+                    <div>
+                        <b>{t("walletItem.contentType")}</b> {contentType}
+                    </div>
                     <br />
-                    <label htmlFor={"redirectUrl"}></label><div id="redUrl">Redirect-Url:{" "}
-                    {redirectUrl}</div>
+                    <label htmlFor={"redirectUrl"}></label>
+                    <div id="redUrl">
+                        <b>{t("walletItem.redirectUrl")}</b> {redirectUrl}
+                    </div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                     <b>
-                        PubKey:
-                        <input
-                            type={"text"}
-                            readOnly={true}
-                            defaultValue={publicKey}
-                            size={40}
-                        />
+                        {t("walletItem.pubKey")}
+                        <input type={"text"} readOnly={true} defaultValue={publicKey} size={40} />
                     </b>
                     <br />
                 </div>
-                <div>
-                    {address ? <TransactionList address={address} /> : ""}
-                </div>
+                <div>{address ? <TransactionList address={address} /> : ""}</div>
             </div>
         )
 }

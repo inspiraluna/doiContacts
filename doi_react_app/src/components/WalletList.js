@@ -15,6 +15,7 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
+import { useTranslation } from "react-i18next"
 
 const WalletList = () => {
     const [wallets, setWallets] = useGlobal("wallets")
@@ -22,6 +23,7 @@ const WalletList = () => {
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
     const setTempWallet = useGlobal("tempWallet")[1]
+    const [t] = useTranslation()
 
     const handleClose = () => {
         setOpen(undefined)
@@ -49,11 +51,7 @@ const WalletList = () => {
     const ourWallets = wallets ? wallets : []
     const walletNode = ourWallets.map((item, index) => {
         return (
-            <ListItem
-                key={index}
-                id="detail"
-                onClick={() => handleDetail(index)}
-            >
+            <ListItem key={index} id="detail" onClick={() => handleDetail(index)}>
                 <ListItemAvatar>
                     <Avatar>
                         <FolderIcon />
@@ -62,14 +60,14 @@ const WalletList = () => {
                 <ListItemText
                     primary={item.senderEmail}
                     secondary={
-                        "Balance: DOI " +
+                        t("walletItem.balance") +
+                        " " +
+                        "DOI" +
+                        " " +
                         Number(item.balance ? item.balance : 0).toFixed(8) +
                         " " +
-                        (item.unconfirmedBalance !== undefined &&
-                        item.unconfirmedBalance > 0
-                            ? "(unconfirmed: DOI " +
-                              item.unconfirmedBalance +
-                              ") "
+                        (item.unconfirmedBalance !== undefined && item.unconfirmedBalance > 0
+                            ? t("walletItem.unconfirmed") + "DOI " + item.unconfirmedBalance + ") "
                             : "")
                     }
                 />
@@ -103,22 +101,15 @@ const WalletList = () => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {"Are you sure?"}
-                </DialogTitle>
+                <DialogTitle id="alert-dialog-title">{t("deleteWallet.alert")}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Do you really want to delete this wallet? this process
-                        cannot be undone
+                        {t("deleteWallet.confirm")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        onClick={() => handleClose()}
-                        id="closeAlert"
-                        color="primary"
-                    >
-                        Cancel
+                    <Button onClick={() => handleClose()} id="closeAlert" color="primary">
+                        {t("button.cancel")}
                     </Button>
                     <Button
                         onClick={() => handleRemove()}
@@ -126,7 +117,7 @@ const WalletList = () => {
                         color="primary"
                         autoFocus
                     >
-                        Delete
+                        {t("button.delete")}
                     </Button>
                 </DialogActions>
             </Dialog>

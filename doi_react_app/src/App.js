@@ -12,17 +12,18 @@ import { register } from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import bitcore from "bitcore-doichain"
 import initStorage from "./utils/storage"
-import WalletCreator from './pages/walletCreator/WalletCreator';
+import WalletCreator from "./pages/walletCreator/WalletCreator"
 import AppBar from "@material-ui/core/AppBar"
 import {appVersion} from "./appVersion";
-
+import { useTranslation } from "react-i18next"
 
 const App = props => {
     const [global, setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus,setModus] = useGlobal("modus")
+    const [modus, setModus] = useGlobal("modus")
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
-    const [wallets, setWallets] = useGlobal("wallets");
+    const [wallets] = useGlobal("wallets")
+    const [t] = useTranslation()
 
     // const settings = {
     //     //RegTest
@@ -32,34 +33,32 @@ const App = props => {
     //     host: "localhost"
     // }
 
-        // const settings = {  //testnet 2
-        //     testnet:true,
-        //     from: 'newsletter@doichain.org',
-        //     port:4010,
-        //     host:"5.9.154.231"
-        // }
+    // const settings = {  //testnet 2
+    //     testnet:true,
+    //     from: 'newsletter@doichain.org',
+    //     port:4010,
+    //     host:"5.9.154.231"
+    // }
 
-
-     const settings = {  //testnet 2
-         testnet:true,
-         from: 'newsletter@doichain.org',
-         port:443,
-         ssl:true,
-         host:"doichain-testnet.le-space.de"
-     }
+    const settings = {
+        //testnet 2
+        testnet: true,
+        from: "newsletter@doichain.org",
+        port: 443,
+        ssl: true,
+        host: "doichain-testnet.le-space.de"
+    }
 
     bitcore.settings.setSettings(settings)
     bitcore.Networks.defaultNetwork = bitcore.Networks.get("doichain-testnet")
 
     register()
 
-    useEffect(
-        () => {
-            if(!currentTab && !modus && !activeWallet){
-                initStorage(props.cordova,global,setGlobal)
-            }
+    useEffect(() => {
+        if (!currentTab && !modus && !activeWallet) {
+            initStorage(props.cordova, global, setGlobal)
         }
-    );
+    })
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
@@ -119,12 +118,8 @@ const App = props => {
             <TabPanel value={Number(our_CurrentTab)} index={2}>
               My Consents
             </TabPanel>
-            <div style={{float:'right'}}>
-                {/*  <MenuButton {...state} elements={ELEMENTS.slice(0, state.numElements)}/> */}
             </div>
-            <CustomizedSnackbars />
-        </div>
-    );
-}
+        )
+    }
 }
 export default App

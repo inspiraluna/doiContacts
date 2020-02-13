@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button"
 import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
+import { useTranslation } from "react-i18next"
 
 const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
@@ -16,6 +17,7 @@ const WalletCreator = () => {
     const [wallets, setWallets] = useGlobal("wallets")
     const [seed] = useGlobal("seed")
     const [password1] = useGlobal("password1")
+    const [t] = useTranslation()
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -41,8 +43,10 @@ const WalletCreator = () => {
         if (modus === "setPassword" || modus === "restoreWallet") {
             const bip39 = require("bip39")
             const HDKey = require("hdkey")
-            const masterSeed = bip39.mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic").toString("hex")
-            console.log("masterSeed",masterSeed)
+            const masterSeed = bip39
+                .mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic")
+                .toString("hex")
+            console.log("masterSeed", masterSeed)
             const hdkey = HDKey.fromMasterSeed(Buffer.from(masterSeed, "hex"))
             const childkey = hdkey.derive("m/0/0/1")
             const wallet = {}
@@ -80,7 +84,7 @@ const WalletCreator = () => {
                     </Typography>
                     {modus ? (
                         <Button color="inherit" disabled={!checked} id="next" onClick={next}>
-                            Next
+                            {t("button.next")}
                         </Button>
                     ) : (
                         ""

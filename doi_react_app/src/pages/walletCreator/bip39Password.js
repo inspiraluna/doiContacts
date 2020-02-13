@@ -2,15 +2,19 @@ import React, { useGlobal } from "reactn"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
+import { useTranslation } from "react-i18next"
 
 const Bip39Password = props => {
     const setPassword1 = useGlobal("password1")[1]
+    const [t] = useTranslation()
 
     if (props.display === true) {
         return (
             <div>
                 <FormControl fullWidth>
-                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                    <InputLabel htmlFor="standard-adornment-password">
+                        {t("restoreRecoveryPhrase.password")}
+                    </InputLabel>
                     <Input
                         id="standard-adornment-password"
                         fullWidth

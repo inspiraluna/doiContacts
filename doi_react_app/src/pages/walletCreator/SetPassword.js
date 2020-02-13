@@ -8,12 +8,14 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
+import { useTranslation } from "react-i18next"
 const SetPassword = () => {
     const [password1, setPassword1] = useGlobal("password1")
     const [password2, setPassword2] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
+    const [t] = useTranslation()
 
     useEffect(() => {
         // const comparePasswords = () => {
@@ -52,7 +54,7 @@ const SetPassword = () => {
             }
         } else {
             setChecked(false)
-            setError("Passwords do not match")
+            setError(t("setPassword.errorAlert"))
         }
     }, [password1, password2])
 
@@ -62,10 +64,12 @@ const SetPassword = () => {
 
     return (
         <div className={s.content}>
-            <p>Set a password to protect your wallet in everyday use.</p>
+            <p>{t("setPassword.setPassword")}</p>
             <br></br>
             <FormControl fullWidth error={error ? true : false}>
-                <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                <InputLabel htmlFor="standard-adornment-password">
+                    {t("setPassword.password")}
+                </InputLabel>
                 <Input
                     id="standard-adornment-password"
                     fullWidth
@@ -88,7 +92,9 @@ const SetPassword = () => {
             </FormControl>
             <br></br>
             <FormControl fullWidth error={error ? true : false}>
-                <InputLabel htmlFor="standard-adornment-password">Re-type your password</InputLabel>
+                <InputLabel htmlFor="standard-adornment-password">
+                    {t("setPassword.reTypePassword")}
+                </InputLabel>
                 <Input
                     id="standard-adornment-password2"
                     fullWidth
