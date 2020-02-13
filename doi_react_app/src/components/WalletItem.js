@@ -124,58 +124,54 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
     else
         return (
             <div>
-                <li style={{ fontSize: "9px" }}>
-                    {t("walletItem.doiCoinAddress")} <br />
-                    <b>
-                        {address ? address.toString() : ""}{" "}
-                        <CopyToClipboard
-                            text={address ? address.toString() : ""}
-                            onCopy={() =>
-                                setOpenSnackbar({
-                                    open: true,
-                                    msg: t("walletItem.doiCoinAddressCopied"),
-                                    type: "success"
-                                })
-                            }
-                        >
-                            <FileCopyIcon color={"primary"}></FileCopyIcon>
-                        </CopyToClipboard>
-                    </b>
+                <li style={{ fontSize: "15px" }}>
+                    <b> {t("walletItem.doiCoinAddress")} </b>
+                    {address ? address.toString() : ""}{" "}
+                    <CopyToClipboard
+                        text={address ? address.toString() : ""}
+                        onCopy={() =>
+                            setOpenSnackbar({
+                                open: true,
+                                msg: t("walletItem.doiCoinAddressCopied"),
+                                type: "success"
+                            })
+                        }
+                    >
+                        <FileCopyIcon color={"primary"}></FileCopyIcon>
+                    </CopyToClipboard>
                     <br />
-                    <b>
-                        {t("walletItem.balance")} {balance} DOI{""}
-                        {unconfirmedBalance && unconfirmedBalance > 0
-                            ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"
-                            : ""}
-                    </b>
+                    <b>{t("walletItem.balance")}</b> {balance} DOI{""}
+                    {unconfirmedBalance && unconfirmedBalance > 0
+                        ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"
+                        : ""}
                     <br />
-                    <b>
-                        {t("walletItem.block")} {wallets[0].block}
-                    </b>
+                    <b>{t("walletItem.block")}</b> {wallets[0].block}
                 </li>
                 <br />
-                <div style={{ fontSize: "9px", border: "2px solid lightgrey" }}>
-                    <label htmlFor={"senderEmail"}>{t("walletItem.email")} </label>
-                    <div id="sentEmail">{senderEmail}</div>
+                <div style={{ fontSize: "15px", border: "2px solid lightgrey" }}>
+                    <label htmlFor={"senderEmail"}></label>
+                    <div id="sentEmail">
+                        <b>{t("walletItem.email")}</b> {senderEmail}
+                    </div>
                     <br />
                     <label htmlFor={"subject"}></label>
                     <div id="subj">
-                        {t("walletItem.subject")} {subject}
+                        <b>{t("walletItem.subject")}</b> {subject}
                     </div>
                     <br />
                     <label htmlFor={"content"}></label>
                     <div id="content">
-                        {t("walletItem.content")} {content}
+                        <b>{t("walletItem.content")}</b> {content}
                     </div>
                     <br />
                     <label htmlFor={"contentType"}></label>
                     <div>
-                        {t("walletItem.contentType")} {contentType}
+                        <b>{t("walletItem.contentType")}</b> {contentType}
                     </div>
                     <br />
                     <label htmlFor={"redirectUrl"}></label>
                     <div id="redUrl">
-                        {t("walletItem.redirectUrl")} {redirectUrl}
+                        <b>{t("walletItem.redirectUrl")}</b> {redirectUrl}
                     </div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}

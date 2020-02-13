@@ -67,7 +67,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
             </span>
             <div className={s.content}>
                 <Button onClick={() => setOpen(!open)} id="skipButton">
-                    {t("confirmRecoveryPhrase.skip")}
+                    {t("button.skip")}
                 </Button>
             </div>
             <Dialog

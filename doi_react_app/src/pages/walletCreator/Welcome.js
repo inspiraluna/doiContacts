@@ -55,20 +55,38 @@ const Welcome = () => {
             <div>
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="uncontrolled-native">{t("option.choose")}</InputLabel>
-                    <NativeSelect defaultValue={"en"} onChange={changeLanguage}>
-                        <option value={"en"}>English</option>
-                        <option value={"ru"}>Русский</option>
-                        <option value={"fr"}>Francais</option>
+                    <NativeSelect defaultValue={"en"} id="selectLang" onChange={changeLanguage}>
+                        <option value={"en"} id="english">
+                            English
+                        </option>
+                        <option value={"ru"} id="russian">
+                            Русский
+                        </option>
+                        <option value={"fr"} id="french">
+                            Francais
+                        </option>
                     </NativeSelect>
                 </FormControl>
             </div>
+            <br></br>
             <div>
-                <Button onClick={createNewWallet} id="createWallet" color="primary">
+                <Button
+                    onClick={createNewWallet}
+                    id="createWallet"
+                    variant="contained"
+                    color="primary"
+                >
                     {t("button.createNewWallet")}
                 </Button>
             </div>
+            <br></br>
             <div>
-                <Button color="primary" onClick={restoreWallet} id="restoreWallet">
+                <Button
+                    color="primary"
+                    onClick={restoreWallet}
+                    variant="contained"
+                    id="restoreWallet"
+                >
                     {t("button.restoreWallet")}
                 </Button>
             </div>
