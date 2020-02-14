@@ -20,6 +20,22 @@ describe("App E2E", () => {
         cy.get("#next").click()
         cy.contains("Wallets").click()
     }
+    const restoreWallet = () => {
+        cy.get("#selectLang").select("en")
+        cy.get("#restoreWallet").click()
+        cy.get("#preview").click()
+        cy.get("#restoreWallet").click()
+        cy.get("#textarea").type(
+            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
+        )
+        cy.get("#checked").click()
+        cy.get("#standard-adornment-password").type("13456abC")
+        cy.get("#next").click()
+        cy.contains("Wallets").click()
+        cy.get("#detail").click()
+        cy.wait(2000)
+        cy.contains("Wallets").click()
+    }
 
     it("creates a new wallet, adds a new wallet and updates one of the wallets", () => {
         createNewWallet()
@@ -69,27 +85,14 @@ describe("App E2E", () => {
         cy.get("#cancel").click()
     })
 
-    it("restore a wallet", () => {
-        cy.get("#selectLang").select("en")
-        cy.get("#restoreWallet").click()
-        cy.get("#preview").click()
-        cy.get("#restoreWallet").click()
-        cy.get("#textarea").type(
-            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
-        )
-        cy.get("#checked").click()
-        cy.get("#standard-adornment-password").type("13456abC")
-        cy.get("#next").click()
-        cy.contains("Wallets").click()
-        cy.get("#detail").click()
-        cy.wait(2000)
-        cy.contains("Wallets").click()
-    })
-
-    it("should try to create a contact and fail", () => {
+    it("should create a contact", () => {
+        restoreWallet()
         cy.contains("Contacts").click()
-        cy.get("#addButton").click() //TODO please fix
-        cy.contains("#error")
+        cy.get("#addButton").click() 
+        cy.get("#toAddress").type("bob@ci-doichain.org") 
+        cy.get("#requestPermissiom").click()
+        cy.wait(2000)
+        cy.contains("Contacts").click()
     })
 
     it("tests the receive button", () => {
