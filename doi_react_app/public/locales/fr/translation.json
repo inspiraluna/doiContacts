@@ -39,12 +39,12 @@
         "setPassword": "Définissez un mot de passe pour protéger votre portefeuille au quotidien.",
         "password": "Mot de passe",
         "reTypePassword": "Retapez votre mot de passe",
-        "errorAlert": "Les mots de passe ne correspondent pas"
+        "errorAlert": "Les mots de passe ne correspondent pas",
+        "email": "please enter your email"
     },
     "tabs": {
         "contacts": "Contacts",
-        "wallets": "Portefeuilles",
-        "consents": "consentements"
+        "wallets": "Portefeuilles"
     },
     "contactForm": {
         "walletOrEmail": "Portefeuille / Email",
@@ -54,7 +54,7 @@
         "noEmail": "pas d'email",
         "noWalletsDefined": "aucun portefeuille défini",
         "BroadcastedDoiTx": "Transaction d'autorisation DOI diffusée sur le nœud Doichain ...",
-        "broadcastingError": "erreur lors de la diffusion de la transaction"
+        "broadcastingError": "Veuillez saisir votre email"
     },
     "contactItem": {
         "created": "Créé",

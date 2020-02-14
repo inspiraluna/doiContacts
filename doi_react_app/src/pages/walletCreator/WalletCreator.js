@@ -18,6 +18,7 @@ const WalletCreator = () => {
     const [seed] = useGlobal("seed")
     const [password1] = useGlobal("password1")
     const [t] = useTranslation()
+    const [email, setEmail] = useGlobal("email")
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -50,7 +51,7 @@ const WalletCreator = () => {
             const hdkey = HDKey.fromMasterSeed(Buffer.from(masterSeed, "hex"))
             const childkey = hdkey.derive("m/0/0/1")
             const wallet = {}
-            wallet.senderEmail = "me@example.com"
+            wallet.senderEmail = email
             wallet.privateKey = childkey.privateKey.toString("hex")
             wallet.publicKey = childkey.publicKey.toString("hex")
 

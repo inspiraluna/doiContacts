@@ -39,12 +39,12 @@
         "setPassword": "Set a password to protect your wallet in everyday use.",
         "password": "Password",
         "reTypePassword": "Re-type your password",
-        "errorAlert": "Passwords do not match"
+        "errorAlert": "Passwords do not match",
+        "email": "Please enter your email"
     },
     "tabs": {
         "contacts": "Contacts",
-        "wallets": "Wallets",
-        "consents": "Consents"
+        "wallets": "Wallets"
     },
     "contactForm": {
         "walletOrEmail": "Wallet / Email",
