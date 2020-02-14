@@ -15,7 +15,7 @@ For sending signed transactions between mobile phones (and also browsers) we pla
 
 ## Features
 - Contacts
-    - add an email address and request a email permission via a Doichain transaction
+    - add an email address and request an email permission through Doichain transaction
     - store current geo position when requesting the permission, so you can later remember where you meet
     - show contacts status of a requested email permission (confirmed - yes/no)
     - scan email QR-Code from a second doiContact wallet
@@ -28,7 +28,7 @@ For sending signed transactions between mobile phones (and also browsers) we pla
 
 ## How to start developing on the ReactJS part
 - checkout this repository and ```cd doi_react_app```
-- install npm and yarn ```npm install yarn``
+- install npm and yarn ```npm install -g yarn``
 - run ```yarn install````
 - run ```yarn start```
 - open another terminal and edit react components in that directly

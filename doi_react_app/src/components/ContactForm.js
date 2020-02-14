@@ -87,10 +87,10 @@ const ContactForm = () => {
 
                 //TODO handle response and create offchain utxos and update balance
                 const utxosResponse = await bitcore.broadcastTransaction(
-                    txData.nameId,
+                    txData.doichainEntry.nameId,
                     txData.tx,
                     encryptedTemplateData,
-                    txData.validatorPublicKey
+                    txData.validatorPublicKeyData.key
                 )
 
                 setUTXOs(utxosResponse)
