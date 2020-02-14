@@ -95,31 +95,32 @@ const App = props => {
            return <WalletCreator />
        }else{
     return (
-
-         <div>
-             <AppBar position="static">
-                <Tabs value={Number(our_CurrentTab)} onChange={(event, newValue) => {
-                    setCurrentTab(newValue)
-                    setActiveWallet(undefined)
-                    setModus('list')
-                }} aria-label="Doichain Contacts">
-                    <Tab label="Contacts" {...a11yProps(0)} />
-                    <Tab label="Wallets" {...a11yProps(1)} />
-                    <Tab label="Consents" {...a11yProps(2)} />
-                    <div style={{align:"center",verticalAlign:"middle", fontSize:"9px"}}>{appVersion}</div>
+        <div>
+            <AppBar position="static">
+                <Tabs
+                    value={Number(our_CurrentTab)}
+                    onChange={(event, newValue) => {
+                        setCurrentTab(newValue)
+                        setActiveWallet(undefined)
+                        setModus("list")
+                    }}
+                    aria-label="Doichain Contacts"
+                >
+                    <Tab label={t("tabs.contacts")} {...a11yProps(0)} />
+                    <Tab label={t("tabs.wallets")} {...a11yProps(1)} />
+                    <div style={{ align: "center", verticalAlign: "middle", fontSize: "9px" }}>
+                        {appVersion}
+                    </div>
                 </Tabs>
             </AppBar>
             <TabPanel value={Number(our_CurrentTab)} index={0}>
-              {currentTab===0 && <ContactsPage/>}
+                {currentTab === 0 && <ContactsPage />}
             </TabPanel>
             <TabPanel value={Number(our_CurrentTab)} index={1}>
-                {currentTab===1 && <WalletsPage/>}
+                {currentTab === 1 && <WalletsPage />}
             </TabPanel>
-            <TabPanel value={Number(our_CurrentTab)} index={2}>
-              My Consents
-            </TabPanel>
-            </div>
-        )
+        </div>
+    )
     }
 }
 export default App

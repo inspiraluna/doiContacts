@@ -43,8 +43,7 @@
     },
     "tabs": {
         "contacts": "контакты",
-        "wallets": "кошельки",
-        "consents": "Согласия"
+        "wallets": "кошельки"
     },
     "contactForm": {
         "walletOrEmail": "Кошелек / Электронная почта",

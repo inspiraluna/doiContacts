@@ -43,8 +43,7 @@
     },
     "tabs": {
         "contacts": "Contacts",
-        "wallets": "Portefeuilles",
-        "consents": "consentements"
+        "wallets": "Portefeuilles"
     },
     "contactForm": {
         "walletOrEmail": "Portefeuille / Email",
