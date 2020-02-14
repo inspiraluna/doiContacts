@@ -15,6 +15,7 @@ describe("App E2E", () => {
         cy.get("#close").click()
         cy.get("#skipButton").click()
         cy.get("#skip").click()
+        cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
         cy.get("#standard-adornment-password").type("abcdefgh1Z")
         cy.get("#standard-adornment-password2").type("abcdefgh1Z")
         cy.get("#next").click()
