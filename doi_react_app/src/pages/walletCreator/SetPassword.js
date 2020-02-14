@@ -16,6 +16,7 @@ const SetPassword = () => {
     const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
     const [t] = useTranslation()
+    const [email, setEmail] = useGlobal("email")
 
     useEffect(() => {
         // const comparePasswords = () => {
@@ -65,6 +66,19 @@ const SetPassword = () => {
     return (
         <div className={s.content}>
             <p>{t("setPassword.setPassword")}</p>
+            <br></br>
+            <FormControl fullWidth>
+                <InputLabel htmlFor="standard-adornment-email">
+                    {t("setPassword.email")}
+                </InputLabel>
+                <Input
+                    id="standard-adornment-email"
+                    fullWidth
+                    onChange={e => {
+                        setEmail(e.target.value)
+                    }}
+                />
+            </FormControl>
             <br></br>
             <FormControl fullWidth error={error ? true : false}>
                 <InputLabel htmlFor="standard-adornment-password">
