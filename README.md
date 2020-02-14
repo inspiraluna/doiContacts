@@ -26,9 +26,10 @@ For sending signed transactions between mobile phones (and also browsers) we pla
     - send/receive DOI-coins to another wallet (scan / create QR-code)
     - (under development) list all transactions of a wallet
 
-## How to start developing òn the ReactJS part
-- checkout this repository and ```cd doi_react_app``
-- run ```yarn install```
+## How to start developing on the ReactJS part
+- checkout this repository and ```cd doi_react_app```
+- install npm and yarn ```npm install yarn``
+- run ```yarn install````
 - run ```yarn start```
 - open another terminal and edit react components in that directly
 

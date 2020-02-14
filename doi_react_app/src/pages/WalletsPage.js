@@ -223,14 +223,14 @@ const WalletsPage = () => {
                             >
                                 {t("button.send")}{" "}
                             </Button>
-                            <Button
+{/*                            <Button
                                 color={"primary"}
                                 id={"cancel"}
                                 variant="contained"
                                 onClick={() => handleCancel()}
                             >
                                 {t("button.cancel")}
-                            </Button>
+                            </Button>*/}
                             <Button
                                 color={"primary"}
                                 variant="contained"
