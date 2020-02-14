@@ -92,22 +92,21 @@ const ContactForm = () => {
                     encryptedTemplateData,
                     txData.validatorPublicKeyData.key
                 )
-
+                console.log('utxosResponse',utxosResponse)
                 setUTXOs(utxosResponse)
                 bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
 
                 const msg = t("contactForm.BroadcastedDoiTx")
                 const contact = {
-                    requestedAt: new Date(),
                     email: email,
                     wallet: our_wallet.publicKey,
-                    txid: utxosResponse.txid,
-                    tx: txData.tx,
+                    txid: utxosResponse.txRaw.txid,
                     nameId: txData.doichainEntry.nameId,
                     validatorAddress: txData.validatorAddress,
                     confirmed: false,
                     status: bitcore.DOI_STATE_WAITING_FOR_CONFIRMATION,
-                    position: test
+                    position: test,
+                    requestedAt: new Date(),
                 }
 
                 contacts.push(contact)
