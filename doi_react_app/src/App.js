@@ -16,6 +16,10 @@ import WalletCreator from "./pages/walletCreator/WalletCreator"
 import AppBar from "@material-ui/core/AppBar"
 import {appVersion} from "./appVersion";
 import { useTranslation } from "react-i18next"
+import Settings from "./pages/Settings"
+import PhoneIcon from "@material-ui/icons/Phone"
+import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
+import SettingsIcon from "@material-ui/icons/Settings"
 
 const App = props => {
     const [global, setGlobal] = useGlobal()
@@ -91,36 +95,48 @@ const App = props => {
     }
     const our_CurrentTab = currentTab ? currentTab : 0
 
+    //translated tabs: label={t("tabs.contacts")} label={t("tabs.wallets")}
+
        if(!wallets || wallets.length === 0){
            return <WalletCreator />
-       }else{
-    return (
-        <div>
-            <AppBar position="static">
-                <Tabs
-                    value={Number(our_CurrentTab)}
-                    onChange={(event, newValue) => {
-                        setCurrentTab(newValue)
-                        setActiveWallet(undefined)
-                        setModus("list")
-                    }}
-                    aria-label="Doichain Contacts"
-                >
-                    <Tab label={t("tabs.contacts")} {...a11yProps(0)} />
-                    <Tab label={t("tabs.wallets")} {...a11yProps(1)} />
-                    <div style={{ align: "center", verticalAlign: "middle", fontSize: "9px" }}>
-                        {appVersion}
-                    </div>
-                </Tabs>
-            </AppBar>
-            <TabPanel value={Number(our_CurrentTab)} index={0}>
-                {currentTab === 0 && <ContactsPage />}
-            </TabPanel>
-            <TabPanel value={Number(our_CurrentTab)} index={1}>
-                {currentTab === 1 && <WalletsPage />}
-            </TabPanel>
-        </div>
-    )
-    }
+             } else {
+                 return (
+                     <div>
+                         <AppBar position="static">
+                             <Tabs
+                                 value={Number(our_CurrentTab)}
+                                 onChange={(event, newValue) => {
+                                     setCurrentTab(newValue)
+                                     setActiveWallet(undefined)
+                                     setModus("list")
+                                 }}
+                                 aria-label="Doichain Contacts"
+                             >
+                                 <Tab icon={<PhoneIcon />} {...a11yProps(0)} />
+                                 <Tab icon={<AccountBalanceWalletIcon />} {...a11yProps(1)} />
+                                 <Tab icon={<SettingsIcon />} {...a11yProps(2)} />
+                                 <div
+                                     style={{
+                                         align: "center",
+                                         verticalAlign: "middle",
+                                         fontSize: "9px"
+                                     }}
+                                 >
+                                     {appVersion}
+                                 </div>
+                             </Tabs>
+                         </AppBar>
+                         <TabPanel value={Number(our_CurrentTab)} index={0}>
+                             {currentTab === 0 && <ContactsPage />}
+                         </TabPanel>
+                         <TabPanel value={Number(our_CurrentTab)} index={1}>
+                             {currentTab === 1 && <WalletsPage />}
+                         </TabPanel>
+                         <TabPanel value={Number(our_CurrentTab)} index={2}>
+                             {currentTab === 2 && <Settings />}
+                         </TabPanel>
+                     </div>
+                 )
+             }
 }
 export default App

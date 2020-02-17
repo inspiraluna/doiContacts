@@ -4,24 +4,9 @@ import logo from "./logo.jpg"
 import Button from "@material-ui/core/Button"
 import { appVersion } from "./../../appVersion"
 import { useTranslation } from "react-i18next"
-import FormControl from "@material-ui/core/FormControl"
-import InputLabel from "@material-ui/core/InputLabel"
-import NativeSelect from "@material-ui/core/NativeSelect"
-import { makeStyles } from "@material-ui/core/styles"
-
 const Welcome = () => {
     const setModus = useGlobal("modus")[1]
-    const { t, i18n } = useTranslation()
-
-    const useStyles = makeStyles(theme => ({
-        formControl: {
-            margin: theme.spacing(1),
-            minWidth: 200
-        },
-        selectEmpty: {
-            marginTop: theme.spacing(2)
-        }
-    }))
+     const { t, i18n } = useTranslation()
 
     const createNewWallet = e => {
         setModus("createNewWallet")
@@ -30,11 +15,6 @@ const Welcome = () => {
     const restoreWallet = e => {
         setModus("restoreWallet")
     }
-
-    const changeLanguage = e => {
-        i18n.changeLanguage(e.target.value)
-    }
-    const classes = useStyles()
 
     //kiwi acquire security left champion peasant royal sheriff absent calm alert letter
     //13456abC
@@ -51,22 +31,6 @@ const Welcome = () => {
             <img className={s.welcomeImg} src={logo} />
             <div>
                 <p>{t("welcome.1")}</p>
-            </div>
-            <div>
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="uncontrolled-native">{t("option.choose")}</InputLabel>
-                    <NativeSelect defaultValue={"en"} id="selectLang" onChange={changeLanguage}>
-                        <option value={"en"} id="english">
-                            English
-                        </option>
-                        <option value={"ru"} id="russian">
-                            Русский
-                        </option>
-                        <option value={"fr"} id="french">
-                            Francais
-                        </option>
-                    </NativeSelect>
-                </FormControl>
             </div>
             <br></br>
             <div>
