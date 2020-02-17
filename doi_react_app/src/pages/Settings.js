@@ -22,6 +22,7 @@ const Settings = () => {
 
         const changeLanguage = e => {
             i18n.changeLanguage(e.target.value)
+            console.log("t",t)
         }
 
          const classes = useStyles()
@@ -32,7 +33,11 @@ const Settings = () => {
             <div>
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="uncontrolled-native">{t("option.choose")}</InputLabel>
-                    <NativeSelect defaultValue={"en"} id="selectLang" onChange={changeLanguage}>
+                    <NativeSelect
+                        defaultValue={i18n.language}
+                        id="selectLang"
+                        onChange={changeLanguage}
+                    >
                         <option value={"en"} id="english">
                             English
                         </option>
