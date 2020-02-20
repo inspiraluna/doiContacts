@@ -6,6 +6,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 import isEqual from "lodash.isequal"
 import { useTranslation } from "react-i18next"
+import {getDoichainNetwork} from "../utils/network.js"
 
 const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
@@ -17,6 +18,7 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
+    const [network, setNetwork] = useGlobal("network")
     const [t] = useTranslation()
 
     useEffect(() => {
@@ -88,7 +90,9 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
 
         let generatedAddress
         if (publicKey && !balance && !address) {
-            generatedAddress = bitcore.getAddressOfPublicKey(publicKey).toString()
+            generatedAddress = bitcore
+                .getAddressOfPublicKey(publicKey, getDoichainNetwork(network))
+                .toString()
             setAddress(generatedAddress)
         }
         console.log("fetching balance for wallet from node", generatedAddress)
@@ -126,7 +130,7 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
             <div>
                 <li style={{ fontSize: "15px" }}>
                     <b> {t("walletItem.doiCoinAddress")} </b>
-                    {address ? address.toString() : ""}{" "}
+                    <span id="address">{address ? address.toString() : ""} </span>
                     <CopyToClipboard
                         text={address ? address.toString() : ""}
                         onCopy={() =>

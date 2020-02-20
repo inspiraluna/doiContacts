@@ -4,11 +4,13 @@ import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import NativeSelect from "@material-ui/core/NativeSelect"
 import { makeStyles } from "@material-ui/core/styles"
+import changeNetwork from './../utils/network';
 
 
 
 const Settings = () => {
     const { t, i18n } = useTranslation()
+    const [network, setNetwork] = useGlobal("network")
 
       const useStyles = makeStyles(theme => ({
           formControl: {
@@ -23,6 +25,12 @@ const Settings = () => {
         const changeLanguage = e => {
             i18n.changeLanguage(e.target.value)
             console.log("t",t)
+        }
+
+        const onChangeNetwork = e => {
+            const ourNetwork = e.target.value
+            setNetwork(ourNetwork)
+            changeNetwork(ourNetwork)
         }
 
          const classes = useStyles()
@@ -46,6 +54,25 @@ const Settings = () => {
                         </option>
                         <option value={"fr"} id="french">
                             Francais
+                        </option>
+                    </NativeSelect>
+                </FormControl>
+                <br></br>
+                <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="uncontrolled-native">testnet/mainnet/regtest</InputLabel>
+                    <NativeSelect
+                        defaultValue={network}
+                        id="selectNetwork"
+                        onChange={onChangeNetwork}
+                    >
+                        <option value={"testnet"} id="testnet">
+                            Testnet
+                        </option>
+                        <option value={"mainnet"} id="mainnet">
+                            Mainnet
+                        </option>
+                        <option value={"regtest"} id="regtest">
+                            Regtest
                         </option>
                     </NativeSelect>
                 </FormControl>

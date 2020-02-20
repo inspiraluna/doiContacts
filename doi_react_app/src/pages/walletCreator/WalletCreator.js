@@ -47,13 +47,13 @@ const WalletCreator = () => {
             const masterSeed = bip39
                 .mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic")
                 .toString("hex")
-            console.log("masterSeed", masterSeed)
             const hdkey = HDKey.fromMasterSeed(Buffer.from(masterSeed, "hex"))
-            const childkey = hdkey.derive("m/0/0/1")
+            const childkey0 = hdkey.derive("m/0/0/1")
+            const childkey1 = hdkey.derive("m/0/0/1")
             const wallet = {}
             wallet.senderEmail = email
-            wallet.privateKey = childkey.privateKey.toString("hex")
-            wallet.publicKey = childkey.publicKey.toString("hex")
+            wallet.privateKey = childkey0.privateKey.toString("hex")
+            wallet.publicKey = childkey0.publicKey.toString("hex")
 
             let newwallets = wallets
             newwallets.push(wallet)

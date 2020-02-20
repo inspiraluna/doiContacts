@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import { register } from "./serviceWorker"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
-import bitcore from "bitcore-doichain"
 import initStorage from "./utils/storage"
 import WalletCreator from "./pages/walletCreator/WalletCreator"
 import AppBar from "@material-ui/core/AppBar"
@@ -29,40 +28,14 @@ const App = props => {
     const [wallets] = useGlobal("wallets")
     const [t] = useTranslation()
 
-    // const settings = {
-    //     //RegTest
-    //     testnet: true,
-    //     from: "alice@ci-doichain.org",
-    //     port: 3000,
-    //     host: "localhost"
-    // }
-
-    // const settings = {  //testnet 2
-    //     testnet:true,
-    //     from: 'newsletter@doichain.org',
-    //     port:4010,
-    //     host:"5.9.154.231"
-    // }
-
-    const settings = {
-        //testnet 2
-        testnet: true,
-        from: "newsletter@doichain.org",
-        port: 443,
-        ssl: true,
-        host: "doichain-testnet.le-space.de"
-    }
-
-    bitcore.settings.setSettings(settings)
-    bitcore.Networks.defaultNetwork = bitcore.Networks.get("doichain-testnet")
-
     register()
 
+
     useEffect(() => {
-        if (!currentTab && !modus && !activeWallet) {
+        // if (!currentTab && !modus && !activeWallet) {
             initStorage(props.cordova, global, setGlobal)
-        }
-    })
+        // }
+    }, [])
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
@@ -112,18 +85,20 @@ const App = props => {
                                  }}
                                  aria-label="Doichain Contacts"
                              >
-                                 <Tab icon={<PhoneIcon />} {...a11yProps(0)} />
-                                 <Tab icon={<AccountBalanceWalletIcon />} {...a11yProps(1)} />
-                                 <Tab icon={<SettingsIcon />} {...a11yProps(2)} />
-                                 <div
+                                 <Tab icon={<PhoneIcon id="phoneIcon" />} {...a11yProps(0)} />
+                                 <Tab
+                                     icon={<AccountBalanceWalletIcon id="walletIcon" />}
+                                     {...a11yProps(1)}
+                                 />
+                                 <Tab icon={<SettingsIcon id="settingsIcon" />} {...a11yProps(2)} />
+                                 <Tab
+                                     label={appVersion}
                                      style={{
                                          align: "center",
                                          verticalAlign: "middle",
                                          fontSize: "9px"
                                      }}
-                                 >
-                                     {appVersion}
-                                 </div>
+                                 ></Tab>
                              </Tabs>
                          </AppBar>
                          <TabPanel value={Number(our_CurrentTab)} index={0}>
