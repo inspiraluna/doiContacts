@@ -101,7 +101,7 @@ const WalletsPage = () => {
     const handleCancel = e => {
         setModus("list")
         setActiveWallet(undefined)
-    }
+    }                
     const editEmailTemplate = e => {
         setModus("editEmailTemplate")
     }
@@ -150,8 +150,7 @@ const WalletsPage = () => {
         // a testnet address from a public key
         // from a der hex encoded string
         const _publicKey = new bitcore.PublicKey(validatorPublicKey)
-        const network = bitcore.Networks.get("doichain")
-        const destAddress = new bitcore.Address(_publicKey, network).toString()
+        const destAddress = new bitcore.Address(_publicKey).toString()
         console.log("destAddress", destAddress)
         const changeAddress = address
         const txSignedSerialized = bitcore.createRawDoichainTX(
@@ -171,6 +170,7 @@ const WalletsPage = () => {
         bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
     }
 
+    console.log("modus :" + modus)
     if (modus === "list") {
         return (
             <div>
