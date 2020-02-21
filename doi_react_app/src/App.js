@@ -22,8 +22,8 @@ const App = props => {
 
     const [global, setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [setModus] = useGlobal("modus")[1]
-    const [setActiveWallet] = useGlobal("activeWallet")[1]
+    const [modus,setModus] = useGlobal("modus")
+    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [wallets] = useGlobal("wallets")
 
     register()
