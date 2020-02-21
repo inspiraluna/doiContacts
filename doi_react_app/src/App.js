@@ -13,7 +13,6 @@ import initStorage from "./utils/storage"
 import WalletCreator from "./pages/walletCreator/WalletCreator"
 import AppBar from "@material-ui/core/AppBar"
 import {appVersion} from "./appVersion";
-import { useTranslation } from "react-i18next"
 import Settings from "./pages/Settings"
 import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
@@ -23,18 +22,15 @@ const App = props => {
 
     const [global, setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus, setModus] = useGlobal("modus")
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
+    const [setModus] = useGlobal("modus")[1]
+    const [setActiveWallet] = useGlobal("activeWallet")[1]
     const [wallets] = useGlobal("wallets")
-    const [t] = useTranslation()
 
     register()
 
-
     useEffect(() => {
-        // if (!currentTab && !modus && !activeWallet) {
             initStorage(props.cordova, global, setGlobal)
-        // }
+           // setStorageChanged(true)
     }, [])
 
     function TabPanel(props) {
@@ -66,6 +62,7 @@ const App = props => {
             "aria-controls": `simple-tabpanel-${index}`
         }
     }
+
     const our_CurrentTab = currentTab ? currentTab : 0
        if(!wallets || wallets.length === 0){
            return <WalletCreator />
@@ -99,13 +96,13 @@ const App = props => {
                              </Tabs>
                          </AppBar>
                          <TabPanel value={Number(our_CurrentTab)} index={0}>
-                             {currentTab === 0 && <ContactsPage />}
+                             {Number(currentTab) === 0 && <ContactsPage />}
                          </TabPanel>
                          <TabPanel value={Number(our_CurrentTab)} index={1}>
-                             {currentTab === 1 && <WalletsPage />}
+                             {Number(currentTab) === 1 && <WalletsPage />}
                          </TabPanel>
                          <TabPanel value={Number(our_CurrentTab)} index={2}>
-                             {currentTab === 2 && <Settings />}
+                             {Number(currentTab) === 2 && <Settings />}
                          </TabPanel>
                      </div>
                  )

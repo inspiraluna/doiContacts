@@ -25,7 +25,6 @@ const WalletsPage = () => {
     const [t] = useTranslation()
 
     const checkDefaults = wallet => {
-        // const our_walletName = "Example Wallet"
         const our_senderEmail = "info@doichain.org"
         const our_subject = "Doichain Contacts Request"
         const our_content =
@@ -101,7 +100,7 @@ const WalletsPage = () => {
     const handleCancel = e => {
         setModus("list")
         setActiveWallet(undefined)
-    }                
+    }
     const editEmailTemplate = e => {
         setModus("editEmailTemplate")
     }
@@ -170,7 +169,6 @@ const WalletsPage = () => {
         bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
     }
 
-    console.log("modus :" + modus)
     if (modus === "list") {
         return (
             <div>
