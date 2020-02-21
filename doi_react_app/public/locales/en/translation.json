@@ -102,6 +102,7 @@
         "unconfirmed": "(unconfirmed:",
         "block": "Block:",
         "email": "Email:",
+        "name": "Name:",
         "subject": "Subject:",
         "content": "Content:",
         "contentType": "Content-Type:",

@@ -47,6 +47,7 @@ describe("App E2E", () => {
         cy.get("#detail").click()
         cy.get("#walletIcon").click()
         cy.get("#add").click()
+        cy.get("#senderName").type("Peter")
         cy.get("#senderEmail").type("peter@ci-doichain.org")
         cy.get("#subject").type("myWallet")
         cy.get("#editEmailTemplate").click()
@@ -56,6 +57,7 @@ describe("App E2E", () => {
         cy.get("#back").click()
         cy.get("#redirectUrl").type("www.doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#senderName").should("have.text", "Name: Peter")
         cy.get("#sentEmail").should("have.text", "Email: peter@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: myWallet")
         cy.get("#content").should(
@@ -65,6 +67,8 @@ describe("App E2E", () => {
         cy.get("#redUrl").should("have.text", "Redirect-Url: https://www.doichain.org")
         cy.get("#walletIcon").click()
         cy.get("#editWallet").click()
+        cy.get("#senderName").clear()
+        cy.get("#senderName").type("Alice")
         cy.get("#senderEmail").clear()
         cy.get("#senderEmail").type("alice@ci-doichain.org")
         cy.get("#subject").clear()
@@ -78,6 +82,7 @@ describe("App E2E", () => {
         cy.get("#redirectUrl").clear()
         cy.get("#redirectUrl").type("http://www.doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#senderName").should("have.text", "Name: Alice")
         cy.get("#sentEmail").should("have.text", "Email: alice@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: Doichain Contacts Request")
         cy.get("#content").should(
@@ -114,6 +119,8 @@ describe("App E2E", () => {
     it("update wallet", () => {
         createNewWallet()
         cy.get("#editWallet").click()
+         cy.get("#senderName").clear()
+         cy.get("#senderName").type("Bob")
         cy.get("#senderEmail").clear()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
         cy.get("#subject").clear()
@@ -127,6 +134,7 @@ describe("App E2E", () => {
         cy.get("#redirectUrl").clear()
         cy.get("#redirectUrl").type("http://www.doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#senderName").should("have.text", "Name: Bob")
         cy.get("#sentEmail").should("have.text", "Email: bob@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: Doichain Contacts Request")
         cy.get("#content").should(
@@ -193,6 +201,7 @@ describe("App E2E", () => {
     it("creates another wallet and sends money on it", () => {
         restoreWallet()
         cy.get("#add").click()
+        cy.get("#senderName").type("Peter")
         cy.get("#senderEmail").type("peter@ci-doichain.org")
         cy.get("#subject").type("myWallet")
         cy.get("#editEmailTemplate").click()

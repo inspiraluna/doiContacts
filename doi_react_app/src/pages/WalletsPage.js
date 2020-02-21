@@ -25,6 +25,7 @@ const WalletsPage = () => {
     const [t] = useTranslation()
 
     const checkDefaults = wallet => {
+        const our_senderName = " "
         const our_senderEmail = "info@doichain.org"
         const our_subject = "Doichain Contacts Request"
         const our_content =
@@ -34,6 +35,7 @@ const WalletsPage = () => {
         const our_returnPath = "doichain@doichain.org"
 
         // if(!walletName) walletName = our_walletName
+        if (!wallet.senderName) wallet.senderName = our_senderName
         if (!wallet.senderEmail) wallet.senderEmail = our_senderEmail
         if (!wallet.subject) wallet.subject = our_subject
         if (!wallet.content) wallet.content = our_content
@@ -43,7 +45,7 @@ const WalletsPage = () => {
         return wallet
     }
     const addWallet = (
-        walletName,
+        senderName,
         senderEmail,
         subject,
         content,
@@ -51,9 +53,10 @@ const WalletsPage = () => {
         redirectUrl,
         returnPath
     ) => {
-        const ourWallet = bitcore.createWallet(walletName)
+        const ourWallet = bitcore.createWallet()
         const wallet = {}
         // wallet.walletName = walletName
+        wallet.senderName = senderName
         wallet.senderEmail = senderEmail
         wallet.subject = subject
         wallet.content = content
@@ -73,7 +76,7 @@ const WalletsPage = () => {
     }
 
     const updateWallet = (
-        walletName,
+        senderName,
         senderEmail,
         subject,
         content,
@@ -82,7 +85,7 @@ const WalletsPage = () => {
         returnPath
     ) => {
         const wallet = wallets[activeWallet]
-        wallet.walletName = walletName
+        wallet.senderName = senderName
         wallet.senderEmail = senderEmail
         wallet.subject = subject
         wallet.content = content
@@ -221,7 +224,7 @@ const WalletsPage = () => {
                             >
                                 {t("button.send")}{" "}
                             </Button>
-{/*                            <Button
+                            {/*                            <Button
                                 color={"primary"}
                                 id={"cancel"}
                                 variant="contained"
@@ -239,6 +242,7 @@ const WalletsPage = () => {
                             <br />
                             <br />
                             <WalletItem
+                                senderName={wallets[activeWallet].senderName}
                                 senderEmail={wallets[activeWallet].senderEmail}
                                 subject={wallets[activeWallet].subject}
                                 content={wallets[activeWallet].content}
@@ -320,9 +324,7 @@ const WalletsPage = () => {
                             <form
                                 onSubmit={e => {
                                     e.preventDefault()
-                                    const walletName = e.target.walletName
-                                        ? e.target.walletName.value.trim()
-                                        : undefined
+                                    const senderName = e.target.senderName.value.trim()
                                     const senderEmail = e.target.senderEmail.value.trim()
                                     const subject = e.target.subject.value.trim()
                                     const content =
@@ -343,7 +345,7 @@ const WalletsPage = () => {
 
                                     if (activeWallet === undefined)
                                         addWallet(
-                                            walletName,
+                                            senderName,
                                             senderEmail,
                                             subject,
                                             content,
@@ -353,7 +355,7 @@ const WalletsPage = () => {
                                         )
                                     else
                                         updateWallet(
-                                            walletName,
+                                            senderName,
                                             senderEmail,
                                             subject,
                                             content,
@@ -363,18 +365,21 @@ const WalletsPage = () => {
                                         )
                                 }}
                             >
-                                {/* <TextField
-                                        id="walletName"
-                                        name="walletName"
-                                        label="Wallet Name"
-                                        fullWidth={true}
-                                        // defaultValue={wallets[activeWallet]?wallets[activeWallet].walletName:''}
-                                        defaultValue={tempWallet?tempWallet.walletName:''}
-                                        margin="normal"
-                                        onChange={(e) => {
-                                            const ourTempWallet = tempWallet?tempWallet:{}
-                                            ourTempWallet.walletName = e.target.value
-                                            setTempWallet(ourTempWallet)}}/> <br/> */}
+                                <TextField
+                                    id="senderName"
+                                    name="senderName"
+                                    label="Sender Name"
+                                    fullWidth={true}
+                                    // defaultValue={wallets[activeWallet]?wallets[activeWallet].walletName:''}
+                                    defaultValue={tempWallet ? tempWallet.senderName : ""}
+                                    margin="normal"
+                                    onChange={e => {
+                                        const ourTempWallet = tempWallet ? tempWallet : {}
+                                        ourTempWallet.senderName = e.target.value
+                                        setTempWallet(ourTempWallet)
+                                    }}
+                                />{" "}
+                                <br />
                                 <TextField
                                     id="senderEmail"
                                     label={t("walletPage.senderLabel")}

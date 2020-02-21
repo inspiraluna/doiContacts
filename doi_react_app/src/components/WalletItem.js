@@ -8,7 +8,7 @@ import isEqual from "lodash.isequal"
 import { useTranslation } from "react-i18next"
 import {getDoichainNetwork} from "../utils/network.js"
 
-const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
+const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
     const [balance, setBalance] = useState(0)
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
@@ -155,6 +155,11 @@ const WalletItem = ({ senderEmail, subject, content, publicKey, contentType, red
                 </li>
                 <br />
                 <div style={{ fontSize: "15px", border: "2px solid lightgrey" }}>
+                    <label htmlFor={"senderName"}></label>
+                    <div id="senderName">
+                        <b>{t("walletItem.name")}</b> {senderName}
+                    </div>
+                    <br />
                     <label htmlFor={"senderEmail"}></label>
                     <div id="sentEmail">
                         <b>{t("walletItem.email")}</b> {senderEmail}
