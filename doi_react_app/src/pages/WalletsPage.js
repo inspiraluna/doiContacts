@@ -283,7 +283,7 @@ const WalletsPage = () => {
                             </Button>{" "}
                             <br /> <br />
                             {walletName} <br />
-                            {t("walletPage.receiveDoi")} <br /> {address} <br />
+                            <span id="receiveDoi">{t("walletPage.receiveDoi")}</span> <br /> {address} <br />
                             {t("walletPage.amount")} <br />
                             <TextField
                                 id="amount"
@@ -471,6 +471,7 @@ const WalletsPage = () => {
                             </form>
                             <Button
                                 color={"primary"}
+                                id="cancel"
                                 variant="contained"
                                 onClick={() => handleCancel()}
                             >
