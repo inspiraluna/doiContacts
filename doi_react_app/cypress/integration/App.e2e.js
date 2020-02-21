@@ -63,7 +63,7 @@ describe("App E2E", () => {
             "Content: Hello, please give me permission to write you an email. _confirmation_url_ Yours Peter"
         )
         cy.get("#redUrl").should("have.text", "Redirect-Url: https://www.doichain.org")
-        cy.get("#cancel").click()
+        cy.get("#walletIcon").click()
         cy.get("#editWallet").click()
         cy.get("#senderEmail").clear()
         cy.get("#senderEmail").type("alice@ci-doichain.org")
@@ -85,7 +85,6 @@ describe("App E2E", () => {
             "Content: Hello, please give me permission to write you an email. _confirmation_url_ Yours Alice"
         )
         cy.get("#redUrl").should("have.text", "Redirect-Url: http://www.doichain.org")
-        cy.get("#cancel").click()
     })
 
     it("tests the receive button", () => {
@@ -97,6 +96,7 @@ describe("App E2E", () => {
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.get("#receive").click()
+        cy.get("#receiveDoi").should("have.text", "Receive DOI for address:")
     })
 
     it("tests the send button", () => {
@@ -108,15 +108,7 @@ describe("App E2E", () => {
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.get("#send").click()
-    })
-
-    it("tests the cancel button", () => {
-        createNewWallet()
-        cy.get("#walletIcon").click()
-        cy.get("#add").click()
-        cy.get("#senderEmail").type("bob@ci-doichain.org")
-        cy.get("#saveWallet").click()
-        cy.get("#cancel").click()
+        cy.get("#sendDoi").should("have.text", "Send DOI from address:")
     })
 
     it("update wallet", () => {
@@ -124,8 +116,24 @@ describe("App E2E", () => {
         cy.get("#editWallet").click()
         cy.get("#senderEmail").clear()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
+        cy.get("#subject").clear()
+        cy.get("#subject").type("Doichain Contacts Request")
+        cy.get("#editEmailTemplate").click()
+        cy.get("#editTemp").clear()
+        cy.get("#editTemp").type(
+            "Hello, please give me permission to write you an email. _confirmation_url_ Yours Bob"
+        )
+        cy.get("#back").click()
+        cy.get("#redirectUrl").clear()
+        cy.get("#redirectUrl").type("http://www.doichain.org")
         cy.get("#saveWallet").click()
-        cy.get("#cancel").click()
+        cy.get("#sentEmail").should("have.text", "Email: bob@ci-doichain.org")
+        cy.get("#subj").should("have.text", "Subject: Doichain Contacts Request")
+        cy.get("#content").should(
+            "have.text",
+            "Content: Hello, please give me permission to write you an email. _confirmation_url_ Yours Bob"
+        )
+        cy.get("#redUrl").should("have.text", "Redirect-Url: http://www.doichain.org")
     })
 
     it("delete wallet", () => {
@@ -134,7 +142,7 @@ describe("App E2E", () => {
         cy.get("#add").click()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
         cy.get("#saveWallet").click()
-        cy.get("#cancel").click()
+        cy.get("#walletIcon").click()
         cy.get("#deleteWallet").click()
         cy.get("#closeAlert").click()
         cy.get("#deleteWallet").click()
@@ -182,56 +190,59 @@ describe("App E2E", () => {
         })
     })
 
-     it("creates another wallet and sends money on it", () => {
-         restoreWallet()
-         cy.get("#add").click()
-         cy.get("#senderEmail").type("peter@ci-doichain.org")
-         cy.get("#subject").type("myWallet")
-         cy.get("#editEmailTemplate").click()
-         cy.get("#editTemp").type(
-             "Hello, please give me permission to write you an email. _confirmation_url_ Yours Peter"
-         )
-         cy.get("#back").click()
-         cy.get("#redirectUrl").type("www.doichain.org")
-         cy.get("#saveWallet").click()
-         cy.get("#address").then($span => {
-             const address = $span.text()
-             cy.get("#walletIcon").click()
-             cy.get("#detail").click()
-             cy.get("#send").click()
-             cy.get("#toAddress").type(address)
-         })
-         const amountToSend = 0.5
-         cy.get("#amount").type(amountToSend)
-         cy.get("#sendAmount").click()
-         cy.get("#back").click()
-     })
+    it("creates another wallet and sends money on it", () => {
+        restoreWallet()
+        cy.get("#add").click()
+        cy.get("#senderEmail").type("peter@ci-doichain.org")
+        cy.get("#subject").type("myWallet")
+        cy.get("#editEmailTemplate").click()
+        cy.get("#editTemp").type(
+            "Hello, please give me permission to write you an email. _confirmation_url_ Yours Peter"
+        )
+        cy.get("#back").click()
+        cy.get("#redirectUrl").type("www.doichain.org")
+        cy.get("#saveWallet").click()
+        cy.get("#address").then($span => {
+            const address = $span.text()
+            cy.get("#walletIcon").click()
+            cy.get("#detail").click()
+            cy.get("#send").click()
+            cy.get("#toAddress").type(address)
+        })
+        const amountToSend = 0.5
+        cy.get("#amount").type(amountToSend)
+        cy.get("#sendAmount").click()
+        cy.get("#back").click()
+    })
 
-      it("tests the languages", () => {
-          restoreWallet()
-          cy.get("#settingsIcon").click()
-          cy.get("#selectLang").select("en")
-          cy.get("#walletIcon").click()
-          cy.get("#detail").click()
-          cy.get("#settingsIcon").click()
-          cy.get("#selectLang").select("ru")
-          cy.get("#walletIcon").click()
-          cy.get("#detail").click()
-          cy.get("#settingsIcon").click()
-          cy.get("#selectLang").select("fr")
-          cy.get("#walletIcon").click()
-          cy.get("#detail").click()
-          cy.get("#settingsIcon").click()
-          cy.get("#selectLang").select("en")
-      })
+    it("tests the languages", () => {
+        restoreWallet()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectLang").select("en")
+        cy.get("#walletIcon").click()
+        cy.get("#add").click()
+        cy.get("#cancel").click()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectLang").select("ru")
+        cy.get("#walletIcon").click()
+        cy.get("#add").click()
+        cy.get("#cancel").click()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectLang").select("fr")
+        cy.get("#walletIcon").click()
+        cy.get("#add").click()
+        cy.get("#cancel").click()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectLang").select("en")
+    })
 
-       it("should create a contact", () => {
-           restoreWallet()
-           cy.get("#phoneIcon").click()
-           cy.get("#addButton").click()
-           cy.get("#toAddress").type("bob@ci-doichain.org")
-           cy.get("#requestPermissiom").click()
-           cy.wait(2000)
-           cy.get("#phoneIcon").click()
-       })
+    it("should create a contact", () => {
+        restoreWallet()
+        cy.get("#phoneIcon").click()
+        cy.get("#addButton").click()
+        cy.get("#toAddress").type("bob@ci-doichain.org")
+        cy.get("#requestPermissiom").click()
+        cy.wait(2000)
+        cy.get("#phoneIcon").click()
+    })
 })

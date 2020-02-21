@@ -88,7 +88,7 @@ const SendAmount = () => {
                                 <br />
                                 <br />
                                 <h1>{walletName} </h1>
-                                {t("sendAmount.sendFromAddress")} <br />
+                                <span id="sendDoi">{t("sendAmount.sendFromAddress")}</span> <br />
                                 <b>{address}</b> <br />
                                 {t("sendAmount.balance")} {balance} DOI
                                 <br></br>
