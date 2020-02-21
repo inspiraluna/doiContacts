@@ -44,7 +44,7 @@ import {addCallback} from "reactn";
                   }
               )
 
-              if(global.modus)
+          if (global.modus)
               window.NativeStorage.setItem(
                   "modus",
                   global.modus,
@@ -80,7 +80,7 @@ import {addCallback} from "reactn";
   }
 const initStorage = (cordovaEnabled,global,setGlobal) => {
 
-    if(global.wallets) writeStorage(global) 
+    if(global.wallets) writeStorage(global)
 
     console.log('cordova is defined', (window.NativeStorage!==undefined))
 
@@ -88,9 +88,9 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         console.log('using localstorage')
         const initialContacts = localStorage.getItem('contacts')?JSON.parse(localStorage.getItem('contacts')):[]
         const initialWallets = localStorage.getItem('wallets')?JSON.parse(localStorage.getItem('wallets')):[]
-        const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):"0"
+        const initialCurrentTab =  localStorage.getItem('currentTab')?localStorage.getItem('currentTab'):0
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):undefined
-        const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):'0'
+        const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
         const initialNetwork = localStorage.getItem("network")?localStorage.getItem("network"): "mainnet"
         setGlobal({
             contacts: initialContacts,
@@ -148,7 +148,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
     }
 
     addCallback(global => {
-     writeStorage(global) 
+     writeStorage(global)
     });
 }
 
