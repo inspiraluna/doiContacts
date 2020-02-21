@@ -16,12 +16,18 @@ const TransactionList = ({address}) => {
 
     const txNode = txs.map((tx, index) => {
         return (
-            <li key={index}>
-            <div><Moment format="YYYY-MM-DD hh-mm-ss">{tx.createdAt}</Moment></div>
-            <div align={"center"}>{tx.senderAddress}</div>
-            <div align={"right"}>{tx.category} DOI {Number(tx.amount).toFixed(8)}</div>
-        </li>
-    )
+            <table style={{ width: "100%" }}>
+                <tr key={index}>
+                    <td>
+                        <Moment format="YYYY-MM-DD hh-mm-ss">{tx.createdAt}</Moment>
+                    </td>
+                    <td align={"center"}>{tx.senderAddress}</td>
+                    <td align={"right"}>
+                        {tx.category} DOI {Number(tx.amount).toFixed(8)}
+                    </td>
+                </tr>
+            </table>
+        )
     })
 
     return txNode
