@@ -1,4 +1,5 @@
 import {addCallback} from "reactn";
+import changeNetwork from "./network";
 
   const writeStorage = global => {
       if ((window.device && window.device.platform === "browser") || !window.cordova) {
@@ -92,6 +93,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):undefined
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
         const initialNetwork = localStorage.getItem("network")?localStorage.getItem("network"): "mainnet"
+        changeNetwork(initialNetwork)
         setGlobal({
             contacts: initialContacts,
             wallets: initialWallets,
