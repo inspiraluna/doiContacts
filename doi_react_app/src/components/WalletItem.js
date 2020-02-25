@@ -17,6 +17,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [activeWallet] = useGlobal("activeWallet")
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
+    const setOpenError = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
     const [network, setNetwork] = useGlobal("network")
     const [t] = useTranslation()
@@ -130,7 +131,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             <div>
                 <li style={{ fontSize: "15px" }}>
                     <b> {t("walletItem.doiCoinAddress")} </b>
-                    <span id="address">{address ? address.toString() : ""} </span>
+                    <span id="address">{address ? address.toString() : ""}</span>
                     <CopyToClipboard
                         text={address ? address.toString() : ""}
                         onCopy={() =>
@@ -141,7 +142,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                             })
                         }
                     >
-                        <FileCopyIcon color={"primary"}></FileCopyIcon>
+                        <FileCopyIcon color={"primary"} id="copy"></FileCopyIcon>
                     </CopyToClipboard>
                     <br />
                     <b>{t("walletItem.balance")}</b> <span id="balance">{balance}</span> DOI{""}

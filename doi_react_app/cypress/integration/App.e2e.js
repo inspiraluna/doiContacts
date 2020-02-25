@@ -112,6 +112,7 @@ describe("App E2E", () => {
         cy.get("#saveWallet").click()
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
+        cy.wait(2000)
         cy.get("#send").click()
         cy.get("#sendDoi").should("have.text", "Send DOI from address:")
     })
@@ -253,5 +254,25 @@ describe("App E2E", () => {
         cy.get("#requestPermissiom").click()
         cy.wait(2000)
         cy.get("#phoneIcon").click()
+    })
+
+    it("clicks copy the address to clipbooard and snackbar shows up", () => {
+        createNewWallet()
+        cy.get("#walletIcon").click()
+        cy.get("#detail").click()
+        cy.window().then(win => {
+            cy.stub(win, "prompt")
+                .returns(win.prompt)
+                .as("copyToClipboardPrompt")
+        })
+        cy.get("#address").then($span => {
+            const link = $span.text()
+            cy.get("#copy").click()
+            cy.get("@copyToClipboardPrompt").should("be.called")
+            cy.get("#client-snackbar").should("have.text", "Doichain address copied to clipboard")
+            cy.get("@copyToClipboardPrompt").should(prompt => {
+                expect(prompt.args[0][1]).to.equal(link)
+            })
+        })
     })
 })
