@@ -40,7 +40,7 @@
         "password": "Mot de passe",
         "reTypePassword": "Retapez votre mot de passe",
         "errorAlert": "Les mots de passe ne correspondent pas",
-        "email": "please enter your email"
+        "email": "veillez  "
     },
     "tabs": {
         "contacts": "Contacts",
@@ -54,7 +54,8 @@
         "noEmail": "pas d'email",
         "noWalletsDefined": "aucun portefeuille défini",
         "BroadcastedDoiTx": "Transaction d'autorisation DOI diffusée sur le nœud Doichain ...",
-        "broadcastingError": "Veuillez saisir votre email"
+        "broadcastingError": "Veuillez saisir votre email",
+        "usedEmailError": "cet e-mail existe déjà, veuillez en utiliser un autre"
     },
     "contactItem": {
         "created": "Créé",

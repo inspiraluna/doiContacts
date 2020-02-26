@@ -54,7 +54,8 @@
         "noEmail": "нет электронной почты",
         "noWalletsDefined": "кошельки не определены",
         "BroadcastedDoiTx": "рансляция транзакции разрешения DOI на узел Doichain ...",
-        "broadcastingError": "ошибка при трансляции транзакции"
+        "broadcastingError": "ошибка при трансляции транзакции",
+        "usedEmailError": "этот электронный адрес уже существует, пожалуйста, используйте другой"
     },
     "contactItem": {
         "created": "создан",

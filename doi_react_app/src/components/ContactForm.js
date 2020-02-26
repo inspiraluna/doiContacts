@@ -11,6 +11,7 @@ import QRCode from "qrcode-react"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import bitcore from "bitcore-doichain"
 import { useTranslation } from "react-i18next"
+import _ from "lodash"
 
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -40,7 +41,7 @@ const ContactForm = () => {
     const classes = useStyles()
     const [buttonState, setButtonState] = useState()
     const [wallet, setWallet] = useState(0)
-    const [submitting, setSubmitting] = useState()
+    const [submitting, setSubmitting] = useState(true)
 
     const setModus = useGlobal("modus")[1]
     const [wallets] = useGlobal("wallets")
@@ -51,6 +52,7 @@ const ContactForm = () => {
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
     const [test] = useGlobal("test")
     const [t] = useTranslation()
+    const setOpenSnackbar = useGlobal("errors")[1]
 
     const addContact = async email => {
         const runAddContact = async email => {
@@ -165,6 +167,21 @@ const ContactForm = () => {
                             label={t("contactForm.EmailPermissionToRequest")}
                             labelWidth={200}
                             urlPrefix={"mailto:"}
+                            onChange={(e)=>{
+                                console.log(e.target.value)
+                                const found =  _.find(contacts, function(o) {
+                                    return o.email === e.target.value
+                                })
+                                if(found){
+                                     setOpenSnackbar({
+                                         open: true,
+                                         msg: t("contactForm.usedEmailError"),
+                                         type: "error"
+                                     })
+                                     setSubmitting(false)
+                                }else setSubmitting(true)
+                            }}
+                            
                         />
 
                         <br />
@@ -193,15 +210,14 @@ const ContactForm = () => {
                         <RequestAddress className={classes.textField} />
                         <QRCode value={ownQrCode} />
                         <br />
-                        <ProgressButton
+                        {submitting?<ProgressButton
                             type="submit"
                             color={"primary"}
                             id='requestPermissiom'
                             state={buttonState}
-                            disabled={submitting}
                         >
                             {t("contactForm.requestPermission")}
-                        </ProgressButton>
+                        </ProgressButton>:''}
                     </form>
                 </div>
             }
