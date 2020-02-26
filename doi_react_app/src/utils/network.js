@@ -25,7 +25,7 @@ import bitcore from "bitcore-doichain"
      host: "doichain-testnet.le-space.de"
  }
 const changeNetwork = network => {
-    if (network === "testnet") { 
+    if (network === "testnet") {
         bitcore.settings.setSettings(settingsTestnet)
         bitcore.Networks.defaultNetwork = bitcore.Networks.get("doichain-testnet")}
     if (network === "mainnet") {
@@ -40,9 +40,5 @@ const changeNetwork = network => {
 export default changeNetwork
 
 export const getDoichainNetwork = network => {
-
-    return network === "mainnet"
-        ? // ? bitcore.Networks.get("doichain") //TODO please fix bitcore-doichain lib
-          bitcore.Networks.get("doichain")
-        : bitcore.Networks.get("doichain-testnet")
+    return network === "mainnet"?bitcore.Networks.get("doichain"): bitcore.Networks.get("doichain-testnet")
 }

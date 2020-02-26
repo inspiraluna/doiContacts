@@ -17,6 +17,7 @@ import Settings from "./pages/Settings"
 import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
+import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
 
 const App = props => {
 
@@ -104,6 +105,7 @@ const App = props => {
                          <TabPanel value={Number(our_CurrentTab)} index={2}>
                              {Number(currentTab) === 2 && <Settings />}
                          </TabPanel>
+                         <CustomizedSnackbars />
                      </div>
                  )
              }

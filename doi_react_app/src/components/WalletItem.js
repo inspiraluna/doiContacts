@@ -34,14 +34,14 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         const fetchBalanceData = async address => {
             try {
                 const currentWallet = wallets[activeWallet]
-                const response = await bitcore.getUTXOAndBalance(address.toString(), 0)
+                const response = await bitcore.getUTXOAndBalance(address, 0)
                 console.log("getUTXOAndBalance response block:" + response.block, response)
                 const block = response.block
                 let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
                 let unconfirmedUTXOsBalance = 0
                 // if we have offchain utxos then add them to the returned balance from Doichain node
                 console.log("working with current offchain utxos", utxos)
-                const utxoRounds = utxos
+                const utxoRounds = utxos //TODO put the offchainUTXO calculation into a library
                 if (utxoRounds && utxoRounds.length > 0) {
                     utxoRounds.forEach(utxoRound => {
                         console.log("utxoRound", utxoRound)
@@ -55,7 +55,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                                 unconfirmedUTXOsBalance += utxo.amount
                         })
                     })
-                    //setUnconfirmedBalance(unconfirmedUTXOsBalance)
+                    setUnconfirmedBalance(unconfirmedUTXOsBalance)
                 }
 
                 let currentWalletBalance = 0

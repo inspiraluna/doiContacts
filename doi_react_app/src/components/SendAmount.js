@@ -9,6 +9,7 @@ import FormControl from "@material-ui/core/FormControl"
 import bitcore from "bitcore-doichain"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
+import {getDoichainNetwork} from "../utils/network";
 
 const SendAmount = () => {
     const [activeWallet] = useGlobal("activeWallet")
@@ -19,16 +20,16 @@ const SendAmount = () => {
     const [modus, setModus] = useGlobal("modus")
     const [scanning] = useGlobal("scanning")
     const [qrCode] = useGlobal("qrCode")
+    const [network] = useGlobal("network")
     const [t] = useTranslation()
 
     const handleSendTransaction = async (toAddress, amount) => {
-        const network = bitcore.Networks.get("doichain") //TODO get this from global state in case we have testnet or regest
 
         try {
             console.log("sending " + amount + " to ", toAddress)
             const our_wallet = wallets[activeWallet]
             const ourAddress = bitcore
-                .getAddressOfPublicKey(our_wallet.publicKey, network)
+                .getAddressOfPublicKey(our_wallet.publicKey, getDoichainNetwork(network))
                 .toString()
             const txData = await bitcore.createDoicoinTransaction(
                 ourAddress,
@@ -38,15 +39,14 @@ const SendAmount = () => {
                 utxos
             ) //returns only tx and changeAddress
             console.log("txData", txData)
-            const utxosResponse = await bitcore.broadcastTransaction(null, txData.tx)
-            console.log("utxosResponse", utxosResponse)
-            setUTXOs(utxosResponse)
-            bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
-            /*let newUTXOS = utxos
+            const txRaw = await bitcore.broadcastTransaction(null, txData.tx)
+            const offChainUTXOs = bitcore.getOffchainUTXOs(ourAddress,txRaw)
+            console.log("utxosResponse", offChainUTXOs)
+            let newUTXOS = utxos
             if(!utxos) newUTXOS = []
-            newUTXOS.push(utxosResponse)
-            setUTXOs(newUTXOS)  //here are only additional new utxos what about potential old utxos?
-            bitcore.updateWalletBalance(our_wallet,utxosResponse.balance)*/
+            newUTXOS.push(offChainUTXOs.utxos)
+            setUTXOs(newUTXOS)
+            bitcore.updateWalletBalance(our_wallet, offChainUTXOs.balance)
 
             const msg = t("sendAmount.broadcastedDoicoinTx")
             setOpenError({ open: true, msg: msg, type: "success" })
