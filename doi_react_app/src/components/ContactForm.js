@@ -115,7 +115,7 @@ const ContactForm = () => {
                 setContacts(contacts)
                 setOpenError({ open: true, msg: msg, type: "success" })
             } catch (ex) {
-                const err = t("contactForm.8")
+                const err = t("contactForm.broadcastingError")
                 console.log(err, ex)
                 setOpenError({ open: true, msg: err, type: "error" })
                 setButtonState("error")
