@@ -17,7 +17,7 @@ import Settings from "./pages/Settings"
 import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
-import CustomizedSnackbars from "./components/MySnackbarContentWrapper";
+import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 
 const App = props => {
 
