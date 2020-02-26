@@ -54,7 +54,8 @@
         "noEmail": "no email",
         "noWalletsDefined": "no wallets defined",
         "BroadcastedDoiTx": "Broadcasted DOI permission transaction to Doichain node...",
-        "broadcastingError": "error while broadcasting transaction"
+        "broadcastingError": "error while broadcasting transaction",
+        "usedEmailError": "this email already exist, please use another one"
     },
     "contactItem": {
         "created": "Created",
