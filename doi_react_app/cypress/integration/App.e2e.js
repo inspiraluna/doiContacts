@@ -276,7 +276,7 @@ describe("App E2E", () => {
         })
     })
 
-    it.only("should create a contact but should not be possible to add twice the same email address", () => {
+    it("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()

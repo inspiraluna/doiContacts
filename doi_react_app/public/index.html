@@ -40,24 +40,23 @@
           document.addEventListener('deviceready', startApp, false)
         }
 
-        
-          function onBackKeyDown(e) {
-            e.preventDefault();
-            alert('Back Button is Pressed!');
-            document.addEventListener("backbutton", onBackKeyDown, false);
-          }
+          // Wait for device API libraries to load
+            //
+            function onLoad() {
+              document.addEventListener("deviceready", onDeviceReady, false);
+            }
 
-        // function onLoad() {
-        //   document.addEventListener("deviceready", onDeviceReady, false);
-        // }
+            // device APIs are available
+            //
+            function onDeviceReady() {
+              // Register the event listener
+              document.addEventListener("backbutton", onBackKeyDown, false);
+            }
 
-        // function onDeviceReady() {
-        //   // Register the event listener
-        //   document.addEventListener("backbutton", onBackKeyDown, false);
-        // }
-
-        // function onBackKeyDown() {
-        // }
+            // Handle the back button
+            //
+            function onBackKeyDown() {
+            }
 
     </script>
 
@@ -72,7 +71,7 @@
 -->
     <title>React App</title>
   </head>
-  <body onload="onLoad()">
+  <body  onload="onLoad()">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--
