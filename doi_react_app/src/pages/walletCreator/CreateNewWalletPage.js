@@ -1,5 +1,5 @@
 import React, { useGlobal, useEffect } from "reactn"
-import s from "./CreateNewWalletPage.module.css"
+import s from "./WalletCreator.module.css"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 import { useTranslation } from "react-i18next"

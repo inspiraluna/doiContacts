@@ -2,7 +2,7 @@ import {addCallback} from "reactn";
 import changeNetwork from "./network";
 
   const writeStorage = global => {
-      if ((window.device && window.device.platform === "browser") || !window.cordova) {
+      if ((window.device && window.device.platform === "browser") || !window.cordova || !window.NativeStorage) {
           localStorage.setItem("contacts", global.contacts ? JSON.stringify(global.contacts) : JSON.stringify([]))
           localStorage.setItem("wallets", global.wallets ? JSON.stringify(global.wallets) :JSON.stringify([]))
           localStorage.setItem("currentTab", global.currentTab ? global.currentTab : 0)

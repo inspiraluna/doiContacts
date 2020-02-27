@@ -187,11 +187,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     </div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
-                    <b>
-                        {t("walletItem.pubKey")}
-                        <input type={"text"} readOnly={true} defaultValue={publicKey} size={40} />
-                    </b>
-                    <br />
                 </div>
                 <div>{address ? <TransactionList address={address} /> : ""}</div>
             </div>

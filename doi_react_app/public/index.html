@@ -32,13 +32,33 @@
       // Learn more about service workers: https://bit.ly/CRA-PWA
       serviceWorker.unregister();
 
-      if(!window.cordova) {
-        console.log('didnt find cordova')
-        startApp()
-      } else {
-        console.log('found cordova')
-        document.addEventListener('deviceready', startApp, false)
-      }
+      if (!window.cordova) {
+          console.log('didnt find cordova')
+          startApp()
+        } else {
+          console.log('found cordova')
+          document.addEventListener('deviceready', startApp, false)
+        }
+
+        
+          function onBackKeyDown(e) {
+            e.preventDefault();
+            alert('Back Button is Pressed!');
+            document.addEventListener("backbutton", onBackKeyDown, false);
+          }
+
+        // function onLoad() {
+        //   document.addEventListener("deviceready", onDeviceReady, false);
+        // }
+
+        // function onDeviceReady() {
+        //   // Register the event listener
+        //   document.addEventListener("backbutton", onBackKeyDown, false);
+        // }
+
+        // function onBackKeyDown() {
+        // }
+
     </script>
 
 <!--
@@ -52,7 +72,7 @@
 -->
     <title>React App</title>
   </head>
-  <body>
+  <body onload="onLoad()">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

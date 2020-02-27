@@ -1,5 +1,5 @@
 import React, { useState, useGlobal, useEffect } from "reactn"
-import s from "./CreateNewWalletPage.module.css"
+import s from "./WalletCreator.module.css"
 import TextareaAutosize from "@material-ui/core/TextareaAutosize"
 import Bip39Password from "./bip39Password"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
@@ -29,7 +29,7 @@ const RestoreWalletPage = props => {
             <span>
                 <TextareaAutosize
                     rows={10}
-                    cols="210"
+                    cols="40"
                     id="textarea"
                     aria-label="maximum height"
                     placeholder={t("restoreRecoveryPhrase.enterSeed")}
