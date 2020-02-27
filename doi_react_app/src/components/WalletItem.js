@@ -46,7 +46,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                 if (utxoRounds && utxoRounds.length > 0) {
                     utxoRounds.forEach(utxoRound => {
                         console.log("utxoRound", utxoRound)
-                        utxoRound.utxos.forEach(utxo => {
+                        utxoRound.forEach(utxo => {
                             console.log(
                                 "adding utxo.amount to unconfirmedUTXOsBalance" +
                                     unconfirmedUTXOsBalance,
