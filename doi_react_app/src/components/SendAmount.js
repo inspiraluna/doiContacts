@@ -39,8 +39,8 @@ const SendAmount = () => {
                 utxos
             ) //returns only tx and changeAddress
             console.log("txData", txData)
-            const txRaw = await bitcore.broadcastTransaction(null, txData.tx)
-            const offChainUTXOs = bitcore.getOffchainUTXOs(ourAddress,txRaw)
+            const response = await bitcore.broadcastTransaction(null, txData.tx)
+            const offChainUTXOs = bitcore.getOffchainUTXOs(ourAddress,response.txRaw)
             console.log("utxosResponse", offChainUTXOs)
             let newUTXOS = utxos
             if(!utxos) newUTXOS = []

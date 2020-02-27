@@ -69,6 +69,7 @@ const ContactForm = () => {
                 setButtonState("error") //Progress Button should be red
                 return
             }
+
             try {
                 const our_wallet = wallets[wallet]
                 const offChainUtxos = utxos
@@ -95,8 +96,18 @@ const ContactForm = () => {
                     txData.validatorPublicKeyData.key
                 )
                 console.log('utxosResponse',utxosResponse)
-                setUTXOs(utxosResponse)
-                bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
+                //setUTXOs(utxosResponse)
+
+
+                const offChainUTXOs = bitcore.getOffchainUTXOs(txData.changeAddress,utxosResponse.txRaw)
+                console.log("utxosResponse", offChainUTXOs)
+                let newUTXOS = utxos
+                if(!utxos) newUTXOS = []
+                newUTXOS.push(offChainUTXOs.utxos)
+                setUTXOs(newUTXOS)
+                bitcore.updateWalletBalance(our_wallet, offChainUTXOs.balance)
+
+                //bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
 
                 const msg = t("contactForm.BroadcastedDoiTx")
                 const contact = {
@@ -181,7 +192,7 @@ const ContactForm = () => {
                                      setSubmitting(false)
                                 }else setSubmitting(true)
                             }}
-                            
+
                         />
 
                         <br />
