@@ -16,7 +16,7 @@ const SetPassword = () => {
     const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
     const [t] = useTranslation()
-    const [email, setEmail] = useGlobal("email")
+    const setEmail = useGlobal("email")[1]
 
     useEffect(() => {
         // const comparePasswords = () => {

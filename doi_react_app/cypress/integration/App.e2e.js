@@ -276,14 +276,16 @@ describe("App E2E", () => {
         })
     })
 
-    it("should create a contact but should not be possible to add twice the same email address", () => {
+    it.only("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
+        cy.wait(2000)
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
         cy.get("#toAddress").type("bob@ci-doichain.org")
         cy.get("#requestPermissiom").click()
         cy.wait(2000)
         cy.get("#phoneIcon").click()
+        cy.wait(2000)
         cy.get("#addButton").click()
         cy.get("#toAddress").type("bob@ci-doichain.org")
         cy.get("#client-snackbar").should(
@@ -292,7 +294,8 @@ describe("App E2E", () => {
         )
         cy.get("#requestPermissiom").should("not.exist")
         cy.get("#toAddress").clear()
-        cy.get("#toAddress").type("peter@ci-doichain.org")
+        cy.get("#toAddress").type("alice@ci-doichain.org")
         cy.get("#requestPermissiom").should("be.visible")
+        cy.get("#requestPermissiom").click()
     })
 })
