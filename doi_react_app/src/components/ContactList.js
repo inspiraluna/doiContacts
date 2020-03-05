@@ -59,7 +59,6 @@ const ContactList = () => {
         _.find(wallets, function(wallet) {
             let changed = false
             if (wallet.publicKey === contact.wallet) {
-                console.log("checking " + contact.email, contact.confirmed)
                 verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
                     status => {
                         if (status && status.val === true && !contact.confirmed) {

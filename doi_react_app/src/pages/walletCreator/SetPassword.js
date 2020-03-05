@@ -1,5 +1,5 @@
 import React, { useState, useGlobal, useEffect } from "reactn"
-import s from "./CreateNewWalletPage.module.css"
+import s from "./WalletCreator.module.css"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import InputLabel from "@material-ui/core/InputLabel"
@@ -16,7 +16,7 @@ const SetPassword = () => {
     const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
     const [t] = useTranslation()
-    const [email, setEmail] = useGlobal("email")
+    const setEmail = useGlobal("email")[1]
 
     useEffect(() => {
         const passwordValidator = require("password-validator")

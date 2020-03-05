@@ -17,9 +17,8 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [activeWallet] = useGlobal("activeWallet")
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
-    const setOpenError = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
-    const [network, setNetwork] = useGlobal("network")
+    const [network] = useGlobal("network")
     const [t] = useTranslation()
 
     useEffect(() => {
@@ -188,11 +187,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     </div>
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
-                    <b>
-                        {t("walletItem.pubKey")}
-                        <input type={"text"} readOnly={true} defaultValue={publicKey} size={40} />
-                    </b>
-                    <br />
                 </div>
                 <div>{address ? <TransactionList address={address} /> : ""}</div>
             </div>

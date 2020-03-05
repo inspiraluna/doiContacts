@@ -6,7 +6,7 @@ import { appVersion } from "./../../appVersion"
 import { useTranslation } from "react-i18next"
 const Welcome = () => {
     const setModus = useGlobal("modus")[1]
-     const { t, i18n } = useTranslation()
+     const { t } = useTranslation()
 
     const createNewWallet = e => {
         setModus("createNewWallet")

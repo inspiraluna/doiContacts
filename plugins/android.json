@@ -6,23 +6,7 @@
   "config_munge": {
     "files": {}
   },
-  "installed_plugins": {
-    "cordova-plugin-device": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
-    "cordova-plugin-geolocation": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
-    "cordova-plugin-nativestorage": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
-    "cordova-plugin-qrscanner-inspiraluna": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    }
-  },
+  "installed_plugins": {},
   "dependent_plugins": {
     "cordova-plugin-add-swift-support": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
