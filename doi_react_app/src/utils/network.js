@@ -10,10 +10,11 @@ import bitcore from "bitcore-doichain"
 
  const settingsMainnet = {
      //testnet 2
-     testnet: true,
-     from: "newsletter@doichain.org",
-     port: 4010,
-     host: "5.9.154.231"
+     testnet: false,
+     from: "doichain@le-space.de",
+     ssl: true,
+     port: 443,
+     host: "doichain.le-space.de"
  }
 
  const settingsTestnet = {
@@ -25,6 +26,7 @@ import bitcore from "bitcore-doichain"
      host: "doichain-testnet.le-space.de"
  }
 const changeNetwork = network => {
+    console.log('changing network to',network)
     if (network === "testnet") {
         bitcore.settings.setSettings(settingsTestnet)
         bitcore.Networks.defaultNetwork = bitcore.Networks.get("doichain-testnet")}
