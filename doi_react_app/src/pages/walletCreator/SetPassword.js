@@ -19,13 +19,8 @@ const SetPassword = () => {
     const [email, setEmail] = useGlobal("email")
 
     useEffect(() => {
-        // const comparePasswords = () => {
         const passwordValidator = require("password-validator")
-
-        // Create a schema
         const schema = new passwordValidator()
-
-        // Add properties to it
         schema
             .is()
             .min(8) // Minimum length 8
@@ -46,7 +41,6 @@ const SetPassword = () => {
 
         if (password1 === password2) {
             const validationResult = schema.validate(password1, { list: true })
-            console.log(validationResult)
             setError(undefined)
             if (validationResult.length === 0) setChecked(true)
             else {
