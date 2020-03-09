@@ -1,5 +1,4 @@
 import {addCallback} from "reactn";
-import changeNetwork from "./network";
 
   const writeStorage = global => {
       if ((window.device && window.device.platform === "browser") || !window.cordova || !window.NativeStorage) {
@@ -93,7 +92,6 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):undefined
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
         const initialNetwork = localStorage.getItem("network")?localStorage.getItem("network"): "mainnet"
-        changeNetwork(initialNetwork)
         setGlobal({
             contacts: initialContacts,
             wallets: initialWallets,
@@ -105,7 +103,6 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             network: initialNetwork
         })
     }else{
-        console.log('using nativestorage')
         const nObjects = [
             { name: "contacts", defaultValue: [] },
             { name: "wallets", defaultValue: [] },
@@ -119,7 +116,6 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
 
             const newGlobal = {}
             let counter = 0
-
             nObjectList.forEach( (it) => {
                 try{
                     window.NativeStorage.getItem(it.name,
@@ -138,9 +134,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                 } catch(ex){
                     newGlobal[it.name] = it.defaultValue
                     counter++
-                    console.log('counter now:'+counter,newGlobal)
                     if(counter===nObjectList.length) {
-                        console.log('setting global state from native storage', newGlobal)
                         setGlobal(newGlobal)
                     }
                 }

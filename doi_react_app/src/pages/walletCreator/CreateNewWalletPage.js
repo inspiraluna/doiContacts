@@ -3,6 +3,7 @@ import s from "./WalletCreator.module.css"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 import { useTranslation } from "react-i18next"
+import { generateMnemonic } from 'doichain/lib/generateMnemonic'
 
 const CreateNewWalletPage = () => {
     const [checked, setChecked] = useGlobal("checked")
@@ -14,13 +15,7 @@ const CreateNewWalletPage = () => {
     }
 
     useEffect(() => {
-        // const Mnemonic = require('bitcore-mnemonic');
-        // const code = new Mnemonic();
-        const bip39 = require("bip39")
-        const mnemonic = bip39.generateMnemonic()
-        console.log("mnemonic", mnemonic)
-        console.log("mnemonic", mnemonic.toString())
-        setSeed(mnemonic.toString())
+       setSeed(generateMnemonic())
     }, [])
 
     return (

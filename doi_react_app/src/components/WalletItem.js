@@ -90,6 +90,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
         let generatedAddress
         if (publicKey && !balance && !address) {
+            console.log('gnerateing address for network',getDoichainNetwork(network))
             generatedAddress = bitcore
                 .getAddressOfPublicKey(publicKey, getDoichainNetwork(network))
                 .toString()

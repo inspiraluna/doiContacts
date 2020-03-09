@@ -9,10 +9,11 @@ import changeNetwork from './../utils/network';
 
 
 const Settings = () => {
+
     const { t, i18n } = useTranslation()
     const [network, setNetwork] = useGlobal("network")
 
-      const useStyles = makeStyles(theme => ({
+    const useStyles = makeStyles(theme => ({
           formControl: {
               margin: theme.spacing(1),
               minWidth: 200
@@ -20,20 +21,19 @@ const Settings = () => {
           selectEmpty: {
               marginTop: theme.spacing(2)
           }
-      }))
+    }))
 
-        const changeLanguage = e => {
-            i18n.changeLanguage(e.target.value)
-            console.log("t",t)
-        }
+    const changeLanguage = e => {
+        i18n.changeLanguage(e.target.value)
+    }
 
-        const onChangeNetwork = e => {
-            const ourNetwork = e.target.value
-            setNetwork(ourNetwork)
-            changeNetwork(ourNetwork)
-        }
+    const onChangeNetwork = e => {
+        const ourNetwork = e.target.value
+        setNetwork(ourNetwork)
+        changeNetwork(ourNetwork)
+    }
 
-         const classes = useStyles()
+    const classes = useStyles()
 
 
     return (
