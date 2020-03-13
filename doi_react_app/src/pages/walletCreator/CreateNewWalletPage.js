@@ -17,7 +17,7 @@ const CreateNewWalletPage = () => {
     useEffect(() => {
        setSeed(generateMnemonic())
     }, [])
-
+   
     return (
         <div className={s.content}>
             <div className={s.firstContent}>
