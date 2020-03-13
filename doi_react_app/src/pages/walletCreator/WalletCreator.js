@@ -10,6 +10,8 @@ import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
+import {createHdKeyFromMnemonic} from "doichain/lib/createHdKeyFromMnemonic"
+import {createDoichainWalletFromHdKey} from "doichain/lib/createDoichainWalletFromHdKey";
 
 const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
@@ -42,7 +44,9 @@ const WalletCreator = () => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
         if (modus === "setPassword" || modus === "restoreWallet") {
-            const bip39 = require("bip39")
+
+            const hdkey = createHdKeyFromMnemonic(seed,password1 ? password1 : "mnemonic")
+            /*const bip39 = require("bip39")
             const HDKey = require("hdkey")
             const masterSeed = bip39
                 .mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic")
@@ -53,8 +57,8 @@ const WalletCreator = () => {
             const wallet = {}
             wallet.senderEmail = email
             wallet.privateKey = childkey0.privateKey.toString("hex")
-            wallet.publicKey = childkey0.publicKey.toString("hex")
-
+            wallet.publicKey = childkey0.publicKey.toString("hex")*/
+            const wallet = createDoichainWalletFromHdKey(hdkey,email)
             let newwallets = wallets
             newwallets.push(wallet)
             setWallets(newwallets)

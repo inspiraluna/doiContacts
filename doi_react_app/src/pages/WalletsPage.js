@@ -11,6 +11,7 @@ import QRCode from "qrcode-react"
 import SendAmount from "../components/SendAmount"
 import EditEmailTemplate from "../components/EditEmailTemplate"
 import { useTranslation } from "react-i18next"
+import {createHdKeyFromMnemonic,createDoichainWalletFromHdKey,network} from "doichain";
 
 /* eslint no-template-curly-in-string: "off" */
 
@@ -53,18 +54,20 @@ const WalletsPage = () => {
         redirectUrl,
         returnPath
     ) => {
-        const ourWallet = bitcore.createWallet()
-        const wallet = {}
-        // wallet.walletName = walletName
+
+        console.log('currentNetwork',network.DEFAULT_NETWORK)
+        //TODO replace mnemonic with correct seed phrase
+        const mnemonic = "balance blanket camp festival party robot social stairs noodle piano copy drastic"
+        const hdKey = createHdKeyFromMnemonic(mnemonic)
+        const wallet = createDoichainWalletFromHdKey(hdKey,senderName,network.DEFAULT_NETWORK)
         wallet.senderName = senderName
-        wallet.senderEmail = senderEmail
         wallet.subject = subject
         wallet.content = content
         wallet.contentType = contentType
         wallet.redirectUrl = redirectUrl
         wallet.returnPath = returnPath
-        wallet.privateKey = ourWallet.privateKey.toString()
-        wallet.publicKey = ourWallet.publicKey.toString()
+      //  wallet.privateKey = ourWallet.privateKey.toString()
+      //  wallet.publicKey = ourWallet.publicKey.toString()
 
         let newwallets = wallets
         newwallets.push(checkDefaults(wallet))

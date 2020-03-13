@@ -1,12 +1,12 @@
 import React, { useGlobal, useEffect, useState } from "reactn"
 import bitcore from "bitcore-doichain"
-
+//import  bitcoin from "bitcoinjs-lib"
+import {getAddress,network} from "doichain"
 import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 import isEqual from "lodash.isequal"
 import { useTranslation } from "react-i18next"
-import {getDoichainNetwork} from "../utils/network.js"
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
@@ -18,10 +18,11 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
-    const [network] = useGlobal("network")
+    const [reactNetwork] = useGlobal("network")
     const [t] = useTranslation()
 
     useEffect(() => {
+
         /**
          * - connects to a Doichain node and requests utxos (and balances)
          * - it sums up "offchain" (unconfirmed) utxos and puts it to the wallets balance.
@@ -90,10 +91,22 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
         let generatedAddress
         if (publicKey && !balance && !address) {
-            console.log('gnerateing address for network',getDoichainNetwork(network))
-            generatedAddress = bitcore
-                .getAddressOfPublicKey(publicKey, getDoichainNetwork(network))
-                .toString()
+            network.changeNetwork(reactNetwork)
+            console.log('generated address for network',network.DEFAULT_NETWORK)
+            console.log(publicKey)
+            const bitcoinjs = require( 'bitcoinjs-lib' );
+
+            const pubkey = Buffer.from( publicKey, 'hex' );
+            generatedAddress = getAddress.getAddress(pubkey,network.DEFAULT_NETWORK)
+          //  const { address } = bitcoinjs.payments.p2pkh({ pubkey });
+            console.log( generatedAddress );
+           /* var bitcoin = require('bitcoinjs-lib')
+            var publicKeyBuffer = new Buffer(publicKey, 'hex')
+            var ourpublicKey = bitcoin.ECPair.fromPublicKeyBuffer(publicKeyBuffer)
+
+            console.log(new bitcoin.ECPair(null, ourpublicKey.Q, { compressed: true }).getAddress()) // compressed, starts with a 02 or 03
+            console.log(new bitcoin.ECPair(null, ourpublicKey.Q, { compressed: false }).getAddress()) */
+            //generatedAddress = getAddress.getAddress(publicKey,network.DEFAULT_NETWORK)
             setAddress(generatedAddress)
         }
         console.log("fetching balance for wallet from node", generatedAddress)
@@ -110,7 +123,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     retBalanceData.balance === balance &&
                     retBalanceData.unconfirmedBalance !== unconfirmedBalance
                 )
-                    setUnconfirmedBalance(0)
+                setUnconfirmedBalance(0)
 
                 if (retBalanceData.balance !== balance) setBalance(retBalanceData.balance)
 

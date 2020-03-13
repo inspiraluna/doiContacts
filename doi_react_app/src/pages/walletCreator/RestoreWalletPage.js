@@ -5,7 +5,7 @@ import Bip39Password from "./bip39Password"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 import { useTranslation } from "react-i18next"
-const bip39 = require("bip39")
+import {validateMnemonic} from "doichain/lib/validateMnemonic";
 
 const RestoreWalletPage = props => {
     const setChecked = useGlobal("checked")[1]
@@ -34,17 +34,12 @@ const RestoreWalletPage = props => {
                     aria-label="maximum height"
                     placeholder={t("restoreRecoveryPhrase.enterSeed")}
                     onChange={e => {
-                        console.log("checking seedPhrase", e.target.value)
-                        console.log("valid without pw", bip39.validateMnemonic(e.target.value))
-                        console.log(
-                            "valid with pw:" + password1,
-                            bip39.validateMnemonic(e.target.value, password1)
-                        )
-                        if (bip39.validateMnemonic(e.target.value)) {
-                            console.log("seedPhrase", e.target.value)
-                            setSeed(e.target.value)
+                        const mnemonic = e.target.value
+                        if (validateMnemonic(mnemonic)) {
+                            setSeed(mnemonic)
                             setChecked(true)
-                        } else setChecked(false)
+                        }
+                        else setChecked(false)
                     }}
                 />
             </span>

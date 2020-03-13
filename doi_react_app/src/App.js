@@ -18,7 +18,8 @@ import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
-import changeNetwork from "./utils/network";
+import {network} from "doichain";
+//import changeNetwork from "./utils/network";
 
 const App = props => {
 
@@ -33,8 +34,8 @@ const App = props => {
     useEffect(() => {
             initStorage(props.cordova, global, setGlobal)
     }, [])
-    console.log('current network',global.network)
-    changeNetwork(global.network)
+    network.changeNetwork(global.network)
+    console.log('current network',network.DEFAULT_NETWORK)
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
