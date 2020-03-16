@@ -30,7 +30,7 @@ const SetPassword = () => {
             .is()
             .min(8) // Minimum length 8
             .is()
-            .max(100) // Maximum length 100
+            .max(32) // Maximum length 100
             .has()
             .uppercase() // Must have uppercase letters
             .has()
@@ -49,10 +49,34 @@ const SetPassword = () => {
             console.log(validationResult)
             setError(undefined)
             if (validationResult.length === 0) setChecked(true)
-            else {
-                setChecked(false)
-                setError(validationResult[0])
-            }
+            else if (validationResult[0] === "min") {
+                     setChecked(false)
+                     setError(t("setPassword.shortPassword"))
+                 }
+            else if (validationResult[0] === "uppercase") {
+                     setChecked(false)
+                     setError(t("setPassword.uppercase"))
+                 }
+            else if (validationResult[0] === "digits") {
+                     setChecked(false)
+                     setError(t("setPassword.digits"))
+                 }
+            else if (validationResult[0] === "lowercase") {
+                     setChecked(false)
+                     setError(t("setPassword.lowercase"))
+                 }
+            else if (validationResult[0] === "spaces") {
+                     setChecked(false)
+                     setError(t("setPassword.spaces"))
+                 }
+            else if (validationResult[0] === "max") {
+                     setChecked(false)
+                     setError(t("setPassword.max"))
+                 }
+            else if (validationResult[0] === "oneOf") {
+                     setChecked(false)
+                     setError(t("setPassword.blackList"))
+                 }
         } else {
             setChecked(false)
             setError(t("setPassword.errorAlert"))

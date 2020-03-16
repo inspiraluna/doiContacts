@@ -40,7 +40,14 @@
         "password": "Mot de passe",
         "reTypePassword": "Retapez votre mot de passe",
         "errorAlert": "Les mots de passe ne correspondent pas",
-        "email": "veillez  "
+        "email": "veillez entrer votre email",
+        "shortPassword": "Mot de passe trop court",
+        "uppercase": "Doit contenir au moins une lettre majuscule",
+        "digits": "Doit contenir au moins un chiffre",
+        "lowercase": "Doit contenir au moins une lettre minuscule",
+        "spaces": "Le mot de passe ne doit pas contenir d'espaces",
+        "max": "Le mot de passe ne doit pas contenir plus de 32 caractères",
+        "blackList": "Ce mot de passe n'est pas autorisé"  
     },
     "tabs": {
         "contacts": "Contacts",
