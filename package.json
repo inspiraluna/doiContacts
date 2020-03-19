@@ -20,7 +20,7 @@
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-nativestorage": "^2.3.2",
-    "cordova-plugin-qrscanner-inspiraluna": "^3.0.6"
+    "cordova-plugin-vibration": "^3.1.1"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "^1.3.4",
@@ -33,7 +33,8 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-device": {},
-      "cordova-plugin-nativestorage": {}
+      "cordova-plugin-nativestorage": {},
+      "cordova-plugin-vibration": {}
     },
     "platforms": [
       "android",

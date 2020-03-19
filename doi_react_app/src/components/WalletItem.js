@@ -126,6 +126,11 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         })
     }, [])
 
+    const vibration = () => {
+        let time = 500;
+        navigator.vibrate(time);
+     }
+
     if (!publicKey) return null
     else
         return (
@@ -135,12 +140,13 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     <span id="address">{address ? address.toString() : ""}</span>
                     <CopyToClipboard
                         text={address ? address.toString() : ""}
-                        onCopy={() =>
+                        onCopy={() => {
                             setOpenSnackbar({
                                 open: true,
                                 msg: t("walletItem.doiCoinAddressCopied"),
                                 type: "success"
                             })
+                            vibration()}
                         }
                     >
                         <FileCopyIcon color={"primary"} id="copy"></FileCopyIcon>
