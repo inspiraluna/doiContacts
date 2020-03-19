@@ -9,10 +9,13 @@ import Slide from "@material-ui/core/Slide"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
 import ContactItem from "../components/ContactItem"
+import useEventListener from '../hooks/useEventListener';
 
 const ContactsPage = () => {
     const [modus, setModus] = useGlobal("modus")
     const [activeContact] = useGlobal("activeContact")
+
+    useEventListener(document, "backbutton", () => setModus("list"));
 
     if (modus === "detail") {
         console.log("rendering contactspage", modus)

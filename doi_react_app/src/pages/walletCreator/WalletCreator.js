@@ -10,6 +10,8 @@ import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
+import { useEffect } from 'react';
+import useEventListener from '../../hooks/useEventListener';
 
 const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
@@ -38,6 +40,7 @@ const WalletCreator = () => {
         if (modus === "confirmRecoveryPhrase") setModus("createNewWallet")
         if (modus === "setPassword") setModus("confirmRecoveryPhrase")
     }
+
     const next = e => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
@@ -60,6 +63,8 @@ const WalletCreator = () => {
             setWallets(newwallets)
         }
     }
+
+    useEventListener(document, "backbutton", () => back());
 
     const classes = useStyles()
     return (

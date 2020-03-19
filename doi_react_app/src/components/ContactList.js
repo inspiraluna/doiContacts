@@ -20,6 +20,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
+import useEventListener from '../hooks/useEventListener';
 
 const ContactList = () => {
     const setModus = useGlobal("modus")[1]
@@ -53,6 +54,8 @@ const ContactList = () => {
         setModus("detail")
         setActiveContact(index)
     }
+
+    useEventListener(document, "backbutton", () => console.log("back"));
 
     const ourContacts = contacts ? contacts : []
     const contactNode = ourContacts.map((contact, index) => {

@@ -11,6 +11,7 @@ import QRCode from "qrcode-react"
 import SendAmount from "../components/SendAmount"
 import EditEmailTemplate from "../components/EditEmailTemplate"
 import { useTranslation } from "react-i18next"
+import useEventListener from '../hooks/useEventListener';
 
 /* eslint no-template-curly-in-string: "off" */
 
@@ -119,6 +120,8 @@ const WalletsPage = () => {
     const handleSend = e => {
         setModus("send")
     }
+
+    useEventListener(document, "backbutton", () => setModus("list"));
 
     const handleVerify = async () => {
         const our_wallet = wallets[activeWallet]
