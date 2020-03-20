@@ -54,6 +54,11 @@ const ContactForm = () => {
     const [t] = useTranslation()
     const setOpenSnackbar = useGlobal("errors")[1]
 
+    const vibration = () => {
+        let time = 500;
+        navigator.vibrate(time);
+     }
+
     const addContact = async email => {
         const runAddContact = async email => {
             if (!email || email.length === 0) {
@@ -125,6 +130,7 @@ const ContactForm = () => {
                 contacts.push(contact)
                 setContacts(contacts)
                 setOpenError({ open: true, msg: msg, type: "success" })
+                vibration()
             } catch (ex) {
                 const err = t("contactForm.broadcastingError")
                 console.log(err, ex)

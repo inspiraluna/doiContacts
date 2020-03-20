@@ -23,6 +23,11 @@ const SendAmount = () => {
     const [network] = useGlobal("network")
     const [t] = useTranslation()
 
+    const vibration = () => {
+        let time = 500;
+        navigator.vibrate(time);
+     }
+
     const handleSendTransaction = async (toAddress, amount) => {
 
         try {
@@ -50,6 +55,7 @@ const SendAmount = () => {
 
             const msg = t("sendAmount.broadcastedDoicoinTx")
             setOpenError({ open: true, msg: msg, type: "success" })
+            vibration()
             setButtonState("success")
             setModus("detail")
         } catch (ex) {
