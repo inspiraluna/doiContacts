@@ -31,7 +31,7 @@ const CreateNewWalletPage = () => {
             <br />
             <br />
             <div className={s.thirdContent}>
-                <h1>{seed}</h1>
+                <h1 id="randomSeed">{seed}</h1>
             </div>
             <FormControlLabel
                 control={<Checkbox id="checked" onChange={() => handleChange()} />}

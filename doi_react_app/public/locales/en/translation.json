@@ -12,10 +12,15 @@
         "back": "Back",
         "cancel": "Cancel",
         "delete": "Delete",
-        "skip": "Skip"
+        "skip": "Skip",
+        "iUnderstand": "I understand the risks",
+        "unlock": "Unlock"
     },
     "option": {
-        "choose": "Please choose a language"
+        "choose": "Please choose a language",
+        "showRecoveryPhrase": "Show recovery phrase",
+        "dialogTitle": "Warning",
+        "dialogDescription": "Please DO NOT share your seed phrase with anyone, including websites, online services and other wallets. Doing so may result in permanent and irreversible loss of your funds. Continue only if you know what you are doing."
     },
     "saveRecoveryPhrase": {
         "save": "Please write your recovery phrase down on paper and keep it in a safe, offline place. Never enter it in any online website or service",
@@ -40,7 +45,8 @@
         "password": "Password",
         "reTypePassword": "Re-type your password",
         "errorAlert": "Passwords do not match",
-        "email": "Please enter your email"
+        "email": "Please enter your email",
+        "passwordToUnlock": "Enter your password to unlock"
     },
     "tabs": {
         "contacts": "Contacts",
