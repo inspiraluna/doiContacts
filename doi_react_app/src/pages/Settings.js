@@ -93,39 +93,43 @@ const Settings = () => {
                         <option value={"regtest"} id="regtest">
                             Regtest
                         </option>
-                    </NativeSelect><br></br>
-                    <Button variant="outlined"
-                    id="showSeedPhrase"
-                    color="primary"
-                    onClick={() => setOpen(true)}>
-                    {t("option.showRecoveryPhrase")}</Button>
+                    </NativeSelect>
+                    <br></br>
+                    <Button
+                        variant="outlined"
+                        id="showSeedPhrase"
+                        color="primary"
+                        onClick={() => setOpen(true)}
+                    >
+                        {t("option.showRecoveryPhrase")}
+                    </Button>
                     <Dialog
-                    open={open !== undefined}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{t("option.dialogTitle")}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                        {t("option.dialogDescription")}
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => handleClose()} id="closeAlert" color="primary">
-                            {t("button.cancel")}
-                        </Button>
-                        <Button
-                            onClick={() => enterPassword()}
-                            id="enterPassword"
-                            color="primary"
-                            autoFocus
-                        >
-                        {t("button.iUnderstand")}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-                </FormControl>  
+                        open={open !== undefined}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{t("option.dialogTitle")}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {t("option.dialogDescription")}
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => handleClose()} id="closeAlert" color="primary">
+                                {t("button.cancel")}
+                            </Button>
+                            <Button
+                                onClick={() => enterPassword()}
+                                id="enterPassword"
+                                color="primary"
+                                autoFocus
+                            >
+                                {t("button.iUnderstand")}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </FormControl>
             </div>
         </div>
     )

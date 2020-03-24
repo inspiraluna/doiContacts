@@ -23,46 +23,53 @@ const DecryptSeed = () => {
         setEncrypted(false)
     }
     
-    if(encrypted === true){
-    return (
-        <div>
-        <p>{t("setPassword.passwordToUnlock")}</p>
-        <form>
-        <FormControl fullWidth>
-        <InputLabel htmlFor="standard-adornment-password">
-            {t("setPassword.password")}
-        </InputLabel>
-        <Input
-            id="standard-adornment-password"
-            fullWidth
-            type={showPassword ? "text" : "password"}
-            endAdornment={
-                <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
+    if (encrypted) {
+        return (
+            <div>
+                <p>{t("setPassword.passwordToUnlock")}</p>
+                <form>
+                    <FormControl fullWidth>
+                        <InputLabel htmlFor="standard-adornment-password">
+                            {t("setPassword.password")}
+                        </InputLabel>
+                        <Input
+                            id="standard-adornment-password"
+                            fullWidth
+                            type={showPassword ? "text" : "password"}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                    >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        onClick={() => decryptSeedPhrase()}
+                        id="unlock"
                     >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                </InputAdornment>
-            }
-        />
-    </FormControl>
-    <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            onClick={() => decryptSeedPhrase()}
-            id="unlock"
-          >
-          {t("button.unlock")}
-          </Button>
-    </form>   
-        </div>
-    )}else{
-        if(encrypted === false){
-            return<p id="seed">{seed}</p>
-    }}
+                        {t("button.unlock")}
+                    </Button>
+                </form>
+            </div>
+        )
+    } else {
+               let seedWords = seed.split(" ")
+               let oneLine = []
+               const ModulosSeed = seedWords.map((seed, i) => {
+                   if (i % 3 === 0 && i !== 0) oneLine = []
+                   oneLine.push(seed)
+                   if ((i + 1) % 3 === 0) return <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>
+               })
+               return <p id="seed">{ModulosSeed}</p>
+           }
 }
 
 export default DecryptSeed
