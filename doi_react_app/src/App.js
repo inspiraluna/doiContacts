@@ -19,7 +19,6 @@ import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import {network} from "doichain";
-//import changeNetwork from "./utils/network";
 
 const App = props => {
 
@@ -35,7 +34,8 @@ const App = props => {
             initStorage(props.cordova, global, setGlobal)
     }, [])
     network.changeNetwork(global.network)
-    console.log('current network',network.DEFAULT_NETWORK)
+    var GLOBAL = global || window;
+    console.log('current network',GLOBAL.network)
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
@@ -68,7 +68,7 @@ const App = props => {
     }
 
     const our_CurrentTab = currentTab ? currentTab : 0
-       if(!wallets || wallets.length === 0){
+       if(!wallets){
            return <WalletCreator />
              } else {
                  return (

@@ -1,12 +1,11 @@
 import React, { useGlobal, useEffect, useState } from "reactn"
-import bitcore from "bitcore-doichain"
-//import  bitcoin from "bitcoinjs-lib"
-import {getAddress,network} from "doichain"
+
+import {getBalanceOfWallet} from "doichain"
 import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
-import isEqual from "lodash.isequal"
 import { useTranslation } from "react-i18next"
+import {createHdKeyFromMnemonic} from "doichain/lib/createHdKeyFromMnemonic";
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
@@ -18,128 +17,29 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [block, setBlock] = useGlobal("block")
-    const [reactNetwork] = useGlobal("network")
     const [t] = useTranslation()
 
-    useEffect(() => {
+    useEffect( () => {
 
-        /**
-         * - connects to a Doichain node and requests utxos (and balances)
-         * - it sums up "offchain" (unconfirmed) utxos and puts it to the wallets balance.
-         * - it sets the balance of each address
-         *
-         * TODO this looks like it needs refactoring(!)
-         *
-         * @returns {Promise<void>}
-         */
-        const fetchBalanceData = async address => {
-            try {
-                const currentWallet = wallets[activeWallet]
-                const response = await bitcore.getUTXOAndBalance(address, 0)
-                console.log("getUTXOAndBalance response block:" + response.block, response)
-                const block = response.block
-                let balanceAllUTXOs = response.balanceAllUTXOs //contains all other existing utoxs from blockchain plus unconfirmed utxos
-                let unconfirmedUTXOsBalance = 0
-                // if we have offchain utxos then add them to the returned balance from Doichain node
-                console.log("working with current offchain utxos", utxos)
-                const utxoRounds = utxos //TODO put the offchainUTXO calculation into a library
-                if (utxoRounds && utxoRounds.length > 0) {
-                    utxoRounds.forEach(utxoRound => {
-                        console.log("utxoRound", utxoRound)
-                        utxoRound.forEach(utxo => {
-                            console.log(
-                                "adding utxo.amount to unconfirmedUTXOsBalance" +
-                                    unconfirmedUTXOsBalance,
-                                utxo.amount
-                            )
-                            if (utxo.address === address && utxo.amount > 0)
-                                unconfirmedUTXOsBalance += utxo.amount
-                        })
-                    })
-                    setUnconfirmedBalance(unconfirmedUTXOsBalance)
-                }
-
-                let currentWalletBalance = 0
-                if (currentWallet.addresses === undefined || currentWallet.addresses.length === 0)
-                    currentWallet.addresses = [{ address: address }]
-
-                let currentAddresses = currentWallet.addresses
-                for (let x = 0; x < currentAddresses.length; x++) {
-                    if (currentAddresses[x].address === address) {
-                        currentAddresses[x].balance = balanceAllUTXOs
-                        currentWalletBalance += currentAddresses[x].balance
-                    }
-                }
-
-                wallets[activeWallet].block = block
-                wallets[activeWallet].addresses = currentAddresses
-                wallets[activeWallet].balance = currentWalletBalance
-                wallets[activeWallet].unconfirmedBalance = unconfirmedUTXOsBalance
-                console.log("unconfirmedBalance now", unconfirmedUTXOsBalance)
-                return {
-                    block: block,
-                    wallets: wallets,
-                    balance: Number(balanceAllUTXOs).toFixed(8),
-                    unconfirmedBalance: Number(unconfirmedUTXOsBalance).toFixed(8)
-                }
-                //}
-            } catch (ex) {
-                console.log("error while fetching utxos from server", ex)
-                return undefined
-            }
+        const getBalance = async () => {
+            const currentWallet = wallets[activeWallet]
+            console.log('currentWallet', currentWallet)
+            const mnemonic = "refuse brush romance together undo document tortoise life equal trash sun ask"
+            const hdKey = createHdKeyFromMnemonic(mnemonic)
+            const getBalanceOfWalletObj = await getBalanceOfWallet(hdKey, currentWallet.derivationPath)
+            console.log('balance', getBalanceOfWalletObj.balance)
+            const tempWallets = wallets[activeWallet]
+            currentWallet.balance =  getBalanceOfWalletObj.balance
+            tempWallets[activeWallet] = currentWallet
+          //  setWallets(tempWallets)
+            setBalance(getBalanceOfWalletObj.balance)
         }
+        getBalance()
 
-        let generatedAddress
-        if (publicKey && !balance && !address) {
-            network.changeNetwork(reactNetwork)
-            console.log('generated address for network',network.DEFAULT_NETWORK)
-            console.log(publicKey)
-            const bitcoinjs = require( 'bitcoinjs-lib' );
-
-            const pubkey = Buffer.from( publicKey, 'hex' );
-            generatedAddress = getAddress.getAddress(pubkey,network.DEFAULT_NETWORK)
-          //  const { address } = bitcoinjs.payments.p2pkh({ pubkey });
-            console.log( generatedAddress );
-           /* var bitcoin = require('bitcoinjs-lib')
-            var publicKeyBuffer = new Buffer(publicKey, 'hex')
-            var ourpublicKey = bitcoin.ECPair.fromPublicKeyBuffer(publicKeyBuffer)
-
-            console.log(new bitcoin.ECPair(null, ourpublicKey.Q, { compressed: true }).getAddress()) // compressed, starts with a 02 or 03
-            console.log(new bitcoin.ECPair(null, ourpublicKey.Q, { compressed: false }).getAddress()) */
-            //generatedAddress = getAddress.getAddress(publicKey,network.DEFAULT_NETWORK)
-            setAddress(generatedAddress)
-        }
-        console.log("fetching balance for wallet from node", generatedAddress)
-        fetchBalanceData(generatedAddress).then(retBalanceData => {
-            console.log("retBalanceData", retBalanceData)
-            if (retBalanceData) {
-                if (!isEqual(wallets, retBalanceData.wallets)) setWallets(retBalanceData.wallets)
-                console.log("retBalanceData.balance ", retBalanceData.balance)
-                console.log("retBalanceData.unconfirmedBalance ", retBalanceData.unconfirmedBalance)
-                if (retBalanceData.unconfirmedBalance !== unconfirmedBalance)
-                    setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
-
-                if (
-                    retBalanceData.balance === balance &&
-                    retBalanceData.unconfirmedBalance !== unconfirmedBalance
-                )
-                setUnconfirmedBalance(0)
-
-                if (retBalanceData.balance !== balance) setBalance(retBalanceData.balance)
-
-                if (block !== retBalanceData.block) {
-                    setUTXOs(undefined) //reset utxos for new block
-                    setBlock(retBalanceData.block)
-                }
-            } else {
-                console.log("no retBalanceData for ", generatedAddress)
-                // setUnconfirmedBalance(retBalanceData.unconfirmedBalance)
-            }
-        })
     }, [])
 
-    if (!publicKey) return null
-    else
+    //if (!publicKey) return null
+    //else
         return (
             <div>
                 <li style={{ fontSize: "15px" }}>
@@ -164,8 +64,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                             ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"
                             : ""}
                     </span>
-                    <br />
-                    <b>{t("walletItem.block")}</b> {wallets[0].block}
                 </li>
                 <br />
                 <div style={{ fontSize: "15px", border: "2px solid lightgrey" }}>

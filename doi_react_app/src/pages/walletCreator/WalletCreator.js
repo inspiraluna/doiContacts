@@ -10,10 +10,10 @@ import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
-import {createHdKeyFromMnemonic} from "doichain/lib/createHdKeyFromMnemonic"
-import {createDoichainWalletFromHdKey} from "doichain/lib/createDoichainWalletFromHdKey";
-
+import {network,restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
+var GLOBAL = global || window;
 const WalletCreator = () => {
+
     const [modus, setModus] = useGlobal("modus")
     const [checked] = useGlobal("checked")
     const [wallets, setWallets] = useGlobal("wallets")
@@ -40,28 +40,25 @@ const WalletCreator = () => {
         if (modus === "confirmRecoveryPhrase") setModus("createNewWallet")
         if (modus === "setPassword") setModus("confirmRecoveryPhrase")
     }
+
     const next = e => {
         if (modus === "createNewWallet") setModus("confirmRecoveryPhrase")
         if (modus === "confirmRecoveryPhrase") setModus("setPassword")
         if (modus === "setPassword" || modus === "restoreWallet") {
 
+            network.changeNetwork(global.network)
             const hdkey = createHdKeyFromMnemonic(seed,password1 ? password1 : "mnemonic")
-            /*const bip39 = require("bip39")
-            const HDKey = require("hdkey")
-            const masterSeed = bip39
-                .mnemonicToSeedSync(seed, password1 ? password1 : "mnemonic")
-                .toString("hex")
-            const hdkey = HDKey.fromMasterSeed(Buffer.from(masterSeed, "hex"))
-            const childkey0 = hdkey.derive("m/0/0/1")
-            // const childkey1 = hdkey.derive("m/0/0/1")
-            const wallet = {}
-            wallet.senderEmail = email
-            wallet.privateKey = childkey0.privateKey.toString("hex")
-            wallet.publicKey = childkey0.publicKey.toString("hex")*/
-            const wallet = createDoichainWalletFromHdKey(hdkey,email)
-            let newwallets = wallets
-            newwallets.push(wallet)
-            setWallets(newwallets)
+            restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
+                console.log(wallets)
+                if(wallets.length>0)
+                    setWallets(wallets)
+                else{
+                    network.changeNetwork("regtest") //switch to regtest if mainnet doesn't work
+                    restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets2) => {
+                        setWallets(wallets2)
+                    })
+                }
+            })
         }
     }
 

@@ -1,14 +1,12 @@
 import Moment from 'react-moment';
 import 'moment-timezone';
 import React, {useEffect, useState} from "reactn";
-import bitcore from "bitcore-doichain";
+import {listTransactions} from "doichain"
 
 const TransactionList = ({address}) => {
-    console.log('rendering TransactionList with address: ',address)
     const [txs, setTxs] = useState([])
     useEffect(() => {
-        bitcore.listTransactions(address).then((txs) => {
-            console.log('got transactions of address ' + address, txs)
+            listTransactions(address).then((txs) => {
             if (txs.status === 'success')
                 setTxs(txs.data)
         })
@@ -16,23 +14,24 @@ const TransactionList = ({address}) => {
 
     const txNode = txs.map((tx, index) => {
         return (
-            <table style={{ width: "100%" }}>
-                <tbody>
+
                     <tr key={index}>
-                        <td>
+                        <td align={"left"}>
                             <Moment format="YYYY-MM-DD hh-mm-ss">{tx.createdAt}</Moment>
                         </td>
-                        <td align={"center"}>{tx.senderAddress}</td>
+                        <td align={"left"}>{tx.senderAddress}</td>
                         <td align={"right"}>
                             {tx.category} DOI {Number(tx.amount).toFixed(8)}
                         </td>
                     </tr>
-                </tbody>
-            </table>
         )
     })
 
-    return txNode
+    const txTable = ( <table style={{ width: "100%" }}>
+            <tbody>{txNode}</tbody></table>
+    )
+
+    return txTable
 }
 
 export default TransactionList
