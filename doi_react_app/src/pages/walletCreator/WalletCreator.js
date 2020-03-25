@@ -1,4 +1,4 @@
-import React, { useGlobal } from "reactn"
+import React, { useGlobal,useEffect } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -10,8 +10,10 @@ import { Toolbar, IconButton, Typography } from "@material-ui/core"
 import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
+import useEventListener from '../../hooks/useEventListener';
 import {network,restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
 var GLOBAL = global || window;
+
 const WalletCreator = () => {
 
     const [modus, setModus] = useGlobal("modus")
@@ -61,6 +63,8 @@ const WalletCreator = () => {
             })
         }
     }
+
+    useEventListener(document, "backbutton", () => back());
 
     const classes = useStyles()
     return (

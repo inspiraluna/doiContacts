@@ -5,6 +5,7 @@ import InputLabel from "@material-ui/core/InputLabel"
 import NativeSelect from "@material-ui/core/NativeSelect"
 import { makeStyles } from "@material-ui/core/styles"
 import changeNetwork from './../utils/network';
+import useEventListener from '../hooks/useEventListener';
 
 
 
@@ -32,6 +33,8 @@ const Settings = () => {
         setNetwork(ourNetwork)
         changeNetwork(ourNetwork)
     }
+
+    useEventListener(document, "backbutton", () => console.log("back"));
 
     const classes = useStyles()
 
