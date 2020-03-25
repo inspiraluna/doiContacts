@@ -16,16 +16,12 @@
     "cordova-plugin-nativestorage": {
       "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
-    "cordova-plugin-qrscanner-inspiraluna": {
+    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     },
-    "cordova-plugin-whitelist": {
+    "cordova-plugin-vibration": {
       "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
     }
   },
-  "dependent_plugins": {
-    "cordova-plugin-add-swift-support": {
-      "PACKAGE_NAME": "$(PRODUCT_BUNDLE_IDENTIFIER)"
-    }
-  }
+  "dependent_plugins": {}
 }
