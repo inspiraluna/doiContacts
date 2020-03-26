@@ -16,6 +16,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
+import useEventListener from '../hooks/useEventListener';
 
 const WalletList = () => {
     const [wallets, setWallets] = useGlobal("wallets")
@@ -47,6 +48,8 @@ const WalletList = () => {
         setWallets(currentWallets)
         setModus("list")
     }
+
+    useEventListener(document, "backbutton", () => console.log("back"));
 
     const ourWallets = wallets ? wallets : []
     const walletNode = ourWallets.map((item, index) => {

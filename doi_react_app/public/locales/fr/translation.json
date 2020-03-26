@@ -46,7 +46,14 @@
         "reTypePassword": "Retapez votre mot de passe",
         "errorAlert": "Les mots de passe ne correspondent pas",
         "email": "veillez entrer votre email",
-        "passwordToUnlock": "Entrez votre mot de passe pour déverrouiller"
+        "passwordToUnlock": "Entrez votre mot de passe pour déverrouiller",
+        "shortPassword": "Mot de passe trop court",
+        "uppercase": "Doit contenir au moins une lettre majuscule",
+        "digits": "Doit contenir au moins un chiffre",
+        "lowercase": "Doit contenir au moins une lettre minuscule",
+        "spaces": "Le mot de passe ne doit pas contenir d'espaces",
+        "max": "Le mot de passe ne doit pas contenir plus de 32 caractères",
+        "blackList": "Ce mot de passe n'est pas autorisé"  
     },
     "tabs": {
         "contacts": "Contacts",

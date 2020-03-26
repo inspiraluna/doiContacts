@@ -8,12 +8,16 @@ import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import { useTranslation } from "react-i18next"
 import Button from "@material-ui/core/Button"
+import {decryptAES} from "doichain";
 
 const DecryptSeed = () => {
     const [t] = useTranslation()
     const [showPassword, setShowPassword] = useState(false)
-    const [seed] = useGlobal("seed")
+    const [seed] = useGlobal(undefined)
     const [encrypted, setEncrypted] = useState(true)
+    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [decryptedSeed, setDecryptedSeed] = useGlobal("decryptedSeed")
+    const [password, setPassword] = useState("")
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
@@ -36,6 +40,9 @@ const DecryptSeed = () => {
                             id="standard-adornment-password"
                             fullWidth
                             type={showPassword ? "text" : "password"}
+                            onChange={e => {
+                                setPassword(e.target.value)
+                            }}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -52,7 +59,12 @@ const DecryptSeed = () => {
                         type="submit"
                         variant="contained"
                         color="primary"
-                        onClick={() => decryptSeedPhrase()}
+                        onClick={() => {
+                            decryptSeedPhrase()
+                            const decrypt = decryptAES(encryptedSeed, password)
+                            setDecryptedSeed(decrypt)
+                        }
+                    }
                         id="unlock"
                     >
                         {t("button.unlock")}
@@ -61,7 +73,7 @@ const DecryptSeed = () => {
             </div>
         )
     } else {
-               let seedWords = seed.split(" ")
+               let seedWords = decryptedSeed.split(" ")
                let oneLine = []
                const ModulosSeed = seedWords.map((seed, i) => {
                    if (i % 3 === 0 && i !== 0) oneLine = []

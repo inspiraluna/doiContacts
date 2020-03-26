@@ -1,5 +1,5 @@
 import React, { useState, useGlobal, useEffect } from "reactn"
-import s from "./CreateNewWalletPage.module.css"
+import s from "./WalletCreator.module.css"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import InputLabel from "@material-ui/core/InputLabel"
@@ -16,21 +16,16 @@ const SetPassword = () => {
     const setChecked = useGlobal("checked")[1]
     const [error, setError] = useState()
     const [t] = useTranslation()
-    const [email, setEmail] = useGlobal("email")
+    const setEmail = useGlobal("email")[1]
 
     useEffect(() => {
-        // const comparePasswords = () => {
         const passwordValidator = require("password-validator")
-
-        // Create a schema
         const schema = new passwordValidator()
-
-        // Add properties to it
         schema
             .is()
             .min(8) // Minimum length 8
             .is()
-            .max(100) // Maximum length 100
+            .max(32) // Maximum length 100
             .has()
             .uppercase() // Must have uppercase letters
             .has()
@@ -46,13 +41,36 @@ const SetPassword = () => {
 
         if (password1 === password2) {
             const validationResult = schema.validate(password1, { list: true })
-            console.log(validationResult)
             setError(undefined)
             if (validationResult.length === 0) setChecked(true)
-            else {
-                setChecked(false)
-                setError(validationResult[0])
-            }
+            else if (validationResult[0] === "min") {
+                     setChecked(false)
+                     setError(t("setPassword.shortPassword"))
+                 }
+            else if (validationResult[0] === "uppercase") {
+                     setChecked(false)
+                     setError(t("setPassword.uppercase"))
+                 }
+            else if (validationResult[0] === "digits") {
+                     setChecked(false)
+                     setError(t("setPassword.digits"))
+                 }
+            else if (validationResult[0] === "lowercase") {
+                     setChecked(false)
+                     setError(t("setPassword.lowercase"))
+                 }
+            else if (validationResult[0] === "spaces") {
+                     setChecked(false)
+                     setError(t("setPassword.spaces"))
+                 }
+            else if (validationResult[0] === "max") {
+                     setChecked(false)
+                     setError(t("setPassword.max"))
+                 }
+            else if (validationResult[0] === "oneOf") {
+                     setChecked(false)
+                     setError(t("setPassword.blackList"))
+                 }
         } else {
             setChecked(false)
             setError(t("setPassword.errorAlert"))

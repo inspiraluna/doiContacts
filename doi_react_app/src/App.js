@@ -18,23 +18,26 @@ import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
-import changeNetwork from "./utils/network";
+import {network} from "doichain";
 
 const App = props => {
 
     const [global, setGlobal] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
-    const [modus,setModus] = useGlobal("modus")
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
+    const setModus = useGlobal("modus")[1]
+    const setActiveWallet = useGlobal("activeWallet")[1]
     const [wallets] = useGlobal("wallets")
+    
 
     register()
+
 
     useEffect(() => {
             initStorage(props.cordova, global, setGlobal)
     }, [])
-    console.log('current network',global.network)
-    changeNetwork(global.network)
+    network.changeNetwork(global.network)
+    var GLOBAL = global || window;
+    console.log('current network',GLOBAL.network)
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
@@ -67,7 +70,7 @@ const App = props => {
     }
 
     const our_CurrentTab = currentTab ? currentTab : 0
-       if(!wallets || wallets.length === 0){
+       if(!wallets){
            return <WalletCreator />
              } else {
                  return (

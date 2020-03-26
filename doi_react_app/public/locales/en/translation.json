@@ -46,7 +46,14 @@
         "reTypePassword": "Re-type your password",
         "errorAlert": "Passwords do not match",
         "email": "Please enter your email",
-        "passwordToUnlock": "Enter your password to unlock"
+        "passwordToUnlock": "Enter your password to unlock",
+        "shortPassword": "Password is too short", 
+        "uppercase": "At least 1 character must be uppercase", 
+        "digits": "Should contain at least 1 number", 
+        "lowercase": "At least 1 character must be lowercase", 
+        "spaces": "Password should not contain spaces", 
+        "max": "Password should not contain more than 32 characters", 
+        "blackList": "This password is not allowed" 
     },
     "tabs": {
         "contacts": "Contacts",

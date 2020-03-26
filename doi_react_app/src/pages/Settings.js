@@ -12,6 +12,7 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DecriptSeed from '../components/DecryptSeed';
+import useEventListener from '../hooks/useEventListener';
 
 
 
@@ -49,6 +50,8 @@ const Settings = () => {
         setNetwork(ourNetwork)
         changeNetwork(ourNetwork)
     }
+
+    useEventListener(document, "backbutton", () => console.log("back"));
 
     const classes = useStyles()
 

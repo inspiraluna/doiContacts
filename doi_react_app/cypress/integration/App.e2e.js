@@ -309,4 +309,82 @@ describe("App E2E", () => {
         cy.get("#seed").should("have.text", seed)
     })
     })
+    
+    it("should create a contact but should not be possible to add twice the same email address", () => {
+        restoreWallet()
+        cy.wait(2000)
+        cy.get("#phoneIcon").click()
+        cy.get("#addButton").click()
+        cy.get("#toAddress").type("bob@ci-doichain.org")
+        cy.get("#requestPermissiom").click()
+        cy.wait(2000)
+        cy.get("#phoneIcon").click()
+        cy.wait(2000)
+        cy.get("#addButton").click()
+        cy.get("#toAddress").type("bob@ci-doichain.org")
+        cy.get("#client-snackbar").should(
+            "have.text",
+            "this email already exist, please use another one"
+        )
+        cy.get("#requestPermissiom").should("not.exist")
+        cy.get("#toAddress").clear()
+        cy.get("#toAddress").type("alice@ci-doichain.org")
+        cy.get("#requestPermissiom").should("be.visible")
+        cy.get("#requestPermissiom").click()
+    })
+
+     it("should test the password validation messages", () => {
+         cy.get("#createWallet").click()
+         cy.get("#preview").click()
+         cy.get("#createWallet").click()
+         cy.get("#checked").click()
+         cy.get("#next").click()
+         cy.get("#skipButton").click()
+         cy.get("#close").click()
+         cy.get("#skipButton").click()
+         cy.get("#skip").click()
+         cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
+         cy.get("#standard-adornment-password").type("abc")
+         cy.get("#standard-adornment-password2").type("abc")
+         cy.get("#component-error-text").should("have.text", "Password is too short")
+         cy.get("#standard-adornment-password").type("defaa")
+         cy.get("#standard-adornment-password2").type("defaa")
+         cy.get("#component-error-text").should(
+             "have.text",
+             "At least 1 character must be uppercase"
+         )
+         cy.get("#standard-adornment-password").type("G")
+         cy.get("#standard-adornment-password2").type("G")
+         cy.get("#component-error-text").should("have.text", "Should contain at least 1 number")
+         cy.get("#standard-adornment-password").clear()
+         cy.get("#standard-adornment-password2").clear()
+         cy.get("#standard-adornment-password").type("AAANNJJJ")
+         cy.get("#standard-adornment-password2").type("AAANNJJJ")
+         cy.get("#component-error-text").should(
+             "have.text",
+             "At least 1 character must be lowercase"
+         )
+         cy.get("#standard-adornment-password").clear()
+         cy.get("#standard-adornment-password2").clear()
+         cy.get("#standard-adornment-password").type("Aabb ooo1")
+         cy.get("#standard-adornment-password2").type("Aabb ooo1")
+         cy.get("#component-error-text").should("have.text", "Password should not contain spaces")
+         cy.get("#standard-adornment-password").clear()
+         cy.get("#standard-adornment-password2").clear()
+         cy.get("#standard-adornment-password").type(
+             "Aabbooo1fffjfhfhjjmcncbcbvmdndbdncnmvcmcncnshsjcnbs"
+         )
+         cy.get("#standard-adornment-password2").type(
+             "Aabbooo1fffjfhfhjjmcncbcbvmdndbdncnmvcmcncnshsjcnbs"
+         )
+         cy.get("#component-error-text").should(
+             "have.text",
+             "Password should not contain more than 32 characters"
+         )
+         cy.get("#standard-adornment-password").clear()
+         cy.get("#standard-adornment-password2").clear()
+         cy.get("#standard-adornment-password").type("Password123")
+         cy.get("#standard-adornment-password2").type("Password123")
+         cy.get("#component-error-text").should("have.text", "This password is not allowed")
+     })
 })

@@ -20,6 +20,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
+import useEventListener from '../hooks/useEventListener';
 
 const ContactList = () => {
     const setModus = useGlobal("modus")[1]
@@ -54,12 +55,13 @@ const ContactList = () => {
         setActiveContact(index)
     }
 
+    useEventListener(document, "backbutton", () => console.log("back"));
+
     const ourContacts = contacts ? contacts : []
     const contactNode = ourContacts.map((contact, index) => {
         _.find(wallets, function(wallet) {
             let changed = false
             if (wallet.publicKey === contact.wallet) {
-                console.log("checking " + contact.email, contact.confirmed)
                 verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
                     status => {
                         if (status && status.val === true && !contact.confirmed) {

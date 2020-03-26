@@ -11,8 +11,11 @@ import QRCode from "qrcode-react"
 import SendAmount from "../components/SendAmount"
 import EditEmailTemplate from "../components/EditEmailTemplate"
 import { useTranslation } from "react-i18next"
+import {restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
+import useEventListener from '../hooks/useEventListener';
 
 /* eslint no-template-curly-in-string: "off" */
+var GLOBAL = global || window;
 
 const WalletsPage = () => {
     const [amount, setAmount] = useState(0) //receive amount
@@ -22,6 +25,7 @@ const WalletsPage = () => {
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
     const [utxos, setUTXOs] = useGlobal("utxos")
+
     const [t] = useTranslation()
 
     const checkDefaults = wallet => {
@@ -53,18 +57,18 @@ const WalletsPage = () => {
         redirectUrl,
         returnPath
     ) => {
-        const ourWallet = bitcore.createWallet()
-        const wallet = {}
-        // wallet.walletName = walletName
+
+        console.log('currentNetwork',GLOBAL.network)
+        //TODO replace mnemonic with correct seed phrase
+        const mnemonic = "refuse brush romance together undo document tortoise life equal trash sun ask"
+        const hdKey = createHdKeyFromMnemonic(mnemonic)
+        const wallet = restoreDoichainWalletFromHdKey(hdKey,senderName,GLOBAL.DEFAULT_NETWORK).newWallet
         wallet.senderName = senderName
-        wallet.senderEmail = senderEmail
         wallet.subject = subject
         wallet.content = content
         wallet.contentType = contentType
         wallet.redirectUrl = redirectUrl
         wallet.returnPath = returnPath
-        wallet.privateKey = ourWallet.privateKey.toString()
-        wallet.publicKey = ourWallet.publicKey.toString()
 
         let newwallets = wallets
         newwallets.push(checkDefaults(wallet))
@@ -119,6 +123,8 @@ const WalletsPage = () => {
     const handleSend = e => {
         setModus("send")
     }
+
+    useEventListener(document, "backbutton", () => setModus("list"));
 
     const handleVerify = async () => {
         const our_wallet = wallets[activeWallet]

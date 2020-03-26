@@ -1,19 +1,21 @@
 import React, { useState, useGlobal, useEffect } from "reactn"
-import s from "./CreateNewWalletPage.module.css"
+import s from "./WalletCreator.module.css"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
-import TextareaAutosize from "@material-ui/core/TextareaAutosize"
 import { useTranslation } from "react-i18next"
+import {shuffle} from "lodash"
 
 const ConfirmRecoveryPhrase = ({ next }) => {
     const setChecked = useGlobal("checked")[1]
     const [open, setOpen] = useState(undefined)
     const [seed] = useGlobal("seed")
     const [t] = useTranslation()
+    const [sufflyButtons, setSufflyButtons] = useState([])
+    const [newArray, setNewArray] = useState([])
 
     const handleClose = () => {
         setOpen(undefined)
@@ -23,44 +25,40 @@ const ConfirmRecoveryPhrase = ({ next }) => {
         setChecked(false)
     }, [])
 
+    useEffect(() => {
+        const tempSufflyButtons = shuffle(seedWords)
+        setSufflyButtons(tempSufflyButtons)
+    }, [])
+
+    let seedWords = seed.split(" ")
+
+    const seedButtons = sufflyButtons.map((s, i) => {
+        return (
+            <Button
+                style={{ margin: "10px" }}
+                key={i}
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                    const correctIndex = seedWords.indexOf(s)
+                    if (correctIndex === newArray.length) {
+                        let tempNewArray = newArray
+                        tempNewArray.push(s)
+                        setNewArray(tempNewArray)
+                        let filterButtons = sufflyButtons.filter(t => t !== s)
+                        setSufflyButtons(filterButtons)
+                        if (sufflyButtons.length <= 1) setChecked(true)
+                    }
+                }}
+            >
+                {s}
+            </Button>
+        )
+    })
     return (
-            <div className={s.content}>
-                <p>{t("confirmRecoveryPhrase.confirm")}</p>
-            {/* <Button color="primary">cycle</Button>
-                <Button color="primary">search</Button>
-                <Button color="primary">lend</Button>
-                <Button color="primary">secret</Button>
-                <Button color="primary">march</Button>
-                <Button color="primary">ancient</Button>
-                <Button color="primary">clay</Button>
-                <Button color="primary">chicken</Button>
-                <Button color="primary">appear</Button>
-                <Button color="primary">embrace</Button>
-                <Button color="primary">render</Button>
-                <Button color="primary">immense</Button>
-                <Button color="primary">happy</Button>
-                <Button color="primary">champion</Button>
-                <Button color="primary">address</Button>
-                <Button color="primary">regular</Button>
-                <Button color="primary">absent</Button>
-                <Button color="primary">cherry</Button>
-                <Button color="primary">hint</Button>
-                <Button color="primary">sudden</Button>
-                <Button color="primary">cram</Button>
-                <Button color="primary">blur</Button>
-                <Button color="primary">page</Button>
-                <Button color="primary">twist</Button> */}
-                <TextareaAutosize
-                    rows={10}
-                    cols="210"
-                    aria-label="maximum height"
-                    placeholder={t("confirmRecoveryPhrase.enterSeed")}
-                    onChange={e => {
-                        if (e.target.value === seed) {
-                            setChecked(true)
-                        } else setChecked(false)
-                    }}
-                />
+        <div className={s.content}>
+            <p>{t("confirmRecoveryPhrase.confirm")}</p>
+            <p>{seedButtons}</p>
             <div className={s.content}>
                 <Button onClick={() => setOpen(!open)} id="skipButton">
                     {t("button.skip")}

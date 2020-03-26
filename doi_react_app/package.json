@@ -1,6 +1,6 @@
 {
     "name": "doi_react_app",
-    "version": "0.0.42",
+    "version": "0.0.43",
     "private": true,
     "homepage": "../www/",
     "dependencies": {
@@ -11,12 +11,13 @@
         "@material-ui/icons": "^4.5.1",
         "bitcore-doichain": "^0.1.30",
         "crypto-browserify": "^3.12.0",
-        "doichain": "0.0.3",
+        "doichain": "0.0.11",
         "formik": "^2.0.6",
         "hdkey": "^1.1.1",
         "i18next": "^19.1.0",
         "i18next-browser-languagedetector": "^4.0.1",
         "i18next-xhr-backend": "^3.2.2",
+        "json-stringify-safe": "^5.0.1",
         "lodash": "^4.17.15",
         "moment": "^2.24.0",
         "moment-timezone": "^0.5.27",
@@ -36,7 +37,8 @@
         "reactn": "^2.2.4",
         "serialize-javascript": "^2.1.2",
         "swipe-js-iso": "^2.1.5",
-        "use-position": "^0.0.6"
+        "use-position": "^0.0.6",
+        "yarn": "^1.22.4"
     },
     "scripts": {
         "start": "react-scripts start",
