@@ -11,7 +11,7 @@ import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
-import {network,restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
+import {network,restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic,encryptAES} from "doichain";
 var GLOBAL = global || window;
 
 const WalletCreator = () => {
@@ -23,6 +23,7 @@ const WalletCreator = () => {
     const [password1] = useGlobal("password1")
     const [t] = useTranslation()
     const [email] = useGlobal("email")
+    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -50,6 +51,8 @@ const WalletCreator = () => {
 
             network.changeNetwork(global.network)
             const hdkey = createHdKeyFromMnemonic(seed,password1 ? password1 : "mnemonic")
+            const encrypt = encryptAES(seed,password1 ? password1 : "mnemonic")
+            setEncryptedSeed(encrypt)
             restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
                 console.log(wallets)
                 if(wallets.length>0)

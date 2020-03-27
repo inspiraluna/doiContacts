@@ -12,10 +12,15 @@
         "send": "Envoyer",
         "verify": "Vérifier",
         "back": "Retour",
-        "skip": "Sauter"
+        "skip": "Sauter",
+        "iUnderstand": "Je comprends les risques",
+        "unlock": "Deblquer"
     },
     "option": {
-        "choose": "Choisissez une langue s'il vous plait"
+        "choose": "Choisissez une langue s'il vous plait",
+        "showRecoveryPhrase": "Afficher la phrase de récupération",
+        "dialogTitle": "Avertissement",
+        "dialogDescription": "Veuillez NE PAS partager votre phrase de récupération avec qui que ce soit, y compris des sites Web, des services en ligne et d'autres portefeuilles. Cela pourrait entraîner une perte permanente et irréversible de vos fonds. Continuez uniquement si vous savez ce que vous faites."
     },
     "saveRecoveryPhrase": {
         "save": "Veuillez noter votre phrase de récupération sur papier et la conserver dans un endroit sûr et hors ligne. Ne la saisissez jamais sur un site Web ou un service en ligne",
@@ -41,6 +46,7 @@
         "reTypePassword": "Retapez votre mot de passe",
         "errorAlert": "Les mots de passe ne correspondent pas",
         "email": "veillez entrer votre email",
+        "passwordToUnlock": "Entrez votre mot de passe pour déverrouiller",
         "shortPassword": "Mot de passe trop court",
         "uppercase": "Doit contenir au moins une lettre majuscule",
         "digits": "Doit contenir au moins un chiffre",
