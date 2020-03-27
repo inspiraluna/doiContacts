@@ -1,4 +1,4 @@
-import React, { useGlobal,useEffect } from "reactn"
+import React, { useGlobal } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -11,7 +11,7 @@ import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
-import {network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES, decryptAES} from "doichain";
+import { network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES, decryptAES} from "doichain";
 import LoadingSpinner from '../../components/LoadingSpinner'
 var GLOBAL = global || window;
 
@@ -20,12 +20,13 @@ const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
     const [checked] = useGlobal("checked")
     const [wallets, setWallets] = useGlobal("wallets")
-    const [seed, setSeed] = useGlobal("seed")
-    const [password1] = useGlobal("password1")
-    const [t] = useTranslation()
-    const [email] = useGlobal("email")
-    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
     const [loading, setLoading] = useGlobal(false)
+    const [seed, setSeed] = useGlobal("seed")
+    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [password1] = useGlobal("password1")
+    const [email] = useGlobal("email")
+
+    const [t] = useTranslation()
 
     const useStyles = makeStyles(theme => ({
         root: {
