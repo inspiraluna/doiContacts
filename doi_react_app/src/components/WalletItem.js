@@ -24,15 +24,16 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         const getBalance = async () => {
             const currentWallet = wallets[activeWallet]
             console.log('currentWallet', currentWallet)
-            const mnemonic = "refuse brush romance together undo document tortoise life equal trash sun ask"
-            const hdKey = createHdKeyFromMnemonic(mnemonic)
-            const getBalanceOfWalletObj = await getBalanceOfWallet(hdKey, currentWallet.derivationPath)
-            console.log('balance', getBalanceOfWalletObj.balance)
-            const tempWallets = wallets[activeWallet]
-            currentWallet.balance =  getBalanceOfWalletObj.balance
-            tempWallets[activeWallet] = currentWallet
+          //  const mnemonic = "refuse brush romance together undo document tortoise life equal trash sun ask"
+          //  const hdKey = createHdKeyFromMnemonic(mnemonic)
+          //  const getBalanceOfWalletObj = await getBalanceOfWallet(hdKey, currentWallet.derivationPath)
+          //  console.log('balance', getBalanceOfWalletObj.balance)
+         //   const tempWallets = wallets[activeWallet]
+         //   currentWallet.balance =  getBalanceOfWalletObj.balance
+         //   tempWallets[activeWallet] = currentWallet
             //setWallets(tempWallets)
-            setBalance(getBalanceOfWalletObj.balance)
+        //    setBalance(getBalanceOfWalletObj.balance)
+            setBalance(wallets[activeWallet].balance)
         }
         getBalance()
 
