@@ -31,7 +31,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             const tempWallets = wallets[activeWallet]
             currentWallet.balance =  getBalanceOfWalletObj.balance
             tempWallets[activeWallet] = currentWallet
-          //  setWallets(tempWallets)
+            //setWallets(tempWallets)
             setBalance(getBalanceOfWalletObj.balance)
         }
         getBalance()
@@ -42,9 +42,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         let time = 500;
         navigator.vibrate(time);
     }
-
-    if (!publicKey) return null
-    else
         return (
             <div>
                 <li style={{ fontSize: "15px" }}>

@@ -11,17 +11,13 @@ import Button from "@material-ui/core/Button"
 import {decryptAES} from "doichain";
 
 const DecryptSeed = () => {
+
     const [t] = useTranslation()
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
     const [showPassword, setShowPassword] = useState(false)
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
     const [password, setPassword] = useState("")
-
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword)
-    }
-    
     if (encrypted) {
         return (
             <div>
@@ -42,7 +38,7 @@ const DecryptSeed = () => {
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
-                                        onClick={handleClickShowPassword}
+                                        onClick={() => setShowPassword(!showPassword)}
                                     >
                                         {showPassword ? <Visibility /> : <VisibilityOff />}
                                     </IconButton>
@@ -70,12 +66,12 @@ const DecryptSeed = () => {
     } else {
                let seedWords = decryptedSeed.split(" ")
                let oneLine = []
-               const ModulosSeed = seedWords.map((seed, i) => {
+               const modulosSeed = seedWords.map((seed, i) => {
                    if (i % 3 === 0 && i !== 0) oneLine = []
                    oneLine.push(seed)
                    if ((i + 1) % 3 === 0) return <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>
                })
-               return <p id="seed">{ModulosSeed}</p>
+               return <p id="seed">{modulosSeed}</p>
            }
 }
 

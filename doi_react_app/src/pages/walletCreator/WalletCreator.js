@@ -11,7 +11,7 @@ import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
-import {network,restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic,encryptAES} from "doichain";
+import {network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES, decryptAES} from "doichain";
 import LoadingSpinner from '../../components/LoadingSpinner'
 var GLOBAL = global || window;
 
@@ -52,22 +52,36 @@ const WalletCreator = () => {
         if (modus === "setPassword" || modus === "restoreWallet") {
 
             network.changeNetwork(global.network)
-            const hdkey = createHdKeyFromMnemonic(seed,password1 ? password1 : "mnemonic")
-            const encrypt = encryptAES(seed,password1 ? password1 : "mnemonic")
-            setEncryptedSeed(encrypt)
+            const password = password1 ? password1 : "mnemonic"
+            const hdkey = createHdKeyFromMnemonic(seed,password)
+            const encryptedS = encryptAES(seed,password)
+            setEncryptedSeed(encryptedS)
+            decryptAES(encryptedS,password)
+            console.log('encrypted seed stored in global state',encryptedS)
             setSeed(undefined)
             setLoading(true)
+            console.log('checking mainnet for wallets')
             restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
-                console.log(wallets)
                 if(wallets.length>0){
                     setWallets(wallets)
                     setLoading(false)
                 }else{
-                    network.changeNetwork("regtest") //switch to regtest if mainnet doesn't work
-                    setLoading(true)
+                    console.log('checking testnet for wallets')
+                    network.changeNetwork("testnet") //switch to regtest if mainnet doesn't work
                     restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets2) => {
-                        setWallets(wallets2)
-                        setLoading(false)
+                        if(wallets2.length>0){
+                            setWallets(wallets2)
+                            setLoading(false)
+                        }else{
+                            console.log('checking regtest for wallets')
+                            network.changeNetwork("regtest")
+                            restoreDoichainWalletFromHdKey(hdkey,email).then((wallets3) => {
+                                if(wallets3.length>0){
+                                    setWallets(wallets3)
+                                    setLoading(false)
+                                }else setLoading(false)
+                            })
+                        }
                     })
                 }
             })
