@@ -7,7 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useTranslation } from "react-i18next"
-import {shuffle} from "lodash"
+import shuffle from "lodash.shuffle"
 
 const ConfirmRecoveryPhrase = ({ next }) => {
     const setChecked = useGlobal("checked")[1]

@@ -11,7 +11,7 @@ import QRCode from "qrcode-react"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import bitcore from "bitcore-doichain"
 import { useTranslation } from "react-i18next"
-import _ from "lodash"
+import find from "lodash.find"
 
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -186,7 +186,7 @@ const ContactForm = () => {
                             urlPrefix={"mailto:"}
                             onChange={(e)=>{
                                 console.log(e.target.value)
-                                const found =  _.find(contacts, function(o) {
+                                const found =  find(contacts, function(o) {
                                     return o.email === e.target.value
                                 })
                                 if(found){

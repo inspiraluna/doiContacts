@@ -1,5 +1,5 @@
 import React, { useGlobal, useState } from "reactn"
-import _ from "lodash"
+import find from "lodash.find"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import Avatar from "@material-ui/core/Avatar"
@@ -59,7 +59,7 @@ const ContactList = () => {
 
     const ourContacts = contacts ? contacts : []
     const contactNode = ourContacts.map((contact, index) => {
-        _.find(wallets, function(wallet) {
+        find(wallets, function(wallet) {
             let changed = false
             if (wallet.publicKey === contact.wallet) {
                 verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
