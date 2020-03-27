@@ -36,8 +36,7 @@
         "reactn": "^2.2.4",
         "serialize-javascript": "^2.1.2",
         "swipe-js-iso": "^2.1.5",
-        "use-position": "^0.0.6",
-        "yarn": "^1.22.4"
+        "use-position": "^0.0.6"
     },
     "scripts": {
         "start": "react-scripts start",
