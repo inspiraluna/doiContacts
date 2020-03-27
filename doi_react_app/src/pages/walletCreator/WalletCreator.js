@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
 import {network,restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic,encryptAES} from "doichain";
+import LoadingSpinner from '../../components/LoadingSpinner'
 var GLOBAL = global || window;
 
 const WalletCreator = () => {
@@ -19,11 +20,12 @@ const WalletCreator = () => {
     const [modus, setModus] = useGlobal("modus")
     const [checked] = useGlobal("checked")
     const [wallets, setWallets] = useGlobal("wallets")
-    const [seed] = useGlobal("seed")
+    const [seed, setSeed] = useGlobal("seed")
     const [password1] = useGlobal("password1")
     const [t] = useTranslation()
     const [email] = useGlobal("email")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [loading, setLoading] = useGlobal(false)
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -53,14 +55,19 @@ const WalletCreator = () => {
             const hdkey = createHdKeyFromMnemonic(seed,password1 ? password1 : "mnemonic")
             const encrypt = encryptAES(seed,password1 ? password1 : "mnemonic")
             setEncryptedSeed(encrypt)
+            setSeed(undefined)
+            setLoading(true)
             restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
                 console.log(wallets)
-                if(wallets.length>0)
+                if(wallets.length>0){
                     setWallets(wallets)
-                else{
+                    setLoading(false)
+                }else{
                     network.changeNetwork("regtest") //switch to regtest if mainnet doesn't work
+                    setLoading(true)
                     restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets2) => {
                         setWallets(wallets2)
+                        setLoading(false)
                     })
                 }
             })
@@ -103,8 +110,8 @@ const WalletCreator = () => {
             {modus === undefined ? <Welcome /> : ""}
             {modus === "createNewWallet" ? <CreateNewWalletPage /> : ""}
             {modus === "confirmRecoveryPhrase" ? <ConfirmRecoveryPhrase next={next} /> : ""}
-            {modus === "setPassword" ? <SetPassword /> : ""}
-            {modus === "restoreWallet" ? <RestoreWalletPage /> : ""}
+            {modus === "setPassword" ? (loading?<LoadingSpinner loading="creating wallet ..."/>:<SetPassword />) : ""}
+            {modus === "restoreWallet" ? (loading?<LoadingSpinner loading="restoring wallets ..."/>:<RestoreWalletPage />) : ""}
         </div>
     )
 }
