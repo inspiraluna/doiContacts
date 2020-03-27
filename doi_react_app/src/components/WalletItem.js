@@ -1,11 +1,9 @@
 import React, { useGlobal, useEffect, useState } from "reactn"
 
-import {getBalanceOfWallet} from "doichain"
 import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 import { useTranslation } from "react-i18next"
-import {createHdKeyFromMnemonic} from "doichain/lib/createHdKeyFromMnemonic";
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
     const [address, setAddress] = useState("")
@@ -20,23 +18,10 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [t] = useTranslation()
 
     useEffect( () => {
-
         const getBalance = async () => {
-            const currentWallet = wallets[activeWallet]
-            console.log('currentWallet', currentWallet)
-          //  const mnemonic = "refuse brush romance together undo document tortoise life equal trash sun ask"
-          //  const hdKey = createHdKeyFromMnemonic(mnemonic)
-          //  const getBalanceOfWalletObj = await getBalanceOfWallet(hdKey, currentWallet.derivationPath)
-          //  console.log('balance', getBalanceOfWalletObj.balance)
-         //   const tempWallets = wallets[activeWallet]
-         //   currentWallet.balance =  getBalanceOfWalletObj.balance
-         //   tempWallets[activeWallet] = currentWallet
-            //setWallets(tempWallets)
-        //    setBalance(getBalanceOfWalletObj.balance)
             setBalance(wallets[activeWallet].balance)
         }
         getBalance()
-
     }, [])
 
     const vibration = () => {
@@ -103,7 +88,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                 </div>
-                <div>{address ? <TransactionList address={address} /> : ""}</div>
+                <div><TransactionList /></div>
             </div>
         )
 }

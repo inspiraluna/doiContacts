@@ -1,16 +1,27 @@
 import Moment from 'react-moment';
 import 'moment-timezone';
-import React, {useEffect, useState} from "reactn";
+import React, {useEffect, useGlobal, useState} from "reactn";
 import {listTransactions} from "doichain"
 
-const TransactionList = ({address}) => {
+const TransactionList = () => {
     const [txs, setTxs] = useState([])
+    const [wallets, setWallets] = useGlobal("wallets")
+    const [activeWallet] = useGlobal("activeWallet")
+
     useEffect(() => {
-            listTransactions(address).then((txs) => {
-            if (txs.status === 'success')
-                setTxs(txs.data)
-        })
-    }, [address])
+        const addresses = wallets[activeWallet].addresses
+
+            //get all transactions
+            const txList = []
+            addresses.forEach( addr => addr.transactions.forEach(t => txList.push(t)))
+            setTxs(txList)
+
+            //get all addresses
+            const addrList = []
+            addresses.forEach( addr => addrList.push(addr.address))
+            console.log(addresses)
+
+    }, [])
 
     const txNode = txs.map((tx, index) => {
         return (
