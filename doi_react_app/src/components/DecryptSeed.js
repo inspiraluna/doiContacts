@@ -12,19 +12,14 @@ import {decryptAES} from "doichain";
 
 const DecryptSeed = () => {
     const [t] = useTranslation()
-    const [showPassword, setShowPassword] = useState(false)
-    const [seed] = useGlobal(undefined)
-    const [encrypted, setEncrypted] = useState(true)
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
-    const [decryptedSeed, setDecryptedSeed] = useGlobal("decryptedSeed")
+    const [showPassword, setShowPassword] = useState(false)
+    const [encrypted, setEncrypted] = useState(true)
+    const [decryptedSeed, setDecryptedSeed] = useState("")
     const [password, setPassword] = useState("")
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
-    }
-
-    const decryptSeedPhrase = () => {
-        setEncrypted(false)
     }
     
     if (encrypted) {
@@ -60,9 +55,9 @@ const DecryptSeed = () => {
                         variant="contained"
                         color="primary"
                         onClick={() => {
-                            decryptSeedPhrase()
                             const decrypt = decryptAES(encryptedSeed, password)
                             setDecryptedSeed(decrypt)
+                            setEncrypted(false)
                         }
                     }
                         id="unlock"
