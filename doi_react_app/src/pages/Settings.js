@@ -40,20 +40,9 @@ const Settings = () => {
               marginTop: theme.spacing(2)
           }
     }))
-
-    const changeLanguage = e => {
-        i18n.changeLanguage(e.target.value)
-    }
-
-    const onChangeNetwork = e => {
-        const ourNetwork = e.target.value
-        setNetwork(ourNetwork)
-        changeNetwork(ourNetwork)
-    }
+    const classes = useStyles()
 
     useEventListener(document, "backbutton", () => console.log("back"));
-
-    const classes = useStyles()
 
     if (modus === "enterPassword") {
         return <DecriptSeed />
@@ -66,7 +55,7 @@ const Settings = () => {
                     <NativeSelect
                         defaultValue={i18n.language}
                         id="selectLang"
-                        onChange={changeLanguage}
+                        onChange={e => i18n.changeLanguage(e.target.value)}
                     >
                         <option value={"en"} id="english">
                             English
@@ -85,13 +74,17 @@ const Settings = () => {
                     <NativeSelect
                         defaultValue={network}
                         id="selectNetwork"
-                        onChange={onChangeNetwork}
+                        onChange={e => {
+                            const ourNetwork = e.target.value
+                            setNetwork(ourNetwork)
+                            changeNetwork(ourNetwork)
+                        }}
                     >
-                        <option value={"testnet"} id="testnet">
-                            Testnet
-                        </option>
                         <option value={"mainnet"} id="mainnet">
                             Mainnet
+                        </option>
+                        <option value={"testnet"} id="testnet">
+                            Testnet
                         </option>
                         <option value={"regtest"} id="regtest">
                             Regtest

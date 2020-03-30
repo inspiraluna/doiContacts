@@ -9,6 +9,8 @@ import  stringify from 'json-stringify-safe';
           if(global.modus)localStorage.setItem("modus", global.modus)
           localStorage.setItem("activeWallet", global.activeWallet ? global.activeWallet : 0)
           localStorage.setItem("network", global.network ? global.network : "mainnet")
+          localStorage.setItem("encryptedSeed", global.encryptedSeed ? global.encryptedSeed : undefined)
+
       } else {
           //TODO only set items in NativeStorgage which changed (don't set all of them all the time)
           //First get the value from NativeStorage and compare it with value in global state - if different store it in Native Storage
@@ -76,6 +78,15 @@ import  stringify from 'json-stringify-safe';
                       console.log("error network" + global.network, err)
                   }
               )
+          if (global.encryptedSeed)
+              window.NativeStorage.setItem(
+                  "network",
+                  global.encryptedSeed?global.encryptedSeed:undefined,
+                  obj => {},
+                  err => {
+                      console.log("error encryptedSeed" + global.encryptedSeed, err)
+                  }
+              )
       }
       return null
   }
@@ -93,6 +104,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialModus =  localStorage.getItem('modus')?localStorage.getItem('modus'):undefined
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
         const initialNetwork = localStorage.getItem("network")?localStorage.getItem("network"): "mainnet"
+        const initialEncryptedSeed = localStorage.getItem("encryptedSeed")?localStorage.getItem("encryptedSeed"): undefined
         setGlobal({
             contacts: initialContacts,
             wallets: initialWallets,
@@ -101,7 +113,8 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             buttonState: "",
             modus: initialModus,
             activeWallet: initialActiveWallet,
-            network: initialNetwork
+            network: initialNetwork,
+            encryptedSeed: initialEncryptedSeed
         })
     }else{
         const nObjects = [
@@ -110,7 +123,8 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             { name: "currentTab", defaultValue: "0" },
             { name: "modus", defaultValue: undefined },
             { name: "activeWallet", defaultValue: "0" },
-            { name: "network", defaultValue: "mainnet" }
+            { name: "network", defaultValue: "mainnet" },
+            { name: "encryptedSeed", defaultValue: undefined },
         ]
 
         const loadNativeStorage = (nObjectList) => {
