@@ -9,17 +9,17 @@ const TransactionList = () => {
     const [activeWallet] = useGlobal("activeWallet")
 
     useEffect(() => {
-        const addresses = wallets[activeWallet].addresses
+        const addresses = wallets[activeWallet].addresses ? wallets[activeWallet].addresses : []
+        const txList = []
+        addresses.forEach(addr => {
+            if(addr.transactions) addr.transactions.forEach(t => txList.push(t))
+        })
+        setTxs(txList)
 
-            //get all transactions
-            const txList = []
-            addresses.forEach( addr => addr.transactions.forEach(t => txList.push(t)))
-            setTxs(txList)
-
-            //get all addresses
-            const addrList = []
-            addresses.forEach( addr => addrList.push(addr.address))
-            console.log(addresses)
+        //get all addresses
+        const addrList = []
+        addresses.forEach(addr => addrList.push(addr.address))
+        console.log(addresses)
 
     }, [])
 
