@@ -1,11 +1,11 @@
-import React, { useGlobal } from "reactn"
+import React, { useGlobal,useState } from "reactn"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import Input from "@material-ui/core/Input"
 import { useTranslation } from "react-i18next"
 
 const Bip39Password = props => {
-    const setPassword1 = useGlobal("password1")[1]
+    const setPassword1 = useState("")[1]
     const [t] = useTranslation()
 
     if (props.display === true) {
