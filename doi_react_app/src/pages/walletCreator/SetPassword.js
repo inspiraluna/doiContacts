@@ -10,7 +10,8 @@ import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import { useTranslation } from "react-i18next"
 const SetPassword = () => {
-    const [password1, setPassword1] = useGlobal("password1")
+
+    const [password1, setPassword1] = useState("")
     const [password2, setPassword2] = useState("")
     const [showPassword, setShowPassword] = useState(false)
     const setChecked = useGlobal("checked")[1]

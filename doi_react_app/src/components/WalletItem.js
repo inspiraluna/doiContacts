@@ -12,9 +12,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")
-    const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenSnackbar = useGlobal("errors")[1]
-    const [block, setBlock] = useGlobal("block")
     const [t] = useTranslation()
 
     useEffect( () => {

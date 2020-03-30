@@ -13,6 +13,8 @@ import EditEmailTemplate from "../components/EditEmailTemplate"
 import { useTranslation } from "react-i18next"
 import {restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
 import useEventListener from '../hooks/useEventListener';
+import {createNewWallet} from "doichain/lib/createNewWallet";
+import {decryptAES} from "doichain/lib/decryptAES";
 
 /* eslint no-template-curly-in-string: "off" */
 var GLOBAL = global || window;
@@ -25,6 +27,7 @@ const WalletsPage = () => {
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
     const [utxos, setUTXOs] = useGlobal("utxos")
+    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
 
     const [t] = useTranslation()
 
@@ -48,7 +51,7 @@ const WalletsPage = () => {
         if (!wallet.returnPath) wallet.returnPath = our_returnPath
         return wallet
     }
-    const addWallet = (
+    const addWallet = async (
         senderName,
         senderEmail,
         subject,
@@ -57,26 +60,25 @@ const WalletsPage = () => {
         redirectUrl,
         returnPath
     ) => {
-
         console.log('currentNetwork',GLOBAL.network)
-        //TODO replace mnemonic with correct seed phrase
-        const mnemonic = "refuse brush romance together undo document tortoise life equal trash sun ask"
-        const hdKey = createHdKeyFromMnemonic(mnemonic)
-        const wallet = restoreDoichainWalletFromHdKey(hdKey,senderName,GLOBAL.DEFAULT_NETWORK).newWallet
-        wallet.senderName = senderName
-        wallet.subject = subject
-        wallet.content = content
-        wallet.contentType = contentType
-        wallet.redirectUrl = redirectUrl
-        wallet.returnPath = returnPath
+        const password = ""
+        const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
+        const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct
+        const newWallet = await createNewWallet(hdKey,wallets.length)
+        newWallet.senderName = senderName
+        newWallet.subject = subject
+        newWallet.content = content
+        newWallet.contentType = contentType
+        newWallet.redirectUrl = redirectUrl
+        newWallet.returnPath = returnPath
 
         let newwallets = wallets
-        newwallets.push(checkDefaults(wallet))
+        newwallets.push(checkDefaults(newWallet))
         setWallets(newwallets)
         setWalletItemsChanged(true)
         setActiveWallet(wallets.length - 1)
         setModus("detail")
-        setTempWallet(undefined)
+        setTempWallet(undefined) //we use to change data in the form (is this acceptable)
     }
 
     const updateWallet = (
@@ -101,7 +103,7 @@ const WalletsPage = () => {
         setWallets(wallets)
         setWalletItemsChanged(true)
         setModus("detail")
-        setTempWallet(undefined)
+        setTempWallet(undefined) //we use to change data in the form
     }
 
     const handleCancel = e => {

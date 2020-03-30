@@ -1,4 +1,4 @@
-import React, { useGlobal,useEffect,useState } from "reactn"
+import React, { useGlobal, useState } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -21,9 +21,9 @@ const WalletCreator = () => {
     const [checked] = useGlobal("checked")
     const [wallets, setWallets] = useGlobal("wallets")
     const [seed, setSeed] = useGlobal("seed")
-    const [password1] = useGlobal("password1")
-    const [email] = useGlobal("email")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [email] = useGlobal("email")
+    const [password1] = useState("")
     const [loading, setLoading] = useState(false)
 
     const [t] = useTranslation()
@@ -69,24 +69,6 @@ const WalletCreator = () => {
                     setWallets([])
                     setLoading(false)
                 }
-                  /*  console.log('checking testnet for wallets')
-                    network.changeNetwork("testnet") //switch to regtest if mainnet doesn't work
-                    restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets2) => {
-                        if(wallets2.length>0){
-                            setWallets(wallets2)
-                            setLoading(false)
-                        }else{
-                            console.log('checking regtest for wallets')
-                            network.changeNetwork("regtest")
-                            restoreDoichainWalletFromHdKey(hdkey,email).then((wallets3) => {
-                                if(wallets3.length>0){
-                                    setWallets(wallets3)
-                                    setLoading(false)
-                                }else setLoading(false)
-                            })
-                        }
-                    }) */
-                //}
             })
         }
     }
