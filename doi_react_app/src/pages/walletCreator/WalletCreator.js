@@ -57,17 +57,19 @@ const WalletCreator = () => {
             const hdkey = createHdKeyFromMnemonic(seed,password)
             const encryptedS = encryptAES(seed,password)
             setEncryptedSeed(encryptedS)
-            decryptAES(encryptedS,password)
-            console.log('encrypted seed stored in global state',encryptedS)
             setSeed(undefined)
             setLoading(true)
-            console.log('checking mainnet for wallets')
+            console.log('checking current network for wallets')
             restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
                 if(wallets.length>0){
                     setWallets(wallets)
                     setLoading(false)
-                }else{
-                    console.log('checking testnet for wallets')
+                }
+                else  {
+                    setWallets([])
+                    setLoading(false)
+                }
+                  /*  console.log('checking testnet for wallets')
                     network.changeNetwork("testnet") //switch to regtest if mainnet doesn't work
                     restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets2) => {
                         if(wallets2.length>0){
@@ -83,8 +85,8 @@ const WalletCreator = () => {
                                 }else setLoading(false)
                             })
                         }
-                    })
-                }
+                    }) */
+                //}
             })
         }
     }
