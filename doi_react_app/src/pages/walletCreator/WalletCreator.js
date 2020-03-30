@@ -1,4 +1,4 @@
-import React, { useGlobal,useEffect } from "reactn"
+import React, { useGlobal,useEffect,useState } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -25,7 +25,7 @@ const WalletCreator = () => {
     const [t] = useTranslation()
     const [email] = useGlobal("email")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
-    const [loading, setLoading] = useGlobal(false)
+    const [loading, setLoading] = useState(false)
 
     const useStyles = makeStyles(theme => ({
         root: {
