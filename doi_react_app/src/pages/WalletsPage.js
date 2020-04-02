@@ -15,6 +15,21 @@ import {restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
 import useEventListener from '../hooks/useEventListener';
 import {createNewWallet} from "doichain/lib/createNewWallet";
 import {decryptAES} from "doichain/lib/decryptAES";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import {extend} from "lodash"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import InputLabel from "@material-ui/core/InputLabel"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import FormControl from "@material-ui/core/FormControl"
+
 
 /* eslint no-template-curly-in-string: "off" */
 var GLOBAL = global || window;
@@ -28,6 +43,10 @@ const WalletsPage = () => {
     const [modus, setModus] = useGlobal("modus")
     const [utxos, setUTXOs] = useGlobal("utxos")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [open, setOpen] = useState(false)
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState()
+    const [showPassword, setShowPassword] = useState(false)
 
     const [t] = useTranslation()
 
@@ -51,27 +70,12 @@ const WalletsPage = () => {
         if (!wallet.returnPath) wallet.returnPath = our_returnPath
         return wallet
     }
-    const addWallet = async (
-        senderName,
-        senderEmail,
-        subject,
-        content,
-        contentType,
-        redirectUrl,
-        returnPath
-    ) => {
+    const addWallet = async (formData) => {
         console.log('currentNetwork',GLOBAL.network)
-        const password = ""
         const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
         const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct
-        const newWallet = await createNewWallet(hdKey,wallets.length)
-        newWallet.senderName = senderName
-        newWallet.subject = subject
-        newWallet.content = content
-        newWallet.contentType = contentType
-        newWallet.redirectUrl = redirectUrl
-        newWallet.returnPath = returnPath
-
+        let newWallet = await createNewWallet(hdKey,wallets.length)
+        newWallet = extend(newWallet, formData)
         let newwallets = wallets
         newwallets.push(checkDefaults(newWallet))
         setWallets(newwallets)
@@ -81,24 +85,9 @@ const WalletsPage = () => {
         setTempWallet(undefined) //we use to change data in the form (is this acceptable)
     }
 
-    const updateWallet = (
-        senderName,
-        senderEmail,
-        subject,
-        content,
-        contentType,
-        redirectUrl,
-        returnPath
-    ) => {
-        const wallet = wallets[activeWallet]
-        wallet.senderName = senderName
-        wallet.senderEmail = senderEmail
-        wallet.subject = subject
-        wallet.content = content
-        wallet.contentType = contentType
-        wallet.redirectUrl = redirectUrl
-        wallet.returnPath = returnPath
-
+    const updateWallet = (formData) => {
+        let wallet = wallets[activeWallet]
+        wallet = extend(wallet, formData)
         wallets[activeWallet] = checkDefaults(wallet)
         setWallets(wallets)
         setWalletItemsChanged(true)
@@ -124,6 +113,13 @@ const WalletsPage = () => {
 
     const handleSend = e => {
         setModus("send")
+    }
+    
+    const handleClose = () => {
+        setOpen(false);
+      };
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword)
     }
 
     useEventListener(document, "backbutton", () => setModus("list"));
@@ -332,45 +328,30 @@ const WalletsPage = () => {
                             <form
                                 onSubmit={e => {
                                     e.preventDefault()
-                                    const senderName = e.target.senderName.value.trim()
-                                    const senderEmail = e.target.senderEmail.value.trim()
-                                    const subject = e.target.subject.value.trim()
-                                    const content =
+                                    const formData = {}
+                                    formData.senderName = e.target.senderName.value.trim()
+                                    formData.senderEmail = e.target.senderEmail.value.trim()
+                                    formData.subject = e.target.subject.value.trim()
+                                    formData.content =
                                         tempWallet && tempWallet.content
                                             ? tempWallet.content.trim()
                                             : ""
-                                    const contentType = e.target.contentType.value.trim()
-                                    let redirectUrl = e.target.redirectUrl.value.trim()
+                                    formData.contentType = e.target.contentType.value.trim()
+                                    formData.redirectUrl = e.target.redirectUrl.value.trim()
                                     if (
-                                        !redirectUrl.startsWith("http://") &&
-                                        !redirectUrl.startsWith("https://")
+                                        !formData.redirectUrl.startsWith("http://") &&
+                                        !formData.redirectUrl.startsWith("https://")
                                     )
-                                        redirectUrl = "https://" + redirectUrl
+                                    formData.redirectUrl = "https://" + formData.redirectUrl
 
-                                    const returnPath = e.target.returnPath
+                                    formData.returnPath = e.target.returnPath
                                         ? e.target.returnPath.value.trim()
                                         : undefined
 
                                     if (activeWallet === undefined)
-                                        addWallet(
-                                            senderName,
-                                            senderEmail,
-                                            subject,
-                                            content,
-                                            contentType,
-                                            redirectUrl,
-                                            returnPath
-                                        )
+                                        setOpen(formData)
                                     else
-                                        updateWallet(
-                                            senderName,
-                                            senderEmail,
-                                            subject,
-                                            content,
-                                            contentType,
-                                            redirectUrl,
-                                            returnPath
-                                        )
+                                        updateWallet(formData)
                                 }}
                             >
                                 <TextField
@@ -472,15 +453,64 @@ const WalletsPage = () => {
                                             setTempWallet(ourTempWallet)}}
                                     />     <br/> */}
                                 <Button
-                                    type="submit"
-                                    id={"saveWallet"}
                                     color={"primary"}
                                     variant="contained"
+                                    type="submit"
                                 >
                                     {activeWallet !== undefined
                                         ? t("walletPage.updateWallet")
                                         : t("walletPage.addWallet")}
                                 </Button>
+                                <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="form-dialog-title"
+                            >
+                                <DialogTitle id="form-dialog-title">Unlock wallet</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        To unlock your wallet, please enter your password
+                                    </DialogContentText>
+
+                                    <FormControl fullWidth error={error ? true : false}>
+                                    <InputLabel htmlFor="standard-adornment-password">
+                                        {t("setPassword.password")}
+                                    </InputLabel>
+                                    <Input
+                                        id="standard-adornment-password"
+                                        fullWidth
+                                        type={showPassword ? "text" : "password"}
+                                        onChange={e =>setPassword(e.target.value)}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                    />
+                                    <FormHelperText id="component-error-text">{error}</FormHelperText>
+                                </FormControl>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={() => handleClose()} color="primary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={() =>{
+                                        const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
+                                        console.log("decryptedSeedPhrase" + decryptedSeedPhrase)
+                                        if(decryptedSeedPhrase !== "")
+                                        addWallet(open)
+                                        else
+                                        setError("wrong password")
+                                    }} color="primary">
+                                        Unlock
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                             </form>
                             <Button
                                 color={"primary"}

@@ -11,7 +11,6 @@ const RestoreWalletPage = props => {
     const setChecked = useGlobal("checked")[1]
     const setSeed = useGlobal("seed")[1]
     const [showPassword, setShowPassword] = useState(false)
-    const [password1] = useState("")
     const [t] = useTranslation()
 
     useEffect(() => {

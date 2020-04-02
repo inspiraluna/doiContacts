@@ -5,7 +5,7 @@ import Input from "@material-ui/core/Input"
 import { useTranslation } from "react-i18next"
 
 const Bip39Password = props => {
-    const setPassword1 = useState("")[1]
+    const [password1, setPassword1] = useGlobal("password1")
     const [t] = useTranslation()
 
     if (props.display === true) {

@@ -23,7 +23,7 @@ const WalletCreator = () => {
     const [seed, setSeed] = useGlobal("seed")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
     const [email] = useGlobal("email")
-    const [password1] = useState("")
+    const [password1, setPassword1] = useGlobal("password1")
     const [loading, setLoading] = useState(false)
 
     const [t] = useTranslation()
@@ -58,6 +58,7 @@ const WalletCreator = () => {
             const encryptedS = encryptAES(seed,password)
             setEncryptedSeed(encryptedS)
             setSeed(undefined)
+            setPassword1(undefined)
             setLoading(true)
             console.log('checking current network for wallets')
             restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
