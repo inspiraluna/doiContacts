@@ -4,8 +4,9 @@ import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 import { useTranslation } from "react-i18next"
-
+import {getBalanceOfAddresses} from "doichain"
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
+
     const [address, setAddress] = useState("")
     const [balance, setBalance] = useState(0)
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
@@ -17,7 +18,21 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
     useEffect( () => {
         const getBalance = async () => {
-            setBalance(wallets[activeWallet].balance)
+            const addressList = []
+            wallets[activeWallet].addresses.forEach(addr => addressList.push(addr.address))
+            console.log('getting balance of addressList',addressList)
+            const newBalance = await getBalanceOfAddresses(addressList)
+            console.log('new balance',newBalance.balance)
+            console.log('old balance',wallets[activeWallet].balance)
+
+            if(wallets[activeWallet].balance!==newBalance.balance){
+                const tempWallet = wallets[activeWallet]
+                tempWallet.balance = newBalance.balance
+                const tempWallets = wallets
+                tempWallets[activeWallet] = tempWallet
+                setWallets(tempWallets)
+            }
+            setBalance(newBalance.balance)
         }
         getBalance()
     }, [])
