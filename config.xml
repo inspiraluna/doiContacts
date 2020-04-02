@@ -17,7 +17,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <hook type="before_build" src="hooks/020_build_version.js" />
+    <hook src="hooks/020_build_version.js" type="before_build" />
     <platform name="android">
         <allow-intent href="market:*" />
         <allow-intent href="doichain:*" />
@@ -27,11 +27,10 @@
         <allow-intent href="itms-apps:*" />
         <allow-intent href="doichain:*" />
         <preference name="UseSwiftLanguageVersion" value="5" />
-        <preference name="DisallowOverscroll" value="true"/>
-        <preference name="BackupWebStorage" value="none"/>
-        <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+        <preference name="DisallowOverscroll" value="true" />
+        <preference name="BackupWebStorage" value="none" />
+        <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
             <string>need location access to store it locally only with new contacts</string>
         </edit-config>
     </platform>
-    <plugin name="cordova-plugin-whitelist" spec="1" />
 </widget>
