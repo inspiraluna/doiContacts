@@ -1,6 +1,6 @@
 describe("App E2E", () => {
     beforeEach(() => {
-        cy.visit("http://localhost:3000")
+        cy.visit("http://localhost:3002")
     })
     const createNewWallet = () => {
         // balance blanket camp festival party robot social stairs noodle piano copy drastic
@@ -15,9 +15,10 @@ describe("App E2E", () => {
         cy.get("#skipButton").click()
         cy.get("#skip").click()
         cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
-        cy.get("#standard-adornment-password2").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type("13456abC")
+        cy.get("#standard-adornment-password2").type("13456abC")
         cy.get("#next").click()
+        cy.wait(20000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#walletIcon").click()
@@ -32,19 +33,15 @@ describe("App E2E", () => {
         cy.get("#checked").click()
         cy.get("#standard-adornment-password").type("13456abC")
         cy.get("#next").click()
+        cy.wait(5000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
-        cy.wait(2000)
         cy.get("#walletIcon").click()
     }
 
     it("creates a new wallet, adds a new wallet and updates one of the wallets", () => {
         createNewWallet()
         cy.get("#phoneIcon").click()
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
         cy.get("#walletIcon").click()
         cy.get("#add").click()
         cy.get("#senderName").type("Peter")
@@ -57,6 +54,8 @@ describe("App E2E", () => {
         cy.get("#back").click()
         cy.get("#redirectUrl").type("www.doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type("13456abC")
+        cy.get("#unlock").click()
         cy.get("#senderName").should("have.text", "Name: Peter")
         cy.get("#sentEmail").should("have.text", "Email: peter@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: myWallet")
@@ -286,7 +285,7 @@ describe("App E2E", () => {
         cy.get("#seed").should("have.text", "kiwi acquire security left champion peasant royal sheriff absent calm alert letter")
     })
 
-    it("creates a new wallet then shows recovery phrase", () => {
+    it.only("creates a new wallet then shows recovery phrase", () => {
         cy.get("#createWallet").click()
         cy.get("#randomSeed").then($h1 => {
             const seed = $h1.text()
@@ -297,14 +296,15 @@ describe("App E2E", () => {
         cy.get("#skipButton").click()
         cy.get("#skip").click()
         cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
-        cy.get("#standard-adornment-password2").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type("13456abC")
+        cy.get("#standard-adornment-password2").type("13456abC")
         cy.get("#next").click()
+        cy.wait(20000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#showSeedPhrase").click()
         cy.get("#enterPassword").click()
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type("13456abC")
         cy.get("#unlock").click()
         cy.get("#seed").should("have.text", seed)
     })
