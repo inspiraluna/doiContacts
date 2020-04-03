@@ -4,9 +4,13 @@ import TransactionList from "./TransactionList"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 import { useTranslation } from "react-i18next"
+import {getBalanceOfAddresses} from "doichain"
+import NativeSelect from "@material-ui/core/NativeSelect"
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
+
     const [address, setAddress] = useState("")
+    const [addressOptions, setAddressOptions] = useState([])
     const [balance, setBalance] = useState(0)
     const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
 
@@ -17,7 +21,26 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
     useEffect( () => {
         const getBalance = async () => {
-            setBalance(wallets[activeWallet].balance)
+            const addressList = []
+            setAddressOptions(wallets[activeWallet].addresses.map((addr, i) => {
+                addressList.push(addr.address)
+                return <option value={addr.address}>{addr.address} DOI:{addr.balance}</option>
+            })
+            )
+            setAddress(addressList[0])
+            console.log('getting balance of addressList',addressList)
+            const newBalance = await getBalanceOfAddresses(addressList)
+            console.log('new balance',newBalance.balance)
+            console.log('old balance',wallets[activeWallet].balance)
+
+            if(wallets[activeWallet].balance!==newBalance.balance){
+                const tempWallet = wallets[activeWallet]
+                tempWallet.balance = newBalance.balance
+                const tempWallets = wallets
+                tempWallets[activeWallet] = tempWallet
+                setWallets(tempWallets)
+            }
+            setBalance(newBalance.balance)
         }
         getBalance()
     }, [])
@@ -26,11 +49,17 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         let time = 500;
         navigator.vibrate(time);
     }
+    
         return (
             <div>
                 <li style={{ fontSize: "15px" }}>
                     <b> {t("walletItem.doiCoinAddress")} </b>
-                    <span id="address">{address ? address.toString() : ""}</span>
+                    <NativeSelect
+                    id="doiCoinAddress"
+                    onChange={e => setAddress(e.target.value)}
+                >
+                   {addressOptions}
+                </NativeSelect>
                     <CopyToClipboard
                         text={address ? address.toString() : ""}
                         onCopy={() => {

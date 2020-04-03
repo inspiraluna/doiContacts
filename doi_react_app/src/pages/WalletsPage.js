@@ -11,7 +11,7 @@ import QRCode from "qrcode-react"
 import SendAmount from "../components/SendAmount"
 import EditEmailTemplate from "../components/EditEmailTemplate"
 import { useTranslation } from "react-i18next"
-import {restoreDoichainWalletFromHdKey,createHdKeyFromMnemonic} from "doichain";
+import {createHdKeyFromMnemonic} from "doichain";
 import useEventListener from '../hooks/useEventListener';
 import {createNewWallet} from "doichain/lib/createNewWallet";
 import {decryptAES} from "doichain/lib/decryptAES";
@@ -23,7 +23,6 @@ var GLOBAL = global || window;
 
 const WalletsPage = () => {
     const [amount, setAmount] = useState(0) //receive amount
-    const [walletItemsChanged, setWalletItemsChanged] = useState(false)
     const [wallets, setWallets] = useGlobal("wallets")
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
@@ -63,7 +62,6 @@ const WalletsPage = () => {
         let newwallets = wallets
         newwallets.push(checkDefaults(newWallet))
         setWallets(newwallets)
-        setWalletItemsChanged(true)
         setActiveWallet(wallets.length - 1)
         setModus("detail")
         setTempWallet(undefined) //we use to change data in the form (is this acceptable)
@@ -74,7 +72,6 @@ const WalletsPage = () => {
         wallet = extend(wallet, formData)
         wallets[activeWallet] = checkDefaults(wallet)
         setWallets(wallets)
-        setWalletItemsChanged(true)
         setModus("detail")
         setTempWallet(undefined) //we use to change data in the form
     }
@@ -86,10 +83,6 @@ const WalletsPage = () => {
     const editEmailTemplate = e => {
         setModus("editEmailTemplate")
     }
-
-    useEffect(() => {
-        setWalletItemsChanged(false)
-    }, [walletItemsChanged])
 
     const handleReceive = e => {
         setModus("receive")
