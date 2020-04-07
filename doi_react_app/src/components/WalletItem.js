@@ -28,11 +28,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             })
             )
             setAddress(addressList[0])
-            console.log('getting balance of addressList',addressList)
             const newBalance = await getBalanceOfAddresses(addressList)
-            console.log('new balance',newBalance.balance)
-            console.log('old balance',wallets[activeWallet].balance)
-
             if(wallets[activeWallet].balance!==newBalance.balance){
                 const tempWallet = wallets[activeWallet]
                 tempWallet.balance = newBalance.balance
