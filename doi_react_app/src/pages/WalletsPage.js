@@ -69,6 +69,7 @@ const WalletsPage = () => {
         if (!wallet.returnPath) wallet.returnPath = our_returnPath
         return wallet
     }
+
     const addWallet = async (formData) => {
         const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
         const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct
@@ -97,14 +98,6 @@ const WalletsPage = () => {
     }
     const editEmailTemplate = e => {
         setModus("editEmailTemplate")
-    }
-
-    const handleReceive = e => {
-        setModus("receive")
-    }
-
-    const handleSend = e => {
-        setModus("send")
     }
 
     const handleClose = () => {
@@ -208,7 +201,7 @@ const WalletsPage = () => {
                                 color={"primary"}
                                 variant="contained"
                                 id={"receive"}
-                                onClick={() => handleReceive()}
+                                onClick={() => setModus("receive")}
                             >
                                 {t("button.receive")}{" "}
                             </Button>
@@ -216,7 +209,7 @@ const WalletsPage = () => {
                                 color={"primary"}
                                 id={"send"}
                                 variant="contained"
-                                onClick={() => handleSend()}
+                                onClick={() => setModus("send")}
                             >
                                 {t("button.send")}{" "}
                             </Button>

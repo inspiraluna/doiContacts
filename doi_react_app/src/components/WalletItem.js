@@ -20,10 +20,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         const getBalance = async () => {
             const addressList = []
             wallets[activeWallet].addresses.forEach(addr => addressList.push(addr.address))
-            console.log('getting balance of addressList',addressList)
             const newBalance = await getBalanceOfAddresses(addressList)
-            console.log('new balance',newBalance.balance)
-            console.log('old balance',wallets[activeWallet].balance)
 
             if(wallets[activeWallet].balance!==newBalance.balance){
                 const tempWallet = wallets[activeWallet]

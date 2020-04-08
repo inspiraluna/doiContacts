@@ -6,11 +6,8 @@ import InputLabel from "@material-ui/core/InputLabel"
 import ProgressButton from "react-progress-button"
 import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
-import bitcore from "bitcore-doichain"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
-import {getDoichainNetwork} from "../utils/network";
-import LoadingSpinner from './LoadingSpinner'
 
 const SendAmount = () => {
     const [activeWallet] = useGlobal("activeWallet")
@@ -35,7 +32,7 @@ const SendAmount = () => {
         try {
             console.log("sending " + amount + " to ", toAddress)
             const our_wallet = wallets[activeWallet]
-            const ourAddress = bitcore
+           /* const ourAddress = bitcore
                 .getAddressOfPublicKey(our_wallet.publicKey, getDoichainNetwork(network))
                 .toString()
             const txData = await bitcore.createDoicoinTransaction(
@@ -59,7 +56,7 @@ const SendAmount = () => {
             setOpenError({ open: true, msg: msg, type: "success" })
             vibration()
             setButtonState("success")
-            setModus("detail")
+            setModus("detail") */
         } catch (ex) {
             const err = t("sendAmount.broadcastingError") + ex
             console.log(err, ex)
@@ -77,7 +74,7 @@ const SendAmount = () => {
                 aria-label="wallet-send"
                 direction={"up"}
                 in={activeWallet !== undefined && modus === "send"}
-                mountOnEnter
+                mountOnEnter65
                 unmountOnExit
             >
                 <div>

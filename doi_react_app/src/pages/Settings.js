@@ -1,10 +1,10 @@
 import React, { useGlobal, useState } from "reactn"
+import {network} from "doichain";
 import { useTranslation } from "react-i18next"
 import FormControl from "@material-ui/core/FormControl"
 import InputLabel from "@material-ui/core/InputLabel"
 import NativeSelect from "@material-ui/core/NativeSelect"
 import { makeStyles } from "@material-ui/core/styles"
-import changeNetwork from './../utils/network';
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -15,11 +15,10 @@ import DecriptSeed from '../components/DecryptSeed';
 import useEventListener from '../hooks/useEventListener';
 
 
-
 const Settings = () => {
 
     const { t, i18n } = useTranslation()
-    const [network, setNetwork] = useGlobal("network")
+    const [globalNetwork, setGlobalNetwork] = useGlobal("network")
     const [open, setOpen] = useState(undefined)
     const [modus, setModus] = useGlobal("modus")
 
@@ -76,8 +75,8 @@ const Settings = () => {
                         id="selectNetwork"
                         onChange={e => {
                             const ourNetwork = e.target.value
-                            setNetwork(ourNetwork)
-                            changeNetwork(ourNetwork)
+                            setGlobalNetwork(ourNetwork)
+                            network.changeNetwork(ourNetwork)
                         }}
                     >
                         <option value={"mainnet"} id="mainnet">
