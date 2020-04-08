@@ -10,7 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import FolderIcon from "@material-ui/icons/Folder"
 import CheckIcon from "@material-ui/icons/Check"
 import ImportExportIcon from "@material-ui/icons/ImportExport"
-import verify from "bitcore-doichain/lib/doichain/verify"
+//import verify from "bitcore-doichain/lib/doichain/verify"
 import { green, orange } from "@material-ui/core/colors"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -62,7 +62,7 @@ const ContactList = () => {
         find(wallets, function(wallet) {
             let changed = false
             if (wallet.publicKey === contact.wallet) {
-                verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
+             /*   verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
                     status => {
                         if (status && status.val === true && !contact.confirmed) {
                             changed = true
@@ -77,7 +77,7 @@ const ContactList = () => {
                             setContacts(contacts)
                         }
                     }
-                )
+                )*/ //TODO enable with js-doichain module
             }
         })
         return (

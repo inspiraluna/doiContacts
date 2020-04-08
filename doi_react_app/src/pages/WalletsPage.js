@@ -1,23 +1,24 @@
 import React, { useEffect, useState, useGlobal } from "reactn"
-import bitcore from "bitcore-doichain"
-import WalletList from "../components/WalletList"
 import Slide from "@material-ui/core/Slide"
 import TextField from "@material-ui/core/TextField"
-import WalletItem from "../components/WalletItem"
 import Fab from "@material-ui/core/Fab"
 import AddIcon from "@material-ui/icons/Add"
 import Button from "@material-ui/core/Button"
 import QRCode from "qrcode-react"
+import {extend} from "lodash"
+import { useTranslation } from "react-i18next"
+import useEventListener from '../hooks/useEventListener';
+
+import WalletItem from "../components/WalletItem"
+import WalletList from "../components/WalletList"
 import SendAmount from "../components/SendAmount"
 import EditEmailTemplate from "../components/EditEmailTemplate"
-import { useTranslation } from "react-i18next"
-import {createHdKeyFromMnemonic} from "doichain";
-import useEventListener from '../hooks/useEventListener';
-import {createNewWallet} from "doichain/lib/createNewWallet";
-import {decryptAES} from "doichain/lib/decryptAES";
-import {generateNewAddress} from "doichain/lib/generateNewAddress";
-import {extend} from "lodash"
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
+
+import {createHdKeyFromMnemonic,decryptAES} from "doichain";
+import {createNewWallet} from "doichain/lib/createNewWallet";
+import {generateNewAddress} from "doichain/lib/generateNewAddress";
+
 
 /* eslint no-template-curly-in-string: "off" */
 var GLOBAL = global || window;
@@ -88,7 +89,7 @@ const WalletsPage = () => {
     useEventListener(document, "backbutton", () => setModus("list"));
 
     const handleVerify = async () => {
-        const our_wallet = wallets[activeWallet]
+      /*  const our_wallet = wallets[activeWallet]
         const senderEmail = our_wallet.senderEmail
         const privateKey = our_wallet.privateKey
         const address = our_wallet.addresses[0].address
@@ -136,7 +137,7 @@ const WalletsPage = () => {
         //TODO handle response and create offchain utxos and update balance
         const utxosResponse = await bitcore.broadcastTransaction(null, txSignedSerialized)
         setUTXOs(utxosResponse)
-        bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
+        bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)*/
     }
 
     if (modus === "list") {

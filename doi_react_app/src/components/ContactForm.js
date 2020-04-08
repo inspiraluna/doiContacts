@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 import { usePosition } from "use-position"
 import QRCode from "qrcode-react"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
-import bitcore from "bitcore-doichain"
+//import bitcore from "bitcore-doichain"
 import { useTranslation } from "react-i18next"
 import find from "lodash.find"
 
@@ -79,7 +79,7 @@ const ContactForm = () => {
                 const our_wallet = wallets[wallet]
                 const offChainUtxos = utxos
 
-                const network = bitcore.Networks.get("doichain") //TODO get this from global state in case we have testnet or regest
+              /* const network = bitcore.Networks.get("doichain") //TODO get this from global state in case we have testnet or regest
                 const txData = await bitcore.createDOIRequestTransaction(
                     email,
                     our_wallet,
@@ -101,8 +101,7 @@ const ContactForm = () => {
                     txData.validatorPublicKeyData.key
                 )
                 console.log('utxosResponse',utxosResponse)
-                //setUTXOs(utxosResponse)
-
+                //setUTXOs(utxosResponse)``
 
                 const offChainUTXOs = bitcore.getOffchainUTXOs(txData.changeAddress,utxosResponse.txRaw)
                 console.log("utxosResponse", offChainUTXOs)
@@ -129,7 +128,7 @@ const ContactForm = () => {
 
                 contacts.push(contact)
                 setContacts(contacts)
-                setOpenError({ open: true, msg: msg, type: "success" })
+                setOpenError({ open: true, msg: msg, type: "success" })*/
                 vibration()
             } catch (ex) {
                 const err = t("contactForm.broadcastingError")
