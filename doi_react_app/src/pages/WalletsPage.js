@@ -15,21 +15,8 @@ import {createHdKeyFromMnemonic} from "doichain";
 import useEventListener from '../hooks/useEventListener';
 import {createNewWallet} from "doichain/lib/createNewWallet";
 import {decryptAES} from "doichain/lib/decryptAES";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import {extend} from "lodash"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Visibility from "@material-ui/icons/Visibility"
-import VisibilityOff from "@material-ui/icons/VisibilityOff"
-import InputLabel from "@material-ui/core/InputLabel"
-import Input from "@material-ui/core/Input"
-import InputAdornment from "@material-ui/core/InputAdornment"
-import IconButton from "@material-ui/core/IconButton"
-import FormControl from "@material-ui/core/FormControl"
-
+import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 
 /* eslint no-template-curly-in-string: "off" */
 var GLOBAL = global || window;
@@ -42,11 +29,8 @@ const WalletsPage = () => {
     const [modus, setModus] = useGlobal("modus")
     const [utxos, setUTXOs] = useGlobal("utxos")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
-    const [open, setOpen] = useState(false)
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState()
-    const [showPassword, setShowPassword] = useState(false)
-
+    const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
+    const [password, setPassword] = useGlobal("password")
     const [t] = useTranslation()
 
     const checkDefaults = wallet => {
@@ -70,11 +54,11 @@ const WalletsPage = () => {
         return wallet
     }
 
-    const addWallet = async (formData) => {
+    const addWallet = async () => {
         const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
         const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct
         let newWallet = await createNewWallet(hdKey,wallets.length)
-        newWallet = extend(newWallet, formData)
+        newWallet = extend(newWallet, openUnlock)
         let newwallets = wallets
         newwallets.push(checkDefaults(newWallet))
         setWallets(newwallets)
@@ -98,13 +82,6 @@ const WalletsPage = () => {
     }
     const editEmailTemplate = e => {
         setModus("editEmailTemplate")
-    }
-
-    const handleClose = () => {
-        setOpen(false);
-      };
-    const handleClickShowPassword = () => {
-        setShowPassword(!showPassword)
     }
 
     useEventListener(document, "backbutton", () => setModus("list"));
@@ -334,7 +311,7 @@ const WalletsPage = () => {
                                         : undefined
 
                                     if (activeWallet === undefined)
-                                        setOpen(formData)
+                                    setOpenUnlock(formData)
                                     else
                                         updateWallet(formData)
                                 }}
@@ -441,61 +418,12 @@ const WalletsPage = () => {
                                     color={"primary"}
                                     variant="contained"
                                     type="submit"
+                                    id="saveWallet"
                                 >
                                     {activeWallet !== undefined
                                         ? t("walletPage.updateWallet")
                                         : t("walletPage.addWallet")}
                                 </Button>
-                                <Dialog
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="form-dialog-title"
-                            >
-                                <DialogTitle id="form-dialog-title">Unlock wallet</DialogTitle>
-                                <DialogContent>
-                                    <DialogContentText>
-                                        To unlock your wallet, please enter your password
-                                    </DialogContentText>
-
-                                    <FormControl fullWidth error={error ? true : false}>
-                                    <InputLabel htmlFor="standard-adornment-password">
-                                        {t("setPassword.password")}
-                                    </InputLabel>
-                                    <Input
-                                        id="standard-adornment-password"
-                                        fullWidth
-                                        type={showPassword ? "text" : "password"}
-                                        onChange={e =>setPassword(e.target.value)}
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={handleClickShowPassword}
-                                                >
-                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        }
-                                    />
-                                    <FormHelperText id="component-error-text">{error}</FormHelperText>
-                                </FormControl>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={() => handleClose()} color="primary">
-                                        Cancel
-                                    </Button>
-                                    <Button onClick={() =>{
-                                        const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
-                                        console.log("decryptedSeedPhrase" + decryptedSeedPhrase)
-                                        if(decryptedSeedPhrase !== "")
-                                        addWallet(open)
-                                        else
-                                        setError("wrong password")
-                                    }} color="primary">
-                                        Unlock
-                                    </Button>
-                                </DialogActions>
-                            </Dialog>
                             </form>
                             <Button
                                 color={"primary"}
@@ -507,6 +435,7 @@ const WalletsPage = () => {
                             </Button>
                         </div>
                     </Slide>
+                    <UnlockPasswordDialog callback={addWallet} />
                 </div>
             )
         }

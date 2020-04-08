@@ -1,10 +1,15 @@
+import { fundWallet } from "doichain/lib/fundWallet"
+import { changeNetwork } from "doichain/lib/network"
+
+const SEED_PASSWORD = "13456abC"
 describe("App E2E", () => {
     beforeEach(() => {
-        cy.visit("http://localhost:3000")
+        cy.visit("http://localhost:3002")
     })
     const createNewWallet = () => {
         // balance blanket camp festival party robot social stairs noodle piano copy drastic
         //kiwi acquire security left champion peasant royal sheriff absent calm alert letter (password: 13456abC)
+        cy.get("#selectNetwork").select("regtest")
         cy.get("#createWallet").click()
         cy.get("#preview").click()
         cy.get("#createWallet").click()
@@ -15,14 +20,19 @@ describe("App E2E", () => {
         cy.get("#skipButton").click()
         cy.get("#skip").click()
         cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
-        cy.get("#standard-adornment-password2").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
         cy.get("#next").click()
+        cy.wait(20000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#walletIcon").click()
     }
     const restoreWallet = () => {
+        // cy.get('img').attribute('src').then($gouaby => {
+        //     expect($gouaby).to.eq("/static/media/logo.bc06d135.jpg")
+        // })
+        cy.get("#selectNetwork").select("regtest")
         cy.get("#restoreWallet").click()
         cy.get("#preview").click()
         cy.get("#restoreWallet").click()
@@ -30,21 +40,17 @@ describe("App E2E", () => {
             "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
         )
         cy.get("#checked").click()
-        cy.get("#standard-adornment-password").type("13456abC")
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#next").click()
+        cy.wait(10000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
-        cy.wait(2000)
         cy.get("#walletIcon").click()
     }
 
     it("creates a new wallet, adds a new wallet and updates one of the wallets", () => {
         createNewWallet()
         cy.get("#phoneIcon").click()
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
         cy.get("#walletIcon").click()
         cy.get("#add").click()
         cy.get("#senderName").type("Peter")
@@ -57,6 +63,8 @@ describe("App E2E", () => {
         cy.get("#back").click()
         cy.get("#redirectUrl").type("www.doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.get("#senderName").should("have.text", "Name: Peter")
         cy.get("#sentEmail").should("have.text", "Email: peter@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: myWallet")
@@ -98,6 +106,8 @@ describe("App E2E", () => {
         cy.get("#add").click()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.get("#receive").click()
@@ -110,6 +120,8 @@ describe("App E2E", () => {
         cy.get("#add").click()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.wait(2000)
@@ -135,6 +147,8 @@ describe("App E2E", () => {
         cy.get("#redirectUrl").clear()
         cy.get("#redirectUrl").type("http://www.doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.get("#senderName").should("have.text", "Name: Bob")
         cy.get("#sentEmail").should("have.text", "Email: bob@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: Doichain Contacts Request")
@@ -151,6 +165,8 @@ describe("App E2E", () => {
         cy.get("#add").click()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
         cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.get("#walletIcon").click()
         cy.get("#deleteWallet").click()
         cy.get("#closeAlert").click()
@@ -160,16 +176,8 @@ describe("App E2E", () => {
         cy.get("#walletIcon").click()
     })
 
-    it("should test the balance", () => {
-        cy.get("#restoreWallet").click()
-        cy.get("#preview").click()
-        cy.get("#restoreWallet").click()
-        cy.get("#textarea").type(
-            "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
-        )
-        cy.get("#checked").click()
-        cy.get("#standard-adornment-password").type("13456abC")
-        cy.get("#next").click()
+    it("should send the money to the address and test the balance", () => {
+        restoreWallet()
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.wait(2000)
@@ -199,7 +207,7 @@ describe("App E2E", () => {
         })
     })
 
-    it("creates another wallet and sends money on it", () => {
+    it.only("creates another wallet and sends money on it", () => {
         restoreWallet()
         cy.get("#add").click()
         cy.get("#senderName").type("Peter")
@@ -212,17 +220,36 @@ describe("App E2E", () => {
         cy.get("#back").click()
         cy.get("#redirectUrl").type("www.doichain.org")
         cy.get("#saveWallet").click()
-        cy.get("#address").then($span => {
-            const address = $span.text()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
+        cy.get("#doiCoinAddress").then($li => {
+            const address = $li.text().split(" ")[0]
             cy.get("#walletIcon").click()
-            cy.get("#detail").click()
+            cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"")
+            cy.get("#balance").then(async $span => {
+                const balance = parseFloat($span.text())
+                // expect(balance).to.eq("bla bla bla")
+                console.log(balance)
+                if(balance<100){
+                    const doi = 10
+                    changeNetwork('regtest')
+                    const funding = await fundWallet(address,doi)
+                    cy.get("#walletIcon").click()
+                    let $lastWallet = undefined
+                    cy.get("#walletList > li").each(($el, index, $list) => {
+                        // $lastWallet = $el
+                        // console.log(index+" "+$list.length, $el)
+                        (index === $list.length-1)?cy.wrap($el).click():""
+                    })
+                }
             cy.get("#send").click()
             cy.get("#toAddress").type(address)
+            const amountToSend = 0.5
+            cy.get("#amount").type(amountToSend)
+            cy.get("#sendAmount").click()
+            cy.get("#back").click()
+            })
         })
-        const amountToSend = 0.5
-        cy.get("#amount").type(amountToSend)
-        cy.get("#sendAmount").click()
-        cy.get("#back").click()
     })
 
     it("tests the languages", () => {
@@ -297,14 +324,15 @@ describe("App E2E", () => {
         cy.get("#skipButton").click()
         cy.get("#skip").click()
         cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
-        cy.get("#standard-adornment-password2").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
         cy.get("#next").click()
+        cy.wait(20000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#showSeedPhrase").click()
         cy.get("#enterPassword").click()
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
         cy.get("#seed").should("have.text", seed)
     })

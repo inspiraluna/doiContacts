@@ -11,23 +11,29 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
-import DecriptSeed from '../components/DecryptSeed';
 import useEventListener from '../hooks/useEventListener';
-
+import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 
 const Settings = () => {
 
     const { t, i18n } = useTranslation()
     const [globalNetwork, setGlobalNetwork] = useGlobal("network")
     const [open, setOpen] = useState(undefined)
-    const [modus, setModus] = useGlobal("modus")
+    const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
+    const [encrypted, setEncrypted] = useState(true)
+    const [decryptedSeed, setDecryptedSeed] = useState("")
 
     const handleClose = () => {
         setOpen(undefined)
     }
 
     const enterPassword = e => {
-        setModus("enterPassword")
+        setOpenUnlock(true)
+    }
+
+    const decryptCallback = (decryptedSeedPhrase) => {
+        setEncrypted(false)
+        setDecryptedSeed(decryptedSeedPhrase)
     }
 
     const useStyles = makeStyles(theme => ({
@@ -43,9 +49,7 @@ const Settings = () => {
 
     useEventListener(document, "backbutton", () => console.log("back"));
 
-    if (modus === "enterPassword") {
-        return <DecriptSeed />
-    }else{
+if (encrypted) {
     return (
         <div>
             <div>
@@ -126,8 +130,19 @@ const Settings = () => {
                     </Dialog>
                 </FormControl>
             </div>
+            <UnlockPasswordDialog callback={decryptCallback}/>
         </div>
     )
-    }
+} else {
+    let seedWords = decryptedSeed.split(" ")
+    let oneLine = []
+    const modulosSeed = seedWords.map((seed, i) => {
+        if (i % 3 === 0 && i !== 0) oneLine = []
+        oneLine.push(seed)
+        if ((i + 1) % 3 === 0) return <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>
+    })
+    return <p id="seed">{modulosSeed}</p>
 }
+}
+
 export default Settings

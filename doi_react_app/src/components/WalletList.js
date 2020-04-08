@@ -124,7 +124,7 @@ const WalletList = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <List dense={true}>{walletNode}</List>
+            <List id="walletList" dense={true}>{walletNode}</List>
         </div>
     )
 }
