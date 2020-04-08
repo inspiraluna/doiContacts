@@ -15,6 +15,7 @@ import {createHdKeyFromMnemonic} from "doichain";
 import useEventListener from '../hooks/useEventListener';
 import {createNewWallet} from "doichain/lib/createNewWallet";
 import {decryptAES} from "doichain/lib/decryptAES";
+import {generateNewAddress} from "doichain/lib/generateNewAddress";
 import {extend} from "lodash"
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 
@@ -227,8 +228,8 @@ const WalletsPage = () => {
                 if (isNaN(ourAmount)) return
                 setAmount(ourAmount)
             }
-
-            const address = wallets[activeWallet].addresses[0].address
+            // const address = wallets[activeWallet].addresses[0].address
+            const address = generateNewAddress(wallets[activeWallet].publicExtendedKey, wallets[activeWallet].addresses[wallets[activeWallet].addresses.length-1].derivationPath, GLOBAL.DEFAULT_NETWORK)
             const walletName = wallets[activeWallet].walletName
             let url = "doicoin:" + address
             if (amount) url += "?amount" + amount
