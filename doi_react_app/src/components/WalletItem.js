@@ -1,8 +1,6 @@
 import React, { useGlobal, useEffect, useState } from "reactn"
 
 import TransactionList from "./TransactionList"
-import { CopyToClipboard } from "react-copy-to-clipboard"
-import FileCopyIcon from "@material-ui/icons/FileCopy"
 import { useTranslation } from "react-i18next"
 import {getBalanceOfAddresses} from "doichain"
 import NativeSelect from "@material-ui/core/NativeSelect"
@@ -16,7 +14,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")
-    const setOpenSnackbar = useGlobal("errors")[1]
     const [t] = useTranslation()
 
     useEffect( () => {
@@ -40,35 +37,14 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         }
         getBalance()
     }, [])
-
-    const vibration = () => {
-        let time = 500;
-        navigator.vibrate(time);
-    }
     
         return (
             <div>
                 <li style={{ fontSize: "15px" }}>
                     <b> {t("walletItem.doiCoinAddress")} </b>
-                    <NativeSelect
-                    id="doiCoinAddress"
-                    onChange={e => setAddress(e.target.value)}
-                >
-                   {addressOptions}
-                </NativeSelect>
-                    <CopyToClipboard
-                        text={address ? address.toString() : ""}
-                        onCopy={() => {
-                            setOpenSnackbar({
-                                open: true,
-                                msg: t("walletItem.doiCoinAddressCopied"),
-                                type: "success"
-                            })
-                            vibration()}
-                        }
-                    >
-                        <FileCopyIcon color={"primary"} id="copy"></FileCopyIcon>
-                    </CopyToClipboard>
+                    <NativeSelect id="doiCoinAddress" onChange={e => setAddress(e.target.value)}>
+                        {addressOptions}
+                    </NativeSelect>
                     <br />
                     <b>{t("walletItem.balance")}</b> <span id="balance">{balance}</span> DOI{""}
                     <span id="unconfirmedBalance">
@@ -111,7 +87,9 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     <br />
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                 </div>
-                <div><TransactionList /></div>
+                <div>
+                    <TransactionList />
+                </div>
             </div>
         )
 }

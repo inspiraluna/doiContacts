@@ -18,6 +18,8 @@ import {decryptAES} from "doichain/lib/decryptAES";
 import {generateNewAddress} from "doichain/lib/generateNewAddress";
 import {extend} from "lodash"
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
+import { CopyToClipboard } from "react-copy-to-clipboard"
+import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 /* eslint no-template-curly-in-string: "off" */
 var GLOBAL = global || window;
@@ -32,6 +34,7 @@ const WalletsPage = () => {
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
     const [password, setPassword] = useGlobal("password")
+    const setOpenSnackbar = useGlobal("errors")[1]
     const [t] = useTranslation()
 
     const checkDefaults = wallet => {
@@ -240,6 +243,12 @@ const WalletsPage = () => {
             const address = generateNewAddress(wallets[activeWallet].publicExtendedKey, wallets[activeWallet].addresses[wallets[activeWallet].addresses.length-1].derivationPath, GLOBAL.DEFAULT_NETWORK)
             const walletName = wallets[activeWallet].walletName
             let url = "doicoin:" + address
+
+            const vibration = () => {
+                let time = 500;
+                navigator.vibrate(time);
+            }
+
             if (amount) url += "?amount" + amount
 
             return (
@@ -262,7 +271,21 @@ const WalletsPage = () => {
                             </Button>{" "}
                             <br /> <br />
                             {walletName} <br />
-                            <span id="receiveDoi">{t("walletPage.receiveDoi")}</span> <br /> {address} <br />
+                            <span id="receiveDoi">{t("walletPage.receiveDoi")}</span> <br />{" "}
+                            {address}
+                            <CopyToClipboard
+                                text={address ? address.toString() : ""}
+                                onCopy={() => {
+                                    setOpenSnackbar({
+                                        open: true,
+                                        msg: t("walletItem.doiCoinAddressCopied"),
+                                        type: "success"
+                                    })
+                                    vibration()
+                                }}
+                            >
+                                <FileCopyIcon color={"primary"} id="copy"></FileCopyIcon>
+                            </CopyToClipboard><br /><br />
                             {t("walletPage.amount")} <br />
                             <TextField
                                 id="amount"

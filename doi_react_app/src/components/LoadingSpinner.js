@@ -5,7 +5,7 @@ import s from "../pages/walletCreator/WalletCreator.module.css"
 
 const LoadingSpinner = (props) => (
   <div className={s.loading}>
-  <FontAwesomeIcon icon={faSpinner} /> {props.loading}
+  <FontAwesomeIcon icon={faSpinner} className="fa-spin" /> {props.loading}
   </div>
 );
 
