@@ -29,7 +29,6 @@ const WalletsPage = () => {
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
-    const [utxos, setUTXOs] = useGlobal("utxos")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
     const [password, setPassword] = useGlobal("password")

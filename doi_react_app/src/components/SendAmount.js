@@ -8,11 +8,13 @@ import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
+import {getUnspents} from "doichain";
+import {sendToAddress} from "doichain";
+import UnlockPasswordDialog from "./UnlockPasswordDialog";
 
 const SendAmount = () => {
     const [activeWallet] = useGlobal("activeWallet")
     const [wallets] = useGlobal("wallets")
-    const [utxos, setUTXOs] = useGlobal("utxos")
     const setOpenError = useGlobal("errors")[1]
     const setButtonState = useGlobal("buttonState")[1]
     const [modus, setModus] = useGlobal("modus")
@@ -20,6 +22,7 @@ const SendAmount = () => {
     const [qrCode] = useGlobal("qrCode")
     const [network] = useGlobal("network")
     const [t] = useTranslation()
+    const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
     const [loading, setLoading] = useState(false)
 
     const vibration = () => {
@@ -27,36 +30,46 @@ const SendAmount = () => {
         navigator.vibrate(time);
      }
 
-    const handleSendTransaction = async (toAddress, amount) => {
+    const sendDoiToAddress = async () => {
 
         try {
-            console.log("sending " + amount + " to ", toAddress)
+            const amount = openUnlock.amount
+            const destAddress = openUnlock.toAddress
+            console.log("sending " + amount + " to ", destAddress)
             const our_wallet = wallets[activeWallet]
-           /* const ourAddress = bitcore
-                .getAddressOfPublicKey(our_wallet.publicKey, getDoichainNetwork(network))
-                .toString()
-            const txData = await bitcore.createDoicoinTransaction(
-                ourAddress,
-                our_wallet.privateKey,
-                toAddress,
-                amount,
-                utxos
-            ) //returns only tx and changeAddress
-            console.log("txData", txData)
-            const response = await bitcore.broadcastTransaction(null, txData.tx)
-            const offChainUTXOs = bitcore.getOffchainUTXOs(ourAddress,response.txRaw)
-            console.log("utxosResponse", offChainUTXOs)
-            let newUTXOS = utxos
-            if(!utxos) newUTXOS = []
-            newUTXOS.push(offChainUTXOs.utxos)
-            setUTXOs(newUTXOS)
-            bitcore.updateWalletBalance(our_wallet, offChainUTXOs.balance)
+            let selectedInputs = getUnspents(our_wallet)
+            console.log('selectedInputs', selectedInputs)
+            const changeAddress = our_wallet.addresses[0].address //TODO please implement getNewChangeAddress
+           // let walletKey = hdKeyAlice.derive(derivationPath)
 
+           // let txResponse = await sendToAddress(walletKey, destAddress, changeAddress, amount, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
+
+
+            /* const ourAddress = bitcore
+                 .getAddressOfPublicKey(our_wallet.publicKey, getDoichainNetwork(network))
+                 .toString()
+             const txData = await bitcore.createDoicoinTransaction(
+                 ourAddress,
+                 our_wallet.privateKey,
+                 toAddress,
+                 amount,
+                 utxos
+             ) //returns only tx and changeAddress
+             console.log("txData", txData)
+             const response = await bitcore.broadcastTransaction(null, txData.tx)
+             const offChainUTXOs = bitcore.getOffchainUTXOs(ourAddress,response.txRaw)
+             console.log("utxosResponse", offChainUTXOs)
+             let newUTXOS = utxos
+             if(!utxos) newUTXOS = []
+             newUTXOS.push(offChainUTXOs.utxos)
+             setUTXOs(newUTXOS)
+             bitcore.updateWalletBalance(our_wallet, offChainUTXOs.balance)
+ */
             const msg = t("sendAmount.broadcastedDoicoinTx")
             setOpenError({ open: true, msg: msg, type: "success" })
             vibration()
             setButtonState("success")
-            setModus("detail") */
+            setModus("detail")
         } catch (ex) {
             const err = t("sendAmount.broadcastingError") + ex
             console.log(err, ex)
@@ -116,10 +129,14 @@ const SendAmount = () => {
                                         setSubmitting(true)
                                         console.log("submitting values", values) //here we are just using the global (since the changeHandle do not fire
                                         //TODO toAddress is for some reason never transmitted we are using qrCode here as a fallback
-                                        handleSendTransaction(
+                                        setOpenUnlock({
+                                            toAddress: values.toAddress ? values.toAddress : qrCode,
+                                            amount: values.amount}
+                                            )
+                                       /* sendDoiToAddress(
                                             values.toAddress ? values.toAddress : qrCode,
                                             values.amount
-                                        )
+                                        ) */
                                     }}
                                 >
                                     {({
@@ -182,6 +199,7 @@ const SendAmount = () => {
                     />
                 </div>
             </Slide>
+            <UnlockPasswordDialog callback={sendDoiToAddress} />
         </div>
     )
 }

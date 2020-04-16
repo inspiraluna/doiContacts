@@ -75,7 +75,7 @@ if (encrypted) {
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="uncontrolled-native">testnet/mainnet/regtest</InputLabel>
                     <NativeSelect
-                        defaultValue={network}
+                        defaultValue={globalNetwork}
                         id="selectNetwork"
                         onChange={e => {
                             const ourNetwork = e.target.value
