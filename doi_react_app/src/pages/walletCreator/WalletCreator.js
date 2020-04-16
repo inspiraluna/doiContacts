@@ -11,7 +11,7 @@ import ArrowLeft from "@material-ui/icons/ArrowLeft"
 import { makeStyles } from "@material-ui/core/styles"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
-import { network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES, decryptAES} from "doichain";
+import { network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES } from "doichain";
 import LoadingSpinner from '../../components/LoadingSpinner'
 var GLOBAL = global || window;
 
@@ -19,9 +19,9 @@ const WalletCreator = () => {
 
     const [modus, setModus] = useGlobal("modus")
     const [checked] = useGlobal("checked")
-    const [wallets, setWallets] = useGlobal("wallets")
+    const setWallets = useGlobal("wallets")[1]
     const [seed, setSeed] = useGlobal("seed")
-    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const setEncryptedSeed = useGlobal("encryptedSeed")[1]
     const [email] = useGlobal("email")
     const [password1, setPassword1] = useGlobal("password1")
     const [loading, setLoading] = useState(false)

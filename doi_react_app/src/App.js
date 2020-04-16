@@ -32,7 +32,8 @@ const App = props => {
 
     useEffect(() => {
             initStorage(props.cordova, global, setGlobal)
-    }, [])
+    }, [setGlobal])
+    
     network.changeNetwork(global.network)
     var GLOBAL = global || window;
     console.log('current network',GLOBAL.network)

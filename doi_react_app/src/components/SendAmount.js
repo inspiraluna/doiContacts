@@ -1,4 +1,4 @@
-import React, { useGlobal,useState } from "reactn"
+import React, { useState, useGlobal } from "reactn"
 import { Formik } from "formik"
 import Slide from "@material-ui/core/Slide"
 import Button from "@material-ui/core/Button"
@@ -8,8 +8,8 @@ import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
-import {getUnspents} from "doichain";
-import {sendToAddress} from "doichain";
+
+import {createHdKeyFromMnemonic, getUnspents, sendToAddress, updateWalletWithUnconfirmedUtxos} from "doichain";
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
 
 const SendAmount = () => {
@@ -20,51 +20,31 @@ const SendAmount = () => {
     const [modus, setModus] = useGlobal("modus")
     const [scanning] = useGlobal("scanning")
     const [qrCode] = useGlobal("qrCode")
-    const [network] = useGlobal("network")
     const [t] = useTranslation()
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
-    const [loading, setLoading] = useState(false)
 
     const vibration = () => {
         let time = 500;
         navigator.vibrate(time);
      }
 
-    const sendDoiToAddress = async () => {
+    const sendDoiToAddress = async (decryptedSeedPhrase,password) => {
 
         try {
-            const amount = openUnlock.amount
+            const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
+
+            const amount = Number(openUnlock.amount)
             const destAddress = openUnlock.toAddress
             console.log("sending " + amount + " to ", destAddress)
             const our_wallet = wallets[activeWallet]
             let selectedInputs = getUnspents(our_wallet)
             console.log('selectedInputs', selectedInputs)
             const changeAddress = our_wallet.addresses[0].address //TODO please implement getNewChangeAddress
-           // let walletKey = hdKeyAlice.derive(derivationPath)
+            let walletKey = hdKey.derive(our_wallet.derivationPath)
+            let txResponse = await sendToAddress(walletKey, destAddress, changeAddress, amount, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
+            updateWalletWithUnconfirmedUtxos(txResponse,our_wallet)
+            console.log('new wallet data please update global state!',our_wallet)
 
-           // let txResponse = await sendToAddress(walletKey, destAddress, changeAddress, amount, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
-
-
-            /* const ourAddress = bitcore
-                 .getAddressOfPublicKey(our_wallet.publicKey, getDoichainNetwork(network))
-                 .toString()
-             const txData = await bitcore.createDoicoinTransaction(
-                 ourAddress,
-                 our_wallet.privateKey,
-                 toAddress,
-                 amount,
-                 utxos
-             ) //returns only tx and changeAddress
-             console.log("txData", txData)
-             const response = await bitcore.broadcastTransaction(null, txData.tx)
-             const offChainUTXOs = bitcore.getOffchainUTXOs(ourAddress,response.txRaw)
-             console.log("utxosResponse", offChainUTXOs)
-             let newUTXOS = utxos
-             if(!utxos) newUTXOS = []
-             newUTXOS.push(offChainUTXOs.utxos)
-             setUTXOs(newUTXOS)
-             bitcore.updateWalletBalance(our_wallet, offChainUTXOs.balance)
- */
             const msg = t("sendAmount.broadcastedDoicoinTx")
             setOpenError({ open: true, msg: msg, type: "success" })
             vibration()
@@ -87,7 +67,7 @@ const SendAmount = () => {
                 aria-label="wallet-send"
                 direction={"up"}
                 in={activeWallet !== undefined && modus === "send"}
-                mountOnEnter65
+                mountOnEnter
                 unmountOnExit
             >
                 <div>

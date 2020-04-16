@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useGlobal } from "reactn"
+import React, { useState, useGlobal } from "reactn"
 import Slide from "@material-ui/core/Slide"
 import TextField from "@material-ui/core/TextField"
 import Fab from "@material-ui/core/Fab"
@@ -15,10 +15,11 @@ import SendAmount from "../components/SendAmount"
 import EditEmailTemplate from "../components/EditEmailTemplate"
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 
-import {createHdKeyFromMnemonic,decryptAES} from "doichain";
+import {createHdKeyFromMnemonic} from "doichain";
 import {createNewWallet} from "doichain/lib/createNewWallet";
 import {generateNewAddress} from "doichain/lib/generateNewAddress";
-
+import { CopyToClipboard } from "react-copy-to-clipboard"
+import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 /* eslint no-template-curly-in-string: "off" */
 var GLOBAL = global || window;
@@ -29,9 +30,10 @@ const WalletsPage = () => {
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
-    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [encryptedSeed] = useGlobal("encryptedSeed")
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
-    const [password, setPassword] = useGlobal("password")
+    const [password] = useGlobal("password")
+    const setOpenSnackbar = useGlobal("errors")[1]
     const [t] = useTranslation()
 
     const checkDefaults = wallet => {
@@ -55,9 +57,8 @@ const WalletsPage = () => {
         return wallet
     }
 
-    const addWallet = async () => {
-        const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
-        const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct
+    const addWallet = async (decryptedSeedPhrase,password) => {
+        const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct - it is possible to use xpubkey of hdkey here (!)
         let newWallet = await createNewWallet(hdKey,wallets.length)
         newWallet = extend(newWallet, openUnlock)
         let newwallets = wallets
@@ -232,6 +233,12 @@ const WalletsPage = () => {
             const address = generateNewAddress(wallets[activeWallet].publicExtendedKey, wallets[activeWallet].addresses[wallets[activeWallet].addresses.length-1].derivationPath, GLOBAL.DEFAULT_NETWORK)
             const walletName = wallets[activeWallet].walletName
             let url = "doicoin:" + address
+
+            const vibration = () => {
+                let time = 500;
+                navigator.vibrate(time);
+            }
+
             if (amount) url += "?amount" + amount
 
             return (
@@ -254,7 +261,21 @@ const WalletsPage = () => {
                             </Button>{" "}
                             <br /> <br />
                             {walletName} <br />
-                            <span id="receiveDoi">{t("walletPage.receiveDoi")}</span> <br /> {address} <br />
+                            <span id="receiveDoi">{t("walletPage.receiveDoi")}</span> <br />{" "}
+                            {address}
+                            <CopyToClipboard
+                                text={address ? address.toString() : ""}
+                                onCopy={() => {
+                                    setOpenSnackbar({
+                                        open: true,
+                                        msg: t("walletItem.doiCoinAddressCopied"),
+                                        type: "success"
+                                    })
+                                    vibration()
+                                }}
+                            >
+                                <FileCopyIcon color={"primary"} id="copy"></FileCopyIcon>
+                            </CopyToClipboard><br /><br />
                             {t("walletPage.amount")} <br />
                             <TextField
                                 id="amount"
