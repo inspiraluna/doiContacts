@@ -76,7 +76,7 @@ const SetPassword = () => {
             setChecked(false)
             setError(t("setPassword.errorAlert"))
         }
-    }, [password1, password2])
+    }, [password1, password2, setChecked, t])
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)

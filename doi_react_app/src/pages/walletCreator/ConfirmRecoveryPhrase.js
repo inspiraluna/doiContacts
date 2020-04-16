@@ -23,7 +23,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
 
     useEffect(() => {
         setChecked(false)
-    }, [])
+    }, [setChecked])
 
     useEffect(() => {
         const tempSufflyButtons = shuffle(seedWords)

@@ -1,11 +1,10 @@
 import Moment from 'react-moment';
 import 'moment-timezone';
 import React, {useEffect, useGlobal, useState} from "reactn";
-import {listTransactions} from "doichain"
 
 const TransactionList = () => {
     const [txs, setTxs] = useState([])
-    const [wallets, setWallets] = useGlobal("wallets")
+    const [wallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")
 
     useEffect(() => {

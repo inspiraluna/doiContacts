@@ -1,4 +1,4 @@
-import React, { useGlobal,useState } from "reactn"
+import React, { useGlobal } from "reactn"
 import { Formik } from "formik"
 import Slide from "@material-ui/core/Slide"
 import Button from "@material-ui/core/Button"
@@ -10,7 +10,6 @@ import bitcore from "bitcore-doichain"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
 import {getDoichainNetwork} from "../utils/network";
-import LoadingSpinner from './LoadingSpinner'
 
 const SendAmount = () => {
     const [activeWallet] = useGlobal("activeWallet")
@@ -23,7 +22,6 @@ const SendAmount = () => {
     const [qrCode] = useGlobal("qrCode")
     const [network] = useGlobal("network")
     const [t] = useTranslation()
-    const [loading, setLoading] = useState(false)
 
     const vibration = () => {
         let time = 500;

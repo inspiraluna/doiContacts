@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useGlobal } from "reactn"
+import React, { useState, useGlobal } from "reactn"
 import bitcore from "bitcore-doichain"
 import WalletList from "../components/WalletList"
 import Slide from "@material-ui/core/Slide"
@@ -31,9 +31,9 @@ const WalletsPage = () => {
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
     const [utxos, setUTXOs] = useGlobal("utxos")
-    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [encryptedSeed] = useGlobal("encryptedSeed")
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
-    const [password, setPassword] = useGlobal("password")
+    const [password] = useGlobal("password")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [t] = useTranslation()
 

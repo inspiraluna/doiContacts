@@ -11,7 +11,7 @@ import FormControl from "@material-ui/core/FormControl";
 import {makeStyles} from "@material-ui/core/styles";
 
 const Welcome = () => {
-    const [ globalNetwork, setGlobalNetwork] = useGlobal("network")
+    const setGlobalNetwork = useGlobal("network")[1]
     const setModus = useGlobal("modus")[1]
     const { t, i18n } = useTranslation()
 

@@ -19,7 +19,7 @@ const Settings = () => {
     const { t, i18n } = useTranslation()
     const [network, setNetwork] = useGlobal("network")
     const [open, setOpen] = useState(undefined)
-    const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
+    const setOpenUnlock = useGlobal("openUnlock")[1]
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
 
@@ -136,7 +136,7 @@ if (encrypted) {
 } else {
     let seedWords = decryptedSeed.split(" ")
     let oneLine = []
-    const modulosSeed = seedWords.map((seed, i) => {
+    const modulosSeed = seedWords.map((seed, i) => { 
         if (i % 3 === 0 && i !== 0) oneLine = []
         oneLine.push(seed)
         if ((i + 1) % 3 === 0) return <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>

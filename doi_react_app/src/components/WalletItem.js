@@ -7,10 +7,10 @@ import NativeSelect from "@material-ui/core/NativeSelect"
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
 
-    const [address, setAddress] = useState("")
+    const setAddress = useState("")[1]
     const [addressOptions, setAddressOptions] = useState([])
     const [balance, setBalance] = useState(0)
-    const [unconfirmedBalance, setUnconfirmedBalance] = useState(0)
+    const [unconfirmedBalance] = useState(0)
 
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")

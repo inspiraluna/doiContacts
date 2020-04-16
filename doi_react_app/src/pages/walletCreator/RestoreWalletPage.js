@@ -15,7 +15,7 @@ const RestoreWalletPage = props => {
 
     useEffect(() => {
         setChecked(false)
-    }, [])
+    }, [setChecked])
 
     const handleChange = () => {
         setShowPassword(!showPassword)
