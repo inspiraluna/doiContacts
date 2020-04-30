@@ -54,6 +54,7 @@ const WalletCreator = () => {
 
             network.changeNetwork(global.network)
             const password = password1 ? password1 : "mnemonic"
+            console.log('password',password)
             const hdkey = createHdKeyFromMnemonic(seed,password)
             const encryptedS = encryptAES(seed,password)
             setEncryptedSeed(encryptedS)
@@ -61,7 +62,7 @@ const WalletCreator = () => {
             setPassword1(undefined)
             setLoading(true)
             console.log('checking current network for wallets')
-            restoreDoichainWalletFromHdKey(hdkey,email,GLOBAL.DEFAULT_NETWORK).then((wallets) => {
+            restoreDoichainWalletFromHdKey(hdkey,email).then((wallets) => {
                 if(wallets.length>0){
                     setWallets(wallets)
                     setLoading(false)

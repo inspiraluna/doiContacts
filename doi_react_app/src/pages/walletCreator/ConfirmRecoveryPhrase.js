@@ -14,7 +14,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
     const [open, setOpen] = useState(undefined)
     const [seed] = useGlobal("seed")
     const [t] = useTranslation()
-    const [sufflyButtons, setSufflyButtons] = useState([])
+    const [shufflyButtons, setShufflyButtons] = useState([])
     const [newArray, setNewArray] = useState([])
 
     const handleClose = () => {
@@ -27,12 +27,12 @@ const ConfirmRecoveryPhrase = ({ next }) => {
 
     useEffect(() => {
         const tempSufflyButtons = shuffle(seedWords)
-        setSufflyButtons(tempSufflyButtons)
+        setShufflyButtons(tempSufflyButtons)
     }, [])
 
     let seedWords = seed.split(" ")
 
-    const seedButtons = sufflyButtons.map((s, i) => {
+    const seedButtons = shufflyButtons.map((s, i) => {
         return (
             <Button
                 style={{ margin: "10px" }}
@@ -45,9 +45,9 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                         let tempNewArray = newArray
                         tempNewArray.push(s)
                         setNewArray(tempNewArray)
-                        let filterButtons = sufflyButtons.filter(t => t !== s)
-                        setSufflyButtons(filterButtons)
-                        if (sufflyButtons.length <= 1) setChecked(true)
+                        let filterButtons = shufflyButtons.filter(t => t !== s)
+                        setShufflyButtons(filterButtons)
+                        if (shufflyButtons.length <= 1) setChecked(true)
                     }
                 }}
             >

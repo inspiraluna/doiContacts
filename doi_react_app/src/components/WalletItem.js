@@ -1,9 +1,9 @@
 import React, { useGlobal, useEffect, useState } from "reactn"
-
 import TransactionList from "./TransactionList"
 import { useTranslation } from "react-i18next"
-import {getBalanceOfAddresses} from "doichain"
+import {getBalanceOfWallet} from "doichain"
 import NativeSelect from "@material-ui/core/NativeSelect"
+const bitcoin = require('bitcoinjs-lib')
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
 
@@ -21,19 +21,38 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             const addressList = []
             setAddressOptions(wallets[activeWallet].addresses.map((addr, i) => {
                 addressList.push(addr.address)
-                return <option value={addr.address}>{addr.address} DOI:{addr.balance}</option>
+                return <option key={addr.address} value={addr.address}>{addr.address} DOI:{addr.balance}</option>
             })
             )
             setAddress(addressList[0])
-            const newBalance = await getBalanceOfAddresses(addressList)
-            if(wallets[activeWallet].balance!==newBalance.balance){
+
+            let xPubKey = bitcoin.bip32.fromBase58(wallets[activeWallet].publicExtendedKey);
+            const balanceObj = await getBalanceOfWallet(xPubKey,'m/'+activeWallet+'/0/0')
+
+            //take all addresses from response and sort it into local addresses
+            balanceObj.addresses.forEach( addr => {
+                let found = false
+                for(let i = 0;i<=wallets[activeWallet].addresses.length;i++){
+                    const thisAddress = wallets[activeWallet].addresses[i]
+                    if(thisAddress && thisAddress.address===addr.address){
+                        wallets[activeWallet].addresses[i] =  addr
+                        found=true
+                        break
+                    }
+                }
+                if(!found){
+                    wallets[activeWallet].addresses.push(addr)
+                }
+            })
+            console.log(wallets[activeWallet].addresses)
+            if(wallets[activeWallet].balance!==balanceObj.balance){
                 const tempWallet = wallets[activeWallet]
-                tempWallet.balance = newBalance.balance
+                tempWallet.balance = balanceObj.balance
                 const tempWallets = wallets
                 tempWallets[activeWallet] = tempWallet
                 setWallets(tempWallets)
             }
-            setBalance(newBalance.balance)
+            setBalance(balanceObj.balance)
         }
         getBalance()
     }, [])
@@ -88,7 +107,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     {/* <label htmlFor={"returnPath"}></label>Return-Path: {returnPath}<br/> */}
                 </div>
                 <div>
-                    <TransactionList />
+                    <TransactionList addresses={wallets[activeWallet].addresses}/>
                 </div>
             </div>
         )

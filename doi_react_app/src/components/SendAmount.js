@@ -1,4 +1,4 @@
-import React, { useState, useGlobal } from "reactn"
+import React, { useGlobal } from "reactn"
 import { Formik } from "formik"
 import Slide from "@material-ui/core/Slide"
 import Button from "@material-ui/core/Button"
@@ -8,9 +8,9 @@ import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
-
 import {createHdKeyFromMnemonic, getUnspents, sendToAddress, updateWalletWithUnconfirmedUtxos} from "doichain";
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
+
 
 const SendAmount = () => {
     const [activeWallet] = useGlobal("activeWallet")

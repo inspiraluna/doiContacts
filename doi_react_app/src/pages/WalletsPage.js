@@ -58,6 +58,7 @@ const WalletsPage = () => {
     }
 
     const addWallet = async (decryptedSeedPhrase,password) => {
+        console.log('adding wallet with password', password)
         const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct - it is possible to use xpubkey of hdkey here (!)
         let newWallet = await createNewWallet(hdKey,wallets.length)
         newWallet = extend(newWallet, openUnlock)
@@ -224,13 +225,20 @@ const WalletsPage = () => {
                 </div>
             )
         } else if (modus === "receive") {
+
             const handleAmount = e => {
                 const ourAmount = e.target.value
                 if (isNaN(ourAmount)) return
                 setAmount(ourAmount)
             }
-            // const address = wallets[activeWallet].addresses[0].address
-            const address = generateNewAddress(wallets[activeWallet].publicExtendedKey, wallets[activeWallet].addresses[wallets[activeWallet].addresses.length-1].derivationPath, GLOBAL.DEFAULT_NETWORK)
+
+            const addressCount = wallets[activeWallet].addresses.length-2
+            let address = wallets[activeWallet].addresses[addressCount].address
+
+            if(wallets[activeWallet].addresses[addressCount].transactions.length>0)
+                address = generateNewAddress(wallets[activeWallet].publicExtendedKey,
+                    wallets[activeWallet].addresses[addressCount].derivationPath)
+
             const walletName = wallets[activeWallet].walletName
             let url = "doicoin:" + address
 
