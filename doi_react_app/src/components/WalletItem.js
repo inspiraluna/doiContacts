@@ -20,8 +20,9 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
         const getBalance = async () => {
             const addressList = []
             setAddressOptions(wallets[activeWallet].addresses.map((addr, i) => {
+
                 addressList.push(addr.address)
-                return <option key={addr.address} value={addr.address}>{addr.address} DOI:{addr.balance}</option>
+                return <option key={addr.address} value={addr.address}>{addr.address} {addr.derivationPath}  DOI:{addr.balance}</option>
             })
             )
             setAddress(addressList[0])
@@ -44,7 +45,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     wallets[activeWallet].addresses.push(addr)
                 }
             })
-            console.log(wallets[activeWallet].addresses)
             if(wallets[activeWallet].balance!==balanceObj.balance){
                 const tempWallet = wallets[activeWallet]
                 tempWallet.balance = balanceObj.balance

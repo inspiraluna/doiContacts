@@ -10,9 +10,11 @@ import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
 import {createHdKeyFromMnemonic, getUnspents, sendToAddress, updateWalletWithUnconfirmedUtxos} from "doichain";
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
+import {getAddress} from "doichain/lib/getAddress";
 
 
 const SendAmount = () => {
+
     const [activeWallet] = useGlobal("activeWallet")
     const [wallets] = useGlobal("wallets")
     const setOpenError = useGlobal("errors")[1]
@@ -38,10 +40,36 @@ const SendAmount = () => {
             console.log("sending " + amount + " to ", destAddress)
             const our_wallet = wallets[activeWallet]
             let selectedInputs = getUnspents(our_wallet)
-            console.log('selectedInputs', selectedInputs)
+            if(selectedInputs.length===0){
+                const err = t("sendAmount.broadcastingError")
+                setOpenError({ open: true, msg: err, type: "error" })
+                setButtonState("error")
+            }
+
+            console.log('selectedInputs',selectedInputs)
+          //  let changeAddress  //get change address from
+            let addressKeys = []
+            selectedInputs.forEach((ourUTXO) =>{
+                for (let i = 0; i < our_wallet.addresses.length; i++){
+                    console.log(i,our_wallet.addresses[i])
+
+                    if(our_wallet.addresses[i].address===ourUTXO.address){
+                       // changeAddress = our_wallet.addresses[i+1].address  //TODO just take the derivationPath of the current Address and derive its change address
+                        const addressDerivationPath = our_wallet.addresses[i].derivationPath
+                        console.log('collection and derivating addresskey of derivationPath',addressDerivationPath)
+                        const addressKey = hdKey.derive(addressDerivationPath)
+                        addressKeys.push(addressKey)
+                       // addressDerivationPath =  our_wallet.addresses[i+1].derivationPath
+                        break
+                    }
+                }
+            })
+            console.log("addressKeys",addressKeys)
             const changeAddress = our_wallet.addresses[0].address //TODO please implement getNewChangeAddress
-            let walletKey = hdKey.derive(our_wallet.derivationPath)
-            let txResponse = await sendToAddress(walletKey, destAddress, changeAddress, amount, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
+            // getAddress(our_wallet.publicKey) (derivationElements.length!==2)?xpub.derivePath(newDerivationPath).publicKey:xpub.publicKey,network
+
+
+            let txResponse = await sendToAddress(addressKeys, destAddress, changeAddress, amount, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
             updateWalletWithUnconfirmedUtxos(txResponse,our_wallet)
             console.log('new wallet data please update global state!',our_wallet)
 

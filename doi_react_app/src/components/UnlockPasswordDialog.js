@@ -48,6 +48,7 @@ const UnlockPasswordDialog = (props) => {
                         <Input
                             id="standard-adornment-password"
                             fullWidth
+                            autoFocus={true}
                             type={showPassword ? "text" : "password"}
                             onChange={e => setPassword(e.target.value)}
                             endAdornment={

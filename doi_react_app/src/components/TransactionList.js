@@ -1,7 +1,7 @@
 import Moment from 'react-moment';
 import 'moment-timezone';
 import React from "reactn";
-
+import find from 'lodash.find'
 const TransactionList = ({addresses}) => {
     let txList = []
     addresses.forEach(addr => {
@@ -10,6 +10,11 @@ const TransactionList = ({addresses}) => {
     txList = txList.sort((a, b) => a.date - b.date)
 
     const txNode = txList.map((tx, index) => {
+        //TODO checkout if this is a change address and mark it special
+        //TODO when sending transactions please use change Address
+        console.log(find(addresses, {address: tx.address}).derivationPath)
+        const isChangeAddress =  find(addresses, {address: tx.address}).derivationPath.split("/")[2]===1
+        console.log(isChangeAddress)
         return (
             <div key={index}>
                 <div style={{textAlign: "left", verticalAlign: "top"}}><Moment
@@ -18,7 +23,9 @@ const TransactionList = ({addresses}) => {
                 <div style={{
                     textAlign: "right",
                     verticalAlign: "top"
-                }}> {tx.category} DOI {Number(tx.amount).toFixed(8)}</div>
+                }}> {tx.category} <br/> DOI
+                    { tx.spent?'<u>'+(Number(tx.amount).toFixed(8))+'</u>':Number(tx.amount).toFixed(8) }
+                </div>
             </div>
         )
     })
