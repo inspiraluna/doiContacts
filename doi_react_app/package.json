@@ -1,6 +1,6 @@
 {
     "name": "doi_react_app",
-    "version": "0.0.45",
+    "version": "0.0.46",
     "private": true,
     "homepage": "../www/",
     "dependencies": {
