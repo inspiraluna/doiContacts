@@ -19,18 +19,18 @@ const TransactionList = ({addresses}) => {
             <div key={index}>
                 <div style={{textAlign: "left", verticalAlign: "top"}}><Moment
                     format="YYYY-MM-DD HH-mm-ss">{tx.createdAt}</Moment>{" "}
-                    {tx.address}{" "} </div>
+                    {tx.address}{" "} (<span id="confirmations">{tx.confirmations}</span>)</div>
                 <div style={{
                     textAlign: "right",
                     verticalAlign: "top"
                 }}> {tx.category} <br/> DOI
-                    { tx.spent?'<u>'+(Number(tx.amount).toFixed(8))+'</u>':Number(tx.amount).toFixed(8) }
+                    <span id="txAmount">{ tx.spent?'<u>'+(Number(tx.amount).toFixed(8))+'</u>':Number(tx.amount).toFixed(8) }</span>
                 </div>
             </div>
         )
     })
 
-    const txTable = (<div style={{width: "100%", fontSize: "12px"}}>
+    const txTable = (<div id="txList" style={{width: "100%", fontSize: "12px"}}>
             {txNode}</div>
     )
 

@@ -4,9 +4,10 @@ import { changeNetwork } from "doichain/lib/network"
 const SEED_PASSWORD = "13456abC"
 describe("App E2E", () => {
     beforeEach(() => {
-        cy.visit("http://localhost:3002")
+        cy.visit("http://localhost:3001")
     })
-    const createNewWallet = () => {
+
+    const createNewSeedPhrase = () => {
         // balance blanket camp festival party robot social stairs noodle piano copy drastic
         //kiwi acquire security left champion peasant royal sheriff absent calm alert letter (password: 13456abC)
         cy.get("#selectNetwork").select("regtest")
@@ -23,11 +24,9 @@ describe("App E2E", () => {
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
         cy.get("#next").click()
-        cy.wait(20000)
-        cy.get("#settingsIcon").click()
-        cy.get("#selectLang").select("en")
-        cy.get("#walletIcon").click()
+        cy.wait(1000)
     }
+
     const restoreWallet = () => {
         // cy.get('img').attribute('src').then($gouaby => {
         //     expect($gouaby).to.eq("/static/media/logo.bc06d135.jpg")
@@ -42,14 +41,31 @@ describe("App E2E", () => {
         cy.get("#checked").click()
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#next").click()
-        cy.wait(10000)
+        cy.wait(5000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#walletIcon").click()
     }
 
-    it("creates a new wallet, adds a new wallet and updates one of the wallets", () => {
-        createNewWallet()
+    const createWallet = (senderName, senderEmail, subject) => {
+        cy.get("#walletIcon").click()
+        cy.get("#add").click()
+        cy.get("#senderName").type(senderName)
+        cy.get("#senderEmail").type(senderEmail)
+        cy.get("#subject").type(subject)
+        cy.get("#editEmailTemplate").click()
+        cy.get("#editTemp").type(
+            "Hello, please give me permission to write you an email. _confirmation_url_ Yours"
+        )
+        cy.get("#back").click()
+        cy.get("#redirectUrl").type("www.doichain.org")
+        cy.get("#saveWallet").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
+    }
+
+    it("creates a new seed phrase, adds a new wallet and updates one of the wallets", () => {
+        createNewSeedPhrase()
         cy.get("#phoneIcon").click()
         cy.get("#walletIcon").click()
         cy.get("#add").click()
@@ -100,67 +116,68 @@ describe("App E2E", () => {
         cy.get("#redUrl").should("have.text", "Redirect-Url: http://www.doichain.org")
     })
 
-    it("tests the receive button", () => {
-        createNewWallet()
-        cy.get("#walletIcon").click()
-        cy.get("#add").click()
-        cy.get("#senderEmail").type("bob@ci-doichain.org")
-        cy.get("#saveWallet").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#unlock").click()
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
-        cy.get("#receive").click()
-        cy.get("#receiveDoi").should("have.text", "Receive DOI for address:")
-    })
+    // it("tests the receive button", () => {
+    //     createNewSeedPhrase()
+    //     cy.get("#walletIcon").click()
+    //     cy.get("#add").click()
+    //     cy.get("#senderEmail").type("bob@ci-doichain.org")
+    //     cy.get("#saveWallet").click()
+    //     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+    //     cy.get("#unlock").click()
+    //     cy.get("#walletIcon").click()
+    //     cy.get("#detail").click()
+    //     cy.get("#receive").click()
+    //     cy.get("#receiveDoi").should("have.text", "Receive DOI for address:")
+    // })
 
-    it("tests the send button", () => {
-        createNewWallet()
-        cy.get("#walletIcon").click()
-        cy.get("#add").click()
-        cy.get("#senderEmail").type("bob@ci-doichain.org")
-        cy.get("#saveWallet").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#unlock").click()
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
-        cy.wait(2000)
-        cy.get("#send").click()
-        cy.get("#sendDoi").should("have.text", "Send DOI from address:")
-    })
+    // it("tests the send button", () => {
+    //     createNewSeedPhrase()
+    //     cy.get("#walletIcon").click()
+    //     cy.get("#add").click()
+    //     cy.get("#senderEmail").type("bob@ci-doichain.org")
+    //     cy.get("#saveWallet").click()
+    //     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+    //     cy.get("#unlock").click()
+    //     cy.get("#walletIcon").click()
+    //     cy.get("#detail").click()
+    //     cy.wait(2000)
+    //     cy.get("#send").click()
+    //     cy.get("#sendDoi").should("have.text", "Send DOI from address:")
+    // })
 
-    it("update wallet", () => {
-        createNewWallet()
-        cy.get("#editWallet").click()
-         cy.get("#senderName").clear()
-         cy.get("#senderName").type("Bob")
-        cy.get("#senderEmail").clear()
-        cy.get("#senderEmail").type("bob@ci-doichain.org")
-        cy.get("#subject").clear()
-        cy.get("#subject").type("Doichain Contacts Request")
-        cy.get("#editEmailTemplate").click()
-        cy.get("#editTemp").clear()
-        cy.get("#editTemp").type(
-            "Hello, please give me permission to write you an email. _confirmation_url_ Yours Bob"
-        )
-        cy.get("#back").click()
-        cy.get("#redirectUrl").clear()
-        cy.get("#redirectUrl").type("http://www.doichain.org")
-        cy.get("#saveWallet").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#unlock").click()
-        cy.get("#senderName").should("have.text", "Name: Bob")
-        cy.get("#sentEmail").should("have.text", "Email: bob@ci-doichain.org")
-        cy.get("#subj").should("have.text", "Subject: Doichain Contacts Request")
-        cy.get("#content").should(
-            "have.text",
-            "Content: Hello, please give me permission to write you an email. _confirmation_url_ Yours Bob"
-        )
-        cy.get("#redUrl").should("have.text", "Redirect-Url: http://www.doichain.org")
-    })
+    // it("update wallet", () => {
+    //     createNewSeedPhrase()
+    //     cy.get("#editWallet").click()
+    //      cy.get("#senderName").clear()
+    //      cy.get("#senderName").type("Bob")
+    //     cy.get("#senderEmail").clear()
+    //     cy.get("#senderEmail").type("bob@ci-doichain.org")
+    //     cy.get("#subject").clear()
+    //     cy.get("#subject").type("Doichain Contacts Request")
+    //     cy.get("#editEmailTemplate").click()
+    //     cy.get("#editTemp").clear()
+    //     cy.get("#editTemp").type(
+    //         "Hello, please give me permission to write you an email. _confirmation_url_ Yours Bob"
+    //     )
+    //     cy.get("#back").click()
+    //     cy.get("#redirectUrl").clear()
+    //     cy.get("#redirectUrl").type("http://www.doichain.org")
+    //     cy.get("#saveWallet").click()
+    //     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+    //     cy.get("#unlock").click()
+    //     cy.get("#senderName").should("have.text", "Name: Bob")
+    //     cy.get("#sentEmail").should("have.text", "Email: bob@ci-doichain.org")
+    //     cy.get("#subj").should("have.text", "Subject: Doichain Contacts Request")
+    //     cy.get("#content").should(
+    //         "have.text",
+    //         "Content: Hello, please give me permission to write you an email. _confirmation_url_ Yours Bob"
+    //     )
+    //     cy.get("#redUrl").should("have.text", "Redirect-Url: http://www.doichain.org")
+    // })
 
+    //TODO please check if wallet is in the wallet list and add assert
     it("delete wallet", () => {
-        createNewWallet()
+        createNewSeedPhrase()
         cy.get("#walletIcon").click()
         cy.get("#add").click()
         cy.get("#senderEmail").type("bob@ci-doichain.org")
@@ -175,80 +192,77 @@ describe("App E2E", () => {
         cy.visit("http://localhost:3000")
         cy.get("#walletIcon").click()
     })
-
-    it("should send the money to the address and test the balance", () => {
-        restoreWallet()
-        cy.get("#walletIcon").click()
-        cy.get("#detail").click()
-        cy.wait(2000)
-        let oldBalance = 0
-        cy.get("#balance").then($span => {
-            const balance = parseFloat($span.text())
-            if (balance > 0) oldBalance = balance
-            else
-                cy.get("#unconfirmedBalance").then($span => {
-                    oldBalance = parseFloat($span.text())
-                })
-        })
-        cy.log(oldBalance)
-        cy.get("#send").click()
-        cy.get("#toAddress").type("n1NTAvj98a2zRGcwrPASLmWoxSDpoHZeQX")
-        const amountToSend = 0.5
-        cy.get("#amount").type(amountToSend)
-        cy.get("#sendAmount").click()
-        cy.get("#back").click()
-        cy.get("#balance").then($span => {
-            const balance = parseFloat($span.text())
-            expect(balance).to.eq(0)
-        })
-        cy.get("#unconfirmedBalance").then($span => {
-            oldBalance = parseFloat($span.text())
-            expect(oldBalance).to.eq(oldBalance - amountToSend)
-        })
-    })
-
-    it.only("creates another wallet and sends money on it", () => {
-        restoreWallet()
-        cy.get("#add").click()
-        cy.get("#senderName").type("Peter")
-        cy.get("#senderEmail").type("peter@ci-doichain.org")
-        cy.get("#subject").type("myWallet")
-        cy.get("#editEmailTemplate").click()
-        cy.get("#editTemp").type(
-            "Hello, please give me permission to write you an email. _confirmation_url_ Yours Peter"
-        )
-        cy.get("#back").click()
-        cy.get("#redirectUrl").type("www.doichain.org")
-        cy.get("#saveWallet").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#unlock").click()
+ 
+    it("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
+        createNewSeedPhrase()
+        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+        cy.wait(500)
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
+        //1. fund first wallet
         cy.get("#doiCoinAddress").then($li => {
-            const address = $li.text().split(" ")[0]
+            const addressOfSecondWallet = $li.text().split(" ")[0]
             cy.get("#walletIcon").click()
-            cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"")
-            cy.get("#balance").then(async $span => {
-                const balance = parseFloat($span.text())
-                // expect(balance).to.eq("bla bla bla")
-                console.log(balance)
-                if(balance<100){
-                    const doi = 10
-                    changeNetwork('regtest')
-                    const funding = await fundWallet(address,doi)
-                    cy.get("#walletIcon").click()
-                    let $lastWallet = undefined
-                    cy.get("#walletList > li").each(($el, index, $list) => {
-                        // $lastWallet = $el
-                        // console.log(index+" "+$list.length, $el)
+            cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"") //click on the first wallet and send DOI to the 2nd
+            cy.get("#doiCoinAddress").then($li2 => {
+                const addressOfFirstWallet = $li2.text().split(" ")[0]
+                cy.get("#balance").then(async $span => {
+                    const balance = parseFloat($span.text())
+                    if(balance<100){
+                        const doi = 10
+                        changeNetwork('regtest')
+                        const funding = await fundWallet(addressOfFirstWallet,doi)
+                        cy.get("#walletIcon").click()
+                        cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"") //click first wallet
+                    }
+                cy.wait(2000)
+                //2. send 0.00005000 DOI to 2nd wallet
+                cy.get("#send").click()
+                cy.get("#toAddress").type(addressOfSecondWallet)
+                const amountToSend = 5000
+                cy.get("#amount").type(amountToSend)
+                cy.get("#sendAmount").click()
+                cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                cy.get("#unlock").click()
+                cy.wait(2000)
+                //3. check the balance of the 2nd wallet
+                cy.get("#walletIcon").click()
+                cy.get("#walletList > li").each(($el, index, $list) => { //click the last wallet in the list
+                   (index === $list.length-1)?cy.wrap($el).click():""
+                })
+                cy.wait(2000)
+                cy.get("#balance").then(async $span => {
+                   const balance = parseFloat($span.text())
+                   const amount = 0.00005
+                   expect(balance).to.eq(amount)
+                })
+                //4. check if the last transaction is inside the transaction history with the rigth amount
+                cy.get("#txList > div").each(($el, index, $list) => {
+                   if(index === 0) { 
+                    const firstTx = parseFloat($el.find("#txAmount").text())
+                    expect(firstTx).to.eq(amount)
+                //5. confirmations should be 0  
+                    const confirm = parseFloat($el.find("#confirmations").text())
+                    expect(confirm).to.eq(0)
+                   }
+                //6. transactions history should have only 1 transaction 
+                   expect($list.length).to.eq(1)
+                 }) 
+                //7. fund the first wallet again and check if the transaction now has a confirmation 
+                const doi = 0.1
+                changeNetwork('regtest')
+                const funding = await fundWallet(addressOfFirstWallet,doi) 
+                cy.get("#walletIcon").click()
+                cy.get("#walletList > li").each(($el, index, $list) => { //click the last wallet in the list
                         (index === $list.length-1)?cy.wrap($el).click():""
-                    })
-                }
-            cy.get("#send").click()
-            cy.get("#toAddress").type(address)
-            const amountToSend = 0.5
-            cy.get("#amount").type(amountToSend)
-            cy.get("#sendAmount").click()
-            cy.get("#back").click()
-            })
+                })
+                cy.wait(3000)
+                cy.get("#txList > div").each(($el, index, $list) => {
+                    expect($list.length).to.eq(1)
+                    const confirm = parseFloat($el.find("#confirmations").text())
+                    expect(confirm).to.eq(1)
+                 }) 
+                })
+            })    
         })
     })
 
@@ -284,7 +298,7 @@ describe("App E2E", () => {
     })
 
     it("clicks copy the address to clipbooard and snackbar shows up", () => {
-        createNewWallet()
+        createNewSeedPhrase()
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.window().then(win => {
