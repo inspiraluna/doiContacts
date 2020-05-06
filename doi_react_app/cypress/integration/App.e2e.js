@@ -203,7 +203,7 @@ describe("App E2E", () => {
             const addressOfSecondWallet = $li.text().split(" ")[0]
             cy.get("#walletIcon").click()
             cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"") //click on the first wallet and send DOI to the 2nd
-            cy.get("#doiCoinAddress").then($li2 => {
+            cy.get("#doiCoinAddress").then(async $li2 => {
                 const addressOfFirstWallet = $li2.text().split(" ")[0]
                 cy.get("#balance").then(async $span => {
                     const balance = parseFloat($span.text())
@@ -234,7 +234,6 @@ describe("App E2E", () => {
                    const balance = parseFloat($span.text())
                    const amount = 0.00005
                    expect(balance).to.eq(amount)
-                })
                 //4. check if the last transaction is inside the transaction history with the rigth amount
                 cy.get("#txList > div").each(($el, index, $list) => {
                    if(index === 0) { 
@@ -248,19 +247,34 @@ describe("App E2E", () => {
                    expect($list.length).to.eq(1)
                  }) 
                 //7. fund the first wallet again and check if the transaction now has a confirmation 
-                const doi = 0.1
+                const doi = 1
                 changeNetwork('regtest')
                 const funding = await fundWallet(addressOfFirstWallet,doi) 
                 cy.get("#walletIcon").click()
                 cy.get("#walletList > li").each(($el, index, $list) => { //click the last wallet in the list
                         (index === $list.length-1)?cy.wrap($el).click():""
                 })
-                cy.wait(3000)
+                cy.wait(4000)
                 cy.get("#txList > div").each(($el, index, $list) => {
                     expect($list.length).to.eq(1)
                     const confirm = parseFloat($el.find("#confirmations").text())
                     expect(confirm).to.eq(1)
-                 }) 
+                 })
+                //.8 check balance and transaction of the first wallet
+                cy.get("#walletIcon").click()
+                cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"")
+                cy.wait(2000)
+                cy.get("#balance").then(async $span => {
+                    const balance = parseFloat($span.text())
+                    const amount = 10.99926820
+                    expect(balance).to.eq(amount)
+                 })
+                 cy.get("#txList > div").each(($el, index, $list) => {
+                    expect($list.length).to.eq(1)
+                    const confirm = parseFloat($el.find("#confirmations").text())
+                    expect(confirm).to.eq(1)
+                 })
+                }) 
                 })
             })    
         })

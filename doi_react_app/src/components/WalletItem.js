@@ -29,6 +29,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
             let xPubKey = bitcoin.bip32.fromBase58(wallets[activeWallet].publicExtendedKey);
             const balanceObj = await getBalanceOfWallet(xPubKey,'m/'+activeWallet+'/0/0')
+            console.log(balanceObj)
 
             //take all addresses from response and sort it into local addresses
             balanceObj.addresses.forEach( addr => {
