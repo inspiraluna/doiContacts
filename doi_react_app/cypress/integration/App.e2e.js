@@ -192,8 +192,8 @@ describe("App E2E", () => {
         cy.visit("http://localhost:3000")
         cy.get("#walletIcon").click()
     })
- 
-    it("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
+
+    it.only("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
@@ -236,20 +236,20 @@ describe("App E2E", () => {
                    expect(balance).to.eq(amount)
                 //4. check if the last transaction is inside the transaction history with the rigth amount
                 cy.get("#txList > div").each(($el, index, $list) => {
-                   if(index === 0) { 
+                   if(index === 0) {
                     const firstTx = parseFloat($el.find("#txAmount").text())
                     expect(firstTx).to.eq(amount)
-                //5. confirmations should be 0  
+                //5. confirmations should be 0
                     const confirm = parseFloat($el.find("#confirmations").text())
                     expect(confirm).to.eq(0)
                    }
-                //6. transactions history should have only 1 transaction 
+                //6. transactions history should have only 1 transaction
                    expect($list.length).to.eq(1)
-                 }) 
-                //7. fund the first wallet again and check if the transaction now has a confirmation 
+                 })
+                //7. fund the first wallet again and check if the transaction now has a confirmation
                 const doi = 1
                 changeNetwork('regtest')
-                const funding = await fundWallet(addressOfFirstWallet,doi) 
+                const funding = await fundWallet(addressOfFirstWallet,doi)
                 cy.get("#walletIcon").click()
                 cy.get("#walletList > li").each(($el, index, $list) => { //click the last wallet in the list
                         (index === $list.length-1)?cy.wrap($el).click():""
@@ -270,13 +270,13 @@ describe("App E2E", () => {
                     expect(balance).to.eq(amount)
                  })
                  cy.get("#txList > div").each(($el, index, $list) => {
-                    expect($list.length).to.eq(1)
+                    expect($list.length).to.eq(4)
                     const confirm = parseFloat($el.find("#confirmations").text())
                     expect(confirm).to.eq(1)
                  })
-                }) 
                 })
-            })    
+                })
+            })
         })
     })
 
@@ -365,7 +365,7 @@ describe("App E2E", () => {
         cy.get("#seed").should("have.text", seed)
     })
     })
-    
+
     it("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
         cy.wait(2000)
