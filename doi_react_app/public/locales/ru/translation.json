@@ -105,7 +105,10 @@
         "balance": "Баланс",
         "doichainAddress": "по адресу Doichain",
         "amount": "Сумма (DOI)",
-        "sendDoi": "Отправить DOI"
+        "sendDoi": "Отправить DOI",
+        "addressMissing": "Адрес отсутствует",
+        "amountTooBig": "Сумма слишком велика",
+        "amountBiggerThan0": "Сумма должна быть больше 0"
     },
     "walletItem": {
         "doiCoinAddress": "Адрес DoiCoin:",

@@ -1,4 +1,4 @@
-import React, { useGlobal } from "reactn"
+import React, { useGlobal, useState } from "reactn"
 import { Formik } from "formik"
 import Slide from "@material-ui/core/Slide"
 import Button from "@material-ui/core/Button"
@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next"
 import {createHdKeyFromMnemonic, getUnspents, sendToAddress, updateWalletWithUnconfirmedUtxos} from "doichain";
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
 import {getAddress} from "doichain/lib/getAddress";
+import Input from "@material-ui/core/Input"
+import FormHelperText from "@material-ui/core/FormHelperText"
 
 
 const SendAmount = () => {
@@ -24,6 +26,10 @@ const SendAmount = () => {
     const [qrCode] = useGlobal("qrCode")
     const [t] = useTranslation()
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
+    const [error, setError] = useState()
+    const [amount, setAmount] = useState()
+    const [toAddress, setToAddress] = useState()
+    const [disable, setDisable] = useState(false)
 
     const vibration = () => {
         let time = 500;
@@ -119,89 +125,67 @@ const SendAmount = () => {
                                 {t("sendAmount.balance")} {balance} DOI
                                 <br></br>
                                 <br />
-                                <Formik
-                                    initialValues={{ toAddress: "", amount: 0 }}
-                                    validate={values => {
-                                        let errors = {}
-                                        /*     if (!values.email) {
-                                        errors.email = 'Required';
-                                    } else if (
-                                        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                                    ) {
-                                        errors.email = 'Invalid email address';
-                                    } */
-                                        return errors
-                                    }}
-                                    onSubmit={async (values, { setSubmitting }) => {
-                                        setButtonState("loading")
-                                        setSubmitting(true)
-                                        console.log("submitting values", values) //here we are just using the global (since the changeHandle do not fire
-                                        //TODO toAddress is for some reason never transmitted we are using qrCode here as a fallback
-                                        setOpenUnlock({
-                                            toAddress: values.toAddress ? values.toAddress : qrCode,
-                                            amount: values.amount}
-                                            )
-                                       /* sendDoiToAddress(
-                                            values.toAddress ? values.toAddress : qrCode,
-                                            values.amount
-                                        ) */
-                                    }}
-                                >
-                                    {({
-                                        values,
-                                        errors,
-                                        touched,
-                                        handleChange,
-                                        handleBlur,
-                                        handleSubmit,
-                                        isSubmitting
-                                    }) => (
-                                        <form onSubmit={handleSubmit}>
-                                            <QRCodeScannerTextField
-                                                label={t("sendAmount.doichainAddress")}
-                                                urlPrefix={"doicoin:"}
-                                                name={"toAddress"}
-                                                handleChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                errors={errors}
-                                                touched={touched}
-                                            />
-
-                                            <br></br>
-
-                                            <div>
-                                                <FormControl fullWidth variant="outlined">
-                                                    <InputLabel htmlFor="outlined-adornment">
-                                                        {t("sendAmount.amount")}
-                                                    </InputLabel>
-                                                    <OutlinedInput
-                                                        id="amount"
-                                                        name="amount"
-                                                        type={"text"}
-                                                        margin={"none"}
-                                                        fullWidth={true}
-                                                        labelWidth={110}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                    />
-                                                </FormControl>
-                                                {errors.position &&
-                                                    touched.position &&
-                                                    errors.position}
-                                            </div>
-                                            <br></br>
-                                            <ProgressButton
-                                                type="submit"
-                                                color={"primary"}
-                                                id="sendAmount"
-                                                state={global.buttonState}
-                                                disabled={isSubmitting}
-                                            >
-                                                {t("sendAmount.sendDoi")}
-                                            </ProgressButton>
-                                        </form>
-                                    )}
-                                </Formik>
+                                    <QRCodeScannerTextField
+                                        label={t("sendAmount.doichainAddress")}
+                                        urlPrefix={"doicoin:"}
+                                        name={"toAddress"}
+                                        onChange={(e) => {
+                                            const ourAddress = e.target.value
+                                            setToAddress(ourAddress)
+                                            if (!ourAddress) {
+                                                setError(t("sendAmount.addressMissing"))
+                                                setDisable(true)
+                                            } else {
+                                                setError(undefined)
+                                                setDisable(false)
+                                            } 
+                                        }}
+                                    />
+                                    <br></br>
+                                    <FormControl fullWidth error={error ? true : false}>
+                                        <InputLabel htmlFor="standard-adornment-password">
+                                            {t("sendAmount.amount")}
+                                        </InputLabel>
+                                        <Input
+                                            id="amount"
+                                            name="amount"
+                                            fullWidth
+                                            autoFocus={true}
+                                            onChange={(e) => {
+                                                const ourAmount = e.target.value
+                                                setAmount(ourAmount)
+                                                if(ourAmount > balance){
+                                                    setError(t("sendAmount.amountTooBig"))
+                                                    setDisable(true)
+                                                }
+                                                else if(ourAmount <= 0){
+                                                    setError(t("sendAmount.amountBiggerThan0"))
+                                                    setDisable(true)
+                                                }
+                                                else {
+                                                    setError(undefined)
+                                                    setDisable(false)
+                                                } 
+                                            }
+                                        }
+                                        />
+                                        <FormHelperText id="component-error-text">
+                                            {error}
+                                        </FormHelperText>
+                                    </FormControl>
+                                    <p></p>
+                                    <Button
+                                        onClick={() => setOpenUnlock({
+                                                        toAddress: toAddress ? toAddress : qrCode,
+                                                        amount: amount}
+                                                        )}
+                                        color={"primary"}
+                                        id="sendAmount"
+                                        variant="contained"
+                                        disabled={disable}
+                                    >
+                                        {t("sendAmount.sendDoi")}
+                                    </Button>
                             </div>
                         }
                     />
