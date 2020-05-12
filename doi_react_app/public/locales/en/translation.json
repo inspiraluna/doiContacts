@@ -107,7 +107,10 @@
         "balance": "Balance",
         "doichainAddress": "to Doichain Address",
         "amount": "Amount (DOI)",
-        "sendDoi": "Send DOI"
+        "sendDoi": "Send DOI",
+        "addressMissing": "Address missing",
+        "amountTooBig": "Amount is too big",
+        "amountBiggerThan0": "Amount should be bigger than 0"
     },
     "walletItem": {
         "doiCoinAddress": "DoiCoin-Address:",

@@ -270,7 +270,7 @@ const WalletsPage = () => {
                             <br /> <br />
                             {walletName} <br />
                             <span id="receiveDoi">{t("walletPage.receiveDoi")}</span> <br />{" "}
-                            {address}
+                            <span id="address">{address}</span>
                             <CopyToClipboard
                                 text={address ? address.toString() : ""}
                                 onCopy={() => {

@@ -189,7 +189,7 @@ describe("App E2E", () => {
         cy.get("#closeAlert").click()
         cy.get("#deleteWallet").click()
         cy.get("#removeWallet").click()
-        cy.visit("http://localhost:3000")
+        cy.visit("http://localhost:3001")
         cy.get("#walletIcon").click()
     })
  
@@ -303,6 +303,7 @@ describe("App E2E", () => {
 
     it("should create a contact", () => {
         restoreWallet()
+        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
         cy.get("#toAddress").type("bob@ci-doichain.org")
@@ -313,8 +314,10 @@ describe("App E2E", () => {
 
     it("clicks copy the address to clipbooard and snackbar shows up", () => {
         createNewSeedPhrase()
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
+        cy.get("#receive").click()
         cy.window().then(win => {
             cy.stub(win, "prompt")
                 .returns(win.prompt)
@@ -336,12 +339,13 @@ describe("App E2E", () => {
         cy.get("#settingsIcon").click()
         cy.get("#showSeedPhrase").click()
         cy.get("#enterPassword").click()
-        cy.get("#standard-adornment-password").type("abcdefgh1Z")
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
         cy.get("#seed").should("have.text", "kiwi acquire security left champion peasant royal sheriff absent calm alert letter")
     })
 
     it("creates a new wallet then shows recovery phrase", () => {
+        cy.get("#selectNetwork").select("regtest")
         cy.get("#createWallet").click()
         cy.get("#randomSeed").then($h1 => {
             const seed = $h1.text()
@@ -355,7 +359,7 @@ describe("App E2E", () => {
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
         cy.get("#next").click()
-        cy.wait(20000)
+        cy.wait(30000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#showSeedPhrase").click()
@@ -368,7 +372,7 @@ describe("App E2E", () => {
     
     it("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
-        cy.wait(2000)
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
         cy.get("#toAddress").type("bob@ci-doichain.org")
@@ -443,4 +447,52 @@ describe("App E2E", () => {
          cy.get("#standard-adornment-password2").type("Password123")
          cy.get("#component-error-text").should("have.text", "This password is not allowed")
      })
+
+     it("sends: more DOI then it has, 0 DOI and -1 DOI", () => {
+        createNewSeedPhrase()
+        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+        cy.wait(500)
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
+        //1. fund first wallet
+        cy.get("#doiCoinAddress").then($li => {
+            const addressOfSecondWallet = $li.text().split(" ")[0]
+            cy.get("#walletIcon").click()
+            cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"") //click on the first wallet and send DOI to the 2nd
+            cy.get("#doiCoinAddress").then(async $li2 => {
+                const addressOfFirstWallet = $li2.text().split(" ")[0]
+                cy.get("#balance").then(async $span => {
+                    const balance = parseFloat($span.text())
+                    if(balance<100){
+                        const doi = 10
+                        changeNetwork('regtest')
+                        const funding = await fundWallet(addressOfFirstWallet,doi)
+                        cy.get("#walletIcon").click()
+                        cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"") //click first wallet
+                    }
+                cy.wait(2000)
+                //2. send 20 DOI to 2nd wallet
+                cy.get("#send").click()
+                cy.get("#toAddress").type(addressOfSecondWallet)
+                const amountToSend = 2000000000
+                cy.get("#amount").type(amountToSend)
+                cy.get("#component-error-text").should(
+                    "have.text",
+                    "Amount is too big"
+                )
+                cy.get("#amount").clear()
+                cy.get("#amount").type(0)
+                cy.get("#component-error-text").should(
+                    "have.text",
+                    "Amount should be bigger than 0"
+                )
+                cy.get("#amount").clear()
+                cy.get("#amount").type(-1)
+                cy.get("#component-error-text").should(
+                    "have.text",
+                    "Amount should be bigger than 0"
+                )
+                })
+            })
+        })
+    })
 })
