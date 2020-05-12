@@ -1,6 +1,6 @@
 {
     "name": "doi_react_app",
-    "version": "0.0.46",
+    "version": "0.0.47",
     "private": true,
     "homepage": "../www/",
     "dependencies": {
@@ -17,6 +17,7 @@
         "i18next": "^19.3.4",
         "i18next-browser-languagedetector": "^4.0.2",
         "i18next-xhr-backend": "^3.2.2",
+        "ipfs": "^0.43.3",
         "json-stringify-safe": "^5.0.1",
         "lodash.find": "^4.6.0",
         "lodash.shuffle": "^4.2.0",
@@ -43,6 +44,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build && rm -rf ../www/ && cp -a ./build/. ../www/",
+        "ipfs": "node src/utils/ipfs",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "test:cypress": "start-server-and-test start http://localhost:3000 cypress",

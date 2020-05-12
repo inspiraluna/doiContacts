@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="org.doichain.contacts.app" version="1.0.46  " xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="org.doichain.contacts.app" version="1.0.47  " xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DoiContacts</name>
     <description>
        Request qualified email permissions via Doichain blockchain
@@ -23,6 +23,11 @@
         <allow-intent href="doichain:*" />
     </platform>
     <platform name="ios">
+        <preference name="WKWebViewOnly" value="true" />
+        <feature name="CDVWKWebViewEngine">
+            <param name="ios-package" value="CDVWKWebViewEngine" />
+        </feature>
+        <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <allow-intent href="doichain:*" />
