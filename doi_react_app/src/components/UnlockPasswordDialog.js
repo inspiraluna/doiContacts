@@ -29,6 +29,14 @@ const UnlockPasswordDialog = (props) => {
         setOpenUnlock(false);
       };
 
+    const unlock = () => {
+            const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
+            if (decryptedSeedPhrase !== "") {
+                props.callback(decryptedSeedPhrase, password) //we give the password to the callback in case we need it. e.g. for wallet creation
+                setOpenUnlock(false)
+            }else setError("wrong password")
+      };
+
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword)
     }
@@ -51,6 +59,7 @@ const UnlockPasswordDialog = (props) => {
                             autoFocus={true}
                             type={showPassword ? "text" : "password"}
                             onChange={e => setPassword(e.target.value)}
+                            onKeyPress={e => {if(e.key === "Enter")unlock()}}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -70,13 +79,7 @@ const UnlockPasswordDialog = (props) => {
                         Cancel
                     </Button>
                     <Button
-                        onClick={() => {
-                            const decryptedSeedPhrase = decryptAES(encryptedSeed, password)
-                            if (decryptedSeedPhrase !== "") {
-                                props.callback(decryptedSeedPhrase, password) //we give the password to the callback in case we need it. e.g. for wallet creation
-                                setOpenUnlock(false)
-                            }else setError("wrong password")
-                        }}
+                        onClick={unlock}
                         color="primary"
                         id="unlock"
                     >
