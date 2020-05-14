@@ -13,6 +13,10 @@ import UnlockPasswordDialog from "./UnlockPasswordDialog";
 import {getAddress} from "doichain/lib/getAddress";
 import Input from "@material-ui/core/Input"
 import FormHelperText from "@material-ui/core/FormHelperText"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
 
 
 const SendAmount = () => {
@@ -30,6 +34,8 @@ const SendAmount = () => {
     const [amount, setAmount] = useState()
     const [toAddress, setToAddress] = useState()
     const [disable, setDisable] = useState(false)
+    const [satoshi, setSatoshi] = useState(true)
+
 
     const vibration = () => {
         let time = 500;
@@ -41,9 +47,9 @@ const SendAmount = () => {
         try {
             const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
 
-            const amount = Number(openUnlock.amount)
+            const sendSatoshis = satoshi ? Number(openUnlock.amount) : Number(openUnlock.amount)*100000000
             const destAddress = openUnlock.toAddress
-            console.log("sending " + amount + " to ", destAddress)
+            console.log("sending " + sendSatoshis + " to ", destAddress)
             const our_wallet = wallets[activeWallet]
             let selectedInputs = getUnspents(our_wallet)
             if(selectedInputs.length===0){
@@ -75,7 +81,7 @@ const SendAmount = () => {
             // getAddress(our_wallet.publicKey) (derivationElements.length!==2)?xpub.derivePath(newDerivationPath).publicKey:xpub.publicKey,network
 
 
-            let txResponse = await sendToAddress(addressKeys, destAddress, changeAddress, amount, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
+            let txResponse = await sendToAddress(addressKeys, destAddress, changeAddress, sendSatoshis, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
             updateWalletWithUnconfirmedUtxos(txResponse,our_wallet)
             console.log('new wallet data please update global state!',our_wallet)
 
@@ -149,16 +155,18 @@ const SendAmount = () => {
                                         <Input
                                             id="amount"
                                             name="amount"
+                                            value={amount}
                                             fullWidth
                                             autoFocus={true}
                                             onChange={(e) => {
+                                                const doiAmount = satoshi?(Number(e.target.value)/100000000):e.target.value
                                                 const ourAmount = e.target.value
                                                 setAmount(ourAmount)
-                                                if(ourAmount > balance){
+                                                if(doiAmount > balance){
                                                     setError(t("sendAmount.amountTooBig"))
                                                     setDisable(true)
                                                 }
-                                                else if(ourAmount <= 0){
+                                                else if(doiAmount <= 0){
                                                     setError(t("sendAmount.amountBiggerThan0"))
                                                     setDisable(true)
                                                 }
@@ -167,6 +175,25 @@ const SendAmount = () => {
                                                     setDisable(false)
                                                 } 
                                             }
+                                        }
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    id="toggleCurrency"
+                                                    onClick={() => {
+                                                        const ourAmount = amount
+                                                        setAmount(ourAmount)
+                                                        setSatoshi(!satoshi)
+                                                    if(satoshi){setAmount(ourAmount / 100000000)
+                                                    }
+                                                    else {setAmount(ourAmount * 100000000)
+                                                    }
+                                                    }}
+                                                >
+                                                    {satoshi ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
                                         }
                                         />
                                         <FormHelperText id="component-error-text">
