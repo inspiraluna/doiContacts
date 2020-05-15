@@ -155,7 +155,7 @@ const SendAmount = () => {
                                         <Input
                                             id="amount"
                                             name="amount"
-                                            value={amount}
+                                            value={amount || ''}
                                             fullWidth
                                             autoFocus={true}
                                             onChange={(e) => {
@@ -185,9 +185,13 @@ const SendAmount = () => {
                                                         const ourAmount = amount
                                                         setAmount(ourAmount)
                                                         setSatoshi(!satoshi)
-                                                    if(satoshi){setAmount(ourAmount / 100000000)
+                                                    if(satoshi){
+                                                        const toDOI = ourAmount / 100000000
+                                                        setAmount(toDOI.toFixed(8))
                                                     }
-                                                    else {setAmount(ourAmount * 100000000)
+                                                    else {
+                                                        const toSatoshi = ourAmount * 100000000
+                                                        setAmount(toSatoshi.toFixed(0))
                                                     }
                                                     }}
                                                 >
