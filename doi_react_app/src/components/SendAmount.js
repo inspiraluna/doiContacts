@@ -1,23 +1,19 @@
 import React, { useGlobal, useState } from "reactn"
-import { Formik } from "formik"
 import Slide from "@material-ui/core/Slide"
 import Button from "@material-ui/core/Button"
 import InputLabel from "@material-ui/core/InputLabel"
-import ProgressButton from "react-progress-button"
-import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
 import {createHdKeyFromMnemonic, getUnspents, sendToAddress, updateWalletWithUnconfirmedUtxos} from "doichain";
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
-import {getAddress} from "doichain/lib/getAddress";
 import Input from "@material-ui/core/Input"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Visibility from "@material-ui/icons/Visibility"
-import VisibilityOff from "@material-ui/icons/VisibilityOff"
-
+import {network} from "doichain";
+const bitcoin = require('bitcoinjs-lib')
+var GLOBAL = global || window;
 
 const SendAmount = () => {
 
@@ -51,33 +47,59 @@ const SendAmount = () => {
             const destAddress = openUnlock.toAddress
             console.log("sending " + sendSatoshis + " to ", destAddress)
             const our_wallet = wallets[activeWallet]
-            let selectedInputs = getUnspents(our_wallet)
+            let selectedInputs = getUnspents(our_wallet) //TODO don't take all unspents - only as much you need
             if(selectedInputs.length===0){
                 const err = t("sendAmount.broadcastingError")
                 setOpenError({ open: true, msg: err, type: "error" })
                 setButtonState("error")
             }
 
-            console.log('selectedInputs',selectedInputs)
-          //  let changeAddress  //get change address from
+            //Collect addressKeys (privateKeys) from currently used inputs (to prepare signing the transaction)
             let addressKeys = []
-            selectedInputs.forEach((ourUTXO) =>{
+            selectedInputs.forEach((ourUTXO) => {
                 for (let i = 0; i < our_wallet.addresses.length; i++){
-                    console.log(i,our_wallet.addresses[i])
-
                     if(our_wallet.addresses[i].address===ourUTXO.address){
-                       // changeAddress = our_wallet.addresses[i+1].address  //TODO just take the derivationPath of the current Address and derive its change address
                         const addressDerivationPath = our_wallet.addresses[i].derivationPath
-                        console.log('collection and derivating addresskey of derivationPath',addressDerivationPath)
                         const addressKey = hdKey.derive(addressDerivationPath)
                         addressKeys.push(addressKey)
-                       // addressDerivationPath =  our_wallet.addresses[i+1].derivationPath
                         break
                     }
                 }
             })
+
             console.log("addressKeys",addressKeys)
-            const changeAddress = our_wallet.addresses[0].address //TODO please implement getNewChangeAddress
+            let changeAddress //= our_wallet.addresses[0].address //TODO please implement getNewChangeAddress
+
+            //1. get last change addresses from wallet and check if it has transactions
+            let lastAddressIndex = 0
+            for(let i = 0;i<our_wallet.addresses.length;i++){
+
+                const addr = our_wallet.addresses[i]
+                console.log('checking change addresses for transactions',addr)
+
+                if(addr.derivationPath.split('/')[2] === 1 && addr.transactions.length>0)
+                    lastAddressIndex = addr.derivationPath.split('/')[3]
+
+                if(addr.derivationPath.split('/')[2] === 1 && addr.transactions.length===0){
+                    changeAddress = addr.address
+                    console.log('found change address in wallet without transactions',changeAddress)
+                    break;
+                }
+            }
+            //2. if there was no changeAddress found derive a new one
+            if(!changeAddress){
+                const nextAdddressIndex = Number(lastAddressIndex)+1
+                console.log("couldn't find unused change address in wallet derivating next one with index",nextAdddressIndex)
+                const addressDerivationPath = 'm/'+activeWallet+'/1/'+nextAdddressIndex
+                const xpub = our_wallet.publicExtendedKey
+                let childKey0FromXpub = bitcoin.bip32.fromBase58(xpub);
+                changeAddress = bitcoin.payments.p2pkh(
+                    { pubkey: childKey0FromXpub.derivePath(addressDerivationPath).publicKey,
+                        network: GLOBAL.DEFAULT_NETWORK}).address
+                console.log('derivated change address',changeAddress)
+            }
+
+
             // getAddress(our_wallet.publicKey) (derivationElements.length!==2)?xpub.derivePath(newDerivationPath).publicKey:xpub.publicKey,network
 
 
@@ -144,7 +166,7 @@ const SendAmount = () => {
                                             } else {
                                                 setError(undefined)
                                                 setDisable(false)
-                                            } 
+                                            }
                                         }}
                                     />
                                     <br></br>
@@ -173,7 +195,7 @@ const SendAmount = () => {
                                                 else {
                                                     setError(undefined)
                                                     setDisable(false)
-                                                } 
+                                                }
                                             }
                                         }
                                         endAdornment={
