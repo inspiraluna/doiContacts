@@ -191,7 +191,7 @@ const SendAmount = () => {
                                                     }
                                                     }}
                                                 >
-                                                    {satoshi ? <Visibility /> : <VisibilityOff />}
+                                                    {satoshi ? "schw" : "DOI"}
                                                 </IconButton>
                                             </InputAdornment>
                                         }
