@@ -10,7 +10,6 @@ import  stringify from 'json-stringify-safe';
           localStorage.setItem("activeWallet", global.activeWallet ? global.activeWallet : 0)
           localStorage.setItem("network", global.network ? global.network : "mainnet")
           localStorage.setItem("encryptedSeed", global.encryptedSeed ? global.encryptedSeed : undefined)
-
       } else {
           //TODO only set items in NativeStorgage which changed (don't set all of them all the time)
           //First get the value from NativeStorage and compare it with value in global state - if different store it in Native Storage
@@ -80,7 +79,7 @@ import  stringify from 'json-stringify-safe';
               )
           if (global.encryptedSeed)
               window.NativeStorage.setItem(
-                  "network",
+                  "encryptedSeed",
                   global.encryptedSeed?global.encryptedSeed:undefined,
                   obj => {},
                   err => {

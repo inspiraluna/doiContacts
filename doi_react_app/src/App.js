@@ -27,16 +27,18 @@ const App = props => {
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
     const [wallets] = useGlobal("wallets")
-    
+
     register()
 
     useEffect(() => {
             initStorage(props.cordova, global, setGlobal)
     }, [setGlobal])
-    
-    network.changeNetwork(global.network)
-    var GLOBAL = global || window;
-    console.log('current network',GLOBAL.network)
+
+
+    if(global.network) network.changeNetwork(global.network)
+    //var GLOBAL = global || window;
+
+    console.log('current network',global.network)
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
