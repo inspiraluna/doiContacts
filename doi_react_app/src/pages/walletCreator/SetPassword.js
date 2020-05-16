@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import { useTranslation } from "react-i18next"
+
 const SetPassword = () => {
 
     const [password1, setPassword1] = useGlobal("password1")

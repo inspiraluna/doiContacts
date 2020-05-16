@@ -75,12 +75,11 @@ const SendAmount = () => {
             for(let i = 0;i<our_wallet.addresses.length;i++){
 
                 const addr = our_wallet.addresses[i]
-                console.log('checking change addresses for transactions',addr)
+                console.log('checking change addresses with chainId '+(addr.derivationPath.split('/')[2])+'for transactions ',addr)
+                //if(addr.derivationPath.split('/')[2] === 1 && addr.transactions.length===0)
+                lastAddressIndex = Number(addr.derivationPath.split('/')[3])
 
-                if(addr.derivationPath.split('/')[2] === 1 && addr.transactions.length>0)
-                    lastAddressIndex = addr.derivationPath.split('/')[3]
-
-                if(addr.derivationPath.split('/')[2] === 1 && addr.transactions.length===0){
+                if(Number(addr.derivationPath.split('/')[2]) === 1 && addr.transactions.length===0){
                     changeAddress = addr.address
                     console.log('found change address in wallet without transactions',changeAddress)
                     break;
@@ -88,7 +87,7 @@ const SendAmount = () => {
             }
             //2. if there was no changeAddress found derive a new one
             if(!changeAddress){
-                const nextAdddressIndex = Number(lastAddressIndex)+1
+                const nextAdddressIndex = lastAddressIndex+1
                 console.log("couldn't find unused change address in wallet derivating next one with index",nextAdddressIndex)
                 const addressDerivationPath = 'm/'+activeWallet+'/1/'+nextAdddressIndex
                 const xpub = our_wallet.publicExtendedKey
