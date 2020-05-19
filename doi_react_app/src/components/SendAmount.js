@@ -114,9 +114,9 @@ const SendAmount = () => {
                     <QRCodeScannerContents
                         scanning={scanning}
                         render={
-                            <div style={{ backgroundColor: "white" }}>
+                            <div>
                                 <Button
-                                    color={"primary"}
+                                    color={"secondary"}
                                     variant="contained"
                                     id="back"
                                     onClick={() => setModus("detail")}
@@ -210,7 +210,7 @@ const SendAmount = () => {
                                                         toAddress: toAddress ? toAddress : qrCode,
                                                         amount: amount}
                                                         )}
-                                        color={"primary"}
+                                        color={"secondary"}
                                         id="sendAmount"
                                         variant="contained"
                                         disabled={disable}

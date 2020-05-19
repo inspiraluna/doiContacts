@@ -13,6 +13,8 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import useEventListener from '../hooks/useEventListener';
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
+import { Switch, CssBaseline } from "@material-ui/core"
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const Settings = () => {
 
@@ -22,6 +24,7 @@ const Settings = () => {
     const setOpenUnlock = useGlobal("openUnlock")[1]
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
+    const [darkMode, setDarkMode] = useGlobal("darkMode")
 
     const handleClose = () => {
         setOpen(undefined)
@@ -51,6 +54,8 @@ const Settings = () => {
 
 if (encrypted) {
     return (
+        <ThemeProvider >
+        <CssBaseline />
         <div>
             <div>
                 <FormControl className={classes.formControl}>
@@ -95,9 +100,9 @@ if (encrypted) {
                     </NativeSelect>
                     <br></br>
                     <Button
-                        variant="outlined"
+                        variant="contained"
                         id="showSeedPhrase"
-                        color="primary"
+                        color="secondary"
                         onClick={() => setOpen(true)}
                     >
                         {t("option.showRecoveryPhrase")}
@@ -115,13 +120,13 @@ if (encrypted) {
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={() => handleClose()} id="closeAlert" color="primary">
+                            <Button onClick={() => handleClose()} id="closeAlert" color="secondary">
                                 {t("button.cancel")}
                             </Button>
                             <Button
                                 onClick={() => enterPassword()}
                                 id="enterPassword"
-                                color="primary"
+                                color="secondary"
                                 autoFocus
                             >
                                 {t("button.iUnderstand")}
@@ -131,7 +136,12 @@ if (encrypted) {
                 </FormControl>
             </div>
             <UnlockPasswordDialog callback={decryptCallback}/>
+            <span className={classes.formControl}>Toggle light/dark theme</span><Switch checked={darkMode} onChange={() => {
+                const ourMode = darkMode
+                setDarkMode(!ourMode)
+            }} />
         </div>
+        </ThemeProvider>
     )
 } else {
     let seedWords = decryptedSeed.split(" ")

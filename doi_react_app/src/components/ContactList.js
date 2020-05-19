@@ -97,10 +97,10 @@ const ContactList = () => {
                 />
                 <ListItemSecondaryAction>
                     <StatusIcon contact={contact} />
-                    <IconButton onClick={() => handleEdit(index)} edge="end" aria-label="edit">
+                    <IconButton onClick={() => handleEdit(index)} color="secondary" edge="end" aria-label="edit">
                         <EditIcon />
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete" onClick={() => setOpen(index)}>
+                    <IconButton edge="end" color="secondary" aria-label="delete" onClick={() => setOpen(index)}>
                         <DeleteIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
@@ -122,10 +122,10 @@ const ContactList = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose()} color="primary">
+                    <Button onClick={() => handleClose()} color="secondary">
                         {t("button.cancel")}
                     </Button>
-                    <Button onClick={() => handleRemove()} color="primary" autoFocus>
+                    <Button onClick={() => handleRemove()} color="secondary" autoFocus>
                         {t("button.delete")}
                     </Button>
                 </DialogActions>

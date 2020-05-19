@@ -77,6 +77,7 @@ const WalletList = () => {
                 <ListItemSecondaryAction>
                     <IconButton
                         onClick={() => handleEdit(index)}
+                        color="secondary"
                         edge="end"
                         id="editWallet"
                         aria-label="edit"
@@ -84,6 +85,7 @@ const WalletList = () => {
                         <EditIcon />
                     </IconButton>
                     <IconButton
+                        color="secondary"
                         edge="end"
                         aria-label="delete"
                         id="deleteWallet"
@@ -111,13 +113,13 @@ const WalletList = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose()} id="closeAlert" color="primary">
+                    <Button onClick={() => handleClose()} id="closeAlert" color="secondary">
                         {t("button.cancel")}
                     </Button>
                     <Button
                         onClick={() => handleRemove()}
                         id="removeWallet"
-                        color="primary"
+                        color="secondary"
                         autoFocus
                     >
                         {t("button.delete")}

@@ -75,12 +75,12 @@ const UnlockPasswordDialog = (props) => {
                     </FormControl>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose()} color="primary">
+                    <Button onClick={() => handleClose()} color="secondary">
                         Cancel
                     </Button>
                     <Button
                         onClick={unlock}
-                        color="primary"
+                        color="secondary"
                         id="unlock"
                     >
                         Unlock

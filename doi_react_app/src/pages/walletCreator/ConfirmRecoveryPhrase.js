@@ -37,7 +37,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
             <Button
                 style={{ margin: "10px" }}
                 key={i}
-                color="primary"
+                color="secondary"
                 variant="contained"
                 onClick={() => {
                     const correctIndex = seedWords.indexOf(s)
@@ -83,10 +83,10 @@ const ConfirmRecoveryPhrase = ({ next }) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose()} id="close" color="primary">
+                    <Button onClick={() => handleClose()} id="close" color="secondary">
                         {t("button.cancel")}
                     </Button>
-                    <Button color="primary" onClick={next} id="skip" autoFocus>
+                    <Button color="secondary" onClick={next} id="skip" autoFocus>
                         {t("button.skip")}
                     </Button>
                 </DialogActions>

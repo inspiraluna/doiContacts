@@ -19,6 +19,8 @@ import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import {network} from "doichain";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { CssBaseline } from "@material-ui/core"
 
 const App = props => {
 
@@ -27,6 +29,7 @@ const App = props => {
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
     const [wallets] = useGlobal("wallets")
+    const [darkMode, setDarkMode] = useGlobal("darkMode")
     
     register()
 
@@ -37,6 +40,21 @@ const App = props => {
     network.changeNetwork(global.network)
     var GLOBAL = global || window;
     console.log('current network',GLOBAL.network)
+
+    const themeX = createMuiTheme({
+        palette: {
+          type: darkMode? "dark" : "light",
+          primary: {
+            main: "#0b3e74"
+        },
+        secondary: {
+          main: "#cd45ff"
+         },
+        background: {
+          default: !darkMode? "#e5e3ff" : "#303030"
+         }
+        }
+      });
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
@@ -73,6 +91,8 @@ const App = props => {
            return <WalletCreator />
              } else {
                  return (
+                    <ThemeProvider theme={themeX}>
+                    <CssBaseline />
                      <div>
                          <AppBar position="static">
                              <Tabs
@@ -111,6 +131,7 @@ const App = props => {
                          </TabPanel>
                          <CustomizedSnackbars />
                      </div>
+                     </ThemeProvider>
                  )
              }
 }

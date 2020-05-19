@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
 import { network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES } from "doichain";
 import LoadingSpinner from '../../components/LoadingSpinner'
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { CssBaseline } from "@material-ui/core"
 var GLOBAL = global || window;
 
 const WalletCreator = () => {
@@ -25,6 +27,7 @@ const WalletCreator = () => {
     const [email] = useGlobal("email")
     const [password1, setPassword1] = useGlobal("password1")
     const [loading, setLoading] = useState(false)
+    const [darkMode, setDarkMode] = useGlobal("darkMode")
 
     const [t] = useTranslation()
 
@@ -76,7 +79,25 @@ const WalletCreator = () => {
     useEventListener(document, "backbutton", () => back());
 
     const classes = useStyles()
+
+    const themeX = createMuiTheme({
+        palette: {
+          type: darkMode? "dark" : "light",
+          primary: {
+              main: "#0b3e74"
+          },
+          secondary: {
+            main: "#cd45ff"
+           },
+           background: {
+            default: !darkMode? "#e5e3ff" : "#303030"
+          }
+        }
+      });
+
     return (
+        <ThemeProvider theme={themeX}>
+        <CssBaseline />
         <div>
             <AppBar position="static">
                 <Toolbar>
@@ -112,6 +133,7 @@ const WalletCreator = () => {
             {modus === "setPassword" ? (loading?<LoadingSpinner loading="creating wallet ..."/>:<SetPassword />) : ""}
             {modus === "restoreWallet" ? (loading?<LoadingSpinner loading="restoring wallets ..."/>:<RestoreWalletPage />) : ""}
         </div>
+        </ThemeProvider>
     )
 }
 export default WalletCreator
