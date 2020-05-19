@@ -80,6 +80,7 @@ const WalletCreator = () => {
 
     const classes = useStyles()
 
+    let ourNetwork = GLOBAL.network
     const themeX = createMuiTheme({
         palette: {
           type: darkMode? "dark" : "light",
@@ -87,7 +88,7 @@ const WalletCreator = () => {
               main: "#0b3e74"
           },
           secondary: {
-            main: "#cd45ff"
+            main: (ourNetwork === "testnet") ? "#e65100" : "#cd45ff"
            },
            background: {
             default: !darkMode? "#e5e3ff" : "#303030"

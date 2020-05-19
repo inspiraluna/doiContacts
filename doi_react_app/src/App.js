@@ -41,20 +41,21 @@ const App = props => {
     var GLOBAL = global || window;
     console.log('current network',GLOBAL.network)
 
+    let ourNetwork = GLOBAL.network
     const themeX = createMuiTheme({
         palette: {
-          type: darkMode? "dark" : "light",
-          primary: {
-            main: "#0b3e74"
+            type: darkMode ? "dark" : "light",
+            primary: {
+                main: "#0b3e74",
+            },
+            secondary: {
+                main: (ourNetwork === "testnet") ? "#e65100" : "#cd45ff",
+            },
+            background: {
+                default: !darkMode ? "#e5e3ff" : "#303030",
+            },
         },
-        secondary: {
-          main: "#cd45ff"
-         },
-        background: {
-          default: !darkMode? "#e5e3ff" : "#303030"
-         }
-        }
-      });
+    })
 
     function TabPanel(props) {
         const { children, value, index, ...other } = props
