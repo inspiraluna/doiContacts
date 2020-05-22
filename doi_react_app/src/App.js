@@ -38,7 +38,7 @@ const App = props => {
 
 
     if(global.network) network.changeNetwork(global.network)
-    //var GLOBAL = global || window;
+    var GLOBAL = global || window;
 
     console.log('current network',global.network)
 
