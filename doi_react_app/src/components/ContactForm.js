@@ -49,7 +49,7 @@ const ContactForm = () => {
     const setOpenError = useGlobal("errors")[1]
     const [utxos, setUTXOs] = useGlobal("utxos")
     const [scanning] = useGlobal("scanning")
-    const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
+    const [ownQrCode, setOwnQrCode] = useState('')
     const [test] = useGlobal("test")
     const [t] = useTranslation()
     const setOpenSnackbar = useGlobal("errors")[1]
@@ -144,6 +144,7 @@ const ContactForm = () => {
     }
 
     const calculateOwnQRCode = () => {
+        if(wallets.length===0) return
         const senderEmail = wallets[wallet].senderEmail
         if (senderEmail) {
             const url = "mailto:" + wallets[wallet].senderEmail

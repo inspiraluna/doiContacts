@@ -11,8 +11,7 @@ import Input from "@material-ui/core/Input"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import {network} from "doichain";
-const bitcoin = require('bitcoinjs-lib')
+import {createAndSendTransaction} from "doichain";
 var GLOBAL = global || window;
 
 const SendAmount = () => {
@@ -41,71 +40,9 @@ const SendAmount = () => {
     const sendDoiToAddress = async (decryptedSeedPhrase,password) => {
 
         try {
-            const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
-
-            const sendSatoshis = satoshi ? Number(openUnlock.amount) : Number(openUnlock.amount)*100000000
-            const destAddress = openUnlock.toAddress
-            console.log("sending " + sendSatoshis + " to ", destAddress)
             const our_wallet = wallets[activeWallet]
-            let selectedInputs = getUnspents(our_wallet) //TODO don't take all unspents - only as much you need
-            if(selectedInputs.length===0){
-                const err = t("sendAmount.broadcastingError")
-                setOpenError({ open: true, msg: err, type: "error" })
-                setButtonState("error")
-            }
-
-            //Collect addressKeys (privateKeys) from currently used inputs (to prepare signing the transaction)
-            let addressKeys = []
-            selectedInputs.forEach((ourUTXO) => {
-                for (let i = 0; i < our_wallet.addresses.length; i++){
-                    if(our_wallet.addresses[i].address===ourUTXO.address){
-                        const addressDerivationPath = our_wallet.addresses[i].derivationPath
-                        const addressKey = hdKey.derive(addressDerivationPath)
-                        addressKeys.push(addressKey)
-                        break
-                    }
-                }
-            })
-
-            console.log("addressKeys",addressKeys)
-            let changeAddress //= our_wallet.addresses[0].address //TODO please implement getNewChangeAddress
-
-            //1. get last change addresses from wallet and check if it has transactions
-            let lastAddressIndex = 0
-            for(let i = 0;i<our_wallet.addresses.length;i++){
-
-                const addr = our_wallet.addresses[i]
-                console.log('checking change addresses with chainId '+(addr.derivationPath.split('/')[2])+'for transactions ',addr)
-                //if(addr.derivationPath.split('/')[2] === 1 && addr.transactions.length===0)
-                lastAddressIndex = Number(addr.derivationPath.split('/')[3])
-
-                if(Number(addr.derivationPath.split('/')[2]) === 1 && addr.transactions.length===0){
-                    changeAddress = addr.address
-                    console.log('found change address in wallet without transactions',changeAddress)
-                    break;
-                }
-            }
-            //2. if there was no changeAddress found derive a new one
-            if(!changeAddress){
-                const nextAdddressIndex = lastAddressIndex+1
-                console.log("couldn't find unused change address in wallet derivating next one with index",nextAdddressIndex)
-                const addressDerivationPath = 'm/'+activeWallet+'/1/'+nextAdddressIndex
-                const xpub = our_wallet.publicExtendedKey
-                let childKey0FromXpub = bitcoin.bip32.fromBase58(xpub);
-                changeAddress = bitcoin.payments.p2pkh(
-                    { pubkey: childKey0FromXpub.derivePath(addressDerivationPath).publicKey,
-                        network: GLOBAL.DEFAULT_NETWORK}).address
-                console.log('derivated change address',changeAddress)
-            }
-
-
-            // getAddress(our_wallet.publicKey) (derivationElements.length!==2)?xpub.derivePath(newDerivationPath).publicKey:xpub.publicKey,network
-
-
-            let txResponse = await sendToAddress(addressKeys, destAddress, changeAddress, sendSatoshis, selectedInputs)     //chai.expect(addressesOfBob[0].address.substring(0,1)).to.not.be.uppercase
-            updateWalletWithUnconfirmedUtxos(txResponse,our_wallet)
-            console.log('new wallet data please update global state!',our_wallet)
-
+            const sendSchwartz = satoshi ? Number(openUnlock.amount) : Number(openUnlock.amount)*100000000
+            await createAndSendTransaction(decryptedSeedPhrase,password,sendSchwartz,openUnlock.toAddress,our_wallet)
             const msg = t("sendAmount.broadcastedDoicoinTx")
             setOpenError({ open: true, msg: msg, type: "success" })
             vibration()
@@ -116,6 +53,7 @@ const SendAmount = () => {
             console.log(err, ex)
             setOpenError({ open: true, msg: err, type: "error" })
             setButtonState("error")
+
         }
     }
 
