@@ -9,11 +9,14 @@ import NativeSelect from "@material-ui/core/NativeSelect";
 import { network } from "doichain";
 import FormControl from "@material-ui/core/FormControl";
 import {makeStyles} from "@material-ui/core/styles";
+import { Switch, CssBaseline } from "@material-ui/core"
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const Welcome = () => {
     const setGlobalNetwork = useGlobal("network")[1]
     const setModus = useGlobal("modus")[1]
     const { t, i18n } = useTranslation()
+    const [darkMode, setDarkMode] = useGlobal("darkMode")
 
     const createNewWallet = e => {
         setModus("createNewWallet")
@@ -35,6 +38,8 @@ const Welcome = () => {
     const classes = useStyles()
 
     return (
+        <ThemeProvider>
+        <CssBaseline />
         <div className={s.welcomePage}>
             <img className={s.welcomeImg} src={logo} />
             <div>
@@ -82,12 +87,18 @@ const Welcome = () => {
                     </option>
                 </NativeSelect>
             </FormControl>
+            <div className={classes.formControl}>
+            <span>Toggle light/dark theme</span><Switch checked={darkMode} onChange={() => {
+                const ourMode = darkMode
+                setDarkMode(!ourMode)
+            }} />
+            </div>
             <div>
                 <Button
                     onClick={createNewWallet}
                     id="createWallet"
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                 >
                     {t("button.createNewWallet")}
                 </Button>
@@ -95,7 +106,7 @@ const Welcome = () => {
             <br></br>
             <div>
                 <Button
-                    color="primary"
+                    color="secondary"
                     onClick={restoreWallet}
                     variant="contained"
                     id="restoreWallet"
@@ -106,6 +117,7 @@ const Welcome = () => {
             <br></br>
             <div>v{appVersion}</div>
         </div>
+        </ThemeProvider>
     )
 }
 

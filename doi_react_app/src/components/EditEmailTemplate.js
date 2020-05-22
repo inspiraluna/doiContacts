@@ -28,7 +28,7 @@ const EditEmailTemplate = () => {
                 }}
             />
             <br />
-            <Button color={"primary"} id="back" variant="contained" onClick={() => handleCancel()}>
+            <Button color={"secondary"} id="back" variant="contained" onClick={() => handleCancel()}>
                 {t("button.back")}
             </Button>
         </div>

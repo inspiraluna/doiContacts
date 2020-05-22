@@ -148,7 +148,7 @@ const WalletsPage = () => {
                 <div style={{ float: "right" }}>
                     <Fab
                         aria-label={"new contact"}
-                        color={"primary"}
+                        color={"secondary"}
                         id={"add"}
                         style={{
                             position: "absolute",
@@ -178,7 +178,7 @@ const WalletsPage = () => {
                     >
                         <div>
                             <Button
-                                color={"primary"}
+                                color={"secondary"}
                                 variant="contained"
                                 id={"receive"}
                                 onClick={() => setModus("receive")}
@@ -186,7 +186,7 @@ const WalletsPage = () => {
                                 {t("button.receive")}{" "}
                             </Button>
                             <Button
-                                color={"primary"}
+                                color={"secondary"}
                                 id={"send"}
                                 variant="contained"
                                 onClick={() => setModus("send")}
@@ -202,7 +202,7 @@ const WalletsPage = () => {
                                 {t("button.cancel")}
                             </Button>*/}
                             <Button
-                                color={"primary"}
+                                color={"secondary"}
                                 variant="contained"
                                 onClick={() => handleVerify()}
                             >
@@ -260,7 +260,7 @@ const WalletsPage = () => {
                     >
                         <div>
                             <Button
-                                color={"primary"}
+                                color={"secondary"}
                                 id={"back"}
                                 variant="contained"
                                 onClick={() => setModus("detail")}
@@ -282,7 +282,7 @@ const WalletsPage = () => {
                                     vibration()
                                 }}
                             >
-                                <FileCopyIcon color={"primary"} id="copy"></FileCopyIcon>
+                                <FileCopyIcon color={"secondary"} id="copy"></FileCopyIcon>
                             </CopyToClipboard><br /><br />
                             {t("walletPage.amount")} <br />
                             <TextField
@@ -414,7 +414,7 @@ const WalletsPage = () => {
                                 <Button
                                     variant="outlined"
                                     id="editEmailTemplate"
-                                    color="primary"
+                                    color="secondary"
                                     onClick={() => editEmailTemplate()}
                                 >
                                     {t("walletPage.editEmailTemp")}
@@ -445,7 +445,7 @@ const WalletsPage = () => {
                                             setTempWallet(ourTempWallet)}}
                                     />     <br/> */}
                                 <Button
-                                    color={"primary"}
+                                    color={"secondary"}
                                     variant="contained"
                                     type="submit"
                                     id="saveWallet"
@@ -456,7 +456,7 @@ const WalletsPage = () => {
                                 </Button>
                             </form>
                             <Button
-                                color={"primary"}
+                                color={"secondary"}
                                 id="cancel"
                                 variant="contained"
                                 onClick={() => handleCancel()}
