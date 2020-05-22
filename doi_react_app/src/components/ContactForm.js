@@ -45,12 +45,11 @@ const ContactForm = () => {
 
     const setModus = useGlobal("modus")[1]
     const [wallets] = useGlobal("wallets")
-    const [contacts, setContacts] = useGlobal("contacts")
+    const [contacts] = useGlobal("contacts")
     const setOpenError = useGlobal("errors")[1]
-    const [utxos, setUTXOs] = useGlobal("utxos")
+    const [utxos] = useGlobal("utxos")
     const [scanning] = useGlobal("scanning")
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
-    const [test] = useGlobal("test")
     const [t] = useTranslation()
     const setOpenSnackbar = useGlobal("errors")[1]
 
@@ -284,6 +283,7 @@ const RequestAddress = ({ className }) => {
                         setTest(currentPosition)
                     }
                     setPosition(currentPosition)
+                    console.log(currentPosition)
                 })
                 .catch(e => {
                     console.log("error during geocoding", e)

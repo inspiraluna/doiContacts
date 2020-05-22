@@ -1,22 +1,16 @@
 import React, { useGlobal, useState } from "reactn"
-import { Formik } from "formik"
 import Slide from "@material-ui/core/Slide"
 import Button from "@material-ui/core/Button"
 import InputLabel from "@material-ui/core/InputLabel"
-import ProgressButton from "react-progress-button"
-import OutlinedInput from "@material-ui/core/OutlinedInput"
 import FormControl from "@material-ui/core/FormControl"
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import { useTranslation } from "react-i18next"
 import {createHdKeyFromMnemonic, getUnspents, sendToAddress, updateWalletWithUnconfirmedUtxos} from "doichain";
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
-import {getAddress} from "doichain/lib/getAddress";
 import Input from "@material-ui/core/Input"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Visibility from "@material-ui/icons/Visibility"
-import VisibilityOff from "@material-ui/icons/VisibilityOff"
 
 
 const SendAmount = () => {

@@ -27,7 +27,7 @@ const WalletCreator = () => {
     const [email] = useGlobal("email")
     const [password1, setPassword1] = useGlobal("password1")
     const [loading, setLoading] = useState(false)
-    const [darkMode, setDarkMode] = useGlobal("darkMode")
+    const [darkMode] = useGlobal("darkMode")
 
     const [t] = useTranslation()
 

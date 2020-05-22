@@ -14,7 +14,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import useEventListener from '../hooks/useEventListener';
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 import { Switch, CssBaseline } from "@material-ui/core"
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 const Settings = () => {
 
