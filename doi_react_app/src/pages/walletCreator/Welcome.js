@@ -10,7 +10,7 @@ import { network } from "doichain";
 import FormControl from "@material-ui/core/FormControl";
 import {makeStyles} from "@material-ui/core/styles";
 import { Switch, CssBaseline } from "@material-ui/core"
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 
 const Welcome = () => {
     const setGlobalNetwork = useGlobal("network")[1]

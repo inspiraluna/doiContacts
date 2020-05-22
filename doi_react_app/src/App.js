@@ -29,7 +29,7 @@ const App = props => {
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
     const [wallets] = useGlobal("wallets")
-    const [darkMode, setDarkMode] = useGlobal("darkMode")
+    const [darkMode] = useGlobal("darkMode")
     register()
 
     useEffect(() => {

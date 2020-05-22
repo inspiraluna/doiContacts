@@ -60,7 +60,7 @@ const ContactList = () => {
     const ourContacts = contacts ? contacts : []
     const contactNode = ourContacts.map((contact, index) => {
         find(wallets, function(wallet) {
-            let changed = false
+            // let changed = false
             if (wallet.publicKey === contact.wallet) {
              /*   verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
                     status => {

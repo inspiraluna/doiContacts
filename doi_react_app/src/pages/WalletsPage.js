@@ -22,7 +22,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
 /* eslint no-template-curly-in-string: "off" */
-var GLOBAL = global || window;
+//var GLOBAL = global || window;
 
 const WalletsPage = () => {
     const [amount, setAmount] = useState(0) //receive amount
@@ -30,9 +30,7 @@ const WalletsPage = () => {
     const [tempWallet, setTempWallet] = useGlobal("tempWallet")
     const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const [modus, setModus] = useGlobal("modus")
-    const [encryptedSeed] = useGlobal("encryptedSeed")
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
-    const [password] = useGlobal("password")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [t] = useTranslation()
 

@@ -10,6 +10,7 @@ import  stringify from 'json-stringify-safe';
           localStorage.setItem("activeWallet", global.activeWallet ? global.activeWallet : 0)
           localStorage.setItem("network", global.network ? global.network : "mainnet")
           localStorage.setItem("encryptedSeed", global.encryptedSeed ? global.encryptedSeed : undefined)
+          localStorage.setItem("darkMode", global.darkMode ? global.darkMode : false)
       } else {
           //TODO only set items in NativeStorgage which changed (don't set all of them all the time)
           //First get the value from NativeStorage and compare it with value in global state - if different store it in Native Storage
@@ -86,6 +87,15 @@ import  stringify from 'json-stringify-safe';
                       console.log("error encryptedSeed" + global.encryptedSeed, err)
                   }
               )
+          if (global.darkMode)
+              window.NativeStorage.setItem(
+                  "darkMode",
+                  global.darkMode ? global.darkMode : false,
+                  obj => {},
+                  err => {
+                      console.log("error darkMode" + global.darkMode, err)
+                  }
+              )
       }
       return null
   }
@@ -104,6 +114,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
         const initialActiveWallet =  localStorage.getItem('activeWallet')?localStorage.getItem('activeWallet'):0
         const initialNetwork = localStorage.getItem("network")?localStorage.getItem("network"): "mainnet"
         const initialEncryptedSeed = localStorage.getItem("encryptedSeed")?localStorage.getItem("encryptedSeed"): undefined
+        const initialDarkMode = (!localStorage.getItem("darkMode") || localStorage.getItem("darkMode") === "false")?false:true
         setGlobal({
             contacts: initialContacts,
             wallets: initialWallets,
@@ -113,7 +124,8 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             modus: initialModus,
             activeWallet: initialActiveWallet,
             network: initialNetwork,
-            encryptedSeed: initialEncryptedSeed
+            encryptedSeed: initialEncryptedSeed,
+            darkMode: initialDarkMode
         })
     }else{
         const nObjects = [
@@ -124,6 +136,7 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             { name: "activeWallet", defaultValue: "0" },
             { name: "network", defaultValue: "mainnet" },
             { name: "encryptedSeed", defaultValue: undefined },
+            { name: "darkMode", defaultValue: false },
         ]
 
         const loadNativeStorage = (nObjectList) => {
