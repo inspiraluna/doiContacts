@@ -22,9 +22,10 @@ const Settings = () => {
     const [globalNetwork, setGlobalNetwork] = useGlobal("network")
     const [open, setOpen] = useState(undefined)
     const setOpenUnlock = useGlobal("openUnlock")[1]
+    const [darkMode, setDarkMode] = useGlobal("darkMode")
+    const [satoshi, setSatoshi] = useGlobal("satoshi")
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
-    const [darkMode, setDarkMode] = useGlobal("darkMode")
 
     const handleClose = () => {
         setOpen(undefined)
@@ -98,8 +99,29 @@ if (encrypted) {
                             Regtest
                         </option>
                     </NativeSelect>
+                    </FormControl>
+                    <br></br>
+                    <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="uncontrolled-native">Change currency</InputLabel>
+                    <NativeSelect
+                        defaultValue={satoshi}
+                        id="selectCurrency"
+                        onChange={e => {
+                            const ourCurrency = e.target.value
+                            setSatoshi(ourCurrency)
+                        }}
+                    >
+                        <option value={true} id="schw">
+                            schw
+                        </option>
+                        <option value={false} id="DOI">
+                            DOI
+                        </option>
+                    </NativeSelect>
+                    </FormControl>
                     <br></br>
                     <Button
+                        className={classes.formControl}
                         variant="contained"
                         id="showSeedPhrase"
                         color="secondary"
@@ -133,7 +155,6 @@ if (encrypted) {
                             </Button>
                         </DialogActions>
                     </Dialog>
-                </FormControl>
             </div>
             <UnlockPasswordDialog callback={decryptCallback}/>
             <span className={classes.formControl}>Toggle light/dark theme</span><Switch checked={darkMode} onChange={() => {

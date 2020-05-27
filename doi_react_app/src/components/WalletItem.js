@@ -1,9 +1,10 @@
 import React, { useGlobal, useEffect, useState } from "reactn"
 import TransactionList from "./TransactionList"
 import { useTranslation } from "react-i18next"
-import {getBalanceOfWallet} from "doichain"
+import {getBalanceOfWallet, constants} from "doichain"
 import NativeSelect from "@material-ui/core/NativeSelect"
 const bitcoin = require('bitcoinjs-lib')
+
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
 
@@ -15,6 +16,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [wallets, setWallets] = useGlobal("wallets")
     const [activeWallet] = useGlobal("activeWallet")
     const [t] = useTranslation()
+    const [satoshi, setSatoshi] = useGlobal("satoshi")
 
     useEffect( () => {
         const getBalance = async () => {
@@ -66,7 +68,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                         {addressOptions}
                     </NativeSelect>
                     <br />
-                    <b>{t("walletItem.balance")}</b> <span id="balance">{balance}</span> DOI{""}
+                    <b>{t("walletItem.balance")}</b> <span id="balance">{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span> {JSON.parse(satoshi) ? "schw" : "DOI"}{""}
                     <span id="unconfirmedBalance">
                         {unconfirmedBalance && unconfirmedBalance > 0
                             ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"

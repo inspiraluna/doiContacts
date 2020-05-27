@@ -10,7 +10,7 @@ import Input from "@material-ui/core/Input"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import {createAndSendTransaction} from "doichain";
+import {createAndSendTransaction, constants} from "doichain";
 
 const SendAmount = () => {
 
@@ -23,11 +23,11 @@ const SendAmount = () => {
     const [qrCode] = useGlobal("qrCode")
     const [t] = useTranslation()
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
+    const [satoshi, setSatoshi] = useGlobal("satoshi")
     const [error, setError] = useState()
     const [amount, setAmount] = useState()
     const [toAddress, setToAddress] = useState()
     const [disable, setDisable] = useState(false)
-    const [satoshi, setSatoshi] = useState(true)
 
 
     const vibration = () => {
@@ -85,7 +85,7 @@ const SendAmount = () => {
                                 <h1>{walletName} </h1>
                                 <span id="sendDoi">{t("sendAmount.sendFromAddress")}</span> <br />
                                 <b>{address}</b> <br />
-                                {t("sendAmount.balance")} {balance} DOI
+                                {t("sendAmount.balance")} <span>{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span> {JSON.parse(satoshi) ? "schw" : "DOI"}
                                 <br></br>
                                 <br />
                                     <QRCodeScannerTextField
@@ -143,16 +143,14 @@ const SendAmount = () => {
                                                         setAmount(ourAmount)
                                                         setSatoshi(!satoshi)
                                                     if(satoshi){
-                                                        const toDOI = ourAmount / 100000000
-                                                        setAmount(toDOI.toFixed(8))
+                                                        setAmount(constants.toDOI(ourAmount))
                                                     }
                                                     else {
-                                                        const toSatoshi = ourAmount * 100000000
-                                                        setAmount(toSatoshi.toFixed(0))
+                                                        setAmount(constants.toSchwartz(ourAmount))
                                                     }
                                                     }}
                                                 >
-                                                    {satoshi ? "schw" : "DOI"}
+                                                    {JSON.parse(satoshi) ? "schw" : "DOI"}
                                                 </IconButton>
                                             </InputAdornment>
                                         }

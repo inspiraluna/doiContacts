@@ -17,6 +17,7 @@ import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../hooks/useEventListener';
+import { constants } from "doichain";
 
 const WalletList = () => {
     const [wallets, setWallets] = useGlobal("wallets")
@@ -25,6 +26,7 @@ const WalletList = () => {
     const setActiveWallet = useGlobal("activeWallet")[1]
     const setTempWallet = useGlobal("tempWallet")[1]
     const [t] = useTranslation()
+    const [satoshi, setSatoshi] = useGlobal("satoshi")
 
     const handleClose = () => {
         setOpen(undefined)
@@ -65,9 +67,9 @@ const WalletList = () => {
                     secondary={
                         t("walletItem.balance") +
                         " " +
-                        "DOI" +
+                        (JSON.parse(satoshi) ? "schw" : "DOI") +
                         " " +
-                        Number(item.balance ? item.balance : 0).toFixed(8) +
+                        (JSON.parse(satoshi) ? constants.toSchwartz(item.balance) : Number(item.balance).toFixed(8)) +
                         " " +
                         (item.unconfirmedBalance !== undefined && item.unconfirmedBalance > 0
                             ? t("walletItem.unconfirmed") + "DOI " + item.unconfirmedBalance + ") "
