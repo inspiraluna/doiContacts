@@ -68,7 +68,9 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                         {addressOptions}
                     </NativeSelect>
                     <br />
-                    <b>{t("walletItem.balance")}</b> <span id="balance">{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span> {JSON.parse(satoshi) ? "schw" : "DOI"}{""}
+                    <b>{t("walletItem.balance")}</b>{" "}  
+                    <span id="balance" onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span>{" "} 
+                    <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? "schw" : "DOI"}</span>
                     <span id="unconfirmedBalance">
                         {unconfirmedBalance && unconfirmedBalance > 0
                             ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"
