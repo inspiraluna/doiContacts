@@ -181,7 +181,6 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
             })
         }
         loadNativeStorage(nObjects)
-        console.log("nativeStorage", nObjects)
     }
 
     addCallback(global => {
