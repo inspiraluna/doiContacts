@@ -42,6 +42,9 @@ const App = props => {
     }, [setGlobal])
 
     let ourNetwork = GLOBAL.network
+    let secondaryColor = "#cd45ff"
+    if(ourNetwork === "testnet")secondaryColor = "#e65100"
+    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
 
     const themeX = createMuiTheme({
         palette: {
@@ -50,7 +53,7 @@ const App = props => {
                 main: "#0b3e74",
             },
             secondary: {
-                main: (ourNetwork === "testnet") ? "#e65100" : "#cd45ff",
+                main: secondaryColor,
             },
             background: {
                 default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
