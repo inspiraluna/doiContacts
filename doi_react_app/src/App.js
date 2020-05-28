@@ -32,20 +32,20 @@ const App = props => {
     const [darkMode] = useGlobal("darkMode")
     register()
 
-    useEffect(() => {
-            initStorage(props.cordova, global, setGlobal)
-    }, [setGlobal])
-
-
     if(global.network) network.changeNetwork(global.network)
-    var GLOBAL = global || window;
 
+    var GLOBAL = global || window;
     console.log('current network',global.network)
 
+    useEffect(() => {
+        initStorage(props.cordova, global, setGlobal)
+    }, [setGlobal])
+
     let ourNetwork = GLOBAL.network
+
     const themeX = createMuiTheme({
         palette: {
-            type: darkMode ? "dark" : "light",
+            type: (darkMode==='true' || darkMode===true) ? "dark" : "light",
             primary: {
                 main: "#0b3e74",
             },
@@ -53,11 +53,10 @@ const App = props => {
                 main: (ourNetwork === "testnet") ? "#e65100" : "#cd45ff",
             },
             background: {
-                default: !darkMode ? "#e5e3ff" : "#303030",
+                default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
             },
         },
     })
-
     function TabPanel(props) {
         const { children, value, index, ...other } = props
 

@@ -1,17 +1,29 @@
-import React, { useGlobal } from "reactn"
+//external libraries
+import React, { useGlobal, useEffect, useState} from "reactn"
+import QRCode from "qrcode-react"
+import { useTranslation } from "react-i18next"
+import { usePosition } from "use-position"
+import {
+    constants,
+    getValidatorPublicKeyOfEmail,
+    createAndSendTransaction,
+    getAddress,
+    createHdKeyFromMnemonic
+} from 'doichain'
+import find from "lodash.find"
+
+//material-ui
 import NativeSelect from "@material-ui/core/NativeSelect"
 import InputLabel from "@material-ui/core/InputLabel"
 import TextField from "@material-ui/core/TextField"
 import makeStyles from "@material-ui/core/styles/makeStyles"
-import ProgressButton from "react-progress-button"
-import "./ProgressButton.css"
-import { useEffect, useState } from "react"
-import { usePosition } from "use-position"
-import QRCode from "qrcode-react"
+import Button from "@material-ui/core/Button";
+
+//own components
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
-//import bitcore from "bitcore-doichain"
-import { useTranslation } from "react-i18next"
-import find from "lodash.find"
+import UnlockPasswordDialog from "./UnlockPasswordDialog";
+import "./ProgressButton.css"
+import createDoichainEntry from "doichain/lib/createDoichainEntry";
 
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -39,16 +51,16 @@ const useStyles = makeStyles(theme => ({
 
 const ContactForm = () => {
     const classes = useStyles()
-    const [buttonState, setButtonState] = useState()
     const [wallet, setWallet] = useState(0)
-    const [submitting, setSubmitting] = useState(true)
-
     const setModus = useGlobal("modus")[1]
     const [wallets] = useGlobal("wallets")
-    const [contacts] = useGlobal("contacts")
+    const [contacts,setContacts] = useGlobal("contacts")
     const setOpenError = useGlobal("errors")[1]
-    const [utxos] = useGlobal("utxos")
+    const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
+    const [email, setEmail] = useState()
     const [scanning] = useGlobal("scanning")
+    const [qrCode, setQRCode] = useGlobal("qrCode")
+    const [disable, setDisable] = useState(false)
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
 
     const [t] = useTranslation()
@@ -59,88 +71,79 @@ const ContactForm = () => {
         navigator.vibrate(time);
      }
 
-    const addContact = async email => {
-        const runAddContact = async email => {
+    const addContact = async (decryptedSeedPhrase,password) => {
+
             if (!email || email.length === 0) {
                 const err = t("contactForm.noEmail")
                 setOpenError({ open: true, msg: err, type: "error" })
-                setButtonState("error") //Progress Button should be red
                 return
             }
 
             if (!wallets || wallets.length === 0) {
                 const err = t("contactForm.noWalletsDefined")
                 setOpenError({ open: true, msg: err, type: "info" })
-                setButtonState("error") //Progress Button should be red
                 return
             }
 
             try {
-                const our_wallet = wallets[wallet]
-                const offChainUtxos = utxos
+                    const email = openUnlock.email
+                    if(!email) throw "no email"
+                    const our_wallet = wallets[wallet]
+                    if(!our_wallet.balance===0) throw "balance insufficient - please fund"
+                    const validatorPublicKey = await getValidatorPublicKeyOfEmail(email).key
+                    //TODO if we have no network we cannot request DNS - but adding an address should be still possible
+                    if(!validatorPublicKey) throw "couldn't find publickey of validator from email - or no network"
+                    console.log('validatorPublicKey',validatorPublicKey)
+                    const destAddress = getAddress(validatorPublicKey) //TODO get it from DNS! (or from dApp!)
+                    console.log('destAddress',destAddress)
+                    const sendSchwartz = Number(constants.VALIDATOR_FEE)+Number(constants.NETWORK_FEE)+Number(constants.TRANSACTION_FEE)
+                    const status = undefined //TODO was bitcoin.DOI_STATE_WAITING_FOR_CONFIRMATION (put this to constants)
 
-              /* const network = bitcore.Networks.get("doichain") //TODO get this from global state in case we have testnet or regest
-                const txData = await bitcore.createDOIRequestTransaction(
-                    email,
-                    our_wallet,
-                    offChainUtxos,
-                    network
-                )
-                console.log("txData", txData)
-                const encryptedTemplateData = await bitcore.encryptTemplate(
-                    txData.validatorPublicKeyData,
-                    email,
-                    our_wallet
-                )
+                    const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
+                    //Now generate a next (new) address together with its privateKey
+                    const privateKeyOfWallet = our_wallet.derivationPath
+                    //const nameId = undefined //createDoichainEntry() //TODO getPrivatKey
+                   // const nameValue = undefined //TODO createdoichainEntry
+                    await createAndSendTransaction(decryptedSeedPhrase,password,sendSchwartz,destAddress,our_wallet)
 
-                //TODO handle response and create offchain utxos and update balance
-                const utxosResponse = await bitcore.broadcastTransaction(
-                    txData.doichainEntry.nameId,
-                    txData.tx,
-                    encryptedTemplateData,
-                    txData.validatorPublicKeyData.key
-                )
-                console.log('utxosResponse',utxosResponse)
-                //setUTXOs(utxosResponse)``
 
-                const offChainUTXOs = bitcore.getOffchainUTXOs(txData.changeAddress,utxosResponse.txRaw)
-                console.log("utxosResponse", offChainUTXOs)
-                let newUTXOS = utxos
-                if(!utxos) newUTXOS = []
-                newUTXOS.push(offChainUTXOs.utxos)
-                setUTXOs(newUTXOS)
-                bitcore.updateWalletBalance(our_wallet, offChainUTXOs.balance)
+                    /*  const encryptedTemplateData = await bitcore.encryptTemplate(
+                        txData.validatorPublicKeyData,
+                        email,
+                        our_wallet
+                    )
 
-                //bitcore.updateWalletBalance(our_wallet, utxosResponse.balance)
+                    //TODO handle response and create offchain utxos and update balance
+                    const utxosResponse = await bitcore.broadcastTransaction(
+                        txData.doichainEntry.nameId,
+                        txData.tx,
+                        encryptedTemplateData,
+                        txData.validatorPublicKeyData.key
+                    )*/
+                    const txId = undefined  //TODO get txid from response
+                    const nameId = undefined
+                    const msg = t("contactForm.BroadcastedDoiTx")
+                    const contact = {
+                        email: email,
+                        wallet: our_wallet.publicKey,
+                        txid: txId,
+                        nameId: nameId,
+                        validatorAddress: destAddress,
+                        confirmed: false,
+                        status: status,
+                        position: test,
+                        requestedAt: new Date(),
+                    }
 
-                const msg = t("contactForm.BroadcastedDoiTx")
-                const contact = {
-                    email: email,
-                    wallet: our_wallet.publicKey,
-                    txid: utxosResponse.txRaw.txid,
-                    nameId: txData.doichainEntry.nameId,
-                    validatorAddress: txData.validatorAddress,
-                    confirmed: false,
-                    status: bitcore.DOI_STATE_WAITING_FOR_CONFIRMATION,
-                    position: test,
-                    requestedAt: new Date(),
-                }
-
-                contacts.push(contact)
-                setContacts(contacts)
-                setOpenError({ open: true, msg: msg, type: "success" })*/
-                vibration()
+                    contacts.push(contact)
+                    setContacts(contacts)
+                    setOpenError({ open: true, msg: msg, type: "success" })
+                    vibration()
             } catch (ex) {
                 const err = t("contactForm.broadcastingError")
                 console.log(err, ex)
                 setOpenError({ open: true, msg: err, type: "error" })
-                setButtonState("error")
             }
-            return "ok"
-        }
-
-        const response = await runAddContact(email)
-        return response
     }
 
     const calculateOwnQRCode = () => {
@@ -161,44 +164,40 @@ const ContactForm = () => {
             scanning={scanning}
             render={
                 <div>
-                    <form
-                        onSubmit={async e => {
-                            e.preventDefault()
-                            const email = e.target.email.value
-                            setButtonState("loading")
-                            addContact(email)
-                                .then(response => {
-                                    setButtonState("success")
-                                    setSubmitting(false)
-                                    setModus("list")
-                                })
-                                .catch(response => {
-                                    console.log("response was error", response)
-                                    setButtonState("error")
-                                    setSubmitting(false)
-                                })
-                        }}
-                    >
+                    {/*<form*/}
+                    {/*    onSubmit={async e => {*/}
+                    {/*        e.preventDefault()*/}
+                    {/*        const email = e.target.email.value*/}
+                    {/*        setButtonState("loading")*/}
+                    {/*        addContact(email)*/}
+                    {/*            .then(response => {*/}
+                    {/*                setButtonState("success")*/}
+                    {/*                setSubmitting(false)*/}
+                    {/*                setModus("list")*/}
+                    {/*            })*/}
+                    {/*            .catch(response => {*/}
+                    {/*                console.log("response was error", response)*/}
+                    {/*                setButtonState("error")*/}
+                    {/*                setSubmitting(false)*/}
+                    {/*            })*/}
+                    {/*    }}*/}
+                    {/*>*/}
                         <QRCodeScannerTextField
                             name="email"
                             label={t("contactForm.EmailPermissionToRequest")}
                             labelWidth={200}
                             urlPrefix={"mailto:"}
                             onChange={(e)=>{
-                                console.log(e.target.value)
-                                const found =  find(contacts, function(o) {
-                                    return o.email === e.target.value
-                                })
+                                const thisEmail =  e.target.value
+                                const found = find(contacts, function(o) {return o.email === thisEmail})
                                 if(found){
-                                     setOpenSnackbar({
-                                         open: true,
-                                         msg: t("contactForm.usedEmailError"),
-                                         type: "error"
-                                     })
-                                     setSubmitting(false)
-                                }else setSubmitting(true)
+                                    setOpenSnackbar({open: true,msg: t("contactForm.usedEmailError"),type: "error"})
+                                    setDisable(true)
+                                }else {
+                                    setEmail(thisEmail)
+                                    setDisable(false)
+                                }
                             }}
-
                         />
 
                         <br />
@@ -227,15 +226,19 @@ const ContactForm = () => {
                         <RequestAddress className={classes.textField} />
                         <QRCode value={ownQrCode} />
                         <br />
-                        {submitting?<ProgressButton
-                            type="submit"
-                            color={"primary"}
-                            id='requestPermissiom'
-                            state={buttonState}
+                        <Button
+                            onClick={() => setOpenUnlock({
+                                email: email ? email : qrCode,}
+                            )}
+                            color={"secondary"}
+                            id="sendAmount"
+                            variant="contained"
+                            disabled={disable}
                         >
                             {t("contactForm.requestPermission")}
-                        </ProgressButton>:''}
-                    </form>
+                        </Button>
+
+                    <UnlockPasswordDialog callback={addContact} />
                 </div>
             }
         />
@@ -285,7 +288,6 @@ const RequestAddress = ({ className }) => {
                         setTest(currentPosition)
                     }
                     setPosition(currentPosition)
-                    console.log(currentPosition)
                 })
                 .catch(e => {
                     console.log("error during geocoding", e)

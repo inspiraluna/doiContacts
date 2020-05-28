@@ -90,7 +90,7 @@ import  stringify from 'json-stringify-safe';
           if (global.darkMode)
               window.NativeStorage.setItem(
                   "darkMode",
-                  global.darkMode ? global.darkMode : false,
+                  global.darkMode?global.darkMode:false,
                   obj => {},
                   err => {
                       console.log("error darkMode" + global.darkMode, err)
