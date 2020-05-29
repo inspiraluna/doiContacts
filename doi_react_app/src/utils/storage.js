@@ -53,7 +53,7 @@ import  stringify from 'json-stringify-safe';
                   "modus",
                   global.modus,
                   obj => {
-                      // console.log("set modus in native storage",obj);
+                       console.log("set modus in native storage",obj);
                   },
                   err => {
                       console.log("error modus " + global.modus, err)
@@ -64,17 +64,19 @@ import  stringify from 'json-stringify-safe';
                   "activeWallet",
                   global.activeWallet?global.activeWallet:0,
                   obj => {
-                      // console.log("set contacts in activeWallet storage",obj);
+                      console.log("set contacts in activeWallet storage",obj);
                   },
                   err => {
                       console.log("error activeWallet" + global.activeWallet, err)
                   }
               )
+
           if (global.network)
               window.NativeStorage.setItem(
                   "network",
                   global.network?global.network:"mainnet",
-                  obj => {},
+                  obj => {
+                      console.log("set network ",obj);},
                   err => {
                       console.log("error network" + global.network, err)
                   }
@@ -88,19 +90,19 @@ import  stringify from 'json-stringify-safe';
                       console.log("error encryptedSeed" + global.encryptedSeed, err)
                   }
               )
-          if (global.darkMode)
+          //if (global.darkMode)
               window.NativeStorage.setItem(
                   "darkMode",
-                  global.darkMode?global.darkMode:false,
-                  obj => {},
+                  JSON.parse(global.darkMode)===true?true:false,
+                  obj => {  console.log(obj.name+' '+(typeof obj),obj)},
                   err => {
                       console.log("error darkMode" + global.darkMode, err)
                   }
               )
-          if (global.satoshi)
+          //if (global.satoshi)
               window.NativeStorage.setItem(
                   "satoshi",
-                  global.satoshi ? global.satoshi : false,
+                  JSON.parse(global.satoshi)?true : false,
                   obj => {},
                   err => {
                       console.log("error satoshi" + global.satoshi, err)
@@ -162,6 +164,8 @@ const initStorage = (cordovaEnabled,global,setGlobal) => {
                         (obj) => {
                             newGlobal[it.name] = obj
                             counter++
+
+                            console.log(it.name+' '+(typeof obj),obj)
                             if(counter===nObjectList.length)
                                 setGlobal(newGlobal)
 

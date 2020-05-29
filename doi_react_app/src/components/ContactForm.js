@@ -108,9 +108,10 @@ const ContactForm = () => {
                     const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
                     //Now generate a next (new) address together with its privateKey
                     const privateKeyOfWallet = our_wallet.derivationPath
-                    //const nameId = undefined //createDoichainEntry() //TODO getPrivatKey
-                   // const nameValue = undefined //TODO createdoichainEntry
-                    await createAndSendTransaction(decryptedSeedPhrase,password,sendSchwartz,destAddress,our_wallet)
+                    const from = our_wallet
+                    const nameId = "" //undefined //createDoichainEntry(privateKeyOfWallet,from,email,undefined) //TODO getPrivatKey
+                    const nameValue =  "" //undefined //TODO createdoichainEntry
+                    await createAndSendTransaction(decryptedSeedPhrase,password,sendSchwartz,destAddress,our_wallet,nameId, nameValue)
 
 
                     /*  const encryptedTemplateData = await bitcore.encryptTemplate(
@@ -127,7 +128,6 @@ const ContactForm = () => {
                         txData.validatorPublicKeyData.key
                     )*/
                     const txId = undefined  //TODO get txid from response
-                    const nameId = undefined
                     const msg = t("contactForm.BroadcastedDoiTx")
                     const contact = {
                         email: email,
