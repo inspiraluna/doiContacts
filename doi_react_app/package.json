@@ -13,7 +13,7 @@
         "bitcoinjs-message": "^2.1.0",
         "cids": "^0.8.0",
         "crypto-browserify": "^3.12.0",
-        "doichain": "0.0.36",
+        "doichain": "0.0.37",
         "formik": "^2.1.4",
         "hdkey": "^1.1.1",
         "i18next": "^19.3.4",
