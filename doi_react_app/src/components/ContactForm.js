@@ -51,20 +51,24 @@ const useStyles = makeStyles(theme => ({
 
 const ContactForm = () => {
     const classes = useStyles()
-    const [wallet, setWallet] = useState(0)
-    const setModus = useGlobal("modus")[1]
+
+    const [modus, setModus] = useGlobal("modus")
     const [wallets] = useGlobal("wallets")
     const [contacts,setContacts] = useGlobal("contacts")
     const setOpenError = useGlobal("errors")[1]
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
-    const [email, setEmail] = useState()
+    const [test, setTest] = useGlobal("test")
     const [scanning] = useGlobal("scanning")
     const [qrCode, setQRCode] = useGlobal("qrCode")
+    const setOpenSnackbar = useGlobal("errors")[1]
+
+    const [email, setEmail] = useState('')
     const [disable, setDisable] = useState(false)
+    const [wallet, setWallet] = useState(0)
     const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
 
     const [t] = useTranslation()
-    const setOpenSnackbar = useGlobal("errors")[1]
+
 
     const vibration = () => {
         let time = 500;
@@ -90,13 +94,15 @@ const ContactForm = () => {
                     if(!email) throw "no email"
                     const our_wallet = wallets[wallet]
                     if(!our_wallet.balance===0) throw "balance insufficient - please fund"
-                    const validatorPublicKey = await getValidatorPublicKeyOfEmail(email).key
+                    const validatorPublicKey = await getValidatorPublicKeyOfEmail(email)
                     //TODO if we have no network we cannot request DNS - but adding an address should be still possible
-                    if(!validatorPublicKey) throw "couldn't find publickey of validator from email - or no network"
-                    console.log('validatorPublicKey',validatorPublicKey)
-                    const destAddress = getAddress(validatorPublicKey) //TODO get it from DNS! (or from dApp!)
-                    console.log('destAddress',destAddress)
-                    const sendSchwartz = Number(constants.VALIDATOR_FEE)+Number(constants.NETWORK_FEE)+Number(constants.TRANSACTION_FEE)
+                    if(!validatorPublicKey || !validatorPublicKey.data || !validatorPublicKey.data.key) throw "couldn't find publickey of validator from email - or no network"
+                    const pubkey = Buffer.from( validatorPublicKey.data.key, 'hex' );
+                    const destAddress = getAddress(pubkey)
+                    if(!destAddress) throw "couldn't generate address from publicKey "+pubkey
+
+                    const sendSchwartz = Number(constants.VALIDATOR_FEE.satoshis)+Number(constants.NETWORK_FEE.satoshis)+Number(constants.TRANSACTION_FEE.satoshis)
+                    console.log('sending schwartz',sendSchwartz)
                     const status = undefined //TODO was bitcoin.DOI_STATE_WAITING_FOR_CONFIRMATION (put this to constants)
 
                     const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
@@ -139,10 +145,11 @@ const ContactForm = () => {
                     setContacts(contacts)
                     setOpenError({ open: true, msg: msg, type: "success" })
                     vibration()
+                    setModus("detail")
             } catch (ex) {
                 const err = t("contactForm.broadcastingError")
                 console.log(err, ex)
-                setOpenError({ open: true, msg: err, type: "error" })
+                setOpenError({ open: true, msg: err+": "+ex, type: "error" })
             }
     }
 
@@ -164,24 +171,6 @@ const ContactForm = () => {
             scanning={scanning}
             render={
                 <div>
-                    {/*<form*/}
-                    {/*    onSubmit={async e => {*/}
-                    {/*        e.preventDefault()*/}
-                    {/*        const email = e.target.email.value*/}
-                    {/*        setButtonState("loading")*/}
-                    {/*        addContact(email)*/}
-                    {/*            .then(response => {*/}
-                    {/*                setButtonState("success")*/}
-                    {/*                setSubmitting(false)*/}
-                    {/*                setModus("list")*/}
-                    {/*            })*/}
-                    {/*            .catch(response => {*/}
-                    {/*                console.log("response was error", response)*/}
-                    {/*                setButtonState("error")*/}
-                    {/*                setSubmitting(false)*/}
-                    {/*            })*/}
-                    {/*    }}*/}
-                    {/*>*/}
                         <QRCodeScannerTextField
                             name="email"
                             label={t("contactForm.EmailPermissionToRequest")}

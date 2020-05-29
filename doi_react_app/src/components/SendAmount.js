@@ -53,6 +53,7 @@ const SendAmount = () => {
             setButtonState("error")
 
         }
+
     }
 
     const address = wallets[activeWallet].addresses[0].address
@@ -85,8 +86,8 @@ const SendAmount = () => {
                                 <h1>{walletName} </h1>
                                 <span id="sendDoi">{t("sendAmount.sendFromAddress")}</span> <br />
                                 <b>{address}</b> <br />
-                                {t("sendAmount.balance")}{": "} 
-                                <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span>{" "} 
+                                {t("sendAmount.balance")}{": "}
+                                <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span>{" "}
                                 <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? "schw" : "DOI"}</span>
                                 <br></br>
                                 <br />

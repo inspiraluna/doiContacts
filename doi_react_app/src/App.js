@@ -45,7 +45,7 @@ const App = props => {
     let secondaryColor = "#cd45ff"
     if(ourNetwork === "testnet")secondaryColor = "#e65100"
     if(ourNetwork === "regtest")secondaryColor = "#00bfff"
-
+    console.log('darkMode',darkMode)
     const themeX = createMuiTheme({
         palette: {
             type: (darkMode==='true' || darkMode===true) ? "dark" : "light",

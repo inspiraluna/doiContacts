@@ -12,9 +12,9 @@ const TransactionList = ({addresses}) => {
     const txNode = txList.map((tx, index) => {
         //TODO checkout if this is a change address and mark it special
         //TODO when sending transactions please use change Address
-        console.log(find(addresses, {address: tx.address}).derivationPath)
+       // console.log(find(addresses, {address: tx.address}).derivationPath)
         const isChangeAddress =  find(addresses, {address: tx.address}).derivationPath.split("/")[2]===1
-        console.log(isChangeAddress)
+      //  console.log(isChangeAddress)
         return (
             <div key={index}>
                 <div style={{textAlign: "left", verticalAlign: "top"}}><Moment
