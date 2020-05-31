@@ -70,7 +70,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                     <br />
                     <b>{t("walletItem.balance")}</b>{" "}  
                     <span id="balance" onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span>{" "} 
-                    <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? "schw" : "DOI"}</span>
+                    <span onClick={() => setSatoshi(!satoshi)} id="walletCurrency">{JSON.parse(satoshi) ? "schw" : "DOI"}</span>
                     <span id="unconfirmedBalance">
                         {unconfirmedBalance && unconfirmedBalance > 0
                             ? t("walletItem.unconfirmed") + unconfirmedBalance + " DOI)"

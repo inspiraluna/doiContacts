@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next"
 import useEventListener from '../hooks/useEventListener';
 import { constants } from "doichain";
 
+
 const WalletList = () => {
     const [wallets, setWallets] = useGlobal("wallets")
     const [open, setOpen] = useState(undefined)
