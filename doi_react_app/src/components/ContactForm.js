@@ -8,7 +8,7 @@ import {
     getValidatorPublicKeyOfEmail,
     createAndSendTransaction,
     getAddress,
-    createHdKeyFromMnemonic
+    createHdKeyFromMnemonic, generateNewKeyPairFromHdKey,encryptTemplate
 } from 'doichain'
 import find from "lodash.find"
 
@@ -107,33 +107,28 @@ const ContactForm = () => {
 
                     const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
                     //Now generate a next (new) address together with its privateKey
-                    const privateKeyOfWallet = our_wallet.derivationPath
-                    const from = our_wallet
-                    const nameId = "" //undefined //createDoichainEntry(privateKeyOfWallet,from,email,undefined) //TODO getPrivatKey
-                    const nameValue =  "" //undefined //TODO createdoichainEntry
-                    await createAndSendTransaction(decryptedSeedPhrase,password,sendSchwartz,destAddress,our_wallet,nameId, nameValue)
-
-
-                    /*  const encryptedTemplateData = await bitcore.encryptTemplate(
-                        txData.validatorPublicKeyData,
+                    const keyPair = generateNewKeyPairFromHdKey(hdKey,our_wallet.derivationPath)
+                    console.log('generated privateKey from hdkey',keyPair)
+                    const from = our_wallet.senderEmail
+                    const doichainEntry =  createDoichainEntry(keyPair,validatorPublicKey.data.key,from,email,undefined)
+                    console.log('generated doichainEntry',doichainEntry)
+                    const encryptedTemplateData =  encryptTemplate(
+                        keyPair,
+                        validatorPublicKey.data,
                         email,
-                        our_wallet
+                        our_wallet,
                     )
-
-                    //TODO handle response and create offchain utxos and update balance
-                    const utxosResponse = await bitcore.broadcastTransaction(
-                        txData.doichainEntry.nameId,
-                        txData.tx,
-                        encryptedTemplateData,
-                        txData.validatorPublicKeyData.key
-                    )*/
-                    const txId = undefined  //TODO get txid from response
+                    console.log('generated encryptedTemplateData',encryptedTemplateData)
+                    const txResponse = await createAndSendTransaction(decryptedSeedPhrase,
+                        password,sendSchwartz,destAddress,our_wallet,doichainEntry.nameId, doichainEntry.nameValue,encryptedTemplateData)
+                    console.log("txResponse",txResponse)
+                    //const txId = undefined  //TODO get txid from response
                     const msg = t("contactForm.BroadcastedDoiTx")
                     const contact = {
                         email: email,
                         wallet: our_wallet.publicKey,
-                        txid: txId,
-                        nameId: nameId,
+                        txid: txResponse.txId,
+                        nameId: doichainEntry.nameId,
                         validatorAddress: destAddress,
                         confirmed: false,
                         status: status,
