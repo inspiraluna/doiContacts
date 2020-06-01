@@ -1,7 +1,6 @@
 import Moment from 'react-moment';
 import 'moment-timezone';
 import React, { useGlobal } from "reactn";
-import find from 'lodash.find'
 import { constants } from "doichain"
 
 const TransactionList = ({addresses}) => {
@@ -10,7 +9,9 @@ const TransactionList = ({addresses}) => {
     addresses.forEach(addr => {
         if (addr.transactions) addr.transactions.forEach(t => txList.push(t))
     })
-    txList = txList.sort((a, b) => a.date - b.date)
+    txList = txList.sort((a, b) => {
+        return new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()
+    })
 
     const txNode = txList.map((tx, index) => {
         //TODO checkout if this is a change address and mark it special
