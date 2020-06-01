@@ -1,6 +1,6 @@
 {
     "name": "doi_react_app",
-    "version": "0.0.52",
+    "version": "0.0.53",
     "private": true,
     "homepage": ".",
     "dependencies": {
@@ -74,6 +74,7 @@
     },
     "devDependencies": {
         "@cypress/browserify-preprocessor": "^2.2.1",
+        "chai-colors": "^1.0.1",
         "cypress": "^4.5.0",
         "cypress-commands": "^1.1.0",
         "start-server-and-test": "^1.10.11"

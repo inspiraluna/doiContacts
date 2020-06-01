@@ -88,7 +88,7 @@ const SendAmount = () => {
                                 <b>{address}</b> <br />
                                 {t("sendAmount.balance")}{": "}
                                 <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? constants.toSchwartz(balance) : Number(balance).toFixed(8)}</span>{" "}
-                                <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? "schw" : "DOI"}</span>
+                                <span onClick={() => setSatoshi(!satoshi)} id="sendCurrency">{JSON.parse(satoshi) ? "schw" : "DOI"}</span>
                                 <br></br>
                                 <br />
                                     <QRCodeScannerTextField

@@ -20,7 +20,7 @@ import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import {network} from "doichain";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { CssBaseline } from "@material-ui/core"
+import { CssBaseline, colors } from "@material-ui/core"
 
 const App = props => {
 
@@ -59,8 +59,21 @@ const App = props => {
                 default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
             },
         },
+        overrides: {
+            // Style sheet name ⚛️
+            MuiListItemText: {
+              // Name of the rule
+              primary: {
+                // Some CSS
+                color: secondaryColor,
+              },
+              secondary: {
+                // Some CSS
+                color: secondaryColor,
+              },
+            },
+          },
     })
-
     function TabPanel(props) {
         const { children, value, index, ...other } = props
 
@@ -109,12 +122,12 @@ const App = props => {
                                  }}
                                  aria-label="Doichain Contacts"
                              >
-                                 <Tab icon={<PhoneIcon id="phoneIcon" />} {...a11yProps(0)} />
+                                 <Tab icon={<PhoneIcon id="phoneIcon" color="secondary"/>} {...a11yProps(0)} />
                                  <Tab
-                                     icon={<AccountBalanceWalletIcon id="walletIcon" />}
+                                     icon={<AccountBalanceWalletIcon id="walletIcon" color="secondary" />}
                                      {...a11yProps(1)}
                                  />
-                                 <Tab icon={<SettingsIcon id="settingsIcon" />} {...a11yProps(2)} />
+                                 <Tab icon={<SettingsIcon id="settingsIcon" color="secondary" />} {...a11yProps(2)} />
                                  <Tab
                                      label={appVersion}
                                      style={{

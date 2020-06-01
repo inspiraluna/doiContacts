@@ -157,7 +157,7 @@ if (encrypted) {
                     </Dialog>
             </div>
             <UnlockPasswordDialog callback={decryptCallback}/>
-            <span className={classes.formControl}>Toggle light/dark theme</span><Switch checked={darkMode} onChange={() => {
+            <span className={classes.formControl}>Toggle light/dark theme</span><Switch id="changeMode" checked={darkMode} onChange={() => {
                 const ourMode = darkMode
                 setDarkMode(!ourMode)
             }} />

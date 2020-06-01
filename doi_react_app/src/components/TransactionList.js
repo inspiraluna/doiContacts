@@ -1,8 +1,11 @@
 import Moment from 'react-moment';
 import 'moment-timezone';
-import React from "reactn";
+import React, { useGlobal } from "reactn";
 import find from 'lodash.find'
+import { constants } from "doichain"
+
 const TransactionList = ({addresses}) => {
+    const [satoshi, setSatoshi] = useGlobal("satoshi")
     let txList = []
     addresses.forEach(addr => {
         if (addr.transactions) addr.transactions.forEach(t => txList.push(t))
@@ -13,7 +16,7 @@ const TransactionList = ({addresses}) => {
         //TODO checkout if this is a change address and mark it special
         //TODO when sending transactions please use change Address
        // console.log(find(addresses, {address: tx.address}).derivationPath)
-        const isChangeAddress =  find(addresses, {address: tx.address}).derivationPath.split("/")[2]===1
+       // const isChangeAddress =  find(addresses, {address: tx.address}).derivationPath.split("/")[2]===1
       //  console.log(isChangeAddress)
         return (
             <div key={index}>
@@ -23,8 +26,9 @@ const TransactionList = ({addresses}) => {
                 <div style={{
                     textAlign: "right",
                     verticalAlign: "top"
-                }}> {tx.category} <br/> DOI
-                    <span id="txAmount">{ tx.spent?'<u>'+(Number(tx.amount).toFixed(8))+'</u>':Number(tx.amount).toFixed(8) }</span>
+                }}> {tx.category} <br/> <span onClick={() => setSatoshi(!satoshi)}>{JSON.parse(satoshi) ? "schw" : "DOI"}</span>{" "}
+                    <span id="txAmount" onClick={() => setSatoshi(!satoshi)}
+                          style={{ textDecoration: tx.spent?"line-through":''}}>{(JSON.parse(satoshi))?(constants.toSchwartz(tx.amount)):Number(tx.amount).toFixed(8) }</span>
                 </div>
             </div>
         )
