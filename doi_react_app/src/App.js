@@ -18,28 +18,37 @@ import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
-import {network} from "doichain";
+import {getServerStatus, network} from "doichain";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { CssBaseline, colors } from "@material-ui/core"
 
+
 const App = props => {
 
-    const [global, setGlobal] = useGlobal()
+    const [globalState, setGlobalState] = useGlobal()
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
     const [wallets] = useGlobal("wallets")
     const [darkMode] = useGlobal("darkMode")
+    const [serverStatus, setServerStatus] = useGlobal("serverStatus")
     register()
 
-    if(global.network) network.changeNetwork(global.network)
-
     var GLOBAL = global || window;
-    console.log('current network',global.network)
 
     useEffect(() => {
-        initStorage(props.cordova, global, setGlobal)
-    }, [setGlobal])
+        initStorage(props.cordova, globalState, setGlobalState)
+        const runGetServerStatus = async () => {
+            const status = await getServerStatus();
+            console.log('status',status)
+            setServerStatus(status.data.version)
+        }
+        runGetServerStatus()
+    }, [globalState.network])
+
+    if(globalState.network)
+        network.changeNetwork(globalState.network)
+    console.log('current network',globalState.network)
 
     let ourNetwork = GLOBAL.network
     let secondaryColor = "#cd45ff"

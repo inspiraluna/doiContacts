@@ -2101,6 +2101,13 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/secp256k1@^4.0.0":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@types/secp256k1/-/secp256k1-4.0.1.tgz#fb3aa61a1848ad97d7425ff9dcba784549fca5a4"
+  integrity sha512-+ZjSA8ELlOp8SlKi0YLB2tz9d5iPNEmOBd+8Rz21wTMdaXQIa9b6TEnD6l5qKOCypE7FSyPyck12qZJxSDNoog==
+  dependencies:
+    "@types/node" "*"
+
 "@types/sinonjs__fake-timers@6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.1.tgz#681df970358c82836b42f989188d133e218c458e"
@@ -3149,6 +3156,11 @@ better-assert@~1.0.0:
   dependencies:
     callsite "1.0.0"
 
+big.js@^3.1.3:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/big.js/-/big.js-3.2.0.tgz#a5fc298b81b9e0dca2e458824784b65c52ba588e"
+  integrity sha512-+hN/Zh2D08Mx65pZ/4g5bsmNiZUuChDiQfTUQ7qJr4/kuopCr88xZsAXv6mBoZEsUI4OuGHlX59qE94K2mMW8Q==
+
 big.js@^5.2.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
@@ -3180,6 +3192,11 @@ bindings@^1.2.1, bindings@^1.3.0, bindings@^1.5.0:
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
+
+binstring@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/binstring/-/binstring-0.2.1.tgz#8a174d301f6d54efda550dd98bb4cb524eacd75d"
+  integrity sha1-ihdNMB9tVO/aVQ3Zi7TLUk6s110=
 
 bintrees@1.0.1:
   version "1.0.1"
@@ -3226,10 +3243,31 @@ bitcoin-ops@^1.3.0, bitcoin-ops@^1.4.0:
   resolved "https://registry.yarnpkg.com/bitcoin-ops/-/bitcoin-ops-1.4.1.tgz#e45de620398e22fd4ca6023de43974ff42240278"
   integrity sha512-pef6gxZFztEhaE9RY9HmWVmiIHqCb2OyS4HPKkpc6CIiiOa3Qmuoylxc5P2EkU3w+5eTSifI9SEZC88idAIGow==
 
-bitcoinjs-lib@^5.0.0, bitcoinjs-lib@^5.1.7:
+bitcoinjs-lib@^5.0.0:
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.1.8.tgz#b61be4fab7cf82142cea76f82e70a324c9a57984"
   integrity sha512-LQQ9uw33sqW3K1aSzYCy0Az8zbcsR1ttaNkjThFwApT/vbB7bibEesPIxf0zvzjf8V8It68v7D/fCkjd4bStMw==
+  dependencies:
+    bech32 "^1.1.2"
+    bip174 "^1.0.1"
+    bip32 "^2.0.4"
+    bip66 "^1.1.0"
+    bitcoin-ops "^1.4.0"
+    bs58check "^2.0.0"
+    create-hash "^1.1.0"
+    create-hmac "^1.1.3"
+    merkle-lib "^2.0.10"
+    pushdata-bitcoin "^1.0.1"
+    randombytes "^2.0.1"
+    tiny-secp256k1 "^1.1.1"
+    typeforce "^1.11.3"
+    varuint-bitcoin "^1.0.4"
+    wif "^2.0.1"
+
+bitcoinjs-lib@^5.1.10, bitcoinjs-lib@^5.1.8:
+  version "5.1.10"
+  resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.1.10.tgz#91ec7cde308007008b22ed9117c5f26970cbad54"
+  integrity sha512-CesUqtBtnYc+SOMsYN9jWQWhdohW1MpklUkF7Ukn4HiAyN6yxykG+cIJogfRt6x5xcgH87K1Q+Mnoe/B+du1Iw==
   dependencies:
     bech32 "^1.1.2"
     bip174 "^1.0.1"
@@ -3393,6 +3431,11 @@ brorand@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
   integrity sha1-EsJe/kCkXjwyPrhnWgoM5XsiNx8=
+
+browser-crypto@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/browser-crypto/-/browser-crypto-1.0.1.tgz#f33316f7b7ef4b0d51e77408a1e2332df21a27cc"
+  integrity sha512-4ugm81r9W0VFjwcjL8gdiwJIEvAJjuLzTkcjgAGhEvSzZcRRbUnqWc2CQjbHiwPkG06CQX/IuZsRm0v3PkjLZA==
 
 browser-pack@^6.0.1:
   version "6.1.0"
@@ -3871,6 +3914,13 @@ chai-checkmark@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/chai-checkmark/-/chai-checkmark-1.0.1.tgz#9fbb3c9ad9101f097ef288328d30f4227d74fffb"
   integrity sha1-n7s8mtkQHwl+8ogyjTD0In10//s=
+
+chai-colors@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/chai-colors/-/chai-colors-1.0.1.tgz#c5a1640cf95ec5f355bac7e00f4cd2ea30f9d442"
+  integrity sha1-xaFkDPlexfNVusfgD0zS6jD51EI=
+  dependencies:
+    onecolor "~2.4.2"
 
 chai@^4.2.0:
   version "4.2.0"
@@ -5324,16 +5374,23 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-doichain@0.0.32:
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/doichain/-/doichain-0.0.32.tgz#a1a8ff7f462f01f0b9ba286d97621ae136c17ee3"
-  integrity sha512-e4ywrOQQCGLdd9D8YMabDgxtSxvas/6qUvoZU//4oTdRpZt4Nko/A+PcEREMiqFIi9tsYE/iD6FQNO16MlbNFQ==
+doichain@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/doichain/-/doichain-0.1.0.tgz#f6e3bab4a2572ffe655334e4aae0fafbdb879d34"
+  integrity sha512-O2WO67LrooAaZ38Lp68Hg49jJo0QXBwHO131ANeodxg8QXAFp5jSTuEswTzzfP8R6uzHqYDu1dbsEhIUREt0uw==
   dependencies:
+    binstring "^0.2.1"
     bip39 "^3.0.2"
-    bitcoinjs-lib "^5.1.7"
+    bitcoinjs-lib "^5.1.8"
+    bitcoinjs-message "^2.1.0"
+    browser-crypto "^1.0.1"
+    bs58 "^4.0.1"
     crypto-js "^4.0.0"
+    eciesjs "^0.3.6"
     hdkey "^1.1.1"
     node-fetch "^2.6.0"
+    satoshi-bitcoin "^1.0.4"
+    secp256k1 "^3.7.1"
 
 dom-converter@^0.2:
   version "0.2.0"
@@ -5471,6 +5528,15 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+eciesjs@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/eciesjs/-/eciesjs-0.3.6.tgz#5df3a1501cf986f55461ea044c8f7dcd147256ac"
+  integrity sha512-Goc4MqGdgkeVsFttlyG10qG1DyIyAmKUUnPwGT2VEhCI4nyvfHB7+qomoWqwiZZlUhwU9lnvnIQCC7grZTnLQw==
+  dependencies:
+    "@types/secp256k1" "^4.0.0"
+    futoin-hkdf "^1.3.2"
+    secp256k1 "^4.0.0"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -6744,6 +6810,11 @@ functional-red-black-tree@^1.0.1, functional-red-black-tree@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
+
+futoin-hkdf@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/futoin-hkdf/-/futoin-hkdf-1.3.2.tgz#cd9a09153e3db7d166b9717f872991a4950430cd"
+  integrity sha512-3EVi3ETTyJg5PSXlxLCaUVVn0pSbDf62L3Gwxne7Uq+d8adOSNWQAad4gg7WToHkcgnCJb3Wlb1P8r4Evj4GPw==
 
 gar@^1.0.4:
   version "1.0.4"
@@ -11637,6 +11708,11 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   dependencies:
     wrappy "1"
 
+onecolor@~2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/onecolor/-/onecolor-2.4.2.tgz#a53ec3ff171c3446016dd5210d1a1b544bf7d874"
+  integrity sha1-pT7D/xccNEYBbdUhDRobVEv32HQ=
+
 onetime@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-1.1.0.tgz#a1f7838f8314c516f05ecefcbc4ccfe04b4ed789"
@@ -14235,6 +14311,13 @@ sass-loader@8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
+satoshi-bitcoin@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/satoshi-bitcoin/-/satoshi-bitcoin-1.0.4.tgz#d002b677075d5cbbf2c211a8df3254bcdf50b1e4"
+  integrity sha1-0AK2dwddXLvywhGo3zJUvN9QseQ=
+  dependencies:
+    big.js "^3.1.3"
+
 sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
@@ -14280,7 +14363,7 @@ schema-utils@^2.5.0, schema-utils@^2.6.0, schema-utils@^2.6.1, schema-utils@^2.6
     ajv "^6.12.0"
     ajv-keywords "^3.4.1"
 
-secp256k1@^3.0.1:
+secp256k1@^3.0.1, secp256k1@^3.7.1:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/secp256k1/-/secp256k1-3.8.0.tgz#28f59f4b01dbee9575f56a47034b7d2e3b3b352d"
   integrity sha512-k5ke5avRZbtl9Tqx/SA7CbY3NF6Ro+Sj9cZxezFzuBlLDmyqPiL8hJJ+EmzD8Ig4LUDByHJ3/iPOVoRixs/hmw==

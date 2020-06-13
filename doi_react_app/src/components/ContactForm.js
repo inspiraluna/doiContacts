@@ -8,7 +8,7 @@ import {
     getValidatorPublicKeyOfEmail,
     createAndSendTransaction,
     getAddress,
-    createHdKeyFromMnemonic, generateNewKeyPairFromHdKey,encryptTemplate
+    createHdKeyFromMnemonic, generateNewKeyPairFromHdKey,encryptTemplate,createDoichainEntry
 } from 'doichain'
 import find from "lodash.find"
 
@@ -23,7 +23,7 @@ import Button from "@material-ui/core/Button";
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
 import "./ProgressButton.css"
-import createDoichainEntry from "doichain/lib/createDoichainEntry";
+
 
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -108,7 +108,6 @@ const ContactForm = () => {
                     const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
                     //Now generate a next (new) address together with its privateKey
                     const keyPair = generateNewKeyPairFromHdKey(hdKey,our_wallet.derivationPath)
-                    console.log('generated privateKey from hdkey',keyPair)
                     const from = our_wallet.senderEmail
                     const doichainEntry =  createDoichainEntry(keyPair,validatorPublicKey.data.key,from,email,undefined)
                     console.log('generated doichainEntry',doichainEntry)
@@ -120,14 +119,20 @@ const ContactForm = () => {
                     )
                     console.log('generated encryptedTemplateData',encryptedTemplateData)
                     const txResponse = await createAndSendTransaction(decryptedSeedPhrase,
-                        password,sendSchwartz,destAddress,our_wallet,doichainEntry.nameId, doichainEntry.nameValue,encryptedTemplateData)
+                        password,
+                        sendSchwartz,
+                        destAddress,
+                        our_wallet,
+                        doichainEntry.nameId,
+                        doichainEntry.nameValue,
+                        encryptedTemplateData)
                     console.log("txResponse",txResponse)
-                    //const txId = undefined  //TODO get txid from response
+
                     const msg = t("contactForm.BroadcastedDoiTx")
                     const contact = {
                         email: email,
                         wallet: our_wallet.publicKey,
-                        txid: txResponse.txId,
+                        txid: txResponse.txRaw.txid,
                         nameId: doichainEntry.nameId,
                         validatorAddress: destAddress,
                         confirmed: false,

@@ -122,11 +122,11 @@ const SendAmount = () => {
                                                 const doiAmount = satoshi?(Number(e.target.value)/100000000):e.target.value
                                                 const ourAmount = e.target.value
                                                 setAmount(ourAmount)
-                                                if(doiAmount > balance){
+                                                if(Number(doiAmount) > Number(balance)){
                                                     setError(t("sendAmount.amountTooBig"))
                                                     setDisable(true)
                                                 }
-                                                else if(doiAmount <= 0){
+                                                else if(Number(doiAmount) <= 0){
                                                     setError(t("sendAmount.amountBiggerThan0"))
                                                     setDisable(true)
                                                 }

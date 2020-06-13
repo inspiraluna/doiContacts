@@ -1,4 +1,4 @@
-import React, { useGlobal, useState } from "reactn"
+import React, {useEffect, useGlobal, useState} from "reactn"
 import {network} from "doichain";
 import { useTranslation } from "react-i18next"
 import FormControl from "@material-ui/core/FormControl"
@@ -26,6 +26,7 @@ const Settings = () => {
     const [satoshi, setSatoshi] = useGlobal("satoshi")
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
+    const [serverStatus, setServerStatus] = useGlobal("serverStatus")
 
     const handleClose = () => {
         setOpen(undefined)
@@ -59,6 +60,8 @@ if (encrypted) {
         <CssBaseline />
         <div>
             <div>
+                <p>Doichain dApp version: {serverStatus?.version} ({serverStatus?.timestamp})</p>
+
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="uncontrolled-native">{t("option.choose")}</InputLabel>
                     <NativeSelect
@@ -167,7 +170,7 @@ if (encrypted) {
 } else {
     let seedWords = decryptedSeed.split(" ")
     let oneLine = []
-    const modulosSeed = seedWords.map((seed, i) => { 
+    const modulosSeed = seedWords.map((seed, i) => {
         if (i % 3 === 0 && i !== 0) oneLine = []
         oneLine.push(seed)
         if ((i + 1) % 3 === 0) return <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>
