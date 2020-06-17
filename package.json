@@ -1,7 +1,7 @@
 {
   "name": "doicontacts",
   "displayName": "Doi Contacts",
-  "version": "0.0.54",
+  "version": "0.0.56",
   "description": "blockchain based contact management via Doichain",
   "main": "index.js",
   "scripts": {
