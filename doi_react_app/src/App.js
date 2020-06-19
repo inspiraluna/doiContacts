@@ -32,6 +32,7 @@ const App = props => {
     const [wallets] = useGlobal("wallets")
     const [darkMode] = useGlobal("darkMode")
     const [serverStatus, setServerStatus] = useGlobal("serverStatus")
+    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
     register()
 
     var GLOBAL = global || window;
@@ -114,7 +115,7 @@ const App = props => {
     }
 
     const our_CurrentTab = currentTab ? currentTab : 0
-       if(!wallets){
+       if(!encryptedSeed){
            return <WalletCreator />
              } else {
                  return (

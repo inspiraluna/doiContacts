@@ -9,7 +9,7 @@ import  stringify from 'json-stringify-safe';
           if(global.modus)localStorage.setItem("modus", global.modus)
           localStorage.setItem("activeWallet", global.activeWallet ? global.activeWallet : 0)
           localStorage.setItem("network", global.network ? global.network : "mainnet")
-          localStorage.setItem("encryptedSeed", global.encryptedSeed ? global.encryptedSeed : undefined)
+          if(global.encryptedSeed)localStorage.setItem("encryptedSeed", global.encryptedSeed)
           localStorage.setItem("darkMode", global.darkMode ? global.darkMode : false)
           localStorage.setItem("satoshi", global.satoshi ? global.satoshi : false)
       } else {
