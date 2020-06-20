@@ -186,6 +186,7 @@ describe("App E2E", () => {
         cy.get("#saveWallet").click()
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
+        cy.wait(500)
         cy.get("#walletIcon").click()
         cy.get("#deleteWallet").click()
         cy.get("#closeAlert").click()
@@ -220,7 +221,7 @@ describe("App E2E", () => {
                 //2. send 0.00005000 DOI to 2nd wallet
                 cy.get("#send").click()
                 cy.get("#toAddress").type(addressOfSecondWallet)
-                const amountToSend = 5000
+                const amountToSend = 0.00005
                 cy.get("#amount").type(amountToSend)
                 cy.get("#sendAmount").click()
                 cy.get("#standard-adornment-password").type(SEED_PASSWORD)
@@ -268,7 +269,7 @@ describe("App E2E", () => {
                 cy.wait(2000)
                 cy.get("#balance").then(async $span => {
                     const balance = parseFloat($span.text())
-                    const amount = 10.99926820
+                    const amount = 10.99494718
                     expect(balance).to.eq(amount)
                  })
                  cy.get("#txList > div").each(($el, index, $list) => {
@@ -306,10 +307,13 @@ describe("App E2E", () => {
     it("should create a contact", () => {
         restoreWallet()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+        cy.wait(500)
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
         cy.get("#toAddress").type("bob@ci-doichain.org")
-        cy.get("#requestPermissiom").click()
+        cy.get(".MuiButton-label").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.wait(2000)
         cy.get("#phoneIcon").click()
     })
@@ -317,6 +321,7 @@ describe("App E2E", () => {
     it("clicks copy the address to clipbooard and snackbar shows up", () => {
         createNewSeedPhrase()
         createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
+        cy.wait(500)
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
         cy.get("#receive").click()
@@ -343,6 +348,7 @@ describe("App E2E", () => {
         cy.get("#enterPassword").click()
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
+        cy.wait(2000)
         cy.get("#seed").should("have.text", "kiwi acquire security left champion peasant royal sheriff absent calm alert letter")
     })
 
@@ -360,24 +366,26 @@ describe("App E2E", () => {
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
         cy.get("#next").click()
-        cy.wait(30000)
+        cy.wait(5000)
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
         cy.get("#showSeedPhrase").click()
         cy.get("#enterPassword").click()
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
+        cy.wait(2000)
         cy.get("#seed").should("have.text", seed)
     })
     })
 
     it("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
-        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
         cy.get("#toAddress").type("bob@ci-doichain.org")
-        cy.get("#requestPermissiom").click()
+        cy.get(".MuiButton-label").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
         cy.wait(2000)
         cy.get("#phoneIcon").click()
         cy.wait(2000)
@@ -387,11 +395,13 @@ describe("App E2E", () => {
             "have.text",
             "this email already exist, please use another one"
         )
-        cy.get("#requestPermissiom").should("not.exist")
+        cy.get("#requestPermission").should("be.disabled")
         cy.get("#toAddress").clear()
         cy.get("#toAddress").type("alice@ci-doichain.org")
-        cy.get("#requestPermissiom").should("be.visible")
-        cy.get("#requestPermissiom").click()
+        cy.get(".MuiButton-label").should("be.visible")
+        cy.get(".MuiButton-label").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
     })
 
      it("should test the password validation messages", () => {
@@ -404,7 +414,6 @@ describe("App E2E", () => {
          cy.get("#close").click()
          cy.get("#skipButton").click()
          cy.get("#skip").click()
-         cy.get("#standard-adornment-email").type("peter@ci-doichain.org")
          cy.get("#standard-adornment-password").type("abc")
          cy.get("#standard-adornment-password2").type("abc")
          cy.get("#component-error-text").should("have.text", "Password is too short")
@@ -499,6 +508,8 @@ describe("App E2E", () => {
 
      it("sends 5000 SAT, then 0.00005 DOI", () => {
         createNewSeedPhrase()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectCurrency").select("schw")
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
         createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
@@ -524,8 +535,6 @@ describe("App E2E", () => {
                 cy.get("#toAddress").type(addressOfSecondWallet)
                 const amountToSend = 5000
                 cy.get("#amount").type(amountToSend)
-                // cy.get("#toggleCurrency").click()
-                // cy.wait(500)
                 cy.get("#sendAmount").click()
                 cy.get("#standard-adornment-password").type(SEED_PASSWORD)
                 cy.get("#unlock").click()
@@ -546,7 +555,7 @@ describe("App E2E", () => {
         })
     })
 
-    it("change crurrency", () => {
+    it("changes currency", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
@@ -602,11 +611,15 @@ describe("App E2E", () => {
         cy.get("#settingsIcon").click()
         cy.get("#changeMode").click()
         cy.get("body").should("have.css", "background-color").and("be.colored", "#303030")
-        cy.get("#selectNetwork").select("testnet")
-        cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#e65100")
-        cy.get("#selectNetwork").select("regtest")
-        cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#00bfff")
         cy.get("#selectNetwork").select("mainnet")
         cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#cd45ff")
+        cy.get("#walletIcon").click()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectNetwork").select("testnet")
+        cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#e65100")
+        cy.get("#walletIcon").click()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectNetwork").select("regtest")
+        cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#00bfff")
     })
 })

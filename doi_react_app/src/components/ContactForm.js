@@ -220,7 +220,7 @@ const ContactForm = () => {
                                 email: email ? email : qrCode,}
                             )}
                             color={"secondary"}
-                            id="sendAmount"
+                            id="requestPermission"
                             variant="contained"
                             disabled={disable}
                         >
