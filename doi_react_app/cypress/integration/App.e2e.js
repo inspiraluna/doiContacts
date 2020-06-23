@@ -1,5 +1,5 @@
 import { fundWallet } from "doichain/lib/fundWallet"
-import { changeNetwork } from "doichain/lib/network"
+import { changeNetwork, DOICHAIN } from "doichain/lib/network"
 import chaiColors from 'chai-colors'
 chai.use(chaiColors);
 
@@ -57,7 +57,7 @@ describe("App E2E", () => {
         cy.get("#subject").type(subject)
         cy.get("#editEmailTemplate").click()
         cy.get("#editTemp").type(
-            "Hello, please give me permission to write you an email. _confirmation_url_ Yours"
+            "Hello, please give me permission to write you an email. ${confirmation_url} Yours", { parseSpecialCharSequences: false }
         )
         cy.get("#back").click()
         cy.get("#redirectUrl").type("www.doichain.org")
@@ -305,18 +305,43 @@ describe("App E2E", () => {
     })
 
     it("should create a contact", () => {
-        restoreWallet()
+        createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
-        cy.get("#phoneIcon").click()
-        cy.get("#addButton").click()
-        cy.get("#toAddress").type("bob@ci-doichain.org")
-        cy.get(".MuiButton-label").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#unlock").click()
-        cy.wait(2000)
-        cy.get("#phoneIcon").click()
-    })
+        cy.get("#doiCoinAddress").then(async $li => {
+            const addressOfFirstWallet = $li.text().split(" ")[0]
+            cy.get("#balance").then(async $span => {
+                const balance = parseFloat($span.text())
+                if(balance<100){
+                    const doi = 10
+                    changeNetwork('regtest')
+                    const funding = await fundWallet(addressOfFirstWallet,doi)
+                    cy.get("#walletIcon").click()
+                }
+                cy.wait(2000)
+                cy.get("#phoneIcon").click()
+                cy.get("#walletIcon").click()
+                cy.get("#detail").click()
+                cy.wait(500)
+                cy.get("#phoneIcon").click()
+                cy.get("#addButton").click()
+                cy.get("#toAddress").type("bob@ci-doichain.org")
+                cy.get(".MuiButton-label").click()
+                cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                cy.get("#unlock").click()
+                cy.wait(2000)
+                cy.get("#phoneIcon").click()
+                cy.wait(5000)
+                cy.task("confirmedLinkInPop3", { hostname:'localhost', port: 110, 
+                username: 'bob@ci-doichain.org', password:'bob',
+                bobdapp_url: 'http://localhost:4000/'}, 
+                { timeout: 30000 }).then($link => {
+                    cy.log($link)
+                    cy.request($link)
+                })
+            })
+        })
+})
 
     it("clicks copy the address to clipbooard and snackbar shows up", () => {
         createNewSeedPhrase()
