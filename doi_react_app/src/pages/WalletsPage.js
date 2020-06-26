@@ -230,8 +230,10 @@ const WalletsPage = () => {
                 setAmount(ourAmount)
             }
 
-            const addressCount = wallets[activeWallet].addresses.length
-            let address = wallets[activeWallet].addresses[addressCount-1].address
+            const receivingAddresses = wallets[activeWallet].addresses.filter((address)=>{
+                return address.derivationPath.split('/')[2] === '0'})
+            const addressCount = receivingAddresses.length //only use addresses which are no change addresses
+            let address = receivingAddresses[addressCount-1].address
 
 
          /* seems so far useless because the new address is already in the wallet and without transactions
