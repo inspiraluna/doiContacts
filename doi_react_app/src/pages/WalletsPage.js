@@ -230,12 +230,14 @@ const WalletsPage = () => {
                 setAmount(ourAmount)
             }
 
-            const addressCount = wallets[activeWallet].addresses.length-2
-            let address = wallets[activeWallet].addresses[addressCount].address
+            const addressCount = wallets[activeWallet].addresses.length
+            let address = wallets[activeWallet].addresses[addressCount-1].address
 
-            if(wallets[activeWallet].addresses[addressCount].transactions.length>0)
+
+         /* seems so far useless because the new address is already in the wallet and without transactions
+           if(wallets[activeWallet].addresses[addressCount-1].transactions.length>0)
                 address = generateNewAddress(wallets[activeWallet].publicExtendedKey,
-                    wallets[activeWallet].addresses[addressCount].derivationPath)
+                    wallets[activeWallet].addresses[addressCount-1].derivationPath) */
 
             const walletName = wallets[activeWallet].walletName
             let url = "doicoin:" + address
