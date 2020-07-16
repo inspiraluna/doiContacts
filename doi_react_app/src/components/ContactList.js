@@ -10,7 +10,7 @@ import DeleteIcon from "@material-ui/icons/Delete"
 import FolderIcon from "@material-ui/icons/Folder"
 import CheckIcon from "@material-ui/icons/Check"
 import ImportExportIcon from "@material-ui/icons/ImportExport"
-//import verify from "bitcore-doichain/lib/doichain/verify"
+import {verify} from "doichain"
 import { green, orange } from "@material-ui/core/colors"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -21,6 +21,8 @@ import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../hooks/useEventListener';
+import { network } from "doichain"
+const bitcoin = require("bitcoinjs-lib")
 
 const ContactList = () => {
     const setModus = useGlobal("modus")[1]
@@ -60,9 +62,16 @@ const ContactList = () => {
     const ourContacts = contacts ? contacts : []
     const contactNode = ourContacts.map((contact, index) => {
         find(wallets, function(wallet) {
-            // let changed = false
-            if (wallet.publicKey === contact.wallet) {
-             /*   verify(contact.email, wallet.senderEmail, contact.nameId, wallet.publicKey).then(
+            let changed = false 
+
+            const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath(wallet.derivationPath)
+
+          //  let childKey0FromXpub = bitcoin.bip32.fromBase58(childKey, network.DEFAULT_NETWORK);
+            let publicKey = childKey.publicKey.toString('hex')
+            
+            if (publicKey === contact.publicKey) {  //they are different at the moment. Please check!!
+
+                verify(contact.email, wallet.senderEmail, contact.nameId, contact.publicKey).then(
                     status => {
                         if (status && status.val === true && !contact.confirmed) {
                             changed = true
@@ -77,7 +86,7 @@ const ContactList = () => {
                             setContacts(contacts)
                         }
                     }
-                )*/ //TODO enable with js-doichain module
+                ) //TODO enable with js-doichain module
             }
         })
         return (
