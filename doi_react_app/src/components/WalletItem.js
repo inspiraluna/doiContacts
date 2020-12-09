@@ -1,8 +1,8 @@
-import React, { useGlobal, useEffect, useState } from "reactn"
-import TransactionList from "./TransactionList"
-import { useTranslation } from "react-i18next"
-import {getBalanceOfWallet, constants} from "doichain"
 import NativeSelect from "@material-ui/core/NativeSelect"
+import { constants, getBalanceOfWallet } from "doichain"
+import { useTranslation } from "react-i18next"
+import React, { useEffect, useGlobal, useState } from "reactn"
+import TransactionList from "./TransactionList"
 const bitcoin = require('bitcoinjs-lib')
 
 
@@ -24,7 +24,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             setAddressOptions(wallets[activeWallet].addresses.map((addr, i) => {
 
                 addressList.push(addr.address)
-                return <option key={addr.address} value={addr.address}>{addr.address} {addr.derivationPath}  DOI:{addr.balance}</option>
+                return <option key={addr.address} value={i} id={i}>{addr.address} {addr.derivationPath}  DOI:{addr.balance}</option>
             })
             )
             setAddress(addressList[0])
@@ -65,7 +65,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                 <li style={{ fontSize: "15px" }}>
                     <b> {t("walletItem.doiCoinAddress")} </b>
                     <NativeSelect id="doiCoinAddress" onChange={e => setAddress(e.target.value)}>
-                        {addressOptions}
+                       {addressOptions}
                     </NativeSelect>
                     <br />
                     <b>{t("walletItem.balance")}</b>{" "}  
