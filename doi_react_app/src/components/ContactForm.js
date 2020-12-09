@@ -109,16 +109,6 @@ const ContactForm = () => {
 
                     const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
                     //Now generate a next (new) address together with its privateKey
-<<<<<<< HEAD
-=======
-                    
-                    //const key = hdKey.derive(our_wallet.derivationPath)
-                    console.log("pubExKey", hdKey.publicExtendedKey)
-                    let childKey0FromXpub = bitcoin.bip32.fromBase58(our_wallet.publicExtendedKey, network.DEFAULT_NETWORK);
-                    let publicKey = childKey0FromXpub.publicKey.toString('hex')
-                    console.log("pubKey", publicKey)
-
->>>>>>> c4fe859d3fb3869c7e377d43acb5ba742dcff408
                     const keyPair = generateKeyPairFromHdKey(hdKey,our_wallet.derivationPath)
                     const from = our_wallet.senderEmail
                     const doichainEntry =  createDoichainEntry(keyPair,validatorPublicKey.data.key,from,email,undefined)
