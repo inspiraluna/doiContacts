@@ -8,7 +8,7 @@ import {
     getValidatorPublicKeyOfEmail,
     createAndSendTransaction,
     getAddress,
-    createHdKeyFromMnemonic, generateNewKeyPairFromHdKey,encryptTemplate,createDoichainEntry
+    createHdKeyFromMnemonic, generateKeyPairFromHdKey,encryptTemplate,createDoichainEntry
 } from 'doichain'
 import find from "lodash.find"
 
@@ -107,7 +107,7 @@ const ContactForm = () => {
 
                     const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
                     //Now generate a next (new) address together with its privateKey
-                    const keyPair = generateNewKeyPairFromHdKey(hdKey,our_wallet.derivationPath)
+                    const keyPair = generateKeyPairFromHdKey(hdKey,our_wallet.derivationPath)
                     const from = our_wallet.senderEmail
                     const doichainEntry =  createDoichainEntry(keyPair,validatorPublicKey.data.key,from,email,undefined)
                     console.log('generated doichainEntry',doichainEntry)

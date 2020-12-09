@@ -33,7 +33,7 @@ describe("App E2E", () => {
         // cy.get('img').attribute('src').then($gouaby => {
         //     expect($gouaby).to.eq("/static/media/logo.bc06d135.jpg")
         // })
-        cy.get("#selectNetwork").select("regtest")
+        cy.get("#selectNetwork").select("testnet")
         cy.get("#restoreWallet").click()
         cy.get("#preview").click()
         cy.get("#restoreWallet").click()
@@ -403,7 +403,7 @@ describe("App E2E", () => {
     })
     })
 
-    it("should create a contact but should not be possible to add twice the same email address", () => {
+    it.only("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
