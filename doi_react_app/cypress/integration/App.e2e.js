@@ -36,7 +36,7 @@ describe("App E2E", () => {
         // cy.get('img').attribute('src').then($gouaby => {
         //     expect($gouaby).to.eq("/static/media/logo.bc06d135.jpg")
         // })
-        cy.get("#selectNetwork").select("testnet")
+        cy.get("#selectNetwork").select("regtest")
         cy.get("#restoreWallet").click()
         cy.get("#preview").click()
         cy.get("#restoreWallet").click()
@@ -400,14 +400,18 @@ describe("App E2E", () => {
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
         cy.wait(2000)
-        cy.get("#seed").should("have.text", "kiwi acquire security left champion peasant royal sheriff absent calm alert letter")
+        cy.get("#seed").then($p => {
+            const seed = $p.text().replace(/ /g,'')
+            const seedJoined = "kiwi acquire security left champion peasant royal sheriff absent calm alert letter".replace(/ /g,'')
+            expect(seed).to.equal(seedJoined)
+        })
     })
 
     it("creates a new wallet then shows recovery phrase", () => {
         cy.get("#selectNetwork").select("regtest")
         cy.get("#createWallet").click()
         cy.get("#randomSeed").then($h1 => {
-            const seed = $h1.text()
+            const seed1 = $h1.text().replace(/ /g,'')
         cy.get("#checked").click()
         cy.get("#next").click()
         cy.get("#skipButton").click()
@@ -425,11 +429,14 @@ describe("App E2E", () => {
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
         cy.wait(2000)
-        cy.get("#seed").should("have.text", seed)
+        cy.get("#seed").then($p => {
+            const seed2 = $p.text().replace(/ /g,'')
+            expect(seed1).to.equal(seed2)
+        })
     })
     })
 
-    it.only("should create a contact but should not be possible to add twice the same email address", () => {
+    it("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
         cy.get("#phoneIcon").click()
         cy.get("#addButton").click()
@@ -674,7 +681,7 @@ describe("App E2E", () => {
         cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#00bfff")
     })
 
-    it.only("check the addresses, when sending and receiving transactions", () => {
+    it("check the addresses, when sending and receiving transactions", () => {
         restoreWallet()
         cy.get("#walletIcon").click()
 
