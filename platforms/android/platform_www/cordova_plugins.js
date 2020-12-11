@@ -41,14 +41,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "pluginId": "cordova-plugin-nativestorage"
     },
     {
-      "id": "cordova-plugin-qrscanner-inspiraluna.QRScanner",
-      "file": "plugins/cordova-plugin-qrscanner-inspiraluna/www/www.min.js",
-      "pluginId": "cordova-plugin-qrscanner-inspiraluna",
-      "clobbers": [
-        "QRScanner"
-      ]
-    },
-    {
       "id": "cordova-plugin-qrscanner.QRScanner",
       "file": "plugins/cordova-plugin-qrscanner/www/www.min.js",
       "pluginId": "cordova-plugin-qrscanner",
@@ -60,12 +52,11 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
   module.exports.metadata = {
     "cordova-plugin-add-swift-support": "2.0.2",
     "cordova-plugin-device": "2.0.3",
-    "cordova-plugin-geolocation": "4.0.2",
+    "cordova-plugin-geolocation": "4.1.0",
     "cordova-plugin-nativestorage": "2.3.2",
-    "cordova-plugin-qrscanner-inspiraluna": "3.0.4",
     "cordova-plugin-vibration": "3.1.1",
     "cordova-plugin-whitelist": "1.3.4",
-    "cordova-plugin-qrscanner": "3.0.1",
-    "cordova-plugin-wkwebview-engine": "1.2.1"
+    "cordova-plugin-wkwebview-engine": "1.2.1",
+    "cordova-plugin-qrscanner": "3.0.1"
   };
 });
