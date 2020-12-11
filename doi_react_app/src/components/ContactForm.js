@@ -3,12 +3,15 @@ import React, { useGlobal, useEffect, useState} from "reactn"
 import QRCode from "qrcode-react"
 import { useTranslation } from "react-i18next"
 import { usePosition } from "use-position"
+
+import * as bip32 from 'bip32';
 import {
     constants,
     getValidatorPublicKeyOfEmail,
     createAndSendTransaction,
     getAddress,
-    createHdKeyFromMnemonic, generateKeyPairFromHdKey,encryptTemplate,createDoichainEntry
+    createHdKeyFromMnemonic,encryptTemplate,createDoichainEntry,
+    network
 } from 'doichain'
 import find from "lodash.find"
 
@@ -23,10 +26,7 @@ import Button from "@material-ui/core/Button";
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
 import "./ProgressButton.css"
-import { network } from "doichain"
-const bitcoin = require("bitcoinjs-lib")
-
-
+const bitcoin = require('bitcoinjs-lib')
 const useStyles = makeStyles(theme => ({
     textField: {
         marginLeft: theme.spacing(1),
@@ -107,18 +107,23 @@ const ContactForm = () => {
                     console.log('sending schwartz',sendSchwartz)
                     const status = undefined //TODO was bitcoin.DOI_STATE_WAITING_FOR_CONFIRMATION (put this to constants)
 
-                    const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password)
-                    //Now generate a next (new) address together with its privateKey
-                    const keyPair = generateKeyPairFromHdKey(hdKey,our_wallet.derivationPath)
+                    //Create a WIF from HDKey inorder to get a keypair which we can create working signatures which are valid
+                    const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase, password)
+                    const xpriv = hdKey.privateExtendedKey
+                    const node = bip32.fromBase58(xpriv,network.DEFAULT_NETWORK ); //global.DEFAULT_NETWORK
+                    const wif = node.toWIF()
+                    const keyPair = bitcoin.ECPair.fromWIF(wif)
+
                     const from = our_wallet.senderEmail
-                    const doichainEntry =  createDoichainEntry(keyPair,validatorPublicKey.data.key,from,email,undefined)
-                    console.log('generated doichainEntry',doichainEntry)
-                    const encryptedTemplateData =  encryptTemplate(
+                    const doichainEntry = createDoichainEntry(keyPair, validatorPublicKey.data.key, from, email, undefined)
+                    console.log('generated doichainEntry', doichainEntry)
+                    const encryptedTemplateData = encryptTemplate(
                         validatorPublicKey.data,
                         email,
                         our_wallet,
                     )
-                    console.log('generated encryptedTemplateData',encryptedTemplateData)
+
+                    console.log('generated encryptedTemplateData', encryptedTemplateData)
                     const txResponse = await createAndSendTransaction(decryptedSeedPhrase,
                         password,
                         sendSchwartz,
@@ -127,7 +132,7 @@ const ContactForm = () => {
                         doichainEntry.nameId,
                         doichainEntry.nameValue,
                         encryptedTemplateData)
-                    console.log("txResponse",txResponse)
+                    console.log("txResponse", txResponse)
 
                     const msg = t("contactForm.BroadcastedDoiTx")
                     const contact = {

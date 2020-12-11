@@ -64,12 +64,13 @@ const ContactList = () => {
         find(wallets, function(wallet) {
             let changed = false 
 
-            const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath(wallet.derivationPath)
+            const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath('m/0/0/0')
+           //const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath(wallet.derivationPath)
 
           //  let childKey0FromXpub = bitcoin.bip32.fromBase58(childKey, network.DEFAULT_NETWORK);
             let publicKey = childKey.publicKey.toString('hex')
             
-            if (publicKey === contact.publicKey) {  //they are different at the moment. Please check!!
+          //  if (publicKey === contact.publicKey) {  //they are different at the moment. Please check!!
 
                 verify(contact.email, wallet.senderEmail, contact.nameId, contact.publicKey).then(
                     status => {
@@ -87,7 +88,7 @@ const ContactList = () => {
                         }
                     }
                 ) //TODO enable with js-doichain module
-            }
+           // }
         })
         return (
             <ListItem key={index} onClick={() => handleDetail(index)}>
