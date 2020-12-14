@@ -12,12 +12,26 @@ import chaiColors from 'chai-colors'
 chai.use(chaiColors);
 //import { network } from "doichain"
 const bitcoin = require("bitcoinjs-lib")
+var POP3Client = require("poplib");
 
 
 const SEED_PASSWORD = "13456abC"
 describe("App E2E", () => {
     beforeEach(() => {
         cy.visit("http://localhost:3001")
+    })
+    before(() => {
+        cy.task("deleteAllEmailsFromPop3", {
+            hostname: 'localhost',
+            port: 110,
+            username: 'bob@ci-doichain.org',
+            password: 'bob',
+            bobdapp_url: 'http://localhost:4000/'
+        }, {
+            timeout: 30000
+        }).then(async $msgcount => {
+            cy.log($msgcount)
+})
     })
 
     const createNewSeedPhrase = () => {
@@ -341,8 +355,10 @@ describe("App E2E", () => {
                 cy.get(".MuiButton-label").click()
                 cy.get("#standard-adornment-password").type(SEED_PASSWORD)
                 cy.get("#unlock").click()
-                cy.wait(2000)
+                cy.wait(6000)
                 cy.get("#phoneIcon").click() //here the verification must fail because the 2 blocks for soi and doi are not yet mined
+                cy.wait(6000)
+
                 cy.task("confirmedLinkInPop3", {
                     hostname: 'localhost',
                     port: 110,
@@ -352,7 +368,6 @@ describe("App E2E", () => {
                 }, {
                     timeout: 30000
                 }).then(async $link => {
-
                     cy.wait(5000)
                     // Funding to generate two blocks 
                     changeNetwork('regtest')
