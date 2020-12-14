@@ -28,6 +28,8 @@ const EditEmailTemplate = () => {
                 }}
             />
             <br />
+            Don't forget <pre>confirmation_url</pre>
+            <br />
             <Button color={"secondary"} id="back" variant="contained" onClick={() => handleCancel()}>
                 {t("button.back")}
             </Button>
