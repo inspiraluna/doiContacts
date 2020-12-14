@@ -1,28 +1,27 @@
 {
-  "_from": "cordova-plugin-nativestorage",
+  "_from": "cordova-plugin-nativestorage@2.3.2",
   "_id": "cordova-plugin-nativestorage@2.3.2",
   "_inBundle": false,
   "_integrity": "sha512-olg/BzYRk0NGbKQ5f7rf21RYQEyJI19CCZn6RpVMO9/kbRRFqae/6ixjDNy81dXSu2TQ42brjBddGe1Qpn5ViA==",
   "_location": "/cordova-plugin-nativestorage",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "version",
     "registry": true,
-    "raw": "cordova-plugin-nativestorage",
+    "raw": "cordova-plugin-nativestorage@2.3.2",
     "name": "cordova-plugin-nativestorage",
     "escapedName": "cordova-plugin-nativestorage",
-    "rawSpec": "",
+    "rawSpec": "2.3.2",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "2.3.2"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-nativestorage/-/cordova-plugin-nativestorage-2.3.2.tgz",
   "_shasum": "d6a1d50632aff2a70227102f68bc605e91aabca2",
-  "_spec": "cordova-plugin-nativestorage",
-  "_where": "/Users/nico/Documents/doi2cordova",
+  "_spec": "cordova-plugin-nativestorage@2.3.2",
+  "_where": "/Users/nico/Documents/projekte/doichain/doiContacts",
   "author": {
     "name": "Gilles Callebaut",
     "email": "callebaut.gilles@gmail.com"

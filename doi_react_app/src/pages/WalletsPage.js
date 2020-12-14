@@ -56,7 +56,7 @@ const WalletsPage = () => {
     }
 
     const addWallet = async (decryptedSeedPhrase,password) => {
-        console.log('adding wallet with password', password)
+        console.log('adding wallet with password')
         const hdKey = createHdKeyFromMnemonic(decryptedSeedPhrase,password) //TODO use the same password here? is that correct - it is possible to use xpubkey of hdkey here (!)
         let newWallet = await createNewWallet(hdKey,wallets.length)
         newWallet = extend(newWallet, openUnlock)

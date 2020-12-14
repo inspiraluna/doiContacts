@@ -11,6 +11,7 @@
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
     "cordova-plugin-geolocation": {
+      "GPS_REQUIRED": "true",
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
     "cordova-plugin-nativestorage": {
@@ -22,10 +23,10 @@
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
-    "cordova-plugin-qrscanner": {
+    "cordova-plugin-wkwebview-engine": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
-    "cordova-plugin-wkwebview-engine": {
+    "cordova-plugin-qrscanner": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     }
   },
