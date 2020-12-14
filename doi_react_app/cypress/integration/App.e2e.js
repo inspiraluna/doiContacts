@@ -12,7 +12,6 @@ import chaiColors from 'chai-colors'
 chai.use(chaiColors);
 //import { network } from "doichain"
 const bitcoin = require("bitcoinjs-lib")
-var POP3Client = require("poplib");
 
 
 const SEED_PASSWORD = "13456abC"
@@ -330,7 +329,7 @@ describe("App E2E", () => {
         cy.get("#selectLang").select("en")
     })
 
-    it.only("should create a contact", () => {
+    it("should create a contact", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
