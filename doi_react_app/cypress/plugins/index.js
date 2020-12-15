@@ -12,7 +12,7 @@
 // the project's config changing)
 
 const browserify = require('@cypress/browserify-preprocessor')
-var POP3Client = require("poplib");
+const POP3Client = require("poplib");
 const emailJSMine = require("emailjs-mime-codec")
 
 function fetchConfirmLinkFromPop3Mail(hostname,port,username,password,bobdapp_url,resolve) {
@@ -23,7 +23,7 @@ function fetchConfirmLinkFromPop3Mail(hostname,port,username,password,bobdapp_ur
   console.log("step 3 - getting email from bobs inbox",password);
 
   //https://github.com/ditesh/node-poplib/blob/master/demos/retrieve-all.js
-  var client = new POP3Client(port, hostname, {
+  let client = new POP3Client(port, hostname, {
       tlserrs: false,
       enabletls: false,
       debug: false
@@ -111,7 +111,7 @@ function delete_all_emails_from_pop3(hostname,port,username,password,bobdapp_url
 
     console.log("deleting all emails from bobs inbox");
     //https://github.com/ditesh/node-poplib/blob/master/demos/retrieve-all.js
-    var client = new POP3Client(port, hostname, {
+    let client = new POP3Client(port, hostname, {
         tlserrs: false,
         enabletls: false,
         debug: false
