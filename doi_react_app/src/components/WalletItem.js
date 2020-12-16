@@ -24,7 +24,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             setAddressOptions(wallets[activeWallet].addresses.map((addr, i) => {
 
                 addressList.push(addr.address)
-                return <option key={addr.address} value={i} id={i}>{addr.address} {addr.derivationPath}  DOI:{addr.balance}</option>
+                return <option key={addr.address} value={addr.address} id={i}>{addr.address} {addr.derivationPath}  DOI:{addr.balance}</option>
             })
             )
             setAddress(addressList[0])
