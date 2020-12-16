@@ -5535,10 +5535,10 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-doichain@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/doichain/-/doichain-0.1.4.tgz#cd0a2380b5505e2348598499594ca5b945e0bba8"
-  integrity sha512-azow+pviAS/IcJCDUz1+XKPFn5GfFEY1NA9pXexYmZLSOshTJiX4yJi5jJ2nXQ6kqidqJZtf1KXWb0EcI6pMXQ==
+doichain@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/doichain/-/doichain-0.1.6.tgz#046c3dc7a2cef6a4f45cc02521e086c8c02588bf"
+  integrity sha512-HC24aMzTbI6P7VJybTtkGPMV5rm683ZpSU68UB3tRYHGq97ORCQ60cWls+jH7tTNbJXj6pQrkMuNYaYrSt3/tA==
   dependencies:
     binstring "^0.2.1"
     bip39 "^3.0.2"
