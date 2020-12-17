@@ -5,6 +5,9 @@ import {
     createHdKeyFromMnemonic
 } from "doichain/lib/createHdKeyFromMnemonic"
 import {
+    generateKeyPairFromHdKey
+} from "doichain/lib/generateKeyPairFromHdKey"
+import {
     changeNetwork,
     DEFAULT_NETWORK
 } from "doichain/lib/network"
@@ -40,16 +43,24 @@ describe("App E2E", () => {
         cy.get("#createWallet").click()
         cy.get("#preview").click()
         cy.get("#createWallet").click()
-        cy.get("#checked").click()
-        cy.get("#next").click()
-        cy.get("#skipButton").click()
-        cy.get("#close").click()
-        cy.get("#skipButton").click()
-        cy.get("#skip").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
-        cy.get("#next").click()
-        cy.wait(1000)
+        return new Cypress.Promise((resolve, reject) => {
+            cy.get("#randomSeed").then(($h1) => {
+                cy.get("#checked").click()
+                cy.get("#next").click()
+                cy.get("#skipButton").click()
+                cy.get("#close").click()
+                cy.get("#skipButton").click()
+                cy.get("#skip").click()
+                cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
+                cy.get("#next").click()
+                cy.wait(1000)
+
+                const seed1 = $h1.text() //.replace(/ /g, "")
+                cy.log(seed1)
+                resolve(seed1)
+            })
+        })
     }
 
     const restoreWallet = () => {
@@ -443,20 +454,9 @@ describe("App E2E", () => {
     })
 
     it("creates a new wallet then shows recovery phrase", () => {
-        cy.get("#selectNetwork").select("regtest")
-        cy.get("#createWallet").click()
-        cy.get("#randomSeed").then($h1 => {
-            const seed1 = $h1.text().replace(/ /g, '')
-            cy.get("#checked").click()
-            cy.get("#next").click()
-            cy.get("#skipButton").click()
-            cy.get("#close").click()
-            cy.get("#skipButton").click()
-            cy.get("#skip").click()
-            cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-            cy.get("#standard-adornment-password2").type(SEED_PASSWORD)
-            cy.get("#next").click()
-            cy.wait(5000)
+        createNewSeedPhrase().then((seed1) => {
+            cy.log(seed1)
+            // })
             cy.get("#settingsIcon").click()
             cy.get("#selectLang").select("en")
             cy.get("#showSeedPhrase").click()
@@ -464,9 +464,9 @@ describe("App E2E", () => {
             cy.get("#standard-adornment-password").type(SEED_PASSWORD)
             cy.get("#unlock").click()
             cy.wait(2000)
-            cy.get("#seed").then($p => {
-                const seed2 = $p.text().replace(/ /g, '')
-                expect(seed1).to.equal(seed2)
+            cy.get("#seed").then(($p) => {
+                const seed2 = $p.text().replace(/ /g, "")
+                expect(seed1.replace(/ /g, "")).to.equal(seed2)
             })
         })
     })
@@ -716,100 +716,118 @@ describe("App E2E", () => {
         cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#00bfff")
     })
 
-    it("check the addresses, when sending and receiving transactions", () => {
-        restoreWallet()
-        cy.get("#walletIcon").click()
+    it.only("check the addresses, when sending and receiving transactions", () => {
+        createNewSeedPhrase().then((seed1) => {
+            cy.get("#walletIcon").click()
+            createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+            cy.wait(500)
+            cy.get("#walletIcon").click()
+            cy.get("#detail").click()
+            cy.get("#receive").click()
+            cy.get("#address").then(($span) => {
+                const receiveAddress = $span.text()
+                changeNetwork("regtest")
+                cy.get("#walletIcon").click()
+                cy.get("#walletList > li").each(($el, index, $list) =>
+                    index === 0 ? cy.wrap($el).click() : ""
+                ) //click on the first address
 
-        // createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
-        // cy.wait(500)
-        // createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
-        // cy.wait(2000)
+                // we get the change address of the first wallet
+                cy.get("#doiCoinAddress option").then(async (options) => {
+                    const actual = [...options].map((o) => o.value)
+                    cy.log(actual)
 
-        // cy.get("#walletIcon").click()
-        cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click on the first and get the changeAddress
-        // we get the change address of the first wallet          
-        cy.get('#doiCoinAddress').eq(2).select('2')
-            .then(async $li => {
-                const changeAddressOfFirstWallet = await $li.text().split(" ")[0]
-                if (changeAddressOfFirstWallet) cy.log("changeAddressOfFirstWallet", changeAddressOfFirstWallet)
+                    // const decryptedSeed =
+                    //     "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
+                    const hdKey = createHdKeyFromMnemonic(seed1, SEED_PASSWORD)
 
+                    const address0 = bitcoin.payments.p2pkh({
+                        pubkey: hdKey.derive("m/0/0/0").publicKey,
+                        network: global.DEFAULT_NETWORK,
+                    }).address
+                    expect(actual[0]).to.equal(address0)
+                    expect(actual[0]).to.equal(receiveAddress)
 
-                // .should("eq", "mggVJ5hj7VpUreG65yrAWWnBweCuW8CaPd m/0/1/0  DOI:0.00000000")
-                // cy.wait(10000)
+                    const address01 = bitcoin.payments.p2pkh({
+                        pubkey: hdKey.derive("m/0/1/0").publicKey,
+                        network: global.DEFAULT_NETWORK,
+                    }).address
+                    expect(actual[1]).to.equal(address01)
 
-                //    .then($li => {
-                //     const changeAddressOfFirstWallet = $li.text().split(" ")[0]
-                //     cy.wait(10000)
-                //     cy.log("changeAddressOfFirstWallet", changeAddressOfFirstWallet)
-                // //1. fund first wallet
-                //     cy.get("#doiCoinAddress").then($li => {
-                //         const addressOfThirdWallet = $li.text().split(" ")[0]
-                //     cy.get("#walletIcon").click()
-                // //click on the first wallet and send DOI to the 3rd
-                //     cy.get("#walletList > li").each(($el, index, $list) => (index === 0)?cy.wrap($el).click():"") 
-                //     cy.get("#doiCoinAddress").then(async $li2 => {
-                //             const addressOfFirstWallet = $li2.text().split(" ")[0]
-                //     cy.get("#balance").then(async $span => {
-                //                 const balance = parseFloat($span.text())
-                //                 if(balance<100){
-                //                     const doi = 10
-                //                     changeNetwork('regtest')
-                //                     const funding = await fundWallet(addressOfFirstWallet,doi)
-                //     cy.get("#toAddress").type(addressOfThirdWallet)
-                //             const amountToSend = 0.00005
-                //     cy.get("#amount").type(amountToSend)
-                //     cy.get("#sendAmount").click()
-                //     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-                //     cy.get("#unlock").click()
+                    const doi = 10
+                    changeNetwork("regtest")
+                    const funding = await fundWallet(address0, doi)
+                    cy.wait(500)
+                    cy.get("#walletIcon").click()
+                    cy.get("#walletList > li").each(($el, index, $list) =>
+                        index === 0 ? cy.wrap($el).click() : ""
+                    )
+                    cy.wait(1000)
 
-                //             const decryptedSeed = "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
+                    cy.get("#walletIcon").click()
+                    cy.get("#detail").click()
+                    cy.get("#receive").click()
+                    cy.get("#address").then(($span) => {
+                        const receiveAddress = $span.text()
 
-                //             const hdKey = createHdKeyFromMnemonic(decryptedSeed,SEED_PASSWORD)
-                //     cy.log('network.DEFAULT_NETWORK',global.DEFAULT_NETWORK)
-                //     cy.log('DEFAULT_NETWORK',global.DEFAULT_NETWORK)
-                //             let childKey0FromXpub = bitcoin.bip32.fromBase58(hdKey.publicExtendedKey);
+                        cy.get("#walletIcon").click()
+                        cy.get("#walletList > li").each(($el, index, $list) =>
+                            index === 0 ? cy.wrap($el).click() : ""
+                        ) //click on the first address
 
-                //             const address1 = bitcoin.payments.p2pkh({ pubkey: childKey0FromXpub.derivePath('m/0/0/0').publicKey, network: global.DEFAULT_NETWORK}).address
-                //             const changeAddress1 = bitcoin.payments.p2pkh({ pubkey: childKey0FromXpub.derivePath('m/0/1/0').publicKey, network: global.DEFAULT_NETWORK}).address
-                //             expect(addressOfFirstWallet).to.equal(address1)
-                //             expect(changeAddressOfFirstWallet).to.equal(changeAddress1)
+                        cy.get("#doiCoinAddress option").then(async (options) => {
+                            const actual = [...options].map((o) => o.value)
+                            cy.log(actual)
 
-                //         cy.get("#walletIcon").click()
-                //         cy.get("#walletList > li").each(($el, index, $list) => (index === 2)?cy.wrap($el).click():"") //click third wallet
-                //         cy.get("#receive").click()
-                //  //we get the new address of the third wallet
-                //         cy.get("#address").then($span => {
-                //                         const nextAddressOfThirdWallet = $span.text()
-                //                         const decryptedSeed = "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
+                            const address1 = bitcoin.payments.p2pkh({
+                                pubkey: hdKey.derive("m/0/0/1").publicKey,
+                                network: global.DEFAULT_NETWORK,
+                            }).address
+                            cy.wait(1000)
+                            expect(actual[2]).to.equal(address1)
+                            expect(actual[2]).to.equal(receiveAddress)
 
-                //                         const chainIndex = 2
-                //                         const addressIndex = 0
-                //                         const baseDerivationPath = "m/"+chainIndex
-                //                         const derivationPath = addressIndex+"/"+addressIndex
-                //                         const walletDerivationPath = baseDerivationPath+"/"+derivationPath
+                            createWallet(
+                                "Bob",
+                                "bob@ci-doichain.org",
+                                "Welcome to Bob's newsletter"
+                            )
+                            cy.get("#doiCoinAddress").then(($li) => {
+                                const addressOfSecondWallet = $li.text().split(" ")[0]
+                                cy.get("#walletIcon").click()
+                                cy.get("#walletList > li").each(($el, index, $list) =>
+                                    index === 0 ? cy.wrap($el).click() : ""
+                                ) //click on the first wallet and send DOI to the 2nd
+                                cy.wait(2000)
+                                //2. send 1 DOI to 2nd wallet
+                                cy.get("#send").click()
+                                cy.get("#toAddress").type(addressOfSecondWallet)
+                                const amountToSend = 1
+                                cy.get("#amount").type(amountToSend)
+                                cy.get("#sendAmount").click()
+                                cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                                cy.get("#unlock").click()
+                                cy.wait(2000)
 
-                //                         const derivePathToArray = walletDerivationPath.split('/')
-                //                         const newDerivationPath = derivePathToArray[0] + "/" + derivePathToArray[1] + "/" + derivePathToArray[2] + "/" + (derivePathToArray[3]+1) 
+                                cy.get("#walletIcon").click()
+                                cy.get("#walletList > li").each(($el, index, $list) =>
+                                    index === 0 ? cy.wrap($el).click() : ""
+                                ) //click on the first address
 
-                //                         const address2 = bitcoin.payments.p2pkh({ pubkey: childKey0FromXpub.derivePath('m/2/0/0').publicKey, network: global.DEFAULT_NETWORK}).address  
-                //                         const address3 = bitcoin.payments.p2pkh({ pubkey: childKey0FromXpub.derivePath(newDerivationPath).publicKey, network: global.DEFAULT_NETWORK}).address
-
-                //         cy.log("newDerivationPath", newDerivationPath)
-
-                //                         expect(addressOfThirdWallet).to.equal(address2)
-                //                         expect(nextAddressOfThirdWallet).to.equal(address3)
-                //                         })
-
-                //                 }           
-                //             })
-                // })
-                // })
-                // })
+                                cy.get("#doiCoinAddress option").then(async (options) => {
+                                    const actual = [...options].map((o) => o.value)
+                                    cy.log(actual)
+                                    const address001 = bitcoin.payments.p2pkh({
+                                        pubkey: hdKey.derive("m/0/1/1").publicKey,
+                                        network: global.DEFAULT_NETWORK,
+                                    }).address
+                                    expect(actual[3]).to.equal(address001)
+                                })
+                            })
+                        })
+                    })
+                })
             })
+        })
     })
 })
-
-// xpub661MyMwAqRbcGgbkNp7ea63AAZKnvHHC7BzKjiQ2cyxbBCxSvBqBAKZZrxMmP8jtNftXYaECEdcMgQZjto5ExR9RZdLHko72x5bxtRUZpi8
-// xpub661MyMwAqRbcGgbkNp7ea63AAZKnvHHC7BzKjiQ2cyxbBCxSvBqBAKZZrxMmP8jtNftXYaECEdcMgQZjto5ExR9RZdLHko72x5bxtRUZpi8
-// pubkey: 0274475af573b2cd8e5d6b28ba7fcacd2aac951a4b4aa0f8e03f51a640d0c69765
-// 0274475af573b2cd8e5d6b28ba7fcacd2aac951a4b4aa0f8e03f51a640d0c69765
