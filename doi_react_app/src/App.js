@@ -41,7 +41,7 @@ const App = props => {
         initStorage(props.cordova, globalState, setGlobalState)
         const runGetServerStatus = async () => {
             const status = await getServerStatus();
-            console.log('status',status)
+            //console.info('status',status)
             setServerStatus(status.data.version)
         }
         runGetServerStatus()

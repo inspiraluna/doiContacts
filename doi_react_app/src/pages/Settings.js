@@ -53,14 +53,18 @@ const Settings = () => {
     const classes = useStyles()
 
     useEventListener(document, "backbutton", () => console.log("back"));
-
+   // console.log(serverStatus.url)
 if (encrypted) {
     return (
         <ThemeProvider >
         <CssBaseline />
         <div>
             <div>
-                <p>Doichain dApp version: {serverStatus?.version} ({serverStatus?.timestamp})</p>
+                <p class="small">Doichain dApp
+                    Version: {serverStatus?.version}
+                    Time: {serverStatus?.timestamp})<br/>
+                    dApp: {serverStatus?.url}
+                </p>
 
                 <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="uncontrolled-native">{t("option.choose")}</InputLabel>
