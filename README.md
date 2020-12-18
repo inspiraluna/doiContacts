@@ -1,4 +1,4 @@
-# DoiContacts Cordova App with ReactJS
+# DoiContacts - Doichain wallet für iOS, Android and desktop
 ## Description
 This app is an experimental study around the concept of Doichain. A blockchain forked from  Namecoin (and Bitcoin).
 It focuses on atomic email permissions / double-opt-ins (DOI) requested through and stored on a blockchain.
