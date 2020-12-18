@@ -5535,10 +5535,10 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-doichain@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/doichain/-/doichain-0.1.6.tgz#046c3dc7a2cef6a4f45cc02521e086c8c02588bf"
-  integrity sha512-HC24aMzTbI6P7VJybTtkGPMV5rm683ZpSU68UB3tRYHGq97ORCQ60cWls+jH7tTNbJXj6pQrkMuNYaYrSt3/tA==
+doichain@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/doichain/-/doichain-0.1.7.tgz#6171011f0b521db8b4c06e50b1ca41f565458535"
+  integrity sha512-YJSwSaTe/9mXruVr6OdYtCZXVOpPqEzdPB6qI0cfRq/7OfwGCfLTiayp46oKZrXargBJDALqio6KLR6X+ZGqwQ==
   dependencies:
     binstring "^0.2.1"
     bip39 "^3.0.2"
@@ -13719,7 +13719,7 @@ ramda@^0.26.1, ramda@~0.26.1:
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.26.1.tgz#8d41351eb8111c55353617fc3bbffad8e4d35d06"
   integrity sha512-hLWjpy7EnsDBb0p+Z3B7rPi3GDeRG5ZtiI33kJhTt+ORCd38AbAIjB/9zRIUoeTbE/AVX5ZkU7m6bznsvrf8eQ==
 
-randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.3, randombytes@^2.0.5:
+randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.3, randombytes@^2.0.5, randombytes@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/randombytes/-/randombytes-2.1.0.tgz#df6f84372f0270dc65cdf6291349ab7a473d4f2a"
   integrity sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==
@@ -14695,6 +14695,13 @@ send@0.17.1:
     on-finished "~2.3.0"
     range-parser "~1.2.1"
     statuses "~1.5.0"
+
+serialize-javascript@>=3.1.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-5.0.1.tgz#7886ec848049a462467a97d3d918ebb2aaf934f4"
+  integrity sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==
+  dependencies:
+    randombytes "^2.1.0"
 
 serialize-javascript@^2.1.2:
   version "2.1.2"

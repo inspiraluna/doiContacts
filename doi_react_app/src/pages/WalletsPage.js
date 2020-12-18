@@ -17,7 +17,6 @@ import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 
 import {createHdKeyFromMnemonic} from "doichain";
 import {createNewWallet} from "doichain/lib/createNewWallet";
-import {generateNewAddress} from "doichain/lib/generateNewAddress";
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
