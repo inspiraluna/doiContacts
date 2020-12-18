@@ -49,7 +49,8 @@ const App = props => {
 
     if(globalState.network)
         network.changeNetwork(globalState.network)
-    console.log('current network',globalState.network)
+    
+    //    console.info('current network',globalState.network)
 
     let ourNetwork = GLOBAL.network
     let secondaryColor = "#cd45ff"
