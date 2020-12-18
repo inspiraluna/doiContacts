@@ -1,4 +1,4 @@
-import React, { useGlobal, useState } from "reactn"
+import React, { useGlobal, useState, useEffect } from "reactn"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import Avatar from "@material-ui/core/Avatar"
@@ -18,16 +18,30 @@ import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../hooks/useEventListener';
 import { constants } from "doichain";
+import {getBalance} from "./WalletItem"
 
 
 const WalletList = () => {
     const [wallets, setWallets] = useGlobal("wallets")
     const [open, setOpen] = useState(undefined)
     const setModus = useGlobal("modus")[1]
-    const setActiveWallet = useGlobal("activeWallet")[1]
+    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
     const setTempWallet = useGlobal("tempWallet")[1]
     const [t] = useTranslation()
     const [satoshi, setSatoshi] = useGlobal("satoshi")
+
+    useEffect(() => {
+         function fetchData() {
+            let changed = false
+            let balanceObj
+            wallets.forEach(async (wallet, index) => {
+                 balanceObj = await getBalance(index, wallets)
+                if (balanceObj.balance !== wallets[index].balance)changed = true        
+            });
+            if(changed) setWallets(balanceObj.wallets)  
+        }
+        fetchData()
+    }, [])
 
     const handleClose = () => {
         setOpen(undefined)

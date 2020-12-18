@@ -10,7 +10,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
     const setAddress = useState("")[1]
     const [addressOptions, setAddressOptions] = useState([])
-    const [balance, setBalance] = useState(0)
+    const [balance, setBalance] = useGlobal("balance")
     const [unconfirmedBalance] = useState(0)
 
     const [wallets, setWallets] = useGlobal("wallets")
@@ -19,45 +19,30 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [satoshi, setSatoshi] = useGlobal("satoshi")
 
     useEffect( () => {
-        const getBalance = async () => {
-            const addressList = []
-            setAddressOptions(wallets[activeWallet].addresses.map((addr, i) => {
 
-                addressList.push(addr.address)
-                return <option key={addr.address} value={addr.address} id={i}>{addr.address} {addr.derivationPath}  DOI:{addr.balance}</option>
-            })
+        async function fetchData() {
+            const addressList = []
+            setAddressOptions(
+                wallets[activeWallet].addresses.map((addr, i) => {
+                    addressList.push(addr.address)
+                    return (
+                        <option key={addr.address} value={addr.address} id={i}>
+                            {addr.address} {addr.derivationPath} DOI:{addr.balance}
+                        </option>
+                    )
+                })
             )
             setAddress(addressList[0])
 
-            let xPubKey = bitcoin.bip32.fromBase58(wallets[activeWallet].publicExtendedKey);
-            const balanceObj = await getBalanceOfWallet(xPubKey,'m/'+activeWallet+'/0/0')
-            console.log(balanceObj)
-
-            //take all addresses from response and sort it into local addresses
-            balanceObj.addresses.forEach( addr => {
-                let found = false
-                for(let i = 0;i<=wallets[activeWallet].addresses.length;i++){
-                    const thisAddress = wallets[activeWallet].addresses[i]
-                    if(thisAddress && thisAddress.address===addr.address){
-                        wallets[activeWallet].addresses[i] =  addr
-                        found=true
-                        break
-                    }
-                }
-                if(!found){
-                    wallets[activeWallet].addresses.push(addr)
-                }
-            })
-            if(wallets[activeWallet].balance!==balanceObj.balance){
-                const tempWallet = wallets[activeWallet]
-                tempWallet.balance = balanceObj.balance
-                const tempWallets = wallets
-                tempWallets[activeWallet] = tempWallet
-                setWallets(tempWallets)
+            const ourWallets = wallets
+            const ourActiveWallet = activeWallet
+            const balanceObj = await getBalance(ourActiveWallet, ourWallets)
+            if (balanceObj && balanceObj.balance !== balance) {
+                setWallets(balanceObj.wallets)
+                setBalance(balanceObj.balance)
             }
-            setBalance(balanceObj.balance)
         }
-        getBalance()
+        fetchData()
     }, [])
 
         return (
@@ -117,5 +102,39 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             </div>
         )
 }
+
+export const getBalance = async (activeWallet,wallets) => {
+
+    if(activeWallet===undefined || wallets===undefined || wallets.length===0) return
+ 
+    let xPubKey = bitcoin.bip32.fromBase58(wallets[activeWallet].publicExtendedKey);
+    const balanceObj = await getBalanceOfWallet(xPubKey,'m/'+activeWallet+'/0/0')
+    console.log(balanceObj)
+
+    //take all addresses from response and sort it into local addresses
+    balanceObj.addresses.forEach( addr => {
+        let found = false
+        for(let i = 0;i<=wallets[activeWallet].addresses.length;i++){
+            const thisAddress = wallets[activeWallet].addresses[i]
+            if(thisAddress && thisAddress.address===addr.address){
+                wallets[activeWallet].addresses[i] =  addr
+                found=true
+                break
+            }
+        }
+        if(!found){
+            wallets[activeWallet].addresses.push(addr)
+        }
+    })
+    const tempWallets = wallets
+    if(wallets[activeWallet].balance!==balanceObj.balance){
+        const tempWallet = wallets[activeWallet]
+        tempWallet.balance = balanceObj.balance
+        tempWallets[activeWallet] = tempWallet
+    }
+    
+    return {balance: balanceObj.balance, wallets: tempWallets}
+}
+
 
 export default WalletItem
