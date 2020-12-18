@@ -26,6 +26,7 @@ import Button from "@material-ui/core/Button";
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
 import "./ProgressButton.css"
+import {getBalance} from "./WalletItem"
 const bitcoin = require('bitcoinjs-lib')
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -55,7 +56,7 @@ const ContactForm = () => {
     const classes = useStyles()
 
     const [modus, setModus] = useGlobal("modus")
-    const [wallets] = useGlobal("wallets")
+    const [wallets, setWallets] = useGlobal("wallets")
     const [contacts,setContacts] = useGlobal("contacts")
     const setOpenError = useGlobal("errors")[1]
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
@@ -76,6 +77,19 @@ const ContactForm = () => {
         let time = 500;
         navigator.vibrate(time);
      }
+
+     useEffect(() => {
+        function fetchData() {
+           let changed = false
+           let balanceObj
+           wallets.forEach(async (wallet, index) => {
+                balanceObj = await getBalance(index, wallets)
+               if (balanceObj.balance !== wallets[index].balance)changed = true        
+           });
+           if(changed) setWallets(balanceObj.wallets)  
+       }
+       fetchData()
+   }, [])
 
     const addContact = async (decryptedSeedPhrase,password) => {
 
