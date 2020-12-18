@@ -42,7 +42,7 @@ const App = props => {
         const runGetServerStatus = async () => {
             const status = await getServerStatus();
             //console.info('status',status)
-            setServerStatus(status.data.version)
+            if(status) setServerStatus(status.data.version)
         }
         runGetServerStatus()
     }, [globalState.network])
