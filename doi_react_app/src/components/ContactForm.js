@@ -11,7 +11,8 @@ import {
     createAndSendTransaction,
     getAddress,
     createHdKeyFromMnemonic,encryptTemplate,createDoichainEntry,
-    network
+    network,
+    getBalance
 } from 'doichain'
 import find from "lodash.find"
 
@@ -26,7 +27,6 @@ import Button from "@material-ui/core/Button";
 import QRCodeScannerContents, { QRCodeScannerTextField } from "./QRCodeScanner"
 import UnlockPasswordDialog from "./UnlockPasswordDialog";
 import "./ProgressButton.css"
-import {getBalance} from "./WalletItem"
 const bitcoin = require('bitcoinjs-lib')
 const useStyles = makeStyles(theme => ({
     textField: {
@@ -79,11 +79,12 @@ const ContactForm = () => {
      }
 
      useEffect(() => {
+        let options = {network:global.DEFAULT_NETWORK}
         function fetchData() {
            let changed = false
            let balanceObj
            wallets.forEach(async (wallet, index) => {
-                balanceObj = await getBalance(index, wallets)
+                balanceObj = await getBalance(index, wallets, options)
                if (balanceObj.balance !== wallets[index].balance)changed = true        
            });
            if(changed) setWallets(balanceObj.wallets)  

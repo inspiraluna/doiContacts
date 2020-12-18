@@ -17,8 +17,7 @@ import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../hooks/useEventListener';
-import { constants } from "doichain";
-import {getBalance} from "./WalletItem"
+import { constants, getBalance } from "doichain";
 
 
 const WalletList = () => {
@@ -31,11 +30,12 @@ const WalletList = () => {
     const [satoshi, setSatoshi] = useGlobal("satoshi")
 
     useEffect(() => {
+        let options = {network:global.DEFAULT_NETWORK}
          function fetchData() {
             let changed = false
             let balanceObj
             wallets.forEach(async (wallet, index) => {
-                 balanceObj = await getBalance(index, wallets)
+                 balanceObj = await getBalance(index, wallets, options)
                 if (balanceObj.balance !== wallets[index].balance)changed = true        
             });
             if(changed) setWallets(balanceObj.wallets)  

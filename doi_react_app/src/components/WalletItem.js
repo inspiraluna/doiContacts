@@ -1,5 +1,5 @@
 import NativeSelect from "@material-ui/core/NativeSelect"
-import { constants, getBalanceOfWallet } from "doichain"
+import { constants, getBalanceOfWallet, getBalance } from "doichain"
 import { useTranslation } from "react-i18next"
 import React, { useEffect, useGlobal, useState } from "reactn"
 import TransactionList from "./TransactionList"
@@ -19,7 +19,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
     const [satoshi, setSatoshi] = useGlobal("satoshi")
 
     useEffect( () => {
-
+        let options = {network:global.DEFAULT_NETWORK}
         async function fetchData() {
             const addressList = []
             setAddressOptions(
@@ -36,7 +36,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
 
             const ourWallets = wallets
             const ourActiveWallet = activeWallet
-            const balanceObj = await getBalance(ourActiveWallet, ourWallets)
+            const balanceObj = await getBalance(ourActiveWallet, ourWallets, options)
             if (balanceObj && balanceObj.balance !== balance) {
                 setWallets(balanceObj.wallets)
                 setBalance(balanceObj.balance)
@@ -101,36 +101,6 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
                 </div>
             </div>
         )
-}
-
-export const getBalance = async (activeWallet,wallets) => {
-
-    if(activeWallet===undefined || wallets===undefined || wallets.length===0) return
- 
-    let xPubKey = bitcoin.bip32.fromBase58(wallets[activeWallet].publicExtendedKey);
-    const balanceObj = await getBalanceOfWallet(xPubKey,'m/'+activeWallet+'/0/0')
-    balanceObj.addresses.forEach( addr => {
-        let found = false
-        for(let i = 0;i<=wallets[activeWallet].addresses.length;i++){
-            const thisAddress = wallets[activeWallet].addresses[i]
-            if(thisAddress && thisAddress.address===addr.address){
-                wallets[activeWallet].addresses[i] =  addr
-                found=true
-                break
-            }
-        }
-        if(!found){
-            wallets[activeWallet].addresses.push(addr)
-        }
-    })
-    const tempWallets = wallets
-    if(wallets[activeWallet].balance!==balanceObj.balance){
-        const tempWallet = wallets[activeWallet]
-        tempWallet.balance = balanceObj.balance
-        tempWallets[activeWallet] = tempWallet
-    }
-    
-    return {balance: balanceObj.balance, wallets: tempWallets}
 }
 
 
