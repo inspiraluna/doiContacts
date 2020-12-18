@@ -85,6 +85,7 @@ describe("App E2E", () => {
 
     const createWallet = (senderName, senderEmail, subject) => {
         cy.get("#walletIcon").click()
+        cy.wait(500)
         cy.get("#add").click()
         cy.get("#senderName").type(senderName)
         cy.get("#senderEmail").type(senderEmail)
@@ -224,6 +225,7 @@ describe("App E2E", () => {
         cy.get("#unlock").click()
         cy.wait(500)
         cy.get("#walletIcon").click()
+        cy.wait(500)
         cy.get("#deleteWallet").click()
         cy.get("#closeAlert").click()
         cy.get("#deleteWallet").click()
@@ -296,6 +298,7 @@ describe("App E2E", () => {
                         cy.wait(4000)
                         cy.get("#txList > div").each(($el, index, $list) => {
                             expect($list.length).to.eq(1)
+                            cy.wait(500)
                             const confirm = parseFloat($el.find("#confirmations").text())
                             expect(confirm).to.eq(1)
                         })
@@ -420,6 +423,7 @@ describe("App E2E", () => {
         createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
         cy.wait(500)
         cy.get("#walletIcon").click()
+        cy.wait(500)
         cy.get("#detail").click()
         cy.get("#receive").click()
         cy.window().then(win => {
@@ -599,7 +603,7 @@ describe("App E2E", () => {
         })
     })
 
-    it("sends 5000 SAT, then 0.00005 DOI", () => {
+    it.only("sends 5000 SAT, then 0.00005 DOI", () => {
         createNewSeedPhrase()
         cy.get("#settingsIcon").click()
         cy.get("#selectCurrency").select("schw")
@@ -653,6 +657,7 @@ describe("App E2E", () => {
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
         cy.get("#settingsIcon").click()
+        cy.wait(500)
         cy.get("#selectCurrency").select("schw")
         cy.get("#walletIcon").click()
         cy.get("#detail").click()
@@ -716,12 +721,13 @@ describe("App E2E", () => {
         cy.get("#showSeedPhrase").should("have.css", "background-color").and("be.colored", "#00bfff")
     })
 
-    it.only("check the addresses, when sending and receiving transactions", () => {
+    it("check the addresses, when sending and receiving transactions", () => {
         createNewSeedPhrase().then((seed1) => {
             cy.get("#walletIcon").click()
             createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
             cy.wait(500)
             cy.get("#walletIcon").click()
+            cy.wait(500)
             cy.get("#detail").click()
             cy.get("#receive").click()
             cy.get("#address").then(($span) => {
@@ -795,6 +801,7 @@ describe("App E2E", () => {
                             cy.get("#doiCoinAddress").then(($li) => {
                                 const addressOfSecondWallet = $li.text().split(" ")[0]
                                 cy.get("#walletIcon").click()
+                                cy.wait(500)
                                 cy.get("#walletList > li").each(($el, index, $list) =>
                                     index === 0 ? cy.wrap($el).click() : ""
                                 ) //click on the first wallet and send DOI to the 2nd

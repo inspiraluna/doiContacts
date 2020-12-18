@@ -1,0 +1,147 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="org.doichain.contacts.app"
+4    android:hardwareAccelerated="true"
+5    android:versionCode="10059"
+6    android:versionName="1.0.59" >
+7
+8    <uses-sdk
+9        android:minSdkVersion="22"
+9-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml
+10        android:targetSdkVersion="29" />
+10-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml
+11
+12    <supports-screens
+12-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:5-191
+13        android:anyDensity="true"
+13-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:23-48
+14        android:largeScreens="true"
+14-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:49-76
+15        android:normalScreens="true"
+15-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:77-105
+16        android:resizeable="true"
+16-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:106-131
+17        android:smallScreens="true"
+17-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:132-159
+18        android:xlargeScreens="true" />
+18-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:3:160-188
+19
+20    <uses-permission android:name="android.permission.INTERNET" />
+20-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:4:5-67
+20-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:4:22-64
+21    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+21-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:13:5-81
+21-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:13:22-78
+22    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+22-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:14:5-79
+22-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:14:22-76
+23
+24    <uses-feature
+24-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:15:5-90
+25        android:name="android.hardware.location.gps"
+25-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:15:19-63
+26        android:required="true" />
+26-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:15:64-87
+27
+28    <uses-permission android:name="android.permission.VIBRATE" />
+28-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:16:5-66
+28-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:16:22-63
+29    <uses-permission
+29-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:17:5-90
+30        android:name="android.permission.CAMERA"
+30-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:17:22-62
+31        android:required="false" />
+31-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:17:63-87
+32
+33    <uses-feature
+33-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:18:5-85
+34        android:name="android.hardware.camera"
+34-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:18:19-57
+35        android:required="false" />
+35-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:18:58-82
+36    <uses-feature
+36-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:19:5-91
+37        android:name="android.hardware.camera.front"
+37-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:19:19-63
+38        android:required="false" />
+38-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:19:64-88
+39    <!-- TODO replace above two with next line after Android 4.2 -->
+40    <!-- <uses-feature android:name="android.hardware.camera.any"/> -->
+41    <uses-feature
+41-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:32:5-34:36
+42        android:name="android.hardware.camera.autofocus"
+42-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:33:9-57
+43        android:required="false" />
+43-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:34:9-33
+44    <uses-feature
+44-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:35:5-37:36
+45        android:name="android.hardware.camera.flash"
+45-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:36:9-53
+46        android:required="false" />
+46-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:37:9-33
+47    <uses-feature
+47-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:38:5-40:36
+48        android:name="android.hardware.screen.landscape"
+48-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:39:9-57
+49        android:required="false" />
+49-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:40:9-33
+50    <uses-feature
+50-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:41:5-43:36
+51        android:name="android.hardware.wifi"
+51-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:42:9-45
+52        android:required="false" />
+52-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:43:9-33
+53
+54    <application
+54-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:5:5-12:19
+55        android:hardwareAccelerated="true"
+55-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:5:18-52
+56        android:icon="@mipmap/ic_launcher"
+56-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:5:53-87
+57        android:label="@string/app_name"
+57-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:5:88-120
+58        android:supportsRtl="true" >
+58-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:5:121-147
+59        <activity
+59-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:9-11:20
+60            android:name="org.doichain.contacts.app.MainActivity"
+60-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:205-232
+61            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+61-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:19-135
+62            android:label="@string/activity_name"
+62-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:136-173
+63            android:launchMode="singleTop"
+63-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:174-204
+64            android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
+64-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:233-295
+65            android:windowSoftInputMode="adjustResize" >
+65-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:6:296-338
+66            <intent-filter android:label="@string/launcher_name" >
+66-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:7:13-10:29
+66-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:7:28-65
+67                <action android:name="android.intent.action.MAIN" />
+67-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:8:17-69
+67-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:8:25-66
+68
+69                <category android:name="android.intent.category.LAUNCHER" />
+69-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:9:17-77
+69-->/Users/gouaby/Documents/projects/doiContacts/platforms/android/app/src/main/AndroidManifest.xml:9:27-74
+70            </intent-filter>
+71        </activity>
+72        <activity
+72-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:46:9-52:63
+73            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+73-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:47:13-74
+74            android:clearTaskOnLaunch="true"
+74-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:48:13-45
+75            android:screenOrientation="sensorLandscape"
+75-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:49:13-56
+76            android:stateNotNeeded="true"
+76-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:50:13-42
+77            android:theme="@style/zxing_CaptureTheme"
+77-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:51:13-54
+78            android:windowSoftInputMode="stateAlwaysHidden" />
+78-->[com.journeyapps:zxing-android-embedded:3.3.0] /Users/gouaby/.gradle/caches/transforms-2/files-2.1/927fac5e449713ec53d5436901e0b710/zxing-android-embedded-3.3.0/AndroidManifest.xml:52:13-60
+79    </application>
+80
+81</manifest>

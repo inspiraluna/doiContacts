@@ -1,4 +1,4 @@
-import React, {useEffect, useGlobal, useState} from "reactn"
+import React, { useGlobal, useState } from "reactn"
 import {network} from "doichain";
 import { useTranslation } from "react-i18next"
 import FormControl from "@material-ui/core/FormControl"
@@ -26,7 +26,7 @@ const Settings = () => {
     const [satoshi, setSatoshi] = useGlobal("satoshi")
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
-    const [serverStatus, setServerStatus] = useGlobal("serverStatus")
+    const [serverStatus] = useGlobal("serverStatus")
 
     const handleClose = () => {
         setOpen(undefined)
