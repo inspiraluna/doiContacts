@@ -63,7 +63,10 @@ const WalletCreator = () => {
             setSeed(undefined)
             setPassword1(undefined)
             setLoading(true)
-            restoreDoichainWalletFromHdKey(hdkey,email).then((wallets) => {
+
+            let options = {}
+            if(modus === "restoreWallet") options = {rescan: true }
+            restoreDoichainWalletFromHdKey(hdkey,options).then((wallets) => {
                 if(wallets.length>0){
                     setWallets(wallets)
                     setLoading(false)
