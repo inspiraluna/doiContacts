@@ -1,0 +1,38 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-geolocation": {
+      "GPS_REQUIRED": "true",
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-qrscanner": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    }
+  }
+}

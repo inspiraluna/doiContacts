@@ -33,7 +33,8 @@ const RestoreWalletPage = props => {
                     aria-label="maximum height"
                     placeholder={t("restoreRecoveryPhrase.enterSeed")}
                     onChange={e => {
-                        const mnemonic = e.target.value
+                        const mnemonic = e.target.value.trim().replace(/(\r\n|\n|\r)/gm," ")
+                        console.log('mnemonic:-'+mnemonic+'-')
                         if (validateMnemonic(mnemonic)) {
                             setSeed(mnemonic)
                             setChecked(true)

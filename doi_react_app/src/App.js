@@ -41,15 +41,16 @@ const App = props => {
         initStorage(props.cordova, globalState, setGlobalState)
         const runGetServerStatus = async () => {
             const status = await getServerStatus();
-            console.log('status',status)
-            setServerStatus(status.data.version)
+            //console.info('status',status)
+            if(status) setServerStatus(status.data.version)
         }
         runGetServerStatus()
     }, [globalState.network])
 
     if(globalState.network)
         network.changeNetwork(globalState.network)
-    console.log('current network',globalState.network)
+    
+    //    console.info('current network',globalState.network)
 
     let ourNetwork = GLOBAL.network
     let secondaryColor = "#cd45ff"

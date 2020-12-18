@@ -109,9 +109,6 @@ export const getBalance = async (activeWallet,wallets) => {
  
     let xPubKey = bitcoin.bip32.fromBase58(wallets[activeWallet].publicExtendedKey);
     const balanceObj = await getBalanceOfWallet(xPubKey,'m/'+activeWallet+'/0/0')
-    console.log(balanceObj)
-
-    //take all addresses from response and sort it into local addresses
     balanceObj.addresses.forEach( addr => {
         let found = false
         for(let i = 0;i<=wallets[activeWallet].addresses.length;i++){
