@@ -20,7 +20,7 @@ const TransactionList = ({addresses}) => {
             <div key={index}>
                 <div style={{textAlign: "left", verticalAlign: "top"}}><Moment
                     format="YYYY-MM-DD HH-mm-ss">{tx.createdAt}</Moment>{" "}
-                    {tx.address}{" "} (<span id="confirmations">{tx.confirmations}</span>)</div>
+                    {tx.address}{" "} <br/>{tx.txid} (<span id="confirmations">{tx.confirmations}</span>)</div>
                 <div style={{
                     textAlign: "right",
                     verticalAlign: "top"

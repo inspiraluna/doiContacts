@@ -7,13 +7,7 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-vibration": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
     "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "org.doichain.contacts.app"
-    },
-    "cordova-plugin-wkwebview-engine": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
     "cordova-plugin-geolocation": {
@@ -24,6 +18,9 @@
       "PACKAGE_NAME": "org.doichain.contacts.app"
     },
     "cordova-plugin-qrscanner": {
+      "PACKAGE_NAME": "org.doichain.contacts.app"
+    },
+    "cordova-plugin-vibration": {
       "PACKAGE_NAME": "org.doichain.contacts.app"
     }
   },

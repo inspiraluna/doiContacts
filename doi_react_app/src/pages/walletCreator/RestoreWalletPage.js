@@ -34,7 +34,7 @@ const RestoreWalletPage = props => {
                     placeholder={t("restoreRecoveryPhrase.enterSeed")}
                     onChange={e => {
                         const mnemonic = e.target.value.trim().replace(/(\r\n|\n|\r)/gm," ")
-                        console.log('mnemonic:-'+mnemonic+'-')
+                       // console.log('mnemonic:-'+mnemonic+'-')
                         if (validateMnemonic(mnemonic)) {
                             setSeed(mnemonic)
                             setChecked(true)

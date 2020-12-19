@@ -1,6 +1,5 @@
 node_modules
 www/
-#platforms/
 .history/
 .vscode/
 jsconfig.json

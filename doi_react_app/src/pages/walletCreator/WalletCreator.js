@@ -65,7 +65,7 @@ const WalletCreator = () => {
             setLoading(true)
 
             let options = {}
-            if(modus === "restoreWallet") options = {rescan: true }
+            if(modus === "restoreWallet") options = {rescan: true, options: global.DEFAULT_NETWORK }
             restoreDoichainWalletFromHdKey(hdkey,options).then((wallets) => {
                 if(wallets.length>0){
                     setWallets(wallets)

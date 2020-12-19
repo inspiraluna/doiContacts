@@ -15,22 +15,6 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/cordova-plugin-vibration/src/browser/Vibration.js",
-        "id": "cordova-plugin-vibration.Vibration",
-        "pluginId": "cordova-plugin-vibration",
-        "merges": [
-            "navigator"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-vibration/www/vibration.js",
-        "id": "cordova-plugin-vibration.notification",
-        "pluginId": "cordova-plugin-vibration",
-        "merges": [
-            "navigator"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-nativestorage/www/mainHandle.js",
         "id": "cordova-plugin-nativestorage.mainHandle",
         "pluginId": "cordova-plugin-nativestorage",
@@ -61,6 +45,22 @@ module.exports = [
         "id": "cordova-plugin-qrscanner.QRScannerProxy",
         "pluginId": "cordova-plugin-qrscanner",
         "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-vibration/src/browser/Vibration.js",
+        "id": "cordova-plugin-vibration.Vibration",
+        "pluginId": "cordova-plugin-vibration",
+        "merges": [
+            "navigator"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-vibration/www/vibration.js",
+        "id": "cordova-plugin-vibration.notification",
+        "pluginId": "cordova-plugin-vibration",
+        "merges": [
+            "navigator"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -68,12 +68,11 @@ module.exports.metadata =
 {
     "cordova-plugin-add-swift-support": "2.0.2",
     "cordova-plugin-qrscanner-inspiraluna": "3.0.4",
-    "cordova-plugin-vibration": "3.1.1",
     "cordova-plugin-whitelist": "1.3.4",
-    "cordova-plugin-wkwebview-engine": "1.2.1",
     "cordova-plugin-geolocation": "4.1.0",
     "cordova-plugin-nativestorage": "2.3.2",
-    "cordova-plugin-qrscanner": "3.0.1"
+    "cordova-plugin-qrscanner": "3.0.1",
+    "cordova-plugin-vibration": "3.1.1"
 }
 // BOTTOM OF METADATA
 });
