@@ -33,6 +33,7 @@ const App = props => {
     const [darkMode] = useGlobal("darkMode")
     const [serverStatus, setServerStatus] = useGlobal("serverStatus")
     const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const [balance, setBalance] = useGlobal("balance")
     register()
 
     var GLOBAL = global || window;
@@ -46,6 +47,8 @@ const App = props => {
         }
         runGetServerStatus()
     }, [globalState.network])
+
+    if(balance===undefined) setBalance(0)
 
     if(globalState.network)
         network.changeNetwork(globalState.network)

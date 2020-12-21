@@ -107,6 +107,7 @@ describe("App E2E", () => {
         createNewSeedPhrase()
         cy.get("#phoneIcon").click()
         cy.get("#walletIcon").click()
+        cy.wait(500)
         cy.get("#add").click()
         cy.get("#senderName").type("Peter")
         cy.get("#senderEmail").type("peter@ci-doichain.org")
@@ -120,6 +121,7 @@ describe("App E2E", () => {
         cy.get("#saveWallet").click()
         cy.get("#standard-adornment-password").type(SEED_PASSWORD)
         cy.get("#unlock").click()
+        cy.wait(500)
         cy.get("#senderName").should("have.text", "Name: Peter")
         cy.get("#sentEmail").should("have.text", "Email: peter@ci-doichain.org")
         cy.get("#subj").should("have.text", "Subject: myWallet")
@@ -129,6 +131,7 @@ describe("App E2E", () => {
         )
         cy.get("#redUrl").should("have.text", "Redirect-Url: https://www.doichain.org")
         cy.get("#walletIcon").click()
+        cy.wait(500)
         cy.get("#editWallet").click()
         cy.get("#senderName").clear()
         cy.get("#senderName").type("Alice")
@@ -290,15 +293,15 @@ describe("App E2E", () => {
                         //7. fund the first wallet again and check if the transaction now has a confirmation
                         const doi = 1
                         changeNetwork('regtest')
-                        const funding = await fundWallet(addressOfFirstWallet, doi)
+                        const funding = await fundWallet(addressOfSecondWallet, doi)
                         cy.get("#walletIcon").click()
                         cy.get("#walletList > li").each(($el, index, $list) => { //click the last wallet in the list
                             (index === $list.length - 1) ? cy.wrap($el).click(): ""
                         })
-                        cy.wait(4000)
+                        cy.wait(10000)
                         cy.get("#txList > div").each(($el, index, $list) => {
-                            expect($list.length).to.eq(1)
-                            cy.wait(500)
+                            cy.wait(4000)
+                            expect($list.length).to.eq(2)
                             const confirm = parseFloat($el.find("#confirmations").text())
                             expect(confirm).to.eq(1)
                         })
@@ -308,11 +311,12 @@ describe("App E2E", () => {
                         cy.wait(2000)
                         cy.get("#balance").then(async $span => {
                             const balance = parseFloat($span.text())
-                            const amount = 10.99494718
+                            const amount = 9.99494718
                             expect(balance).to.eq(amount)
                         })
                         cy.get("#txList > div").each(($el, index, $list) => {
-                            expect($list.length).to.eq(4)
+                            expect($list.length).to.eq(3)
+                            cy.wait(2000)
                             const confirm = parseFloat($el.find("#confirmations").text())
                             expect(confirm).to.eq(1)
                         })
@@ -351,12 +355,13 @@ describe("App E2E", () => {
             const addressOfFirstWallet = $li.text().split(" ")[0]
             cy.get("#balance").then(async $span => {
                 const balance = parseFloat($span.text())
-                if (balance < 100) {
+                // if (balance < 100) {
                     const doi = 10
                     changeNetwork('regtest')
                     const funding = await fundWallet(addressOfFirstWallet, doi)
                     cy.get("#walletIcon").click()
-                }
+                //     cy.wait(2000)
+                // }
                 cy.wait(2000)
                 cy.get("#phoneIcon").click()
                 cy.get("#walletIcon").click() //we need to do this so far because the balance is not yet updated
