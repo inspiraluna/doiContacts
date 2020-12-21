@@ -10,7 +10,7 @@ import { network } from "doichain";
 import FormControl from "@material-ui/core/FormControl";
 import {makeStyles} from "@material-ui/core/styles";
 import { Switch, CssBaseline } from "@material-ui/core"
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const Welcome = () => {
     const setGlobalNetwork = useGlobal("network")[1]
@@ -34,11 +34,27 @@ const Welcome = () => {
         selectEmpty: {
             marginTop: theme.spacing(2)
         }
-    }))
+    })) 
+
     const classes = useStyles()
+    let secondaryColor = "#cd45ff"
+    const themeX = createMuiTheme({
+        palette: {
+          type: darkMode? "dark" : "light",
+          primary: {
+              main: "#0b3e74"
+          },
+          secondary: {
+            main: secondaryColor
+           },
+           background: {
+            default: !darkMode? "#e5e3ff" : "#303030"
+          }
+        }
+      });
 
     return (
-        <ThemeProvider>
+        <ThemeProvider theme={themeX}>
         <CssBaseline />
         <div className={s.welcomePage}>
             <img className={s.welcomeImg} src={logo} />
@@ -88,7 +104,8 @@ const Welcome = () => {
                 </NativeSelect>
             </FormControl>
             <div className={classes.formControl}>
-            <span>Toggle light/dark theme</span><Switch checked={darkMode} onChange={() => {
+            <span>Toggle light/dark theme</span>
+            <Switch defaultChecked={true} onChange={() => {
                 const ourMode = darkMode
                 setDarkMode(!ourMode)
             }} />
