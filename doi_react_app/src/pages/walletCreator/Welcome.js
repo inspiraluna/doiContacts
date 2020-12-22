@@ -18,6 +18,8 @@ const Welcome = () => {
     const { t, i18n } = useTranslation()
     const [darkMode, setDarkMode] = useGlobal("darkMode")
 
+    let GLOBAL = global || window;
+
     const createNewWallet = e => {
         setModus("createNewWallet")
     }
@@ -37,27 +39,46 @@ const Welcome = () => {
     })) 
 
     const classes = useStyles()
+
+    let ourNetwork = GLOBAL.network
     let secondaryColor = "#cd45ff"
+    if(ourNetwork === "testnet")secondaryColor = "#e65100"
+    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
+
     const themeX = createMuiTheme({
         palette: {
-          type: darkMode? "dark" : "light",
-          primary: {
-              main: "#0b3e74"
+            type: (darkMode==='true' || darkMode===true) ? "dark" : "light",
+            primary: {
+                main: "#0b3e74",
+            },
+            secondary: {
+                main: secondaryColor,
+            },
+            background: {
+                default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
+            },
+        },
+        overrides: {
+            // Style sheet name ⚛️
+            MuiListItemText: {
+              // Name of the rule
+              primary: {
+                // Some CSS
+                color: secondaryColor,
+              },
+              secondary: {
+                // Some CSS
+                color: secondaryColor,
+              },
+            },
           },
-          secondary: {
-            main: secondaryColor
-           },
-           background: {
-            default: !darkMode? "#e5e3ff" : "#303030"
-          }
-        }
-      });
+    })
 
     return (
         <ThemeProvider theme={themeX}>
         <CssBaseline />
         <div className={s.welcomePage}>
-            <img className={s.welcomeImg} src={logo} />
+            <img className={s.welcomeImg} src={logo} alt="welcome" />
             <div>
                 <p>{t("welcome.1")}</p>
             </div>
@@ -105,7 +126,7 @@ const Welcome = () => {
             </FormControl>
             <div className={classes.formControl}>
             <span>Toggle light/dark theme</span>
-            <Switch defaultChecked={true} onChange={() => {
+            <Switch defaultChecked={false} onChange={() => {
                 const ourMode = darkMode
                 setDarkMode(!ourMode)
             }} />

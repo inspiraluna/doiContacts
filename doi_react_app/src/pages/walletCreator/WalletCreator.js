@@ -24,7 +24,7 @@ const WalletCreator = () => {
     const setWallets = useGlobal("wallets")[1]
     const [seed, setSeed] = useGlobal("seed")
     const setEncryptedSeed = useGlobal("encryptedSeed")[1]
-    const [email] = useGlobal("email")
+    // const [email] = useGlobal("email")
     const [password1, setPassword1] = useGlobal("password1")
     const [loading, setLoading] = useState(false)
     const [darkMode] = useGlobal("darkMode")

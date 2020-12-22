@@ -21,8 +21,8 @@ import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
 import { useTranslation } from "react-i18next"
 import useEventListener from '../hooks/useEventListener';
-import { network } from "doichain"
-const bitcoin = require("bitcoinjs-lib")
+// import { network } from "doichain"
+// const bitcoin = require("bitcoinjs-lib")
 
 const ContactList = () => {
     const setModus = useGlobal("modus")[1]
@@ -64,11 +64,11 @@ const ContactList = () => {
         find(wallets, function(wallet) {
             let changed = false 
 
-            const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath('m/0/0/0')
+            // const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath('m/0/0/0')
            //const childKey = bitcoin.bip32.fromBase58(wallet.publicExtendedKey).derivePath(wallet.derivationPath)
 
           //  let childKey0FromXpub = bitcoin.bip32.fromBase58(childKey, network.DEFAULT_NETWORK);
-            let publicKey = childKey.publicKey.toString('hex')
+            // let publicKey = childKey.publicKey.toString('hex')
             
           //  if (publicKey === contact.publicKey) {  //they are different at the moment. Please check!!
 

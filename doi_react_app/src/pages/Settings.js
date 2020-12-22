@@ -14,7 +14,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import useEventListener from '../hooks/useEventListener';
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 import { Switch, CssBaseline } from "@material-ui/core"
-import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const Settings = () => {
 
@@ -27,6 +27,8 @@ const Settings = () => {
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
     const [serverStatus] = useGlobal("serverStatus")
+
+    let GLOBAL = global || window;
 
     const handleClose = () => {
         setOpen(undefined)
@@ -52,15 +54,49 @@ const Settings = () => {
     }))
     const classes = useStyles()
 
+    let ourNetwork = GLOBAL.network
+    let secondaryColor = "#cd45ff"
+    if(ourNetwork === "testnet")secondaryColor = "#e65100"
+    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
+
+    const themeX = createMuiTheme({
+        palette: {
+            type: (darkMode==='true' || darkMode===true) ? "dark" : "light",
+            primary: {
+                main: "#0b3e74",
+            },
+            secondary: {
+                main: secondaryColor,
+            },
+            background: {
+                default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
+            },
+        },
+        overrides: {
+            // Style sheet name ⚛️
+            MuiListItemText: {
+              // Name of the rule
+              primary: {
+                // Some CSS
+                color: secondaryColor,
+              },
+              secondary: {
+                // Some CSS
+                color: secondaryColor,
+              },
+            },
+          },
+    })
+
     useEventListener(document, "backbutton", () => console.log("back"));
    // console.log(serverStatus.url)
 if (encrypted) {
     return (
-        <ThemeProvider >
+        <ThemeProvider theme={themeX}>
         <CssBaseline />
         <div>
             <div>
-                <p class="small">Doichain dApp
+                <p className="small">Doichain dApp
                     Version: {serverStatus?.version}
                     Time: {serverStatus?.timestamp})<br/>
                     dApp: {serverStatus?.url}
@@ -175,9 +211,13 @@ if (encrypted) {
     let seedWords = decryptedSeed.split(" ")
     let oneLine = []
     const modulosSeed = seedWords.map((seed, i) => {
+        let modSeed
         if (i % 3 === 0 && i !== 0) oneLine = []
         oneLine.push(seed)
-        if ((i + 1) % 3 === 0) return <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>
+
+        if ((i + 1) % 3 === 0) modSeed = <li key={i}>{oneLine.toString().replace(/,/g, ' ')}</li>
+
+        return modSeed
     })
     return <p id="seed">{modulosSeed}</p>
 }

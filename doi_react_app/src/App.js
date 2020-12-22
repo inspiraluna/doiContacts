@@ -20,7 +20,7 @@ import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import {getServerStatus, network} from "doichain";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { CssBaseline, colors } from "@material-ui/core"
+import { CssBaseline } from "@material-ui/core"
 
 
 const App = props => {
@@ -29,10 +29,10 @@ const App = props => {
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
-    const [wallets] = useGlobal("wallets")
+    // const [wallets] = useGlobal("wallets")
     const [darkMode] = useGlobal("darkMode")
-    const [serverStatus, setServerStatus] = useGlobal("serverStatus")
-    const [encryptedSeed, setEncryptedSeed] = useGlobal("encryptedSeed")
+    const setServerStatus = useGlobal("serverStatus")[1]
+    const [encryptedSeed] = useGlobal("encryptedSeed")
     const [balance, setBalance] = useGlobal("balance")
     register()
 
@@ -46,6 +46,7 @@ const App = props => {
             if(status) setServerStatus(status.data.version)
         }
         runGetServerStatus()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [globalState.network])
 
     if(balance===undefined) setBalance(0)

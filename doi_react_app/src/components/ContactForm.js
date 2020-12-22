@@ -55,14 +55,14 @@ const useStyles = makeStyles(theme => ({
 const ContactForm = () => {
     const classes = useStyles()
 
-    const [modus, setModus] = useGlobal("modus")
+    const setModus = useGlobal("modus")[1]
     const [wallets, setWallets] = useGlobal("wallets")
     const [contacts,setContacts] = useGlobal("contacts")
     const setOpenError = useGlobal("errors")[1]
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
-    const [test, setTest] = useGlobal("test")
+    const [test] = useGlobal("test")
     const [scanning] = useGlobal("scanning")
-    const [qrCode, setQRCode] = useGlobal("qrCode")
+    const [qrCode] = useGlobal("qrCode")
     const setOpenSnackbar = useGlobal("errors")[1]
 
     const [email, setEmail] = useState('')
@@ -90,6 +90,7 @@ const ContactForm = () => {
            if(changed) setWallets(balanceObj.wallets)  
        }
        fetchData()
+       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [])
 
     const addContact = async (decryptedSeedPhrase,password) => {
@@ -108,15 +109,16 @@ const ContactForm = () => {
 
             try {
                     const email = openUnlock.email
-                    if(!email) throw "no email"
+                    // if(!email) throw "no email"
+                    if(!email) new Error("no email")
                     const our_wallet = wallets[wallet]
-                    if(!our_wallet.balance===0) throw "balance insufficient - please fund"
+                    if(!our_wallet.balance===0) new Error("balance insufficient - please fund")
                     const validatorPublicKey = await getValidatorPublicKeyOfEmail(email)
                     //TODO if we have no network we cannot request DNS - but adding an address should be still possible
-                    if(!validatorPublicKey || !validatorPublicKey.data || !validatorPublicKey.data.key) throw "couldn't find publickey of validator from email - or no network"
+                    if(!validatorPublicKey || !validatorPublicKey.data || !validatorPublicKey.data.key) new Error("couldn't find publickey of validator from email - or no network")
                     const pubkey = Buffer.from( validatorPublicKey.data.key, 'hex' );
                     const destAddress = getAddress(pubkey)
-                    if(!destAddress) throw "couldn't generate address from publicKey "+pubkey
+                    if(!destAddress) new Error("couldn't generate address from publicKey " +pubkey)
 
                     const sendSchwartz = Number(constants.VALIDATOR_FEE.satoshis)+Number(constants.NETWORK_FEE.satoshis)+Number(constants.TRANSACTION_FEE.satoshis)
                     console.log('sending schwartz',sendSchwartz)

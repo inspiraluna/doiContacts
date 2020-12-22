@@ -28,6 +28,7 @@ const ConfirmRecoveryPhrase = ({ next }) => {
     useEffect(() => {
         const tempSufflyButtons = shuffle(seedWords)
         setShufflyButtons(tempSufflyButtons)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     let seedWords = seed.split(" ")

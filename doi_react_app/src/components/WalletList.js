@@ -24,10 +24,10 @@ const WalletList = () => {
     const [wallets, setWallets] = useGlobal("wallets")
     const [open, setOpen] = useState(undefined)
     const setModus = useGlobal("modus")[1]
-    const [activeWallet, setActiveWallet] = useGlobal("activeWallet")
+    const setActiveWallet = useGlobal("activeWallet")[1]
     const setTempWallet = useGlobal("tempWallet")[1]
     const [t] = useTranslation()
-    const [satoshi, setSatoshi] = useGlobal("satoshi")
+    const [satoshi] = useGlobal("satoshi")
 
     useEffect(() => {
         let options = {network:global.DEFAULT_NETWORK}
@@ -41,6 +41,7 @@ const WalletList = () => {
             if(changed) setWallets(balanceObj.wallets)  
         }
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleClose = () => {

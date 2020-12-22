@@ -1,9 +1,8 @@
 import NativeSelect from "@material-ui/core/NativeSelect"
-import { constants, getBalanceOfWallet, getBalance } from "doichain"
+import { constants, getBalance } from "doichain"
 import { useTranslation } from "react-i18next"
 import React, { useEffect, useGlobal, useState } from "reactn"
 import TransactionList from "./TransactionList"
-const bitcoin = require('bitcoinjs-lib')
 
 
 const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, contentType, redirectUrl }) => {
@@ -43,6 +42,7 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             }
         }
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
         return (
