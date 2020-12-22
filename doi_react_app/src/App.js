@@ -29,7 +29,6 @@ const App = props => {
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
-    // const [wallets] = useGlobal("wallets")
     const [darkMode] = useGlobal("darkMode")
     const setServerStatus = useGlobal("serverStatus")[1]
     const [encryptedSeed] = useGlobal("encryptedSeed")
@@ -42,19 +41,16 @@ const App = props => {
         initStorage(props.cordova, globalState, setGlobalState)
         const runGetServerStatus = async () => {
             const status = await getServerStatus();
-            //console.info('status',status)
             if(status) setServerStatus(status.data.version)
         }
         runGetServerStatus()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [globalState.network])
 
-    if(balance===undefined) setBalance(0)
+    if(balance===undefined) setBalance(0) //this is a workaround for a bug in WalletItem
 
     if(globalState.network)
         network.changeNetwork(globalState.network)
-    
-    //    console.info('current network',globalState.network)
 
     let ourNetwork = GLOBAL.network
     let secondaryColor = "#cd45ff"
