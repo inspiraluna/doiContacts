@@ -28,15 +28,17 @@ For sending signed transactions between mobile phones (and also browsers) we pla
 
 ## How to start developing on the ReactJS part
 - checkout this repository and ```cd doi_react_app```
-- install npm and yarn ```npm install -g yarn``
-- run ```yarn install````
+- install npm and yarn ```npm install -g yarn```
+- run ```yarn install```
+- Install a Doichain RegTest development environment as described here: https://github.com/Doichain/dapp/blob/master/doc/en/dev-env-regtest.md 
 - run ```yarn start```
 - open another terminal and edit react components in that directly
 
 ## How to test on android / ios emulater
-- run npm install in the root directory of the repository
-- run cordova build
-- run cordova run android
+- run ```npm install``` in the root directory of the repository (```cd ../```)
+- run ```cordova build```
+- run ```cordova run android```
+
 
 ## Orientation
 - doi_react_app/ - contains the react app (edit, **yarn start**, **yarn build** from here)

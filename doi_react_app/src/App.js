@@ -47,7 +47,7 @@ const App = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [globalState.network])
 
-    if(balance===undefined) setBalance(0)
+    if(balance===undefined) setBalance(0) //this is a workaround for a bug in WalletItem
 
     if(globalState.network)
         network.changeNetwork(globalState.network)
