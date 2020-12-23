@@ -1,4 +1,4 @@
-import React, { useGlobal } from "reactn"
+import React, { useGlobal, useContext } from "reactn"
 import s from "./Welcome.module.css"
 import logo from "./logo.jpg"
 import Button from "@material-ui/core/Button"
@@ -10,15 +10,14 @@ import { network } from "doichain";
 import FormControl from "@material-ui/core/FormControl";
 import {makeStyles} from "@material-ui/core/styles";
 import { Switch, CssBaseline } from "@material-ui/core"
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeContext } from "../../contexts/theme"
 
 const Welcome = () => {
     const setGlobalNetwork = useGlobal("network")[1]
     const setModus = useGlobal("modus")[1]
     const { t, i18n } = useTranslation()
     const [darkMode, setDarkMode] = useGlobal("darkMode")
-
-    let GLOBAL = global || window;
 
     const createNewWallet = e => {
         setModus("createNewWallet")
@@ -40,42 +39,10 @@ const Welcome = () => {
 
     const classes = useStyles()
 
-    let ourNetwork = GLOBAL.network
-    let secondaryColor = "#cd45ff"
-    if(ourNetwork === "testnet")secondaryColor = "#e65100"
-    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
-
-    const themeX = createMuiTheme({
-        palette: {
-            type: (darkMode==='true' || darkMode===true) ? "dark" : "light",
-            primary: {
-                main: "#0b3e74",
-            },
-            secondary: {
-                main: secondaryColor,
-            },
-            background: {
-                default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
-            },
-        },
-        overrides: {
-            // Style sheet name ⚛️
-            MuiListItemText: {
-              // Name of the rule
-              primary: {
-                // Some CSS
-                color: secondaryColor,
-              },
-              secondary: {
-                // Some CSS
-                color: secondaryColor,
-              },
-            },
-          },
-    })
+    const theme = useContext(ThemeContext);
 
     return (
-        <ThemeProvider theme={themeX}>
+        <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className={s.welcomePage}>
             <img className={s.welcomeImg} src={logo} alt="welcome" />

@@ -1,4 +1,4 @@
-import React, { useGlobal, useState } from "reactn"
+import React, { useGlobal, useState, useContext } from "reactn"
 import {network} from "doichain";
 import { useTranslation } from "react-i18next"
 import FormControl from "@material-ui/core/FormControl"
@@ -14,7 +14,8 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import useEventListener from '../hooks/useEventListener';
 import UnlockPasswordDialog from "../components/UnlockPasswordDialog"
 import { Switch, CssBaseline } from "@material-ui/core"
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeContext } from "../contexts/theme"
 
 const Settings = () => {
 
@@ -27,8 +28,6 @@ const Settings = () => {
     const [encrypted, setEncrypted] = useState(true)
     const [decryptedSeed, setDecryptedSeed] = useState("")
     const [serverStatus] = useGlobal("serverStatus")
-
-    let GLOBAL = global || window;
 
     const handleClose = () => {
         setOpen(undefined)
@@ -54,45 +53,12 @@ const Settings = () => {
     }))
     const classes = useStyles()
 
-    let ourNetwork = GLOBAL.network
-    let secondaryColor = "#cd45ff"
-    if(ourNetwork === "testnet")secondaryColor = "#e65100"
-    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
-
-    const themeX = createMuiTheme({
-        palette: {
-            type: (darkMode==='true' || darkMode===true) ? "dark" : "light",
-            primary: {
-                main: "#0b3e74",
-            },
-            secondary: {
-                main: secondaryColor,
-            },
-            background: {
-                default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
-            },
-        },
-        overrides: {
-            // Style sheet name ⚛️
-            MuiListItemText: {
-              // Name of the rule
-              primary: {
-                // Some CSS
-                color: secondaryColor,
-              },
-              secondary: {
-                // Some CSS
-                color: secondaryColor,
-              },
-            },
-          },
-    })
+    const theme = useContext(ThemeContext);
 
     useEventListener(document, "backbutton", () => console.log("back"));
-   // console.log(serverStatus.url)
 if (encrypted) {
     return (
-        <ThemeProvider theme={themeX}>
+     <ThemeProvider theme={theme}>
         <CssBaseline />
         <div>
             <div>
@@ -205,7 +171,7 @@ if (encrypted) {
                 setDarkMode(!ourMode)
             }} />
         </div>
-        </ThemeProvider>
+     </ThemeProvider>
     )
 } else {
     let seedWords = decryptedSeed.split(" ")

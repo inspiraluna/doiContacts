@@ -14,12 +14,12 @@ import WalletCreator from "./pages/walletCreator/WalletCreator"
 import AppBar from "@material-ui/core/AppBar"
 import {appVersion} from "./appVersion";
 import Settings from "./pages/Settings"
+import {ThemeContextProvider} from "./contexts/theme"
 import PhoneIcon from "@material-ui/icons/Phone"
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet"
 import SettingsIcon from "@material-ui/icons/Settings"
 import CustomizedSnackbars from "./components/MySnackbarContentWrapper"
 import {getServerStatus, network} from "doichain";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { CssBaseline } from "@material-ui/core"
 
 
@@ -29,20 +29,18 @@ const App = props => {
     const [currentTab, setCurrentTab] = useGlobal("currentTab")
     const setModus = useGlobal("modus")[1]
     const setActiveWallet = useGlobal("activeWallet")[1]
-    // const [wallets] = useGlobal("wallets")
     const [darkMode] = useGlobal("darkMode")
     const setServerStatus = useGlobal("serverStatus")[1]
     const [encryptedSeed] = useGlobal("encryptedSeed")
     const [balance, setBalance] = useGlobal("balance")
     register()
 
-    var GLOBAL = global || window;
+    let GLOBAL = global || window;
 
     useEffect(() => {
         initStorage(props.cordova, globalState, setGlobalState)
         const runGetServerStatus = async () => {
             const status = await getServerStatus();
-            //console.info('status',status)
             if(status) setServerStatus(status.data.version)
         }
         runGetServerStatus()
@@ -53,42 +51,6 @@ const App = props => {
 
     if(globalState.network)
         network.changeNetwork(globalState.network)
-    
-    //    console.info('current network',globalState.network)
-
-    let ourNetwork = GLOBAL.network
-    let secondaryColor = "#cd45ff"
-    if(ourNetwork === "testnet")secondaryColor = "#e65100"
-    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
-
-    const themeX = createMuiTheme({
-        palette: {
-            type: (darkMode==='true' || darkMode===true) ? "dark" : "light",
-            primary: {
-                main: "#0b3e74",
-            },
-            secondary: {
-                main: secondaryColor,
-            },
-            background: {
-                default: (darkMode==='false' || darkMode===false) ? "#e5e3ff" : "#303030",
-            },
-        },
-        overrides: {
-            // Style sheet name ⚛️
-            MuiListItemText: {
-              // Name of the rule
-              primary: {
-                // Some CSS
-                color: secondaryColor,
-              },
-              secondary: {
-                // Some CSS
-                color: secondaryColor,
-              },
-            },
-          },
-    })
     function TabPanel(props) {
         const { children, value, index, ...other } = props
 
@@ -124,7 +86,7 @@ const App = props => {
            return <WalletCreator />
              } else {
                  return (
-                    <ThemeProvider theme={themeX}>
+                    <ThemeContextProvider network={GLOBAL.network} darkMode={darkMode} >
                     <CssBaseline />
                      <div>
                          <AppBar position="static">
@@ -164,7 +126,7 @@ const App = props => {
                          </TabPanel>
                          <CustomizedSnackbars />
                      </div>
-                     </ThemeProvider>
+                     </ThemeContextProvider>
                  )
              }
 }
