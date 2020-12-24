@@ -4,6 +4,8 @@
 ## Description
 This app is an experimental study around the concept of Doichain. A blockchain forked from  Namecoin (and Bitcoin).
 It focuses on atomic email permissions / double-opt-ins (DOI) requested through and stored on a blockchain.
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+![](https://img.shields.io/github/license/inspiraluna/doiContacts.svg)
 
 Doichains goal is about to reduce email spam.
 
