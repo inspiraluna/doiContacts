@@ -12,8 +12,7 @@ Built with ReactJS, Cordova for Android, iOS and Desktop
 [![Playstore](https://raw.githubusercontent.com/inspiraluna/doiContacts/master/doc/images/play-store-badge.svg)](https://play.google.com/store/apps/details?id=org.doichain.contacts.app)
 
 
-Remark: Double-Opt-In permissions are necessary by EU-law, DoiContacts and Doichain solves this issue seamless, anonymous and safe on Doichain blockchain.
-For more information about DOI's and Doichain, please visit www.Doichain.org
+Remark: Double-Opt-In permissions are necessary by EU-law, DoiContacts and Doichain solve this issue self-decentralizing, open, permissionless and anonymous on Doichain blockchain. For more information about DOI's and Doichain, please visit https://github.com/doichain/dapp or https://www.doichain.org
 
 Doichain stores email permissions in form of signatures but doesn't store ANY encrypted nor unencrypted personal data.
 This app doesn't use any cloud storage. All private keys and personal data are stored only on your device!
