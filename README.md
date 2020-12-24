@@ -4,14 +4,15 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![](https://img.shields.io/github/license/inspiraluna/doiContacts.svg)
 
-Doichain Wallet. Help us to reduce email spam.
+Doichain Wallet. 
+Help us to reduce email spam.
 Built with ReactJS, Cordova for Android, iOS and Desktop
 
 [![Appstore](https://raw.githubusercontent.com/inspiraluna/doiContacts/master/doc/images/app-store-badge.svg)](https://apps.apple.com/us/app/doi-contacts/id1484393443)
 [![Playstore](https://raw.githubusercontent.com/inspiraluna/doiContacts/master/doc/images/play-store-badge.svg)](https://play.google.com/store/apps/details?id=org.doichain.contacts.app)
 
 
-Remark: Double-Opt-In permissions are necessary by EU-law.
+Remark: Double-Opt-In permissions are necessary by EU-law, DoiContacts and Doichain solves this issue seamless, anonymous and safe on Doichain blockchain.
 For more information about DOI's and Doichain, please visit www.Doichain.org
 
 Doichain stores email permissions in form of signatures but doesn't store ANY encrypted nor unencrypted personal data.
