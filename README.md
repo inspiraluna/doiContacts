@@ -7,8 +7,8 @@
 Doichain Wallet. Help us to reduce email spam.
 Built with ReactJS, Cordova for Android, iOS and Desktop
 
-[![Appstore](https://github/inspiraluna/doc/images/app-store-badge.svg)](https://apps.apple.com/us/app/doi-contacts/id1484393443)
-[![Playstore](https://github/inspiraluna/doc/images/play-store-badge.svg)](https://play.google.com/store/apps/details?id=org.doichain.contacts.app)
+[![Appstore](https://raw.githubusercontent.com/inspiraluna/doiContacts/master/doc/images/app-store-badge.svg)](https://apps.apple.com/us/app/doi-contacts/id1484393443)
+[![Playstore](https://raw.githubusercontent.com/inspiraluna/doiContacts/master/doc/images/play-store-badge.svg)](https://play.google.com/store/apps/details?id=org.doichain.contacts.app)
 
 
 Remark: Double-Opt-In permissions are necessary by EU-law.
