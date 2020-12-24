@@ -31,21 +31,27 @@ This app doesn't use any cloud storage. All private keys and personal data are s
     - scan email QR-Code from a second doiContact wallet
     - (under development) scan an IPFS-address QR-Code pointing to a IPFS-file with a signed SOI transaction ready to broadcasted (and signed) by a second party (Bob)
 
-## How to start developing on the ReactJS part
-- checkout this repository and ```cd doi_react_app```
+## Want to contribute?
+
+### Orientation
+- doi_react_app/ - contains the react app (edit, **yarn start**, **yarn build** to deploy to ../www (cordova) from here)
+- www/ - cordova directory - do not edit anything here.
+- cordova build / cordova run ios/android from the directory of this file
+
+### checkout this repository and ```cd doi_react_app```
 - install npm and yarn ```npm install -g yarn```
 - run ```yarn install```
 - Install a Doichain RegTest development environment as described here: https://github.com/Doichain/dapp/blob/master/doc/en/dev-env-regtest.md 
-- run ```yarn start```
-- open another terminal and edit react components in that directly
+- run ```yarn start``` (starts doiContact web app on port 3001 if Alice dApp runs on 3000)
 
-## How to test on android / ios emulater
-- run ```npm install``` in the root directory of the repository (```cd ../```)
+### How to test on android / ios emulater
+- run ```npm install``` in the root directory of the repository (```cd ../``` from doi_react_app)
 - run ```cordova build```
-- run ```cordova run android```
+- run ```cordova run android``` or
+- run ```cordova run ios```
 
+## License
+MIT
 
-## Orientation
-- doi_react_app/ - contains the react app (edit, **yarn start**, **yarn build** from here)
-- www/ - cordova directory - do not edit anything here.
-- cordova build / cordova run ios/android from the directory of this file
+## RESPONSIBLE DISCLOSURE
+Found critical bugs/vulnerabilities? Please email them doiContacts@doi.works Thanks!
