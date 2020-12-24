@@ -16,22 +16,20 @@ Remark: Double-Opt-In permissions are necessary by EU-law, DoiContacts and Doich
 For more information about DOI's and Doichain, please visit www.Doichain.org
 
 Doichain stores email permissions in form of signatures but doesn't store ANY encrypted nor unencrypted personal data.
-This app doesn't use any cloud storage. All data are only stored on your mobile phone!
-
-For sending signed transactions between mobile phones (and also browsers) we plan to integrate IPFS for that.
+This app doesn't use any cloud storage. All private keys and personal data are stored only on your device!
 
 ## Features
+- Wallets
+    - create multiple Doichain Wallets and associate it offchain with an email address (e.g. private, project a, project b, ... ))
+    - edit subject and email template used by the wallet
+    - send/receive DOI to another wallet
+    - list all transactions
 - Contacts
-    - add an email address and request an email permission through Doichain transaction
-    - store current geo position when requesting the permission, so you can later remember where you meet
+    - add an email address and request an email permission through Doichain transaction with a personalized email text
+    - enter a current geo position when requesting the permission (you can remember where you meet)
     - show contacts status of a requested email permission (confirmed - yes/no)
     - scan email QR-Code from a second doiContact wallet
     - (under development) scan an IPFS-address QR-Code pointing to a IPFS-file with a signed SOI transaction ready to broadcasted (and signed) by a second party (Bob)
-- Wallets
-    - create multiple Doichain Wallets and associate it with an email address (e.g. private, project a, project b, startup a, startup b))
-    - edit subject and email template to be sent from this wallet
-    - send/receive DOI-coins to another wallet (scan / create QR-code)
-    - (under development) list all transactions of a wallet
 
 ## How to start developing on the ReactJS part
 - checkout this repository and ```cd doi_react_app```
