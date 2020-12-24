@@ -1,4 +1,6 @@
-# DoiContacts - Doichain wallet für iOS, Android and desktop
+# DoiContacts - Doichain wallet 
+
+[![GitHub tag](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/inspiraluna/doiContacts/master/package.json&query=$.version&label=Version)](https://github.com/inspiraluna/doiContacts)
 ## Description
 This app is an experimental study around the concept of Doichain. A blockchain forked from  Namecoin (and Bitcoin).
 It focuses on atomic email permissions / double-opt-ins (DOI) requested through and stored on a blockchain.
