@@ -608,7 +608,7 @@ describe("App E2E", () => {
         })
     })
 
-    it.only("sends 5000 SAT, then 0.00005 DOI", () => {
+    it("sends 5000 SAT, then 0.00005 DOI", () => {
         createNewSeedPhrase()
         cy.get("#settingsIcon").click()
         cy.get("#selectCurrency").select("schw")

@@ -34,6 +34,7 @@ This app doesn't use any cloud storage. All private keys and personal data are s
 
 ### Orientation
 - doi_react_app/ - contains the react app (edit, **yarn start**, **yarn build** to deploy to ../www (cordova) from here)
+- doi_react_app/cypress/integration/App.e2e.js Cypress Tests
 - www/ - cordova directory - do not edit anything here.
 - cordova build / cordova run ios/android from the directory of this file
 
@@ -41,7 +42,10 @@ This app doesn't use any cloud storage. All private keys and personal data are s
 - install npm and yarn ```npm install -g yarn```
 - run ```yarn install```
 - Install a Doichain RegTest development environment as described here: https://github.com/Doichain/dapp/blob/master/doc/en/dev-env-regtest.md 
-- run ```yarn start``` (starts doiContact web app on port 3001 if Alice dApp runs on 3000)
+- run ```yarn start``` (starts doiContact web app on port 3001 as Alice' dApp runs on port 3000 and Bob's on 4000)
+
+### Run Cyress browser tests
+- Run ```npm run cypress ``` in another terminal
 
 ### How to test on android / ios emulater
 - run ```npm install``` in the root directory of the repository (```cd ../``` from doi_react_app)
