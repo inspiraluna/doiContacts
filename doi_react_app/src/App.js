@@ -83,7 +83,11 @@ const App = props => {
 
     const our_CurrentTab = currentTab ? currentTab : 0
        if(!encryptedSeed){
-           return <WalletCreator />
+           return (
+            <ThemeContextProvider network={GLOBAL.network} darkMode={darkMode} >
+                 <WalletCreator />
+            </ThemeContextProvider>
+            )
              } else {
                  return (
                     <ThemeContextProvider network={GLOBAL.network} darkMode={darkMode} >

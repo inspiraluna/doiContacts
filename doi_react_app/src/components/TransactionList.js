@@ -18,9 +18,9 @@ const TransactionList = ({addresses}) => {
         //TODO if we send a transaction, corresponding inputs and output should be marked and sent amount should be visible as a
         return (
             <div key={index}>
-                <div style={{textAlign: "left", verticalAlign: "top"}}><Moment
+                <div style={{textAlign: "left", verticalAlign: "top"}}>{tx.createdAtTime}<Moment
                     format="YYYY-MM-DD HH-mm-ss">{tx.createdAt}</Moment>{" "}
-                    {tx.address}{" "} <br/>{tx.txid} (<span id="confirmations">{tx.confirmations}</span>)</div>
+                    {tx.senderAddress}{"/"}{tx.address} <br/>{tx.txid} (<span id="confirmations">{tx.confirmations}</span>)</div>
                 <div style={{
                     textAlign: "right",
                     verticalAlign: "top"

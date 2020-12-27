@@ -1,4 +1,4 @@
-import React, { useGlobal, useState } from "reactn"
+import React, { useGlobal, useState, useContext } from "reactn"
 import Welcome from "./Welcome"
 import ConfirmRecoveryPhrase from "./ConfirmRecoveryPhrase"
 import CreateNewWalletPage from "./CreateNewWalletPage"
@@ -13,9 +13,10 @@ import { useTranslation } from "react-i18next"
 import useEventListener from '../../hooks/useEventListener';
 import { network, restoreDoichainWalletFromHdKey, createHdKeyFromMnemonic, encryptAES } from "doichain";
 import LoadingSpinner from '../../components/LoadingSpinner'
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeContext } from "../../contexts/theme"
 import { CssBaseline } from "@material-ui/core"
-var GLOBAL = global || window;
+
 
 const WalletCreator = () => {
 
@@ -24,24 +25,10 @@ const WalletCreator = () => {
     const setWallets = useGlobal("wallets")[1]
     const [seed, setSeed] = useGlobal("seed")
     const setEncryptedSeed = useGlobal("encryptedSeed")[1]
-    // const [email] = useGlobal("email")
     const [password1, setPassword1] = useGlobal("password1")
     const [loading, setLoading] = useState(false)
-    const [darkMode] = useGlobal("darkMode")
 
     const [t] = useTranslation()
-
-    const useStyles = makeStyles(theme => ({
-        root: {
-            flexGrow: 1
-        },
-        menuButton: {
-            marginRight: theme.spacing(2)
-        },
-        title: {
-            flexGrow: 1
-        }
-    }))
 
     const back = e => {
         if (modus === "createNewWallet") setModus(undefined)
@@ -80,30 +67,24 @@ const WalletCreator = () => {
     }
 
     useEventListener(document, "backbutton", () => back());
+    
+    //TODO is this necessary here? CAn we cnetralize it somewhere? 
+    const useStyles = makeStyles(theme => ({
+        root: {
+            flexGrow: 1
+        },
+        menuButton: {
+            marginRight: theme.spacing(2)
+        },
+        title: {
+            flexGrow: 1
+        }
+    }))
 
     const classes = useStyles()
-
-    let ourNetwork = GLOBAL.network
-    let secondaryColor = "#cd45ff"
-    if(ourNetwork === "testnet")secondaryColor = "#e65100"
-    if(ourNetwork === "regtest")secondaryColor = "#00bfff"
-    const themeX = createMuiTheme({
-        palette: {
-          type: darkMode? "dark" : "light",
-          primary: {
-              main: "#0b3e74"
-          },
-          secondary: {
-            main: secondaryColor
-           },
-           background: {
-            default: !darkMode? "#e5e3ff" : "#303030"
-          }
-        }
-      });
-
+    const theme = useContext(ThemeContext);
     return (
-        <ThemeProvider theme={themeX}>
+        <ThemeProvider theme={theme}>
         <CssBaseline />
         <div>
             <AppBar position="static">
