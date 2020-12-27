@@ -38,7 +38,6 @@ const Welcome = () => {
     })) 
 
     const classes = useStyles()
-
     const theme = useContext(ThemeContext);
 
     return (

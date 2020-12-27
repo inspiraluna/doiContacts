@@ -1,4 +1,6 @@
-import {SEED_PASSWORD} from './constants'
+import {
+    SEED_PASSWORD
+} from './constants'
 /**
  * Creates a new seed phrase
  * returns a promise
@@ -50,22 +52,30 @@ export const restoreWallet = () => {
     cy.get("#walletIcon").click()
 }
 
-export const createWallet = (senderName, senderEmail, subject) => {
+export const createWallet = (senderName, senderEmail, emailSubject, emailBody,redirectUrl) => {
     cy.get("#walletIcon").click()
     cy.wait(500)
     cy.get("#add").click()
     cy.get("#senderName").type(senderName)
     cy.get("#senderEmail").type(senderEmail)
-    cy.get("#subject").type(subject)
+    cy.get("#subject").type(emailSubject)
     cy.get("#editEmailTemplate").click()
-    cy.get("#editTemp").type(
-        "Hello, please give me permission to write you an email. ${confirmation_url} Yours", {
-            parseSpecialCharSequences: false
-        }
-    )
+    let our_body = "Hello, please give me permission to write you an email. ${confirmation_url} Yours"
+    if(emailBody!==undefined)our_body=emailBody
+    cy.get("#editTemp").type(our_body,{parseSpecialCharSequences: false})
     cy.get("#back").click()
-    cy.get("#redirectUrl").type("https://www.doichain.org")
+
+    let our_redirectUrl = "https://www.doichain.org"
+    if(redirectUrl!==undefined) our_redirectUrl = redirectUrl
+    cy.get("#redirectUrl").type(our_redirectUrl)
     cy.get("#saveWallet").click()
+
     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
     cy.get("#unlock").click()
+    cy.wait(500)
+    cy.get("#senderName").should("have.text", "Name: "+senderName)
+    cy.get("#sentEmail").should("have.text", "Email: "+senderEmail)
+    cy.get("#subj").should("have.text", "Subject: "+emailSubject)
+    cy.get("#content").should("have.text","Content: "+our_body)
+    cy.get("#redUrl").should("have.text", "Redirect-Url: "+our_redirectUrl)
 }
