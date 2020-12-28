@@ -131,12 +131,12 @@ const WalletList = () => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleClose()} id="closeAlert" color="secondary">
+                    <Button onClick={() => handleClose()} id="cancelDelete" color="secondary">
                         {t("button.cancel")}
                     </Button>
                     <Button
                         onClick={() => handleRemove()}
-                        id="removeWallet"
+                        id="delete"
                         color="secondary"
                         autoFocus
                     >

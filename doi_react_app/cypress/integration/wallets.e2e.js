@@ -1,6 +1,6 @@
 import { fundWallet } from "doichain/lib/fundWallet" 
 import { changeNetwork } from "doichain/lib/network"
-import { createNewSeedPhrase, createWallet} from './utils/index'
+import { createNewSeedPhrase, createWallet, deleteWalletByIndex} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
 const bitcoin = require("bitcoinjs-lib")
 
@@ -52,25 +52,18 @@ describe("Wallet E2E Tests", () => {
         cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
     })
 
-    //TODO 1) please check if wallet is in the wallet list and add assert
-    //TODO 2) delete a wallet by its index - create a function from it! 
-    it("deletes a wallet", () => {
+    it.only("deletes a wallet", () => {
         createNewSeedPhrase()
-        cy.get("#walletIcon").click()
-        cy.get("#add").click()
-        cy.get("#senderEmail").type("bob@ci-doichain.org")
-        cy.get("#saveWallet").click()
-        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
-        cy.get("#unlock").click()
-        cy.wait(500)
+        const senderName = "Peter"
+        const email = "peter@ci-doichain.org"
+        const subject = "Welcome to Peters newsletter!"
+        const emailBody = "Hello, please give me permission to write you an email. ${confirmation_url} Yours" 
+        createWallet(senderName,email,subject,emailBody)
         cy.get("#walletIcon").click()
         cy.wait(500)
-        cy.get("#deleteWallet").click()
-        cy.get("#closeAlert").click()
-        cy.get("#deleteWallet").click()
-        cy.get("#removeWallet").click()
-        cy.visit("http://localhost:3001")
-        cy.get("#walletIcon").click()
+        const walletDeleteIndex = 0
+        deleteWalletByIndex(walletDeleteIndex,true)
+        deleteWalletByIndex(walletDeleteIndex)     
     })
 
     //TODO here this tests is looking for some refactoring since it is very hard to read 

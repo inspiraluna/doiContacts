@@ -79,3 +79,39 @@ export const createWallet = (senderName, senderEmail, emailSubject, emailBody,re
     cy.get("#content").should("have.text","Content: "+our_body)
     cy.get("#redUrl").should("have.text", "Redirect-Url: "+our_redirectUrl)
 }
+
+/**
+ * 
+ * Deletes a wallet from the wallet list by index
+ * 
+ * @param {*} walletDeleteIndex the index of the wallet
+ * @param {*} cancelDeleteDialog set to true in case you want to cancel the delete dialog and close dialog
+ */
+export const deleteWalletByIndex = (walletDeleteIndex, cancelDeleteDialog) => {
+    return new Cypress.Promise((resolve, reject) => {
+    cy.get("#walletList > li").then(walletList=>{
+        const walletLength = Cypress.$(walletList).length
+        cy.log(walletLength)
+        cy.get("#walletList > li").each(($el, index, $list) => (index === walletDeleteIndex) ? cy.wrap($el).get("#deleteWallet").click() : "")
+        if (cancelDeleteDialog){
+            cy.get("#cancelDelete").click()
+            resolve(walletLength)
+        } 
+        else {
+            cy.get("#delete").click()
+            if (walletLength > 1) {
+                cy.get("#walletList > li").then((walletList2) => {
+                    const walletLength2 = Cypress.$(walletList2).length
+                    cy.log(walletLength2)
+                    expect(walletLength).to.equal(walletLength2+1)
+                    resolve(walletLength)
+                })
+            } else {
+                cy.get("#walletList > li").should("not.exist")
+                resolve(walletLength)
+            }
+        }
+    })
+})
+
+}
