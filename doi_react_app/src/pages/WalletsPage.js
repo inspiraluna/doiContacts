@@ -1,4 +1,4 @@
-import React, { useState, useGlobal } from "reactn"
+import React, { useState, useGlobal,useContext } from "reactn"
 import Slide from "@material-ui/core/Slide"
 import TextField from "@material-ui/core/TextField"
 import Fab from "@material-ui/core/Fab"
@@ -20,6 +20,10 @@ import {createNewWallet} from "doichain/lib/createNewWallet";
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import FileCopyIcon from "@material-ui/icons/FileCopy"
 
+import { ThemeProvider } from "@material-ui/core/styles";
+import { ThemeContext } from "../contexts/theme"
+import { CssBaseline } from "@material-ui/core"
+
 /* eslint no-template-curly-in-string: "off" */
 //var GLOBAL = global || window;
 
@@ -32,6 +36,8 @@ const WalletsPage = () => {
     const [openUnlock, setOpenUnlock] = useGlobal("openUnlock")
     const setOpenSnackbar = useGlobal("errors")[1]
     const [t] = useTranslation()
+    const theme = useContext(ThemeContext);
+
 
     const checkDefaults = wallet => {
         const our_senderName = " "
@@ -140,27 +146,30 @@ const WalletsPage = () => {
 
     if (modus === "list") {
         return (
-            <div>
-                <WalletList />
-                <div style={{ float: "right" }}>
-                    <Fab
-                        aria-label={"new contact"}
-                        color={"secondary"}
-                        id={"add"}
-                        style={{
-                            position: "absolute",
-                            right: "7em",
-                            bottom: "3em"
-                        }}
-                        onClick={() => {
-                            setModus("add")
-                            setActiveWallet(undefined)
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
+            <ThemeProvider theme={theme}>
+            <CssBaseline />
+                <div>
+                    <WalletList />
+                    <div style={{ float: "right" }}>
+                        <Fab
+                            aria-label={"new contact"}
+                            color={"secondary"}
+                            id={"add"}
+                            style={{
+                                position: "absolute",
+                                right: "7em",
+                                bottom: "3em"
+                            }}
+                            onClick={() => {
+                                setModus("add")
+                                setActiveWallet(undefined)
+                            }}
+                        >
+                            <AddIcon />
+                        </Fab>
+                    </div>
                 </div>
-            </div>
+            </ThemeProvider>
         )
     } else {
         if (modus === "detail") {
