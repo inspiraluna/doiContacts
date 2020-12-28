@@ -2,6 +2,7 @@ import { fundWallet } from "doichain/lib/fundWallet"
 import { changeNetwork } from "doichain/lib/network"
 import { createNewSeedPhrase, createWallet} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
+const bitcoin = require("bitcoinjs-lib")
 
 describe("Wallet E2E Tests", () => {
 
@@ -9,12 +10,7 @@ describe("Wallet E2E Tests", () => {
         cy.visit("http://localhost:3001")
     })
     
-    it("creates new seed, a wallet with some funding", () => {
-        createNewSeedPhrase()
-        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
-
-    })
-    //create a function for updating a wallet including checking the details via asserts
+    //TODO please create a function for updating a wallet including checking the details via asserts
     it("adds a new wallet and updates details of it", () => {
         createNewSeedPhrase()
         
@@ -58,7 +54,6 @@ describe("Wallet E2E Tests", () => {
 
     //TODO 1) please check if wallet is in the wallet list and add assert
     //TODO 2) delete a wallet by its index - create a function from it! 
-
     it("deletes a wallet", () => {
         createNewSeedPhrase()
         cy.get("#walletIcon").click()
@@ -78,6 +73,10 @@ describe("Wallet E2E Tests", () => {
         cy.get("#walletIcon").click()
     })
 
+    //TODO here this tests is looking for some refactoring since it is very hard to read 
+    //funding a certain wallet by index should go into a function
+    //get the address from a wallet by index should go into a function
+    //send money from wallet index to a wallet by index should go into two different functions 
     it("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
@@ -86,10 +85,14 @@ describe("Wallet E2E Tests", () => {
         //1. fund first wallet
         cy.get("#doiCoinAddress").then($li => {
             const addressOfSecondWallet = $li.text().split(" ")[0]
+            
+            cy.log('getting addresss of wallet')
             cy.get("#walletIcon").click()
             cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click on the first wallet and send DOI to the 2nd
             cy.get("#doiCoinAddress").then(async $li2 => {
                 const addressOfFirstWallet = $li2.text().split(" ")[0]
+
+                cy.log('getting balance of wallet')
                 cy.get("#balance").then(async $span => {
                     const balance = parseFloat($span.text())
                     if (balance < 100) {
@@ -99,8 +102,11 @@ describe("Wallet E2E Tests", () => {
                         await fundWallet(addressOfFirstWallet, doi)
                         cy.wait(2000)
                         cy.get("#walletIcon").click()
-                        cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click first wallet
+
                     }
+                    
+                    //this goes into a function sendFromWalletIndexToAddress (index, address, amount) including the test below!
+                    cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click first wallet
                     cy.wait(2000)
                     //2. send 0.00005000 DOI to 2nd wallet
                     cy.get("#send").click()
@@ -111,6 +117,7 @@ describe("Wallet E2E Tests", () => {
                     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
                     cy.get("#unlock").click()
                     cy.wait(2000)
+
                     //3. check the balance of the 2nd wallet
                     cy.get("#walletIcon").click()
                     cy.get("#walletList > li").each(($el, index, $list) => { //click the last wallet in the list
@@ -133,7 +140,11 @@ describe("Wallet E2E Tests", () => {
                             //6. transactions history should have only 1 transaction
                             expect($list.length).to.eq(1)
                         })
+
+
+
                         //7. fund the first wallet again and check if the transaction now has a confirmation
+                        //TODO put this into a function including the check for confirmations if possible
                         const doi = 1
                         await fundWallet(addressOfSecondWallet, doi)
                         cy.get("#walletIcon").click()
@@ -169,8 +180,8 @@ describe("Wallet E2E Tests", () => {
             })
         })
     })
-})
 
+//TODO check if you can use or refactor methoods from the REFACTORED test before
 it("click 'copy address to clipbooard' and snackbar shows up", () => {
     createNewSeedPhrase()
     createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
@@ -193,4 +204,219 @@ it("click 'copy address to clipbooard' and snackbar shows up", () => {
             expect(prompt.args[0][1]).to.equal(link)
         })
     })
+
+    it("sends: more DOI then it has, 0 DOI and -1 DOI", () => {
+        createNewSeedPhrase()
+        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+        cy.wait(500)
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
+        //1. fund first wallet
+        cy.get("#doiCoinAddress").then($li => {
+            const addressOfSecondWallet = $li.text().split(" ")[0]
+            cy.get("#walletIcon").click()
+            cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click on the first wallet and send DOI to the 2nd
+            cy.get("#doiCoinAddress").then(async $li2 => {
+                const addressOfFirstWallet = $li2.text().split(" ")[0]
+                cy.get("#balance").then(async $span => {
+                    const balance = parseFloat($span.text())
+                    if (balance < 100) {
+                        const doi = 10
+                        changeNetwork('regtest')
+                        const funding = await fundWallet(addressOfFirstWallet, doi)
+                        cy.get("#walletIcon").click()
+                        cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click first wallet
+                    }
+                    cy.wait(2000)
+                    //2. send 20 DOI to 2nd wallet
+                    cy.get("#send").click()
+                    cy.get("#toAddress").type(addressOfSecondWallet)
+                    const amountToSend = 2000000000
+                    cy.get("#amount").type(amountToSend)
+                    cy.get("#component-error-text").should(
+                        "have.text",
+                        "Amount is too big"
+                    )
+                    cy.get("#amount").clear()
+                    cy.get("#amount").type(0)
+                    cy.get("#component-error-text").should(
+                        "have.text",
+                        "Amount should be bigger than 0"
+                    )
+                    cy.get("#amount").clear()
+                    cy.get("#amount").type(-1)
+                    cy.get("#component-error-text").should(
+                        "have.text",
+                        "Amount should be bigger than 0"
+                    )
+                })
+            })
+        })
+    })
+
+    it("sends 5000 SAT, then 0.00005 DOI", () => {
+        createNewSeedPhrase()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectCurrency").select("schw")
+        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+        cy.wait(500)
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
+        //1. fund first wallet
+        cy.get("#doiCoinAddress").then($li => {
+            const addressOfSecondWallet = $li.text().split(" ")[0]
+            cy.get("#walletIcon").click()
+            cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click on the first wallet and send DOI to the 2nd
+            cy.get("#doiCoinAddress").then(async $li2 => {
+                const addressOfFirstWallet = $li2.text().split(" ")[0]
+                cy.get("#balance").then(async $span => {
+                    const balance = parseFloat($span.text())
+                    if (balance < 100) {
+                        const doi = 10
+                        changeNetwork('regtest')
+                        const funding = await fundWallet(addressOfFirstWallet, doi)
+                        cy.get("#walletIcon").click()
+                        cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click first wallet
+                    }
+                    cy.wait(2000)
+                    //2. send 5000 SAT to 2nd wallet
+                    cy.get("#send").click()
+                    cy.get("#toAddress").type(addressOfSecondWallet)
+                    const amountToSend = 5000
+                    cy.get("#amount").type(amountToSend)
+                    cy.get("#sendAmount").click()
+                    cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                    cy.get("#unlock").click()
+                    //3. send 0.00005 DOI to 2nd wallet
+                    cy.wait(2000)
+                    cy.get("#walletIcon").click()
+                    cy.get("#walletList > li").each(($el, index, $list) => (index === 0) ? cy.wrap($el).click() : "") //click first wallet
+                    cy.get("#send").click()
+                    cy.get("#toAddress").type(addressOfSecondWallet)
+                    cy.get("#amount").type(amountToSend)
+                    cy.get("#toggleCurrency").click()
+                    cy.wait(500)
+                    cy.get("#sendAmount").click()
+                    cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                    cy.get("#unlock").click()
+                })
+            })
+        })
+    })
+
+    it("check the addresses, when sending and receiving transactions", () => {
+        createNewSeedPhrase().then((seed1) => {
+            cy.get("#walletIcon").click()
+            createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+            cy.wait(500)
+            cy.get("#walletIcon").click()
+            cy.wait(500)
+            cy.get("#detail").click()
+            cy.get("#receive").click()
+            cy.get("#address").then(($span) => {
+                const receiveAddress = $span.text()
+                changeNetwork("regtest")
+                cy.get("#walletIcon").click()
+                cy.get("#walletList > li").each(($el, index, $list) =>
+                    index === 0 ? cy.wrap($el).click() : ""
+                ) //click on the first address
+
+                // we get the change address of the first wallet
+                cy.get("#doiCoinAddress option").then(async (options) => {
+                    const actual = [...options].map((o) => o.value)
+                    cy.log(actual)
+
+                    // const decryptedSeed =
+                    //     "kiwi acquire security left champion peasant royal sheriff absent calm alert letter"
+                    const hdKey = createHdKeyFromMnemonic(seed1, SEED_PASSWORD)
+
+                    const address0 = bitcoin.payments.p2pkh({
+                        pubkey: hdKey.derive("m/0/0/0").publicKey,
+                        network: global.DEFAULT_NETWORK,
+                    }).address
+                    expect(actual[0]).to.equal(address0)
+                    expect(actual[0]).to.equal(receiveAddress)
+
+                    const address01 = bitcoin.payments.p2pkh({
+                        pubkey: hdKey.derive("m/0/1/0").publicKey,
+                        network: global.DEFAULT_NETWORK,
+                    }).address
+                    expect(actual[1]).to.equal(address01)
+
+                    const doi = 10
+                    changeNetwork("regtest")
+                    const funding = await fundWallet(address0, doi)
+                    cy.wait(500)
+                    cy.get("#walletIcon").click()
+                    cy.get("#walletList > li").each(($el, index, $list) =>
+                        index === 0 ? cy.wrap($el).click() : ""
+                    )
+                    cy.wait(1000)
+
+                    cy.get("#walletIcon").click()
+                    cy.get("#detail").click()
+                    cy.get("#receive").click()
+                    cy.get("#address").then(($span) => {
+                        const receiveAddress = $span.text()
+
+                        cy.get("#walletIcon").click()
+                        cy.get("#walletList > li").each(($el, index, $list) =>
+                            index === 0 ? cy.wrap($el).click() : ""
+                        ) //click on the first address
+
+                        cy.get("#doiCoinAddress option").then(async (options) => {
+                            const actual = [...options].map((o) => o.value)
+                            cy.log(actual)
+
+                            const address1 = bitcoin.payments.p2pkh({
+                                pubkey: hdKey.derive("m/0/0/1").publicKey,
+                                network: global.DEFAULT_NETWORK,
+                            }).address
+                            cy.wait(1000)
+                            expect(actual[2]).to.equal(address1)
+                            expect(actual[2]).to.equal(receiveAddress)
+
+                            createWallet(
+                                "Bob",
+                                "bob@ci-doichain.org",
+                                "Welcome to Bob's newsletter"
+                            )
+                            cy.get("#doiCoinAddress").then(($li) => {
+                                const addressOfSecondWallet = $li.text().split(" ")[0]
+                                cy.get("#walletIcon").click()
+                                cy.wait(500)
+                                cy.get("#walletList > li").each(($el, index, $list) =>
+                                    index === 0 ? cy.wrap($el).click() : ""
+                                ) //click on the first wallet and send DOI to the 2nd
+                                cy.wait(2000)
+                                //2. send 1 DOI to 2nd wallet
+                                cy.get("#send").click()
+                                cy.get("#toAddress").type(addressOfSecondWallet)
+                                const amountToSend = 1
+                                cy.get("#amount").type(amountToSend)
+                                cy.get("#sendAmount").click()
+                                cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+                                cy.get("#unlock").click()
+                                cy.wait(2000)
+
+                                cy.get("#walletIcon").click()
+                                cy.get("#walletList > li").each(($el, index, $list) =>
+                                    index === 0 ? cy.wrap($el).click() : ""
+                                ) //click on the first address
+
+                                cy.get("#doiCoinAddress option").then(async (options) => {
+                                    const actual = [...options].map((o) => o.value)
+                                    cy.log(actual)
+                                    const address001 = bitcoin.payments.p2pkh({
+                                        pubkey: hdKey.derive("m/0/1/1").publicKey,
+                                        network: global.DEFAULT_NETWORK,
+                                    }).address
+                                    expect(actual[3]).to.equal(address001)
+                                })
+                            })
+                        })
+                    })
+                })
+            })
+        })
+    })
+})
 })
