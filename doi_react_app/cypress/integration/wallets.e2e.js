@@ -4,6 +4,7 @@ import { createNewSeedPhrase,
     deleteWalletByIndex,
     getAddressOfWalletByIndex,
     getBalanceOfWalletByIndex,
+    checkTransactionByIndex,
     sendDoiToAddress} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
 const bitcoin = require("bitcoinjs-lib")
@@ -88,17 +89,28 @@ describe("Wallet E2E Tests", () => {
                 const amountToSend = 0.00005
                 sendDoiToAddress(0,address,amountToSend)
 
-                //TODO why we need to check twice here? this is not okey so far.
-                getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
-                    cy.log("checkBalanceOfsecondWallet1",updatedSecondWallet)
-                })
-
+            // check balance and transaction of the second wallet
                 getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
                     expect(updatedSecondWallet).to.eq(amountToSend)
                     cy.log("checkBalanceOfsecondWallet2",updatedSecondWallet)
                 })
-                cy.log("after last count") 
+            // check if the last transaction is inside the transaction history with the rigth amount
+                checkTransactionByIndex(0,amountToSend,0,1)
+                // fund the first wallet again to check if the transaction now has a confirmation
+                cy.request(url+"/api/v1/funding?address="+address+"&amount="+doi)
+                getAddressOfWalletByIndex(1).then(address => {
+                    cy.log("address",address)
+                    cy.wait(2000)
+                    checkTransactionByIndex(0,amountToSend,1,2)
             })
+
+            // check balance and transaction of the first wallet
+            getBalanceOfWalletByIndex(0).then(balanceFirstWal => {
+                expect(balanceFirstWal).to.eq(10.00005)
+                cy.log("checkBalanceOffirstWallet",balanceFirstWal)
+                checkTransactionByIndex(2,-10,1,3)
+            })
+          })
         })
     })
     

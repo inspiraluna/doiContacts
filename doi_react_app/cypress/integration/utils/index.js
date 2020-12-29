@@ -171,3 +171,17 @@ export const sendDoiToAddress = (indexOfWallet,address,amountToSend) => {
         cy.log("sendDoi:"+address,amountToSend)
         cy.wait(2000)
 }
+
+export const checkTransactionByIndex = (indexOfTransaction,amount,confirmNum,txLength) => {
+    cy.get("#txList > div").each(($el, index, $list) => {
+        if (index === indexOfTransaction) {
+            const Tx = parseFloat($el.find("#txAmount").text())
+            expect(Tx).to.eq(amount)
+            // check confirmations
+            const confirm = parseFloat($el.find("#confirmations").text())
+            expect(confirm).to.eq(confirmNum)
+        }
+        // check transactions history length
+        expect($list.length).to.eq(txLength)
+    })
+}
