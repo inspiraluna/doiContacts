@@ -2,11 +2,12 @@ import chaiColors from 'chai-colors'
 chai.use(chaiColors);
 import { createNewSeedPhrase, createWallet} from './utils/index'
 
-
 describe("App E2E", () => {
+    
     beforeEach(() => {
         cy.visit("http://localhost:3001")
     })
+
     before(() => {
         cy.task("deleteAllEmailsFromPop3", {
             hostname: 'localhost',

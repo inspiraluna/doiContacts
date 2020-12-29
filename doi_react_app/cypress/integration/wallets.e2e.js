@@ -1,6 +1,10 @@
 import { fundWallet } from "doichain/lib/fundWallet" 
-import { changeNetwork } from "doichain/lib/network"
-import { createNewSeedPhrase, createWallet,getBalanceOfWalletByIndex, deleteWalletByIndex, getAddressAndBalanceOfWalletByIndex,sendDoiToAddress,getAddressOfWalletByIndex} from './utils/index'
+import { createNewSeedPhrase, 
+    createWallet, 
+    deleteWalletByIndex,
+    getAddressOfWalletByIndex,
+    getBalanceOfWalletByIndex,
+    sendDoiToAddress} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
 const bitcoin = require("bitcoinjs-lib")
 
@@ -66,36 +70,38 @@ describe("Wallet E2E Tests", () => {
         deleteWalletByIndex(walletDeleteIndex)     
     })
 
-    it.only("", () => {
+    it.only("creates new seed with 2 wallets, funds the first and send coins to the second", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
         createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
         getAddressOfWalletByIndex(0).then(address => {
             cy.log("address first wallet",address)
-            changeNetwork('regtest')
+            const url = "http://localhost:3000/"
+            cy.log('calling server for funding',url)
             const doi = 10
-            fundWallet(address, doi).then(json => {
-                cy.log("fundingDone",json)              
+            cy.request(url+"/api/v1/funding?address="+address+"&amount="+doi)
+            cy.log("before secondWallet")
+            getAddressOfWalletByIndex(1).then(address => {
+                cy.log("address",address)
+                cy.log("after secondWallet")
+                const amountToSend = 0.00005
+                sendDoiToAddress(0,address,amountToSend)
+
+                //TODO why we need to check twice here? this is not okey so far.
+                getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
+                    cy.log("checkBalanceOfsecondWallet1",updatedSecondWallet)
+                })
+
+                getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
+                    expect(updatedSecondWallet).to.eq(amountToSend)
+                    cy.log("checkBalanceOfsecondWallet2",updatedSecondWallet)
+                })
+                cy.log("after last count") 
             })
         })
-        cy.log("before secondWallet")
-        getAddressOfWalletByIndex(1).then(address => {
-            cy.log("address",address)
-            cy.log("after secondWallet")
-            const amountToSend = 0.00005
-            sendDoiToAddress(0,address,amountToSend)
-        })
-  
-        cy.wait(10000)
-        getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
-            const amountToSend = 0.00005
-            expect(updatedSecondWallet).to.eq(amountToSend)
-            cy.log("checkBalanceOfsecondWallet")
-        })
-        cy.log("after last count")
-    
     })
+    
     //TODO here this tests is looking for some refactoring since it is very hard to read 
     //funding a certain wallet by index should go into a function
     //get the address from a wallet by index should go into a function
