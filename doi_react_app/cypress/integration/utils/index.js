@@ -115,3 +115,59 @@ export const deleteWalletByIndex = (walletDeleteIndex, cancelDeleteDialog) => {
 })
 
 }
+
+export const getAddressOfWalletByIndex = (indexOfWallet,dontNavigate) => {
+    
+    if (dontNavigate===undefined|| dontNavigate===false){
+        cy.get("#walletIcon").click()
+        cy.get("#walletList > li").each(($el, index, $list) => index === indexOfWallet ? cy.wrap($el).click() : "")
+    }
+    
+    return new Cypress.Promise((resolve, reject) => {
+        cy.get("#doiCoinAddress").then(async ($li2) => {
+            const addressOfWallet = $li2.text().split(" ")[0]
+            resolve(addressOfWallet)
+        })
+    })
+
+}
+
+export const getBalanceOfWalletByIndex = (indexOfWallet,dontNavigate) => {
+    
+    if (dontNavigate===undefined|| dontNavigate===false){
+        cy.get("#walletIcon").click()
+        cy.get("#walletList > li").each(($el, index, $list) => index === indexOfWallet ? cy.wrap($el).click() : "")
+    }
+
+    return new Cypress.Promise((resolve, reject) => {
+        cy.get("#balance").then(async ($span) => {
+            const balance = parseFloat($span.text())
+            resolve(balance)
+        })
+    })
+
+}
+
+export const getAddressAndBalanceOfWalletByIndex = (indexOfWallet,dontNavigate) => {
+    return new Cypress.Promise((resolve, reject) => {
+    getAddressOfWalletByIndex(indexOfWallet,dontNavigate).then(address => {
+        getBalanceOfWalletByIndex(indexOfWallet,true).then(balance => 
+            resolve({address:address,balance:balance}))
+    })
+})
+}
+
+export const sendDoiToAddress = (indexOfWallet,address,amountToSend) => {
+        cy.get("#walletIcon").click()
+        cy.get("#walletList > li").each(($el, index, $list) => (index === indexOfWallet) ? cy.wrap($el).click() : "")
+        cy.wait(2000)
+        //2. send DOI to wallet
+        cy.get("#send").click()
+        cy.get("#toAddress").type(address)
+        cy.get("#amount").type(amountToSend)
+        cy.get("#sendAmount").click()
+        cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+        cy.get("#unlock").click()
+        cy.log("sendDoi:"+address,amountToSend)
+        cy.wait(2000)
+}

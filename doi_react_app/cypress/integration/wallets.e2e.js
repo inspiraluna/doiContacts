@@ -1,6 +1,6 @@
 import { fundWallet } from "doichain/lib/fundWallet" 
 import { changeNetwork } from "doichain/lib/network"
-import { createNewSeedPhrase, createWallet, deleteWalletByIndex} from './utils/index'
+import { createNewSeedPhrase, createWallet,getBalanceOfWalletByIndex, deleteWalletByIndex, getAddressAndBalanceOfWalletByIndex,sendDoiToAddress,getAddressOfWalletByIndex} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
 const bitcoin = require("bitcoinjs-lib")
 
@@ -52,7 +52,7 @@ describe("Wallet E2E Tests", () => {
         cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
     })
 
-    it.only("deletes a wallet", () => {
+    it("deletes a wallet", () => {
         createNewSeedPhrase()
         const senderName = "Peter"
         const email = "peter@ci-doichain.org"
@@ -66,10 +66,40 @@ describe("Wallet E2E Tests", () => {
         deleteWalletByIndex(walletDeleteIndex)     
     })
 
+    it.only("", () => {
+        createNewSeedPhrase()
+        createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
+        cy.wait(500)
+        createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")
+        getAddressOfWalletByIndex(0).then(address => {
+            cy.log("address first wallet",address)
+            changeNetwork('regtest')
+            const doi = 10
+            fundWallet(address, doi).then(json => {
+                cy.log("fundingDone",json)              
+            })
+        })
+        cy.log("before secondWallet")
+        getAddressOfWalletByIndex(1).then(address => {
+            cy.log("address",address)
+            cy.log("after secondWallet")
+            const amountToSend = 0.00005
+            sendDoiToAddress(0,address,amountToSend)
+        })
+  
+        cy.wait(10000)
+        getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
+            const amountToSend = 0.00005
+            expect(updatedSecondWallet).to.eq(amountToSend)
+            cy.log("checkBalanceOfsecondWallet")
+        })
+        cy.log("after last count")
+    
+    })
     //TODO here this tests is looking for some refactoring since it is very hard to read 
     //funding a certain wallet by index should go into a function
     //get the address from a wallet by index should go into a function
-    //send money from wallet index to a wallet by index should go into two different functions 
+    //send money from wallet index to a wallet by index should go into two different functions
     it("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
