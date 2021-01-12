@@ -92,7 +92,7 @@ const Welcome = () => {
             </FormControl>
             <div className={classes.formControl}>
             <span>Toggle light/dark theme</span>
-            <Switch defaultChecked={false} onChange={() => {
+            <Switch id="changeMode" defaultChecked={false} onChange={() => {
                 const ourMode = darkMode
                 setDarkMode(!ourMode)
             }} />

@@ -1,5 +1,7 @@
 import { createNewSeedPhrase, createWallet, restoreWallet} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
+import chaiColors from 'chai-colors'
+chai.use(chaiColors);
 
 describe("Settings E2E Tests", () => {
 
@@ -8,30 +10,57 @@ describe("Settings E2E Tests", () => {
         cy.visit("http://localhost:3001")
     })
 
-    //TODO please add test to check if status shows current network 
-
-    /**
-     * TODO please check if button, label texts are their value too! 
-     */
     it("tests changing language", () => {
         restoreWallet()
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
+        cy.get("#english").should(
+            "have.text",
+            "English"
+        )
         cy.get("#walletIcon").click()
         cy.get("#add").click()
         cy.get("#cancel").click()
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("ru")
+        cy.get("#russian").should(
+            "have.text",
+            "Русский"
+        )
         cy.get("#walletIcon").click()
         cy.get("#add").click()
         cy.get("#cancel").click()
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("fr")
+        cy.get("#french").should(
+            "have.text",
+            "Francais"
+        )
         cy.get("#walletIcon").click()
         cy.get("#add").click()
         cy.get("#cancel").click()
         cy.get("#settingsIcon").click()
         cy.get("#selectLang").select("en")
+    })
+
+    it("check if status shows current network", () => {
+        restoreWallet()
+        cy.get("#settingsIcon").click()
+        cy.get("#selectNetwork").select("mainnet")
+        cy.get("#mainnet").should(
+            "have.text",
+            "Mainnet"
+        )
+        cy.get("#selectNetwork").select("testnet")
+        cy.get("#testnet").should(
+            "have.text",
+            "Testnet"
+        )
+        cy.get("#selectNetwork").select("regtest")
+        cy.get("#regtest").should(
+            "have.text",
+            "Regtest"
+        )
     })
 
     it("restores a wallet then shows recovery phrase", () => {
@@ -116,8 +145,6 @@ describe("Settings E2E Tests", () => {
         // )
 
     })
-
-    //TODO Please create a walletcreator.e2e.js file and put it there AND also test this in settings! 
 
     it("checks the background color and button color for each network case", () => {
         createNewSeedPhrase()

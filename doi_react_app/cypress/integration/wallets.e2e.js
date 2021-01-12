@@ -16,8 +16,7 @@ describe("Wallet E2E Tests", () => {
         cy.visit("http://localhost:3001")
     })
     
-    //TODO please create a function for updating a wallet including checking the details via asserts
-    it.only("adds a new wallet and updates details of it", () => {
+    it("adds a new wallet and updates details of it", () => {
         createNewSeedPhrase()
         
         const senderName = "Peter"

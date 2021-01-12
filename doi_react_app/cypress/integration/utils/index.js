@@ -185,6 +185,7 @@ export const checkTransactionByIndex = (indexOfTransaction,amount,confirmNum,txL
         expect($list.length).to.eq(txLength)
     })
 }
+
 export const updateWallet = (upatedSenderName,updatedEmail,updatedSubject,updatedEmailBody,updatedRedirectUrl) => {
     cy.log("udpate data in wallet")
     cy.get("#walletIcon").click()
@@ -209,4 +210,13 @@ export const updateWallet = (upatedSenderName,updatedEmail,updatedSubject,update
     cy.get("#subj").should("have.text", "Subject: "+updatedSubject)
     cy.get("#content").should("have.text","Content: "+updatedEmailBody)
     cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
+}
+
+export const addContact = () => {
+    cy.get("#phoneIcon").click()
+    cy.get("#addButton").click()
+    cy.get("#toAddress").type("bob@ci-doichain.org")
+    cy.get(".MuiButton-label").click()
+    cy.get("#standard-adornment-password").type(SEED_PASSWORD)
+    cy.get("#unlock").click()
 }
