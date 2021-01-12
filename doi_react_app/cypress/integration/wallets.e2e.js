@@ -31,7 +31,6 @@ describe("Wallet E2E Tests", () => {
         const updatedSubject = "Doichain Contacts Request"
         const updatedEmailBody = "Hello, please give me permission to write you an email. ${confirmation_url} Yours Alice"
         const updatedRedirectUrl = "http://www.doichain.org"
-        cy.wait(1000)
 
         updateWallet(upatedSenderName,updatedEmail,updatedSubject,updatedEmailBody,updatedRedirectUrl)
 
