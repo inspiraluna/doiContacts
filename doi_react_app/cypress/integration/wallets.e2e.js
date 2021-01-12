@@ -5,7 +5,8 @@ import { createNewSeedPhrase,
     getAddressOfWalletByIndex,
     getBalanceOfWalletByIndex,
     checkTransactionByIndex,
-    sendDoiToAddress} from './utils/index'
+    sendDoiToAddress,
+    updateWallet} from './utils/index'
 import { SEED_PASSWORD} from './utils/constants'
 const bitcoin = require("bitcoinjs-lib")
 
@@ -16,7 +17,7 @@ describe("Wallet E2E Tests", () => {
     })
     
     //TODO please create a function for updating a wallet including checking the details via asserts
-    it("adds a new wallet and updates details of it", () => {
+    it.only("adds a new wallet and updates details of it", () => {
         createNewSeedPhrase()
         
         const senderName = "Peter"
@@ -30,31 +31,34 @@ describe("Wallet E2E Tests", () => {
         const updatedSubject = "Doichain Contacts Request"
         const updatedEmailBody = "Hello, please give me permission to write you an email. ${confirmation_url} Yours Alice"
         const updatedRedirectUrl = "http://www.doichain.org"
+        cy.wait(1000)
 
-        cy.log("udpate data in wallet")
-        cy.get("#walletIcon").click()
-        cy.get("#editWallet").click()
-        cy.get("#senderName").clear()
-        cy.get("#senderName").type(upatedSenderName)
-        cy.get("#senderEmail").clear()
-        cy.get("#senderEmail").type(updatedEmail)
-        cy.get("#subject").clear()
-        cy.get("#subject").type(updatedSubject)
-        cy.get("#editEmailTemplate").click()
-        cy.get("#editTemp").clear()
-        cy.get("#editTemp").type(updatedEmailBody,{parseSpecialCharSequences: false})
-        cy.get("#back").click()
-        cy.get("#redirectUrl").clear()
-        cy.get("#redirectUrl").type(updatedRedirectUrl)
-        cy.get("#saveWallet").click()
+        updateWallet(upatedSenderName,updatedEmail,updatedSubject,updatedEmailBody,updatedRedirectUrl)
 
-        cy.log('checking updated details in wallet')
+        // cy.log("udpate data in wallet")
+        // cy.get("#walletIcon").click()
+        // cy.get("#editWallet").click()
+        // cy.get("#senderName").clear()
+        // cy.get("#senderName").type(upatedSenderName)
+        // cy.get("#senderEmail").clear()
+        // cy.get("#senderEmail").type(updatedEmail)
+        // cy.get("#subject").clear()
+        // cy.get("#subject").type(updatedSubject)
+        // cy.get("#editEmailTemplate").click()
+        // cy.get("#editTemp").clear()
+        // cy.get("#editTemp").type(updatedEmailBody,{parseSpecialCharSequences: false})
+        // cy.get("#back").click()
+        // cy.get("#redirectUrl").clear()
+        // cy.get("#redirectUrl").type(updatedRedirectUrl)
+        // cy.get("#saveWallet").click()
 
-        cy.get("#senderName").should("have.text", "Name: "+upatedSenderName)
-        cy.get("#sentEmail").should("have.text", "Email: "+updatedEmail)
-        cy.get("#subj").should("have.text", "Subject: "+updatedSubject)
-        cy.get("#content").should("have.text","Content: "+updatedEmailBody)
-        cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
+        // cy.log('checking updated details in wallet')
+
+        // cy.get("#senderName").should("have.text", "Name: "+upatedSenderName)
+        // cy.get("#sentEmail").should("have.text", "Email: "+updatedEmail)
+        // cy.get("#subj").should("have.text", "Subject: "+updatedSubject)
+        // cy.get("#content").should("have.text","Content: "+updatedEmailBody)
+        // cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
     })
 
     it("deletes a wallet", () => {
@@ -71,7 +75,7 @@ describe("Wallet E2E Tests", () => {
         deleteWalletByIndex(walletDeleteIndex)     
     })
 
-    it.only("creates new seed with 2 wallets, funds the first and send coins to the second", () => {
+    it("creates new seed with 2 wallets, funds the first and send coins to the second", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
@@ -89,10 +93,14 @@ describe("Wallet E2E Tests", () => {
                 const amountToSend = 0.00005
                 sendDoiToAddress(0,address,amountToSend)
 
+                // needed for now
+                getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
+                    cy.log("checkBalanceOfsecondWallet2",updatedSecondWallet)
+                })
+
             // check balance and transaction of the second wallet
                 getBalanceOfWalletByIndex(1).then(updatedSecondWallet => {
                     expect(updatedSecondWallet).to.eq(amountToSend)
-                    cy.log("checkBalanceOfsecondWallet2",updatedSecondWallet)
                 })
             // check if the last transaction is inside the transaction history with the rigth amount
                 checkTransactionByIndex(0,amountToSend,0,1)
@@ -222,7 +230,6 @@ describe("Wallet E2E Tests", () => {
         })
     })
 
-//TODO check if you can use or refactor methoods from the REFACTORED test before
 it("click 'copy address to clipbooard' and snackbar shows up", () => {
     createNewSeedPhrase()
     createWallet("Bob", "bob@ci-doichain.org", "Welcome to Bob's newsletter")

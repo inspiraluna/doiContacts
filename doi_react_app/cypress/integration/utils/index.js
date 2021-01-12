@@ -185,3 +185,30 @@ export const checkTransactionByIndex = (indexOfTransaction,amount,confirmNum,txL
         expect($list.length).to.eq(txLength)
     })
 }
+export const updateWallet = (upatedSenderName,updatedEmail,updatedSubject,updatedEmailBody,updatedRedirectUrl) => {
+    cy.log("udpate data in wallet")
+    cy.get("#walletIcon").click()
+    cy.get("#editWallet").click()
+    cy.get("#senderName").clear()
+    cy.get("#senderName").type(upatedSenderName)
+    cy.get("#senderEmail").clear()
+    cy.get("#senderEmail").type(updatedEmail)
+    cy.get("#subject").clear()
+    cy.get("#subject").type(updatedSubject)
+    cy.get("#editEmailTemplate").click()
+    cy.get("#editTemp").clear()
+    cy.get("#editTemp").type(updatedEmailBody,{parseSpecialCharSequences: false})
+    cy.get("#back").click()
+    cy.get("#redirectUrl").clear()
+    cy.get("#redirectUrl").type(updatedRedirectUrl)
+    cy.get("#saveWallet").click()
+    cy.wait(1000)
+
+    cy.log('checking updated details in wallet')
+
+    cy.get("#senderName").should("have.text", "Name: "+upatedSenderName)
+    cy.get("#sentEmail").should("have.text", "Email: "+updatedEmail)
+    cy.get("#subj").should("have.text", "Subject: "+updatedSubject)
+    cy.get("#content").should("have.text","Content: "+updatedEmailBody)
+    cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
+}

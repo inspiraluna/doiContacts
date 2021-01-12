@@ -42,8 +42,9 @@ const WalletItem = ({ senderName, senderEmail, subject, content, publicKey, cont
             }
         }
         fetchData()
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    })
 
         return (
             <div>
