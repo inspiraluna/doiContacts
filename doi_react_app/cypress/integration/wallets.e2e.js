@@ -16,7 +16,7 @@ describe("Wallet E2E Tests", () => {
     })
     
     //TODO please create a function for updating a wallet including checking the details via asserts
-    it("adds a new wallet and updates details of it", () => {
+    it.only("adds a new wallet and updates details of it", () => {
         createNewSeedPhrase()
         
         const senderName = "Peter"
