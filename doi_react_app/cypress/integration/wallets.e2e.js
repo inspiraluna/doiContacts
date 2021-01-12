@@ -33,7 +33,6 @@ describe("Wallet E2E Tests", () => {
         const updatedRedirectUrl = "http://www.doichain.org"
 
         updateWallet(upatedSenderName,updatedEmail,updatedSubject,updatedEmailBody,updatedRedirectUrl)
-
         // cy.log("udpate data in wallet")
         // cy.get("#walletIcon").click()
         // cy.get("#editWallet").click()

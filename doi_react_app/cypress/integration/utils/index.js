@@ -203,7 +203,7 @@ export const updateWallet = (upatedSenderName,updatedEmail,updatedSubject,update
     cy.get("#redirectUrl").type(updatedRedirectUrl)
     cy.get("#saveWallet").click()
 
-    cy.log('checking updated details in wallet')
+    cy.log('checking updated details in wallet') 
     cy.get("#senderName").should("have.text", "Name: "+upatedSenderName)
     cy.get("#sentEmail").should("have.text", "Email: "+updatedEmail)
     cy.get("#subj").should("have.text", "Subject: "+updatedSubject)
