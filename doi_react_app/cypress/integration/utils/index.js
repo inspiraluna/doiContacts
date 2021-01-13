@@ -212,10 +212,10 @@ export const updateWallet = (upatedSenderName,updatedEmail,updatedSubject,update
     cy.get("#redUrl").should("have.text", "Redirect-Url: "+updatedRedirectUrl)
 }
 
-export const addContact = () => {
+export const addContact = (email) => {
     cy.get("#phoneIcon").click()
     cy.get("#addButton").click()
-    cy.get("#toAddress").type("bob@ci-doichain.org")
+    cy.get("#toAddress").type(email)
     cy.get(".MuiButton-label").click()
     cy.get("#standard-adornment-password").type(SEED_PASSWORD)
     cy.get("#unlock").click()

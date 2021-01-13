@@ -36,7 +36,8 @@ describe("Contacts E2E Tests", () => {
                     cy.get("#walletIcon").click()
 
                 cy.wait(2000)
-                addContact()
+                const email = "bob@ci-doichain.org"
+                addContact(email)
                 cy.wait(6000)
                 cy.get("#phoneIcon").click() //here the verification must fail because the 2 blocks for soi and doi are not yet mined
                 cy.wait(6000)
@@ -87,9 +88,16 @@ describe("Contacts E2E Tests", () => {
         })
     })
 
+    it("add a contact without wallet", () => {
+        createNewSeedPhrase()
+        const email = "bob@ci-doichain.org"
+        addContact(email)
+    })
+
     it("should create a contact but should not be possible to add twice the same email address", () => {
         restoreWallet()
-        addContact()
+        const email = "bob@ci-doichain.org"
+        addContact(email)
         cy.wait(2000)
         cy.get("#phoneIcon").click()
         cy.wait(2000)
