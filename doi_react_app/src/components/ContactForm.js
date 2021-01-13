@@ -68,7 +68,7 @@ const ContactForm = () => {
     const [email, setEmail] = useState('')
     const [disable, setDisable] = useState(false)
     const [wallet, setWallet] = useState(0)
-    const [ownQrCode, setOwnQrCode] = useState(wallets[wallet].senderEmail)
+    const [ownQrCode, setOwnQrCode] = useState(wallets[wallet]===undefined?"":wallets[wallet].senderEmail)
 
     const [t] = useTranslation()
 

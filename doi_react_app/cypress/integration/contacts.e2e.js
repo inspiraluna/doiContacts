@@ -92,6 +92,10 @@ describe("Contacts E2E Tests", () => {
         createNewSeedPhrase()
         const email = "bob@ci-doichain.org"
         addContact(email)
+        cy.get("#client-snackbar").should(
+            "have.text",
+            "no wallets defined"
+        )
     })
 
     it("should create a contact but should not be possible to add twice the same email address", () => {
