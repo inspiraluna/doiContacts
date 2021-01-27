@@ -10,7 +10,7 @@ describe("Settings E2E Tests", () => {
         cy.visit("http://localhost:3001")
     })
 
-    it.only("checks the background color and button color for each network case", () => {
+    it("checks the background color and button color for each network case", () => {
 
         cy.get("body").should("have.css", "background-color").and("be.colored", "#e5e3ff")
         cy.get("#changeMode").click()

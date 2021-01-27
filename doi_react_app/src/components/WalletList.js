@@ -32,14 +32,18 @@ const WalletList = () => {
     useEffect(() => {
         let options = {network:global.DEFAULT_NETWORK}
          function fetchData() {
-            let changed = false
-            let balanceObj
-            wallets.forEach(async (wallet, index) => {
-                 balanceObj = await getBalance(index, wallets, options)
-                if (balanceObj.balance !== wallets[index].balance)changed = true        
-            });
-            if(changed) setWallets(balanceObj.wallets)  
-        }
+             try {
+                 let changed = false
+                 let balanceObj
+                 wallets.forEach(async (wallet, index) => {
+                     balanceObj = await getBalance(index, wallets, options)
+                     if (balanceObj.balance !== wallets[index].balance) changed = true
+                 })
+                 if (changed) setWallets(balanceObj.wallets)
+             } catch (error) {
+                 console.error('dapp seems offline')
+             }
+         }
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -145,7 +149,7 @@ const WalletList = () => {
                 </DialogActions>
             </Dialog>
             <List id="walletList" dense={true}>{walletNode}</List>
-        </div>
+        </div>  
     )
 }
 

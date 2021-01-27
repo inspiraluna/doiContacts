@@ -22,7 +22,7 @@ describe("App E2E", () => {
         })
     })
 
-    it.only("creates new seed and a wallet", () => {
+    it("creates new seed and a wallet", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
     })

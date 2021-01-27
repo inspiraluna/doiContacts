@@ -1,4 +1,5 @@
-import { fundWallet } from "doichain/lib/fundWallet" 
+import { fundWallet } from "doichain/lib/fundWallet"
+import { changeNetwork } from "doichain/lib/network" 
 import { createNewSeedPhrase, 
     createWallet, 
     deleteWalletByIndex,
@@ -48,7 +49,7 @@ describe("Wallet E2E Tests", () => {
         deleteWalletByIndex(walletDeleteIndex)     
     })
 
-    it("creates new seed with 2 wallets, funds the first and send coins to the second", () => {
+    it.only("creates new seed with 2 wallets, funds the first and send coins to the second", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
@@ -99,7 +100,7 @@ describe("Wallet E2E Tests", () => {
     //funding a certain wallet by index should go into a function
     //get the address from a wallet by index should go into a function
     //send money from wallet index to a wallet by index should go into two different functions
-    it("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
+    it.only("creates 2 wallets, funds 1 wallet and sends money to the second. Checks balance, transaction history and confirmation", () => {
         createNewSeedPhrase()
         createWallet("Peter", "peter@ci-doichain.org", "Welcome to Peter's newsletter")
         cy.wait(500)
